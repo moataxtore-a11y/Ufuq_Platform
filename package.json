@@ -1,0 +1,26 @@
+{
+  "name": "education-platform-system",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix backend start",
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "install:all": "npm --prefix backend install && npm --prefix frontend install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
+    "axios": "^1.13.5",
+    "cloudinary": "^1.41.3",
+    "dropbox": "^10.34.0",
+    "express": "^5.2.1",
+    "i18next": "^25.8.7",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
+    "react-i18next": "^16.5.4"
+  }
+}

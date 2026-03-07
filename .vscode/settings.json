@@ -1,0 +1,14 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "files.watcherExclude": {
+    "**/frontend/dist/**": true
+  },
+  "files.exclude": {
+    "**/frontend/dist/**": true
+  },
+  "search.exclude": {
+    "**/frontend/dist/**": true
+  }
+}
