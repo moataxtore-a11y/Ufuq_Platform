@@ -43,18 +43,9 @@ export default function TeacherCoursesPage() {
         'flex items-start justify-between gap-3 ' + (isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left')
       }
       >
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className={
-            'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition shrink-0 ' +
-            'bg-amber-300 text-neutral-950 hover:bg-amber-200 active:bg-amber-300/90 ' +
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70 ' +
-            'dark:bg-amber-200 dark:hover:bg-amber-100 dark:focus-visible:ring-amber-200/40'
-          }
-        >
+        <Button type="button" onClick={() => setOpen(true)}>
           {t('coursesManage.createCourse')}
-        </button>
+        </Button>
         <div className="min-w-0">
           <div className="font-semibold text-slate-900 dark:text-white text-lg tracking-tight">{t('coursesManage.title')}</div>
           <div className="text-slate-700 dark:text-slate-200 text-sm">{t('coursesManage.subtitle')}</div>
@@ -216,7 +207,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
-            className="bg-white dark:bg-[#171717] px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-300/60 w-full text-slate-900 dark:placeholder:text-slate-500 dark:text-white placeholder:text-slate-400 text-sm"
+            className="bg-white dark:bg-[#171717] px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/40 w-full text-slate-900 dark:placeholder:text-slate-500 dark:text-white placeholder:text-slate-400 text-sm"
           />
         </div>
         <div className="gap-2 grid">
@@ -233,7 +224,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (!isPaid
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/15 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >
@@ -246,7 +237,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (isPaid
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/15 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >
@@ -270,7 +261,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (pinned
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/20 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >
@@ -283,7 +274,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (!pinned
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/20 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >
@@ -339,7 +330,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (courseType === 'monthly'
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/20 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >
@@ -352,7 +343,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
               className={
                 'flex-1 rounded-xl px-3 py-2 text-sm font-semibold transition ' +
                 (courseType === 'individual'
-                  ? 'bg-[rgba(244,206,125,0.55)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-brand/20 text-slate-900 dark:text-slate-100'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]')
               }
             >

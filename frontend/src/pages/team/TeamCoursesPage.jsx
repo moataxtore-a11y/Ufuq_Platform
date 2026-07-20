@@ -54,9 +54,9 @@ export default function TeamCoursesPage() {
             onClick={() => setOpen(true)}
             className={
               'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition shrink-0 ' +
-              'bg-amber-300 text-neutral-950 hover:bg-amber-200 active:bg-amber-300/90 ' +
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70 ' +
-              'dark:bg-amber-200 dark:hover:bg-amber-100 dark:focus-visible:ring-amber-200/40'
+              'bg-brand text-white hover:bg-brand-600 active:bg-brand-700 ' +
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ' +
+              'dark:bg-brand dark:hover:bg-brand-600 dark:focus-visible:ring-brand/40'
             }
           >
             {t('coursesManage.createCourse')}

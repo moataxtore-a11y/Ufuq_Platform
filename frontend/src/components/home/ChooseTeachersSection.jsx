@@ -79,7 +79,7 @@ export default function ChooseTeachersSection() {
   }, [gradeYear, section, state.items])
 
   return (
-    <section id="choose-teachers" className="mt-8 scroll-mt-24">
+    <section id="choose-teachers" className="mt-8 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
       <div
         className="relative"
         dir={isRtl ? 'rtl' : 'ltr'}
@@ -98,7 +98,7 @@ export default function ChooseTeachersSection() {
 
             <div className="flex justify-center mt-3">
               <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -135,7 +135,7 @@ export default function ChooseTeachersSection() {
               <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
                 <div className="flex flex-col justify-center items-center gap-3 text-center">
                   <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
-                  <div className="font-semibold text-base" style={{ color: '#F74343' }}>
+                  <div className="font-semibold text-rose-600 dark:text-rose-400 text-base">
                     {isRtl ? 'مفيش مدرسين حالياََ' : 'No teachers right now'}
                   </div>
                 </div>

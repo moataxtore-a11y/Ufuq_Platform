@@ -64,12 +64,13 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
     setExpandedId((cur) => (cur === id ? '' : id))
   }
 
-  function AttachmentCard({ id, kindLabel, item, action, endSlotIconSrc }) {
+  function renderAttachmentCard(id, kindLabel, item, action, endSlotIconSrc) {
     const title = itemTitle(item, kindLabel)
     const desc = itemDesc(item)
     const isOpen = expandedId === id
     return (
       <div
+        key={id}
         role="button"
         tabIndex={0}
         className="bg-white dark:bg-neutral-900 p-3 border border-black/5 dark:border-white/[0.06] rounded-xl w-full text-left"
@@ -165,91 +166,79 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
     <div className="gap-2 grid">
       <div className="gap-2 grid">
         {videos.map((v, idx) => (
-          <AttachmentCard
-            key={'v-' + idx}
-            id={'v-' + idx}
-            kindLabel={isRtl ? 'فيديو' : 'Video'}
-            item={v}
-            endSlotIconSrc={vidIcon}
-            action={
-              v?.url ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="bg-[#EAB308] hover:bg-[#EAB308]/90 dark:bg-[#EAB308] dark:hover:bg-[#EAB308]/90 px-3 sm:px-3 h-10 sm:h-10 text-slate-900 text-[10px] sm:text-xs w-full sm:w-auto"
-                  onClick={() => openMedia?.({ kind: 'video', url: v.url, title: itemTitle(v, isRtl ? 'فيديو' : 'Video') })}
-                >
-                  {isRtl ? 'مشاهدة الفيديو' : 'Watch Video'}
-                </Button>
-              ) : null
-            }
-          />
-        ))}
-
-        {pdfs.map((p, idx) => (
-          <AttachmentCard
-            key={'p-' + idx}
-            id={'p-' + idx}
-            kindLabel={'PDF'}
-            item={p}
-            endSlotIconSrc={fileIcon}
-            action={
-              isHttpUrl(p?.url) ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="bg-[#60A5FA] hover:bg-[#60A5FA]/90 dark:bg-[#60A5FA] dark:hover:bg-[#60A5FA]/90 px-2 sm:px-3 h-10 sm:h-10 text-white text-[10px] sm:text-xs w-full sm:w-auto"
-                  onClick={() => {
-                    openSigned?.(p.url, itemTitle(p, 'PDF'))
-                  }}
-                >
-                  {isRtl ? 'فتح الملف' : 'Open File'}
-                </Button>
-              ) : null
-            }
-          />
-        ))}
-
-        {images.map((img, idx) => (
-          <AttachmentCard
-            key={'i-' + idx}
-            id={'i-' + idx}
-            kindLabel={isRtl ? 'صورة' : 'Image'}
-            item={img}
-            endSlotIconSrc={imgIcon}
-            action={
-              isHttpUrl(img?.url) ? (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="bg-[#EAB308] hover:bg-[#EAB308]/90 dark:bg-[#EAB308] dark:hover:bg-[#EAB308]/90 px-2 sm:px-3 h-10 sm:h-10 text-slate-900 text-[10px] sm:text-xs w-full sm:w-auto"
-                  onClick={() => openMedia?.({ kind: 'image', url: img.url, title: itemTitle(img, isRtl ? 'صورة' : 'Image') })}
-                >
-                  {isRtl ? 'عرض الصورة' : 'Show Image'}
-                </Button>
-              ) : null
-            }
-          />
-        ))}
-
-        {assessment && assessment?._id ? (
-          <AttachmentCard
-            key={'a-0'}
-            id={'a-0'}
-            kindLabel={assessment?.type === 'homework' ? (isRtl ? 'واجب' : 'Homework') : (isRtl ? 'اختبار' : 'Quiz')}
-            item={{ name: assessment?.title || (assessment?.type === 'homework' ? (isRtl ? 'واجب' : 'Homework') : (isRtl ? 'اختبار' : 'Quiz')), description: '' }}
-            endSlotIconSrc={assessment?.type === 'homework' ? homeworkIcon : aPlusIcon}
-            action={
+          renderAttachmentCard(
+            'v-' + idx,
+            isRtl ? 'فيديو' : 'Video',
+            v,
+            v?.url ? (
               <Button
                 type="button"
                 variant="secondary"
-                className={(assessment?.type === 'homework' ? 'bg-[#2DD4BF] dark:bg-[#2DD4BF] hover:bg-[#2DD4BF]/90 dark:hover:bg-[#2DD4BF]/90 ' : 'bg-[#F43F5E] dark:bg-[#F43F5E] hover:bg-[#F43F5E]/90 dark:hover:bg-[#F43F5E]/90 ') + 'px-2 sm:px-3 h-7 sm:h-8 text-white text-[10px] sm:text-xs w-full sm:w-auto'}
-                onClick={() => onOpenAssessment?.(assessment)}
+                className="bg-brand hover:bg-brand-600 dark:bg-brand dark:hover:bg-brand-600 px-3 sm:px-3 w-full sm:w-auto h-10 sm:h-10 text-[10px] text-white sm:text-xs"
+                onClick={() => openMedia?.({ kind: 'video', url: v.url, title: itemTitle(v, isRtl ? 'فيديو' : 'Video') })}
               >
-                {isRtl ? 'فتح' : 'Open'}
+                {isRtl ? 'مشاهدة الفيديو' : 'Watch Video'}
               </Button>
-            }
-          />
+            ) : null,
+            vidIcon
+          )
+        ))}
+
+        {pdfs.map((p, idx) => (
+          renderAttachmentCard(
+            'p-' + idx,
+            'PDF',
+            p,
+            isHttpUrl(p?.url) ? (
+              <Button
+                type="button"
+                variant="secondary"
+                className="bg-brand hover:bg-brand-600 dark:bg-brand dark:hover:bg-brand-600 px-2 sm:px-3 w-full sm:w-auto h-10 sm:h-10 text-[10px] text-white sm:text-xs"
+                onClick={() => {
+                  openSigned?.(p.url, itemTitle(p, 'PDF'))
+                }}
+              >
+                {isRtl ? 'فتح الملف' : 'Open File'}
+              </Button>
+            ) : null,
+            fileIcon
+          )
+        ))}
+
+        {images.map((img, idx) => (
+          renderAttachmentCard(
+            'i-' + idx,
+            isRtl ? 'صورة' : 'Image',
+            img,
+            isHttpUrl(img?.url) ? (
+              <Button
+                type="button"
+                variant="secondary"
+                className="bg-brand hover:bg-brand-600 dark:bg-brand dark:hover:bg-brand-600 px-2 sm:px-3 w-full sm:w-auto h-10 sm:h-10 text-[10px] text-white sm:text-xs"
+                onClick={() => openMedia?.({ kind: 'image', url: img.url, title: itemTitle(img, isRtl ? 'صورة' : 'Image') })}
+              >
+                {isRtl ? 'عرض الصورة' : 'Show Image'}
+              </Button>
+            ) : null,
+            imgIcon
+          )
+        ))}
+
+        {assessment && assessment?._id ? (
+          renderAttachmentCard(
+            'a-0',
+            assessment?.type === 'homework' ? (isRtl ? 'واجب' : 'Homework') : (isRtl ? 'اختبار' : 'Quiz'),
+            { name: assessment?.title || (assessment?.type === 'homework' ? (isRtl ? 'واجب' : 'Homework') : (isRtl ? 'اختبار' : 'Quiz')), description: '' },
+            <Button
+              type="button"
+              variant="secondary"
+              className={(assessment?.type === 'homework' ? 'bg-brand dark:bg-brand hover:bg-brand-600 dark:hover:bg-brand-600 ' : 'bg-[#F43F5E] dark:bg-[#F43F5E] hover:bg-[#F43F5E]/90 dark:hover:bg-[#F43F5E]/90 ') + 'px-2 sm:px-3 h-7 sm:h-8 text-white text-[10px] sm:text-xs w-full sm:w-auto'}
+              onClick={() => onOpenAssessment?.(assessment)}
+            >
+              {isRtl ? 'فتح' : 'Open'}
+            </Button>,
+            assessment?.type === 'homework' ? homeworkIcon : aPlusIcon
+          )
         ) : null}
 
         {!videos.length && !pdfs.length && !images.length && !(assessment && assessment?._id) ? (
@@ -285,6 +274,8 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
   const [assessments, setAssessments] = useState([])
   const [openCreateAssessment, setOpenCreateAssessment] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [uploadingLabel, setUploadingLabel] = useState('')
+  const [uploadPct, setUploadPct] = useState(0)
 
   function formatDuration(sec) {
     const s = Number(sec)
@@ -501,15 +492,46 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
 
   async function uploadAttachmentFile(kind, idx, file) {
     if (!file) return
+    const lesson = null // lesson ref not in scope here - using lesson prop below
     try {
       setLoading(true)
-      const label = kind === 'videos' ? 'Uploading video...' : kind === 'pdfs' ? 'Uploading PDF...' : 'Uploading image...'
-      const up = await uploadFile(file, '/uploads', { onProgress: onProgress(label) })
-      updateAttachment(kind, idx, { url: up?.url || '', fileName: file?.name || '' })
+      const label = kind === 'videos' ? 'جاري رفع الفيديو...' : kind === 'pdfs' ? 'جاري رفع PDF...' : 'جاري رفع الصورة...'
+      const up = await uploadFile(file, '/uploads', {
+        onProgress: onProgress(label),
+        // Pass IDs so video lands in correct Cloudinary folder
+        courseId: lesson?.courseId || '',
+        lessonId: lesson?._id || ''
+      })
+      updateAttachment(kind, idx, {
+        url: up?.url || '',
+        publicId: up?.publicId || '',
+        durationSec: up?.durationSec || null,
+        fileName: file?.name || ''
+      })
     } catch (e) {
       notify({ title: 'فشل رفع الملف', description: e?.response?.data?.message || e?.message || 'Error', variant: 'destructive' })
     } finally {
       setLoading(false)
+      setUploadingLabel('')
+      setUploadPct(0)
+    }
+  }
+
+  function onProgress(label) {
+    return (evt) => {
+      try {
+        const total = evt && evt.total ? evt.total : 0
+        const loaded = evt && evt.loaded ? evt.loaded : 0
+        if (!total) {
+          setUploadingLabel(label)
+          return
+        }
+        const pct = Math.min(100, Math.max(0, Math.round((loaded / total) * 100)))
+        setUploadingLabel(label)
+        setUploadPct(pct)
+      } catch {
+        setUploadingLabel(label)
+      }
     }
   }
 
@@ -520,21 +542,21 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
     })
   }
 
-  function AttachmentEditor({ kind, label, accept }) {
+  function renderAttachmentEditor(kind, label, accept) {
     const list = Array.isArray(attachments?.[kind]) ? attachments[kind] : []
     return (
-      <div className="gap-2 grid">
+      <div className="gap-3 grid">
         <div className="flex justify-between items-center">
-          <div className="font-semibold text-slate-700 text-sm">{label}</div>
+          <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{label}</div>
           <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => addAttachment(kind)} disabled={loading}>
-            إضافة
+            + إضافة
           </Button>
         </div>
 
         {list.length ? (
-          <div className="gap-2 grid">
+          <div className="gap-3 grid">
             {list.map((it, idx) => (
-              <div key={kind + '-' + idx} className="gap-2 grid p-3 border border-black/5 rounded-xl">
+              <div key={kind + '-' + idx} className="gap-4 grid bg-slate-50 dark:bg-neutral-800/40 p-4 border border-black/10 dark:border-white/10 rounded-2xl">
                 <input
                   type="file"
                   accept={accept}
@@ -547,16 +569,16 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
                   }}
                   disabled={loading}
                 />
-                <div className="flex justify-between items-center gap-2">
-                  <div className="flex items-center gap-2 text-slate-600 text-xs">
+                <div className="flex flex-wrap md:flex-nowrap justify-between items-start md:items-center gap-3">
+                  <div className="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200 text-sm">
                     {kind === 'images' ? <img src={imgIcon} alt="" className="w-5 h-5 shrink-0" /> : null}
                     <span>{label} #{idx + 1}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                     <Button
                       type="button"
                       variant="secondary"
-                      className="px-3 h-8 text-xs"
+                      className="flex-1 md:flex-none px-4 h-9 text-xs"
                       onClick={() => {
                         const el = document.getElementById(`edit-${kind}-${idx}-file`)
                         if (el && typeof el.click === 'function') el.click()
@@ -568,7 +590,7 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
                     <Button
                       type="button"
                       variant="destructive"
-                      className="px-3 h-8 text-xs"
+                      className="flex-1 md:flex-none px-4 h-9 text-xs"
                       onClick={() => removeAttachment(kind, idx)}
                       disabled={loading}
                     >
@@ -578,34 +600,38 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
                 </div>
 
                 {it?.fileName ? (
-                  <div className="text-slate-500 text-xs truncate">{it.fileName}</div>
+                  <div className="inline-block bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-lg w-fit max-w-full text-slate-500 dark:text-slate-400 text-xs truncate">
+                    الملف المحدد: {it.fileName}
+                  </div>
                 ) : null}
 
-                <div className="gap-1 grid">
-                  <label className="text-slate-600 text-sm">الاسم</label>
-                  <Input
-                    value={it?.name || ''}
-                    onChange={(e) => updateAttachment(kind, idx, { name: e.target.value })}
-                    disabled={loading}
-                  />
+                <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الاسم</label>
+                    <Input
+                      value={it?.name || ''}
+                      onChange={(e) => updateAttachment(kind, idx, { name: e.target.value })}
+                      disabled={loading}
+                    />
+                  </div>
+
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الرابط</label>
+                    <Input
+                      value={it?.url || ''}
+                      onChange={(e) => updateAttachment(kind, idx, { url: e.target.value })}
+                      placeholder="https://..."
+                      disabled={loading}
+                    />
+                  </div>
                 </div>
 
-                <div className="gap-1 grid">
-                  <label className="text-slate-600 text-sm">الرابط</label>
-                  <Input
-                    value={it?.url || ''}
-                    onChange={(e) => updateAttachment(kind, idx, { url: e.target.value })}
-                    placeholder="https://..."
-                    disabled={loading}
-                  />
-                </div>
-
-                <div className="gap-1 grid">
-                  <label className="text-slate-600 text-sm">الوصف</label>
+                <div className="gap-1.5 grid">
+                  <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الوصف</label>
                   <textarea
                     value={it?.description || ''}
                     onChange={(e) => updateAttachment(kind, idx, { description: e.target.value })}
-                    className="px-3 py-2 border border-black/5 rounded-lg w-full min-h-[90px] text-sm"
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -631,72 +657,70 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
           <span>محاضرة مجانية (تظهر في المعاينة وتكون متاحة للجميع)</span>
           <input type="checkbox" checked={isFree} onChange={(e) => setIsFree(e.target.checked)} disabled={loading} />
         </label>
-        <div className="gap-1 grid">
-          <label className="text-slate-600 text-sm">رابط الفيديو (قديم)</label>
-          <Input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
-          <div className="flex justify-end">
-            <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => setShowVideoDetails((v) => !v)}>
-              تفاصيل
-            </Button>
-          </div>
-          {showVideoDetails ? (
-            <div className="bg-[#D2EBE1] p-3 border border-black/5 rounded-xl text-slate-700 text-sm">
-              <div className="font-semibold text-slate-800 text-xs">تفاصيل الفيديو</div>
-              <div className="mt-1 text-xs"><span className="font-medium">المصدر:</span> {detectVideoProvider(videoUrl) || '—'}</div>
-              <div className="mt-1 text-xs break-all"><span className="font-medium">الرابط:</span> {String(videoUrl || '').trim() || '—'}</div>
-              <div className="mt-1 text-xs">
-                <span className="font-medium">المدة:</span>{' '}
-                {videoDurationSec ? formatDuration(videoDurationSec) : (videoDurationStatus || '—')}
-              </div>
+        <div className="bg-slate-50/50 dark:bg-neutral-800/20 p-4 border border-black/10 dark:border-white/10 rounded-2xl">
+          <div className="mb-4 font-semibold text-slate-800 dark:text-slate-100 text-sm">روابط خارجية وإضافات (قديم / مخصص)</div>
+          <div className="gap-4 grid grid-cols-1 md:grid-cols-2">
+            <div className="gap-1.5 grid">
+              <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
+                <span>رابط الفيديو (قديم)</span>
+                <button type="button" onClick={() => setShowVideoDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+              </label>
+              <Input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
+              {showVideoDetails && (
+                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                  <div className="mb-1 font-semibold">تفاصيل الفيديو</div>
+                  <div><span className="font-medium">المصدر:</span> {detectVideoProvider(videoUrl) || '—'}</div>
+                  <div className="mt-1 break-all"><span className="font-medium">الرابط:</span> {String(videoUrl || '').trim() || '—'}</div>
+                  <div className="mt-1"><span className="font-medium">المدة:</span> {videoDurationSec ? formatDuration(videoDurationSec) : (videoDurationStatus || '—')}</div>
+                </div>
+              )}
             </div>
-          ) : null}
-        </div>
-        <div className="gap-1 grid">
-          <label className="text-slate-600 text-sm">رابط PDF (قديم)</label>
-          <Input value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)} placeholder="https://..." />
-          <div className="flex justify-end">
-            <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => setShowPdfDetails((v) => !v)}>
-              تفاصيل
-            </Button>
-          </div>
-          {showPdfDetails ? (
-            <div className="bg-[#D2EBE1] p-3 border border-black/5 rounded-xl text-slate-700 text-sm">
-              <div className="font-semibold text-slate-800 text-xs">تفاصيل PDF</div>
-              <div className="mt-1 text-xs break-all"><span className="font-medium">الرابط:</span> {String(pdfUrl || '').trim() || '—'}</div>
-              <div className="mt-1 text-xs"><span className="font-medium">الملف المحدد:</span> —</div>
+
+            <div className="gap-1.5 grid">
+              <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
+                <span>رابط PDF (قديم)</span>
+                <button type="button" onClick={() => setShowPdfDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+              </label>
+              <Input value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)} placeholder="https://..." />
+              {showPdfDetails && (
+                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                  <div className="mb-1 font-semibold">تفاصيل PDF</div>
+                  <div className="break-all"><span className="font-medium">الرابط:</span> {String(pdfUrl || '').trim() || '—'}</div>
+                </div>
+              )}
             </div>
-          ) : null}
-        </div>
-        <div className="gap-1 grid">
-          <label className="text-slate-600 text-sm">رابط الغلاف</label>
-          <Input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="https://..." />
-        </div>
-        <div className="gap-1 grid">
-          <label className="text-slate-600 text-sm">روابط الصور (قديم) (كل رابط في سطر)</label>
-          <textarea
-            value={imageUrlsRaw}
-            onChange={(e) => setImageUrlsRaw(e.target.value)}
-            className="px-3 py-2 border border-black/5 rounded-lg w-full min-h-[120px] text-sm"
-          />
-          <div className="flex justify-end">
-            <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => setShowImagesDetails((v) => !v)}>
-              تفاصيل
-            </Button>
-          </div>
-          {showImagesDetails ? (
-            <div className="bg-[#D2EBE1] p-3 border border-black/5 rounded-xl text-slate-700 text-sm">
-              <div className="font-semibold text-slate-800 text-xs">تفاصيل الصور</div>
-              <div className="mt-1 text-xs"><span className="font-medium">العدد:</span> {String(imageUrlsRaw || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean).length}</div>
+
+            <div className="gap-1.5 grid">
+              <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">رابط الغلاف (الصورة)</label>
+              <Input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="https://..." />
             </div>
-          ) : null}
+
+            <div className="gap-1.5 grid">
+              <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
+                <span>روابط الصور (كل رابط في سطر)</span>
+                <button type="button" onClick={() => setShowImagesDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+              </label>
+              <textarea
+                value={imageUrlsRaw}
+                onChange={(e) => setImageUrlsRaw(e.target.value)}
+                className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full h-[38px] min-h-[38px] text-sm transition-all"
+              />
+              {showImagesDetails && (
+                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                  <div className="mb-1 font-semibold">تفاصيل الصور</div>
+                  <div><span className="font-medium">العدد:</span> {String(imageUrlsRaw || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean).length}</div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="pt-3 border-black/5 border-t">
           <div className="font-bold text-slate-800 text-sm">المرفقات</div>
           <div className="gap-4 grid mt-2">
-            <AttachmentEditor kind="videos" label="فيديو" accept="video/*" />
-            <AttachmentEditor kind="pdfs" label="PDF" accept="application/pdf" />
-            <AttachmentEditor kind="images" label="صور" accept="image/*" />
+            {renderAttachmentEditor('videos', 'فيديو', 'video/*')}
+            {renderAttachmentEditor('pdfs', 'PDF', 'application/pdf')}
+            {renderAttachmentEditor('images', 'صور', 'image/*')}
           </div>
         </div>
 
@@ -747,6 +771,16 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
             disabled={loading || !gateAssessmentId}
           />
         </label>
+
+        {loading && uploadingLabel ? (
+          <div className="gap-2 grid mt-4">
+            <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">{uploadingLabel}</div>
+            <div className="bg-slate-200 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+              <div className="bg-[#14B8A6] h-full transition-all duration-300" style={{ width: `${uploadPct}%` }} />
+            </div>
+            <div className="pr-1 font-medium text-slate-500 dark:text-slate-400 text-xs text-center">{uploadPct}%</div>
+          </div>
+        ) : null}
 
         <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="secondary" onClick={() => onOpenChange(false)} disabled={loading}>
@@ -1200,14 +1234,14 @@ export default function TeacherCourseDetailPage() {
       setConfirmState((s) => ({ ...s, loading: true }))
       if (kind === 'course') {
         await api.delete(`/courses/${id}`)
-        notify({ title: 'Course deleted' })
+        notify({ title: isRtl ? 'تم حذف الكورس بنجاح' : 'Course deleted successfully' })
         setConfirmState({ open: false, kind: '', id: '', loading: false })
         navigate(staffBase)
         return
       }
       if (kind === 'lesson') {
         await api.delete(`/courses/lessons/${id}`)
-        notify({ title: 'Lesson deleted' })
+        notify({ title: isRtl ? 'تم حذف المحاضرة بنجاح' : 'Lesson deleted successfully' })
         setConfirmState({ open: false, kind: '', id: '', loading: false })
         refresh().catch(() => { })
         return
@@ -1215,7 +1249,7 @@ export default function TeacherCourseDetailPage() {
 
       if (kind === 'unit') {
         await api.delete(`/courses/units/${id}`)
-        notify({ title: isRtl ? 'تم حذف الوحدة' : 'Unit deleted' })
+        notify({ title: isRtl ? 'تم حذف الوحدة بنجاح' : 'Unit deleted successfully' })
         setConfirmState({ open: false, kind: '', id: '', loading: false })
         setExpandedUnitIds(new Set())
         setActiveLessonId('')
@@ -2458,72 +2492,75 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
           </div>
           <div className="gap-3 grid mt-3">
             {(videos || []).map((v, idx) => (
-              <div key={idx} className="p-3 border border-black/5 rounded-xl">
-                <div className="flex justify-between items-center gap-2">
-                  <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">فيديو {idx + 1}</div>
-                  <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => removeVideo(idx)} disabled={loading}>
-                    إزالة
-                  </Button>
+              <div key={idx} className="gap-4 grid bg-slate-50 dark:bg-neutral-800/40 p-4 border border-black/10 dark:border-white/10 rounded-2xl">
+                <input
+                  type="file"
+                  accept="video/*"
+                  className="hidden"
+                  id={`create-lesson-video-${idx}-file`}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0] || null
+                    setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, file: f } : x)))
+                    setTimeout(() => setVideoDurationForIndex(idx), 0)
+                    if (e.target) e.target.value = ''
+                  }}
+                  disabled={loading}
+                />
+                <div className="flex flex-wrap md:flex-nowrap justify-between items-start md:items-center gap-3">
+                  <div className="font-bold text-slate-800 dark:text-slate-200 text-sm">فيديو {idx + 1}</div>
+                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="flex-1 md:flex-none px-4 h-9 text-xs"
+                      onClick={() => {
+                        const el = document.getElementById(`create-lesson-video-${idx}-file`)
+                        if (el && typeof el.click === 'function') el.click()
+                      }}
+                      disabled={loading}
+                    >
+                      {v.file ? 'تغيير الملف' : 'اختر ملف'}
+                    </Button>
+                    <Button type="button" variant="destructive" className="flex-1 md:flex-none px-4 h-9 text-xs" onClick={() => removeVideo(idx)} disabled={loading}>
+                      إزالة
+                    </Button>
+                  </div>
                 </div>
-                <div className="gap-2 grid mt-2">
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">الاسم (يظهر للطالب)</label>
-                    <Input value={v.name} onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} />
+
+                {v.file?.name && (
+                  <div className="inline-block bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-lg w-fit max-w-full text-slate-500 dark:text-slate-400 text-xs truncate">
+                    الملف المحدد: {v.file.name}
                   </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">الوصف</label>
-                    <textarea
-                      value={v.description}
-                      onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                      className="px-3 py-2 border border-black/5 rounded-lg w-full min-h-[72px] text-sm"
-                    />
+                )}
+
+                <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الاسم (يظهر للطالب)</label>
+                    <Input value={v.name} onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} disabled={loading} />
                   </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">رابط الفيديو (اختياري)</label>
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">رابط الفيديو (اختياري)</label>
                     <Input
                       value={v.url}
                       onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, url: e.target.value } : x)))}
                       onBlur={() => setVideoDurationForIndex(idx)}
                       placeholder="https://..."
-                    />
-                  </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">رفع فيديو (اختياري)</label>
-                    <input
-                      type="file"
-                      accept="video/*"
-                      className="hidden"
-                      id={`create-lesson-video-${idx}-file`}
-                      onChange={(e) => {
-                        const f = e.target.files?.[0] || null
-                        setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, file: f } : x)))
-                        setTimeout(() => setVideoDurationForIndex(idx), 0)
-                        if (e.target) e.target.value = ''
-                      }}
                       disabled={loading}
                     />
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="px-4 h-11 dark:text-slate-200 text-sm"
-                        onClick={() => {
-                          const el = document.getElementById(`create-lesson-video-${idx}-file`)
-                          if (el && typeof el.click === 'function') el.click()
-                        }}
-                        disabled={loading}
-                      >
-                        {v.file?.name ? 'تغيير الملف' : 'اختيار ملف'}
-                      </Button>
-                      <div className="min-w-0 text-slate-700 dark:text-slate-200 text-sm truncate">
-                        {v.file?.name ? v.file.name : 'لم يتم اختيار ملف'}
-                      </div>
-                    </div>
                   </div>
-                  <div className="text-slate-600 text-xs">
-                    <span className="font-medium">المدة:</span>{' '}
-                    {v.durationSec ? formatDuration(v.durationSec) : (v.durationStatus || '—')}
-                  </div>
+                </div>
+                <div className="gap-1.5 grid">
+                  <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الوصف</label>
+                  <textarea
+                    value={v.description}
+                    onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                    disabled={loading}
+                  />
+                </div>
+                <div className="mt-1 text-slate-600 dark:text-slate-400 text-xs">
+                  <span className="font-semibold">المدة:</span>{' '}
+                  {v.durationSec ? formatDuration(v.durationSec) : (v.durationStatus || '—')}
                 </div>
               </div>
             ))}
@@ -2539,66 +2576,69 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
           </div>
           <div className="gap-3 grid mt-3">
             {(pdfs || []).map((p, idx) => (
-              <div key={idx} className="p-3 border border-black/5 rounded-xl">
-                <div className="flex justify-between items-center gap-2">
-                  <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">PDF {idx + 1}</div>
-                  <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => removePdf(idx)} disabled={loading}>
-                    إزالة
-                  </Button>
+              <div key={idx} className="gap-4 grid bg-slate-50 dark:bg-neutral-800/40 p-4 border border-black/10 dark:border-white/10 rounded-2xl">
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  className="hidden"
+                  id={`create-lesson-pdf-${idx}-file`}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0] || null
+                    setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, file: f } : x)))
+                    if (e.target) e.target.value = ''
+                  }}
+                  disabled={loading}
+                />
+                <div className="flex flex-wrap md:flex-nowrap justify-between items-start md:items-center gap-3">
+                  <div className="font-bold text-slate-800 dark:text-slate-200 text-sm">PDF {idx + 1}</div>
+                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      className="flex-1 md:flex-none px-4 h-9 text-xs"
+                      onClick={() => {
+                        const el = document.getElementById(`create-lesson-pdf-${idx}-file`)
+                        if (el && typeof el.click === 'function') el.click()
+                      }}
+                      disabled={loading}
+                    >
+                      {p.file ? 'تغيير الملف' : 'اختر ملف'}
+                    </Button>
+                    <Button type="button" variant="destructive" className="flex-1 md:flex-none px-4 h-9 text-xs" onClick={() => removePdf(idx)} disabled={loading}>
+                      إزالة
+                    </Button>
+                  </div>
                 </div>
-                <div className="gap-2 grid mt-2">
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">الاسم (يظهر للطالب)</label>
-                    <Input value={p.name} onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} />
+
+                {p.file?.name && (
+                  <div className="inline-block bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-lg w-fit max-w-full text-slate-500 dark:text-slate-400 text-xs truncate">
+                    الملف المحدد: {p.file.name}
                   </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">الوصف</label>
-                    <textarea
-                      value={p.description}
-                      onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                      className="px-3 py-2 border border-black/5 rounded-lg w-full min-h-[72px] text-sm"
-                    />
+                )}
+
+                <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الاسم (يظهر للطالب)</label>
+                    <Input value={p.name} onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} disabled={loading} />
                   </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">رابط PDF (اختياري)</label>
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">رابط PDF (اختياري)</label>
                     <Input
                       value={p.url}
                       onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, url: e.target.value } : x)))}
                       placeholder="https://..."
-                    />
-                  </div>
-                  <div className="gap-1 grid">
-                    <label className="text-slate-600 text-xs">رفع PDF (اختياري)</label>
-                    <input
-                      type="file"
-                      accept="application/pdf"
-                      className="hidden"
-                      id={`create-lesson-pdf-${idx}-file`}
-                      onChange={(e) => {
-                        const f = e.target.files?.[0] || null
-                        setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, file: f } : x)))
-                        if (e.target) e.target.value = ''
-                      }}
                       disabled={loading}
                     />
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="px-4 h-11 dark:text-slate-200 text-sm"
-                        onClick={() => {
-                          const el = document.getElementById(`create-lesson-pdf-${idx}-file`)
-                          if (el && typeof el.click === 'function') el.click()
-                        }}
-                        disabled={loading}
-                      >
-                        {p.file?.name ? 'تغيير الملف' : 'اختيار ملف'}
-                      </Button>
-                      <div className="min-w-0 text-slate-700 dark:text-slate-200 text-sm truncate">
-                        {p.file?.name ? p.file.name : 'لم يتم اختيار ملف'}
-                      </div>
-                    </div>
                   </div>
+                </div>
+                <div className="gap-1.5 grid">
+                  <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الوصف</label>
+                  <textarea
+                    value={p.description}
+                    onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                    disabled={loading}
+                  />
                 </div>
               </div>
             ))}
@@ -2636,31 +2676,38 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
           {(images || []).length ? (
             <div className="gap-3 grid mt-3">
               {(images || []).map((img, idx) => (
-                <div key={idx} className="p-3 border border-black/5 rounded-xl">
-                  <div className="flex justify-between items-center gap-2">
-                    <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">صورة {idx + 1}</div>
-                    <Button type="button" variant="outline" className="px-3 h-8 text-xs" onClick={() => removeImage(idx)} disabled={loading}>
+                <div key={idx} className="gap-4 grid bg-slate-50 dark:bg-neutral-800/40 p-4 border border-black/10 dark:border-white/10 rounded-2xl">
+                  <div className="flex flex-wrap md:flex-nowrap justify-between items-start md:items-center gap-3">
+                    <div className="font-bold text-slate-800 dark:text-slate-200 text-sm">صورة {idx + 1}</div>
+                    <Button type="button" variant="destructive" className="px-4 h-9 text-xs" onClick={() => removeImage(idx)} disabled={loading}>
                       إزالة
                     </Button>
                   </div>
-                  <div className="gap-2 grid mt-2">
-                    <div className="gap-1 grid">
-                      <label className="text-slate-600 text-xs">الاسم (يظهر للطالب)</label>
-                      <Input value={img.name} onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} />
+
+                  {img.file?.name && (
+                    <div className="inline-block bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-lg w-fit max-w-full text-slate-500 dark:text-slate-400 text-xs truncate">
+                      الملف المحدد: {img.file.name}
                     </div>
-                    <div className="gap-1 grid">
-                      <label className="text-slate-600 text-xs">الوصف</label>
-                      <textarea
-                        value={img.description}
-                        onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                        className="px-3 py-2 border border-black/5 rounded-lg w-full min-h-[72px] text-sm"
-                      />
+                  )}
+
+                  <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
+                    <div className="gap-1.5 grid">
+                      <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الاسم (يظهر للطالب)</label>
+                      <Input value={img.name} onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, name: e.target.value } : x)))} disabled={loading} />
                     </div>
-                    <div className="gap-1 grid">
-                      <label className="text-slate-600 text-xs">رابط الصورة (اختياري)</label>
-                      <Input value={img.url} onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, url: e.target.value } : x)))} placeholder="https://..." />
+                    <div className="gap-1.5 grid">
+                      <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">رابط الصورة (اختياري)</label>
+                      <Input value={img.url} onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, url: e.target.value } : x)))} placeholder="https://..." disabled={loading} />
                     </div>
-                    <div className="text-slate-600 text-xs truncate">{img.file?.name || ''}</div>
+                  </div>
+                  <div className="gap-1.5 grid">
+                    <label className="font-semibold text-[13px] text-slate-600 dark:text-slate-400">الوصف</label>
+                    <textarea
+                      value={img.description}
+                      onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
+                      className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                      disabled={loading}
+                    />
                   </div>
                 </div>
               ))}

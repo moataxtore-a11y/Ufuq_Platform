@@ -9,6 +9,7 @@ import CourseCard from '../courses/CourseCard.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 
 function getCoursePath(role, courseId) {
+  if (role === 'admin') return `/admin/courses/${courseId}`
   if (role === 'teacher') return `/teacher/courses/${courseId}`
   if (role === 'team') return `/team/courses/${courseId}`
   if (role === 'student') return `/student/courses/${courseId}`
@@ -18,7 +19,7 @@ function getCoursePath(role, courseId) {
 export default function CoursesSection() {
   const { auth } = useAuth()
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
 
   const [state, setState] = useState({ status: 'idle', items: [], error: '' })
 
@@ -26,14 +27,10 @@ export default function CoursesSection() {
     let alive = true
 
     async function run() {
-      if (!auth?.token) {
-        if (alive) setState({ status: 'idle', items: [], error: '' })
-        return
-      }
-
       if (alive) setState({ status: 'loading', items: [], error: '' })
       try {
-        const res = await api.get('/courses/mine')
+        const endpoint = auth?.user?.role === 'admin' ? '/courses' : '/courses/mine'
+        const res = await api.get(endpoint)
         const items = Array.isArray(res.data) ? res.data : []
         if (alive) setState({ status: 'success', items, error: '' })
       } catch (e) {
@@ -52,6 +49,7 @@ export default function CoursesSection() {
 
   const subtitle = useMemo(() => {
     if (!auth?.token) return t('landing.courses.subtitle_signed_out')
+    if (role === 'admin') return t('landing.courses.subtitle_admin', { defaultValue: isRtl ? 'إدارة الكورسات' : 'Manage Courses' })
     if (role === 'teacher') return t('landing.courses.subtitle_teacher')
     if (role === 'team') return t('landing.courses.subtitle_team')
     if (role === 'student') return t('landing.courses.subtitle_student')
@@ -61,7 +59,9 @@ export default function CoursesSection() {
   return (
     <SectionWrapper
       id="courses"
-      title={t('landing.courses.title')}
+      centerHeader
+      title={isRtl ? 'الكورسات المتاحة' : 'Available Courses'}
+      titleClassName="text-center font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight"
       subtitle={subtitle}
       action={
         !auth?.token ? (
@@ -98,8 +98,10 @@ export default function CoursesSection() {
                 key={courseId}
                 course={course}
                 badge={
-                  role === 'teacher'
-                    ? t('landing.courses.badge_teacher')
+                  role === 'admin'
+                    ? (isRtl ? 'أدمن' : 'Admin')
+                    : role === 'teacher'
+                      ? t('landing.courses.badge_teacher')
                     : role === 'student'
                       ? t('landing.courses.badge_student')
                       : role === 'team'

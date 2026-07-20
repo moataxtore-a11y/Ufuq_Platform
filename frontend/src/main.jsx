@@ -30,7 +30,7 @@ function RouteTitle() {
   const { isRtl } = useLanguage()
 
   React.useEffect(() => {
-    const brand = 'بيرفكت للثانوية العامة'
+    const brand = 'أُفُق للثانوية العامة'
 
     const ar = {
       '/': 'الرئيسية',

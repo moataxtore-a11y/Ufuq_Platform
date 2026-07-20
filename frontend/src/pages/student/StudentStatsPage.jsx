@@ -104,15 +104,11 @@ export default function StudentStatsPage() {
     return sec // fallback
   }
 
-  function StatCard({ title, value, hint, tone = 'gold' }) {
+  function StatCard({ title, value, hint, tone = 'brand' }) {
     const toneClass =
-      tone === 'emerald'
-        ? 'border-[rgba(20,184,166,0.35)] bg-[rgba(20,184,166,0.10)]'
-        : tone === 'rose'
-          ? 'border-rose-500/30 bg-rose-500/10'
-          : tone === 'slate'
-            ? 'border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/[0.04]'
-            : 'border-[rgba(212,175,55,0.35)] bg-[rgba(212,175,55,0.12)]'
+      tone === 'slate'
+        ? 'border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/[0.04]'
+        : 'border-brand/25 bg-brand/10'
 
     return (
       <div className={'p-5 border rounded-3xl shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none ' + toneClass}>
@@ -130,15 +126,15 @@ export default function StudentStatsPage() {
       <div className="flex justify-center items-center">
         <div className="flex flex-col items-center">
           <div className="inline-flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-            <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+            <span className="bg-brand rounded-full w-1.5 h-1.5" />
             {isRtl ? 'إحصائيات الطالب' : 'Student analytics'}
           </div>
           <div className="mt-3 text-center">
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
-              <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">{isRtl ? 'إحصائياتي' : 'My Stats'}</span>
+              <span className="font-perfect text-slate-900 dark:text-white">{isRtl ? 'إحصائياتي' : 'My Stats'}</span>
             </h1>
             <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#E0B300" strokeWidth="6" strokeLinecap="round" />
+              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">
@@ -147,7 +143,7 @@ export default function StudentStatsPage() {
               : `Grade: ${translateGradeYear(profile.gradeYear)} | Section: ${translateSection(profile.section)}`}
           </p>
           {d.usedFallback && (
-            <p className="mt-1 text-amber-600 dark:text-amber-400 text-xs text-center">
+            <p className="mt-1 text-brand text-xs text-center">
               {isRtl
                 ? 'السنة الدراسية غير مضبوطة في الكورسات — يتم عرض جميع الكورسات المسجل بها.'
                 : 'Course grade year not set — showing all enrolled courses.'}
@@ -164,7 +160,7 @@ export default function StudentStatsPage() {
           hint={isRtl
             ? `إجمالي مشترك: ${Number(courses.enrolledTotal || 0)}`
             : `Total enrolled: ${Number(courses.enrolledTotal || 0)}`}
-          tone="gold"
+          tone="brand"
         />
         <StatCard
           title={isRtl ? 'ساعات المشاهدة' : 'Watched hours'}
@@ -172,7 +168,7 @@ export default function StudentStatsPage() {
           hint={isRtl
             ? (courses.totalVideoHours > 0 ? `من ${formatNum(courses.totalVideoHours)} ساعة` : 'ساعة')
             : (courses.totalVideoHours > 0 ? `of ${formatNum(courses.totalVideoHours)}h total` : 'hours')}
-          tone="emerald"
+          tone="brand"
         />
         <StatCard
           title={isRtl ? 'المدرسين' : 'Teachers'}
@@ -200,7 +196,7 @@ export default function StudentStatsPage() {
         <StatCard
           title={isRtl ? 'أعلى درجة' : 'Best score'}
           value={`${formatNum(assessments.bestPercent)}%`}
-          tone="gold"
+          tone="brand"
         />
         <StatCard
           title={isRtl ? 'آخر درجة' : 'Last score'}
@@ -215,7 +211,7 @@ export default function StudentStatsPage() {
 
       {/* Courses list */}
       <div className="bg-white/70 dark:bg-white/[0.04] p-5 border border-black/10 dark:border-white/10 rounded-3xl">
-        <div className="flex justify-between items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap justify-between items-center gap-2">
           <div className="font-extrabold text-slate-900 dark:text-white text-lg">
             {isRtl ? 'كورساتي' : 'My courses'}
           </div>
@@ -238,7 +234,7 @@ export default function StudentStatsPage() {
                 <div className="mt-1 text-slate-600 dark:text-slate-300 text-sm truncate">
                   {isRtl ? 'المدرس:' : 'Teacher:'} {c.teacherName || '-'}
                 </div>
-                <div className="mt-2 flex items-center justify-between gap-2">
+                <div className="flex justify-between items-center gap-2 mt-2">
                   <span className="text-slate-500 dark:text-slate-400 text-sm">
                     {isRtl ? 'مشاهدة:' : 'Watched:'} {formatNum(c.watchedHours)} {isRtl ? 'س' : 'h'}
                   </span>
@@ -250,11 +246,11 @@ export default function StudentStatsPage() {
                 </div>
                 <div className="bg-black/5 dark:bg-white/10 mt-2 rounded-full h-2 overflow-hidden">
                   <div
-                    className="bg-[rgb(20,184,166)] h-full transition-all duration-500"
+                    className="bg-brand h-full transition-all duration-500"
                     style={{ width: `${Math.min(100, Math.max(0, Number(c.completionPercent || 0)))}%` }}
                   />
                 </div>
-                <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                <div className="mt-2 text-slate-500 dark:text-slate-400 text-xs">
                   {c.isFree ? (isRtl ? 'مجاني' : 'Free') : (isRtl ? 'مدفوع' : 'Paid')}
                 </div>
               </div>
@@ -292,17 +288,17 @@ export default function StudentStatsPage() {
                     const pctCls = pct >= 75
                       ? 'text-emerald-600 dark:text-emerald-400'
                       : pct >= 50
-                        ? 'text-amber-600 dark:text-amber-400'
+                        ? 'text-brand'
                         : 'text-rose-600 dark:text-rose-400'
                     return (
                       <TR key={r.attemptId}>
                         <TD className="font-semibold text-slate-900 dark:text-slate-100">{r.assessmentTitle || '-'}</TD>
                         <TD className="text-slate-600 dark:text-slate-300">{r.courseTitle || '-'}</TD>
-                        <TD className="text-center text-slate-700 dark:text-slate-200 font-medium">
+                        <TD className="font-medium text-slate-700 dark:text-slate-200 text-center">
                           {r.score}/{r.maxScore}
                         </TD>
                         <TD className={`text-center font-bold ${pctCls}`}>{formatNum(r.percent)}%</TD>
-                        <TD className="text-center text-slate-500 dark:text-slate-400 text-sm">
+                        <TD className="text-slate-500 dark:text-slate-400 text-sm text-center">
                           {fmtDate(r.submittedAt || r.createdAt)}
                         </TD>
                       </TR>
@@ -319,13 +315,13 @@ export default function StudentStatsPage() {
                 const pctCls = pct >= 75
                   ? 'text-emerald-600 dark:text-emerald-400'
                   : pct >= 50
-                    ? 'text-amber-600 dark:text-amber-400'
+                    ? 'text-brand'
                     : 'text-rose-600 dark:text-rose-400'
                 return (
                   <div key={r.attemptId} className="bg-white/60 dark:bg-white/[0.03] p-4 border border-black/10 dark:border-white/10 rounded-2xl">
                     <div className="font-extrabold text-slate-900 dark:text-white">{r.assessmentTitle || '-'}</div>
                     <div className="mt-1 text-slate-600 dark:text-slate-300 text-sm">{r.courseTitle || '-'}</div>
-                    <div className="flex items-center justify-between mt-2">
+                    <div className="flex justify-between items-center mt-2">
                       <span className="text-slate-600 dark:text-slate-300 text-sm">{r.score}/{r.maxScore}</span>
                       <span className={`font-bold text-xl ${pctCls}`}>{formatNum(r.percent)}%</span>
                     </div>

@@ -22,6 +22,19 @@ function normalizePermissions(raw) {
     .filter(Boolean)
 }
 
+function translateJobTitle(title, isRtl) {
+  if (!isRtl) return title;
+  const mapping = {
+    'teaching_assistant': 'مساعد معلم',
+    'it_specialist': 'أخصائي تكنولوجيا معلومات',
+    'teacher': 'معلم',
+    'coordinator': 'منسق',
+    'admin': 'مدير',
+    'team': 'عضو فريق'
+  };
+  return mapping[title] || title;
+}
+
 export default function AdminJoinTeachersApplicationsPage() {
   const { notify } = useToast()
   const { t, isRtl } = useLanguage()
@@ -139,7 +152,7 @@ export default function AdminJoinTeachersApplicationsPage() {
           </h1>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
         </div>
@@ -162,7 +175,7 @@ export default function AdminJoinTeachersApplicationsPage() {
         <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
           <div className="flex flex-col justify-center items-center gap-3 text-center">
             <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
-            <div className="font-semibold text-base" style={{ color: '#F74343' }}>
+            <div className="font-semibold text-rose-600 dark:text-rose-400 text-base">
               {t('joinTeachersApplicationsPage.empty')}
             </div>
           </div>
@@ -202,7 +215,7 @@ export default function AdminJoinTeachersApplicationsPage() {
                       <div className="text-slate-600 dark:text-slate-300 text-xs">{r?.phone || '-'}</div>
                     </TD>
                     <TD>
-                      <div>{r?.jobTitle || '-'}</div>
+                      <div>{translateJobTitle(r?.jobTitle, isRtl)}</div>
                       <div className="text-slate-600 dark:text-slate-300 text-xs">{t('joinTeachersApplicationsPage.subject')}: {r?.subject || '-'}</div>
                       <div className="text-slate-600 dark:text-slate-300 text-xs">{t('joinTeachersApplicationsPage.expectedSalary')}: {r?.expectedSalary || '-'}</div>
                     </TD>
@@ -214,39 +227,47 @@ export default function AdminJoinTeachersApplicationsPage() {
                           placeholder={t('joinTeachersApplicationsPage.teamIdPlaceholder')}
                           className="h-9"
                         />
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={() => setAutoAssign({ open: true, applicationId: id, defaultName: fullName || '', defaultEmail: r?.email || '' })}
-                        >
-                          {t('joinTeachersApplicationsPage.assignTeam')}
-                        </Button>
+                        {r?.assignedTeamId ? (
+                          <div className="bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1.5 rounded-lg font-bold text-emerald-700 dark:text-emerald-400 text-sm shrink-0">
+                            {t('joinTeachersApplicationsPage.assigned')}
+                          </div>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => setAutoAssign({ open: true, applicationId: id, defaultName: fullName || '', defaultEmail: r?.email || '' })}
+                          >
+                            {t('joinTeachersApplicationsPage.assignTeam')}
+                          </Button>
+                        )}
                       </div>
                     </TD>
                     <TD>{r?.createdAt ? new Date(r.createdAt).toLocaleString() : '-'}</TD>
                     <TD>
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-2">
                         {r?.cvUrl ? (
-                          <button
-                            type="button"
-                            className="text-brand text-sm text-left underline underline-offset-4"
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="flex justify-center items-center gap-2 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:hover:bg-emerald-900/30 px-3 border-emerald-200 dark:border-emerald-800 h-8 text-emerald-700 dark:text-emerald-400"
                             onClick={() => openFile(r.cvUrl)}
                           >
-                            {t('joinTeachersApplicationsPage.cv')}
-                          </button>
+                            <span className="font-bold text-[12px]">{t('joinTeachersApplicationsPage.cv')}</span>
+                          </Button>
                         ) : (
-                          <div className="text-slate-500 dark:text-slate-400 text-sm">{t('joinTeachersApplicationsPage.noCv')}</div>
+                          <div className="text-slate-500 dark:text-slate-400 text-xs text-center">{t('joinTeachersApplicationsPage.noCv')}</div>
                         )}
                         {r?.photoUrl ? (
-                          <button
-                            type="button"
-                            className="text-brand text-sm text-left underline underline-offset-4"
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="flex justify-center items-center gap-2 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 px-3 border-blue-200 dark:border-blue-800 h-8 text-blue-700 dark:text-blue-400"
                             onClick={() => openFile(r.photoUrl)}
                           >
-                            {t('joinTeachersApplicationsPage.photo')}
-                          </button>
+                            <span className="font-bold text-[12px]">{t('joinTeachersApplicationsPage.photo')}</span>
+                          </Button>
                         ) : (
-                          <div className="text-slate-500 dark:text-slate-400 text-sm">{t('joinTeachersApplicationsPage.noPhoto')}</div>
+                          <div className="text-slate-500 dark:text-slate-400 text-xs text-center">{t('joinTeachersApplicationsPage.noPhoto')}</div>
                         )}
                       </div>
                     </TD>

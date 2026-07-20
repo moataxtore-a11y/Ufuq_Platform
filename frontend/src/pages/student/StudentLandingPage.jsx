@@ -147,11 +147,11 @@ export default function StudentLandingPage() {
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
               {isRtl ? (
                 <>
-                  <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">كورساتك</span>
+                  <span className="font-perfect text-slate-900 dark:text-white">كورساتك</span>
                 </>
               ) : (
                 <>
-                  <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">Your Courses</span>
+                  <span className="font-perfect text-slate-900 dark:text-white">Your Courses</span>
                 </>
               )}
             </h1>
@@ -164,14 +164,14 @@ export default function StudentLandingPage() {
             >
               <path
                 d="M10 20 C 130 6, 390 6, 510 20"
-                stroke="#E0B300"
+                stroke="#069484"
                 strokeWidth="6"
                 strokeLinecap="round"
               />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">
-            {isRtl ? 'هتلاقي كل كورساتك هنا و كل كورسات مدرسينك و كل المدرسين المتاحين على المنصة💛' : 'You will find all your courses here, all your teachers courses, and all the teachers available on the platform.💛'}
+            {isRtl ? 'هتلاقي كل كورساتك هنا و كل كورسات مدرسينك و كل المدرسين المتاحين على المنصة🌿' : 'You will find all your courses here, all your teachers courses, and all the teachers available on the platform.🌿'}
           </p>
         </div>
       </div>
@@ -231,7 +231,7 @@ export default function StudentLandingPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-7">
@@ -322,7 +322,7 @@ export default function StudentLandingPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -368,8 +368,8 @@ export default function StudentLandingPage() {
                       />
                     ) : (
                       <div className="relative flex justify-center items-center w-full h-full">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.26),transparent_55%)]" />
-                        <img src={defaultProfileAvatar} alt={t?.name || 'Teacher'} className="relative z-10 w-full h-full object-cover opacity-80" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
+                        <img src={defaultProfileAvatar} alt={t?.name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-cover" />
                       </div>
                     )}
                   </div>

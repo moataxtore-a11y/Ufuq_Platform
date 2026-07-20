@@ -56,11 +56,11 @@ export default function StudentRedeemCodePage() {
         <div className="relative bg-white dark:bg-neutral-900 shadow-[0_18px_60px_rgba(0,0,0,0.35)] p-5 border border-black/10 dark:border-white/10 rounded-3xl w-full max-w-sm">
           <div className="flex flex-col items-center text-center">
             <div className="relative">
-              <div className="flex justify-center items-center bg-[rgba(20,184,166,0.16)] border border-[rgba(20,184,166,0.38)] rounded-full w-14 h-14">
-                <KeyRound className="text-[rgb(20,184,166)]" size={24} strokeWidth={2.6} />
+              <div className="flex justify-center items-center bg-brand/15 border border-brand/30 rounded-full w-14 h-14">
+                <KeyRound className="text-brand" size={24} strokeWidth={2.6} />
               </div>
               <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-                <div className="bg-[rgb(234,179,8)] shadow rounded-full w-[3px] h-16 rotate-45" />
+                <div className="bg-brand shadow rounded-full w-[3px] h-16 rotate-45" />
               </div>
             </div>
             <div className="mt-3 font-extrabold text-slate-900 dark:text-slate-100 text-base">
@@ -72,7 +72,7 @@ export default function StudentRedeemCodePage() {
           </div>
 
           <div className={'mt-5 flex ' + (isRtl ? 'justify-start' : 'justify-end')}>
-            <Button type="button" onClick={() => setUsedPopupOpen(false)} className="bg-[#14B8A6] hover:bg-[#14B8A6]/90 px-6 rounded-full h-11 text-white">
+            <Button type="button" onClick={() => setUsedPopupOpen(false)} className="bg-brand hover:bg-brand-600 px-6 rounded-full h-11 text-white">
               {isRtl ? 'تمام' : 'OK'}
             </Button>
           </div>
@@ -116,10 +116,10 @@ export default function StudentRedeemCodePage() {
         <div className={(isRtl ? 'text-right' : 'text-left') + ' flex flex-col items-center'}>
           <div className="mt-3 text-center">
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
-              <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">{isRtl ? 'استرداد كود' : 'Redeem code'}</span>
+              <span className="font-perfect text-slate-900 dark:text-white">{isRtl ? 'استرداد كود' : 'Redeem code'}</span>
             </h1>
             <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#E0B300" strokeWidth="6" strokeLinecap="round" />
+              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">

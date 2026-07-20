@@ -9,11 +9,11 @@ export function Modal({ open, onOpenChange, title, description, children, conten
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="z-50 fixed inset-0 bg-slate-900/55 backdrop-blur-[1px] animate-fade-in" />
+        <Dialog.Overlay className="z-50 fixed inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" />
         <Dialog.Content
           aria-describedby={describedBy}
           className={cn(
-            'top-1/2 left-1/2 z-[60] fixed flex flex-col bg-white dark:bg-neutral-950 shadow-2xl border border-slate-300/70 dark:border-white/15 rounded-2xl w-[95vw] max-w-2xl max-h-[90vh] overflow-hidden -translate-x-1/2 -translate-y-1/2 animate-scale-in',
+            'top-1/2 left-1/2 z-[60] fixed flex flex-col bg-white/95 dark:bg-[#0a0a0a]/90 backdrop-blur-glass shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-slate-200/50 dark:border-white/10 rounded-2xl w-[95vw] max-w-2xl max-h-[90vh] overflow-hidden -translate-x-1/2 -translate-y-1/2 animate-scale-in',
             contentClassName
           )}
         >

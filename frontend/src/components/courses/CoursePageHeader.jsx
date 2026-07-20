@@ -57,13 +57,13 @@ export default function CoursePageHeader({
   const updatedLabel = formatDay(updatedAt)
 
   return (
-    <div dir={dir} className="relative bg-white/80 dark:bg-[#0f0f10] border border-black/5 dark:border-white/10 rounded-[20px] w-full min-h-[260px] sm:min-h-[300px] overflow-hidden">
+    <div dir={dir} className="relative bg-white/80 dark:bg-black/30 shadow-glass-md backdrop-blur-glass border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl w-full min-h-[260px] sm:min-h-[300px] overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(164, 168, 167, 0.2),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(244,206,125,0.18),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(6,148,132,0.12),transparent_55%)]" />
 
       <div className="relative px-3 sm:px-4 lg:px-6 py-5 sm:py-6">
         <div className={'grid gap-4 sm:gap-6 items-start ' + (isRtl ? 'text-right' : 'text-left') + ' lg:grid-cols-[460px_1fr]'}>
-          <div className="bg-[rgb(247,244,236)] dark:bg-[#171717] border border-black/5 dark:border-white/10 rounded-[18px] overflow-hidden">
+          <div className="bg-white/60 dark:bg-white/5 shadow-glass-sm backdrop-blur-sm border border-slate-200/50 dark:border-white/10 rounded-[18px] overflow-hidden">
             <div className="relative">
               <div className="aspect-[16/10]">
                 {thumbnailUrl ? (

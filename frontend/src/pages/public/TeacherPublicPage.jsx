@@ -122,8 +122,8 @@ export default function TeacherPublicPage() {
                   <img src={teacherAvatar} alt={teacherName} className="w-full h-full object-cover" />
                 ) : (
                   <>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.26),transparent_55%)]" />
-                    <img src={defaultProfileAvatar} alt={teacherName} className="relative z-10 w-full h-full object-cover opacity-80" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
+                    <img src={defaultProfileAvatar} alt={teacherName} className="z-10 relative opacity-80 w-full h-full object-cover" />
                   </>
                 )}
               </div>
@@ -135,7 +135,7 @@ export default function TeacherPublicPage() {
 
             <div className="flex justify-center mt-2">
               <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -194,7 +194,7 @@ export default function TeacherPublicPage() {
                 <div className={"font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white " + (isRtl ? 'text-right' : 'text-left')}>
                   {isRtl ? 'اشتراك شهري للمدرس' : 'Monthly subscription courses'}
                   <div className={"mt-2 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
-                    <div className="bg-amber-300/60 dark:bg-amber-200/60 w-28 h-px" />
+                    <div className="bg-brand/40 dark:bg-brand/40 w-28 h-px" />
                   </div>
                 </div>
 
@@ -238,7 +238,7 @@ export default function TeacherPublicPage() {
                     </>
                   )}
                   <div className={"mt-2 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
-                    <div className="bg-amber-300/80 dark:bg-amber-200/80 w-28 h-px" />
+                    <div className="bg-brand/50 dark:bg-brand/50 w-28 h-px" />
                   </div>
                 </div>
 

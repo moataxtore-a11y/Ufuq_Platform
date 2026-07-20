@@ -8,12 +8,11 @@ import { Modal } from '../../components/ui/Modal.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import Select from '../../components/ui/Select.jsx'
 import { uploadFile } from '../../utils/upload.js'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
 export default function StudentAssignmentsPage() {
   const { notify } = useToast()
-
-  const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-  const isRtl = lang === 'ar'
+  const { isRtl } = useLanguage()
 
   const [courses, setCourses] = useState([])
   const [courseId, setCourseId] = useState('')
@@ -113,7 +112,7 @@ export default function StudentAssignmentsPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -195,7 +194,7 @@ export default function StudentAssignmentsPage() {
                         <button
                           type="button"
                           onClick={() => openSubmissionUrl(s.contentUrl, s?.assignment?.course || courseId)}
-                          className="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400 text-sm hover:underline"
+                          className="inline-flex items-center gap-1 font-medium text-brand hover:underline"
                         >
                           {/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|png|jpg|jpeg|gif|webp|mp4|mp3)(\?|$)/i.test(s.contentUrl)
                             ? (isRtl ? '📎 عرض الملف' : '📎 View file')
@@ -337,7 +336,7 @@ function SubmitModal({ open, onOpenChange, assignment, onSubmitted, isRtl }) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex justify-center items-center gap-2 px-4 py-6 border-2 border-black/10 hover:border-amber-400 dark:border-white/15 dark:hover:border-amber-400 border-dashed rounded-xl text-slate-500 hover:text-amber-600 dark:hover:text-amber-400 dark:text-slate-400 text-sm transition-colors cursor-pointer"
+                className="flex justify-center items-center gap-2 px-4 py-6 border-2 border-black/10 hover:border-brand dark:border-white/15 dark:hover:border-brand border-dashed rounded-xl text-slate-500 hover:text-brand dark:text-slate-400 text-sm transition-colors cursor-pointer"
               >
                 {file ? (
                   <span className="font-medium text-slate-800 dark:text-slate-200">📄 {file.name}</span>
@@ -358,7 +357,7 @@ function SubmitModal({ open, onOpenChange, assignment, onSubmitted, isRtl }) {
                   </div>
                   <div className="bg-slate-100 dark:bg-white/10 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="bg-amber-400 rounded-full h-full transition-all duration-300"
+                      className="bg-brand rounded-full h-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
                     />
                   </div>

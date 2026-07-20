@@ -6,14 +6,13 @@ import Spinner from '../../components/ui/Spinner.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
 import Textarea from '../../components/ui/Textarea.jsx'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
 export default function StudentAssessmentAttemptPage() {
   const { assessmentId } = useParams()
   const { notify } = useToast()
   const navigate = useNavigate()
-
-  const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-  const isRtl = lang === 'ar'
+  const { isRtl } = useLanguage()
 
   const [loading, setLoading] = useState(true)
   const [attemptId, setAttemptId] = useState('')
@@ -40,7 +39,7 @@ export default function StudentAssessmentAttemptPage() {
         setStartedAt(new Date(res.data.startedAt))
         setDurationMinutes(res.data.durationMinutes)
       } catch (e) {
-        notify({ title: 'فشل بدء الاختبار', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
+        notify({ title: isRtl ? 'فشل بدء الاختبار' : 'Failed to start assessment', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
         navigate('/student/assessments', { replace: true })
       } finally {
         if (mounted) setLoading(false)
@@ -131,10 +130,10 @@ export default function StudentAssessmentAttemptPage() {
       setSubmitting(true)
       const answers = Object.values(answerByQ)
       const res = await api.post(`/assessments/attempts/${attemptId}/submit`, { answers })
-      notify({ title: 'تم الإرسال', description: res.data.status === 'graded' ? 'تم التصحيح تلقائيًا' : 'بانتظار التصحيح اليدوي' })
+      notify({ title: isRtl ? 'تم الإرسال' : 'Submitted', description: res.data.status === 'graded' ? (isRtl ? 'تم التصحيح تلقائيًا' : 'Auto-graded') : (isRtl ? 'بانتظار التصحيح اليدوي' : 'Pending manual grading') })
       navigate(`/student/assessments/attempts/${attemptId}/result`)
     } catch (e) {
-      notify({ title: 'فشل الإرسال', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
+      notify({ title: isRtl ? 'فشل الإرسال' : 'Submit failed', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
     } finally {
       setSubmitting(false)
     }
@@ -144,7 +143,7 @@ export default function StudentAssessmentAttemptPage() {
     return (
       <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200" dir={isRtl ? 'rtl' : 'ltr'}>
         <Spinner />
-        جاري التحميل...
+        {isRtl ? 'جاري التحميل...' : 'Loading...'}
       </div>
     )
   }
@@ -155,7 +154,7 @@ export default function StudentAssessmentAttemptPage() {
         <div className={'flex flex-col md:flex-row md:items-start md:justify-between gap-3 ' + (isRtl ? 'text-right' : 'text-left')}>
           <div className="min-w-0">
             <div className="font-extrabold text-slate-900 dark:text-slate-100 text-xl sm:text-2xl break-words">
-              {assessment?.title || 'اختبار'}
+              {assessment?.title || (isRtl ? 'اختبار' : 'Assessment')}
             </div>
             <div className="mt-1 text-slate-600 dark:text-slate-300 text-sm">
               {isRtl ? 'أجب عن جميع الأسئلة ثم اضغط إرسال.' : 'Answer all questions then submit.'}

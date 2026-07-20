@@ -1,9 +1,9 @@
 const crypto = require('crypto')
 const path = require('path')
 
-const { uploadImageBuffer } = require('./cloudinaryService')
+const { uploadImageBuffer, uploadRawBuffer } = require('./cloudinaryService')
 const { uploadPdfBuffer } = require('./supabaseService')
-const { uploadVideoBuffer } = require('./bunnyStreamService')
+const { uploadVideoBuffer } = require('./cloudinaryVideoService')
 
 function safeExt(originalname) {
   const ext = path.extname(originalname || '')
@@ -17,7 +17,7 @@ function makeKey(originalname) {
   return `${Date.now()}-${crypto.randomBytes(8).toString('hex')}${ext}`
 }
 
-async function uploadAny({ file }) {
+async function uploadAny({ file, courseId, lessonId }) {
   const mimetype = String(file?.mimetype || '')
   const originalname = file?.originalname || 'file'
   const filename = makeKey(originalname)
@@ -37,8 +37,19 @@ async function uploadAny({ file }) {
   }
 
   if (mimetype.startsWith('video/')) {
-    const up = await uploadVideoBuffer({ buffer: file.buffer, title: originalname })
-    return { url: up.embedUrl, filename: up.guid }
+    const baseKey = filename.replace(/\.[^.]+$/, '') // strip extension for public_id
+    const result = await uploadVideoBuffer({
+      buffer: file.buffer,
+      filename: baseKey,
+      courseId: courseId || '',
+      lessonId: lessonId || ''
+    })
+    return {
+      url: result?.secure_url || result?.url || '',
+      publicId: result?.public_id || '',
+      durationSec: result?.duration ? Math.round(result.duration) : null,
+      filename: result?.public_id || baseKey
+    }
   }
 
   const err = new Error('Unsupported file type')

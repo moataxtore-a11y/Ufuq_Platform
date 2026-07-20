@@ -1,14 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
     color-scheme: light;
     --bp-mobile: 480px;
     --bp-tablet: 1024px;
     --container-max: 72rem;
     --container-pad: 1rem;
-    --font-perfect-font: Cairo, Tajawal;
+    --font-perfect-font: 'Milan Display Black Swashes', Cairo, Tajawal;
+}
+
+@font-face {
+    font-family: 'Milan Display Black Swashes';
+    src: url('./assets/Milan Display Black Swashes.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 html,
@@ -26,20 +33,27 @@ body {
     overflow-x: hidden;
 }
 
+::selection {
+    background: rgba(6, 148, 132, 0.22);
+}
+
+html.dark ::selection {
+    background: rgba(6, 148, 132, 0.25);
+}
+
 @supports (scrollbar-color: red blue) {
     html {
         scrollbar-width: thin;
-        scrollbar-color: rgba(15, 23, 42, 0.35) transparent;
+        scrollbar-color: rgba(6, 148, 132, 0.4) transparent;
     }
-
     html.dark {
-        scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+        scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
     }
 }
 
 *::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
 }
 
 *::-webkit-scrollbar-track {
@@ -47,22 +61,22 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: rgba(15, 23, 42, 0.28);
+    background: rgba(6, 148, 132, 0.3);
     border-radius: 999px;
-    border: 2px solid transparent;
+    border: none;
     background-clip: padding-box;
 }
 
 html.dark *::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(15, 23, 42, 0.42);
+    background: rgba(6, 148, 132, 0.55);
 }
 
 html.dark *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 img,
@@ -84,13 +98,13 @@ video {
 }
 
 @media (min-width: 640px) {
-    :root {
+     :root {
         --container-pad: 1.25rem;
     }
 }
 
 @media (min-width: 1024px) {
-    :root {
+     :root {
         --container-pad: 1.5rem;
     }
 }
@@ -102,51 +116,42 @@ video {
         margin-inline: auto;
         padding-inline: var(--container-pad);
     }
-
     .app-section {
         padding-block: 1rem;
     }
-
     @media (min-width: 640px) {
         .app-section {
             padding-block: 1.5rem;
         }
     }
-
     @media (min-width: 1024px) {
         .app-section {
             padding-block: 2rem;
         }
     }
-
     .app-grid {
         display: grid;
         gap: 1rem;
     }
-
     .app-grid-cards {
         display: grid;
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         align-items: stretch;
     }
-
     @media (min-width: 1024px) {
         .app-grid-cards {
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
-
     .app-table-scroll {
         width: 100%;
         overflow-x: auto;
         overscroll-behavior-x: contain;
     }
-
     .no-horizontal-scroll {
         overflow-x: clip;
     }
-
     .app-gradient-155 {
         background-image: linear-gradient(155deg, #FF15D2 0%, #F6106A 50%, #D4003B 100%);
     }
@@ -155,41 +160,34 @@ video {
 @layer base {
     html {
         scroll-behavior: smooth;
-        @apply bg-[#FCF9F4] text-slate-800;
+        @apply bg-[#E0F3E9] text-slate-900;
     }
-
     html.dark {
-        @apply bg-[#121212] text-slate-100;
+        @apply bg-[#0a0a0a] text-slate-100;
     }
-
     body {
         font-family: Cairo, Tajawal, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Noto Sans Arabic', 'Noto Sans', 'Liberation Sans', sans-serif;
         line-height: 1.6;
         text-rendering: geometricPrecision;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        @apply bg-[#FCF9F4] text-slate-800;
+        @apply bg-slate-50 text-slate-800;
     }
-
     html.dark body {
-        @apply bg-[#121212] text-slate-100;
+        @apply bg-[#0a0a0a] text-slate-100;
     }
-
     button,
     input,
     textarea,
     select {
         line-height: 1.6;
     }
-
     html[dir='rtl'] .truncate {
         padding-bottom: 2px;
     }
-
     html[dir='rtl'] body {
         line-height: 1.7;
     }
-
     html[dir='rtl'] button,
     html[dir='rtl'] input,
     html[dir='rtl'] textarea,
@@ -197,15 +195,12 @@ video {
         line-height: 1.7;
         padding-bottom: 2px;
     }
-
     label {
         @apply text-slate-800;
     }
-
     html.dark label {
         @apply text-slate-200;
     }
-
     textarea {
         @apply text-slate-900;
         @apply bg-white;
@@ -213,29 +208,23 @@ video {
         @apply px-4 py-3 rounded-xl w-full min-h-[140px] text-base leading-relaxed;
         @apply outline-none;
     }
-
     textarea:focus {
-        @apply ring-2 ring-amber-300/50 border-amber-300;
+        @apply ring-2 ring-brand/40 border-brand/60;
     }
-
     textarea::placeholder {
         @apply text-slate-400;
     }
-
     html.dark textarea {
         @apply text-slate-100;
         @apply bg-white/[0.06];
         @apply border-white/10;
     }
-
     html.dark textarea:focus {
-        @apply ring-amber-200/30 border-amber-200/60;
+        @apply ring-brand/30 border-brand/60;
     }
-
     html.dark textarea::placeholder {
         @apply text-slate-400;
     }
-
     select {
         -webkit-appearance: none;
         appearance: none;
@@ -247,38 +236,30 @@ video {
         @apply bg-white border border-slate-200 rounded-xl h-10 font-medium text-slate-900 text-sm;
         @apply outline-none transition-all cursor-pointer;
     }
-
     html[dir='rtl'] select {
         background-position: right 12px center;
         padding-left: 12px;
         padding-right: 36px;
     }
-
     select:focus {
-        @apply ring-2 ring-amber-300/50 border-amber-400/60;
+        @apply ring-2 ring-brand/40 border-brand/60;
     }
-
     select:hover:not(:disabled) {
         @apply border-slate-300;
     }
-
     html.dark select {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
         @apply bg-white/[0.06] text-slate-100 border-white/10;
     }
-
     html.dark select option {
         @apply bg-[#1e1e1e] text-slate-100;
     }
-
     html.dark select:focus {
-        @apply ring-amber-300/30 border-amber-300/50;
+        @apply ring-brand/30 border-brand/50;
     }
-
     select:disabled {
         @apply opacity-50 cursor-not-allowed;
     }
-
     .font-perfect {
         font-family: var(--font-perfect-font, Cairo, Tajawal, Inter), Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
         font-weight: 800;
@@ -290,7 +271,6 @@ video {
         line-height: 1.6;
         padding-bottom: 4px;
     }
-
     .arabic-safe {
         line-height: 1.6;
         padding-bottom: 6px;
@@ -298,13 +278,14 @@ video {
     }
 }
 
+
 /* Toast Animations */
+
 @keyframes toastPopUp {
     from {
         transform: scale(0.8);
         opacity: 0;
     }
-
     to {
         transform: scale(1);
         opacity: 1;
@@ -316,7 +297,6 @@ video {
         transform: scale(1);
         opacity: 1;
     }
-
     to {
         transform: scale(0.95);
         opacity: 0;
@@ -327,7 +307,6 @@ video {
     from {
         transform: translateX(var(--radix-toast-swipe-end-x));
     }
-
     to {
         transform: translateX(calc(100% + 16px));
     }
@@ -335,6 +314,23 @@ video {
 
 .toast-animate[data-state='open'] {
     animation: toastPopUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.toast-animate[data-state='closed'] {
+    animation: toastHideToTop 0.2s ease-in forwards;
+}
+
+.toast-animate[data-swipe='move'] {
+    transform: translateX(var(--radix-toast-swipe-move-x));
+}
+
+.toast-animate[data-swipe='cancel'] {
+    transform: translateX(0);
+    transition: transform 200ms ease-out;
+}
+
+.toast-animate[data-swipe='end'] {
+    animation: toastSwipeOut 0.2s ease-out forwards;
 }
 
 .toast-animate[data-state='closed'] {

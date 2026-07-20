@@ -3,6 +3,7 @@ const multer = require('multer')
 const crypto = require('crypto')
 const path = require('path')
 const { uploadImageBuffer, uploadRawBuffer } = require('../services/cloudinaryService')
+const { generateSecureVideoUrl } = require('../services/cloudinaryVideoService')
 
 const { auth, requireRole, requirePasswordChanged } = require('../middleware/auth')
 const { attachCourse, canAccessCourse } = require('../middleware/courseAccess')
@@ -34,7 +35,7 @@ const avatarUpload = multer({
     }
 })
 
-router.post('/avatar', avatarUpload.single('file'), async(req, res) => {
+router.post('/avatar', avatarUpload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'file is required' })
     try {
         const up = await uploadAny({ file: req.file })
@@ -52,7 +53,7 @@ router.post('/avatar', avatarUpload.single('file'), async(req, res) => {
     }
 })
 
-router.post('/presign', requireRole('teacher', 'team'), async(req, res) => {
+router.post('/presign', requireRole('teacher', 'team'), async (req, res) => {
     try {
         const body = req && req.body ? req.body : {}
         const mimetype = String(body.mimetype || '')
@@ -78,7 +79,7 @@ router.post('/presign', requireRole('teacher', 'team'), async(req, res) => {
     }
 })
 
-router.get('/signed', async(req, res) => {
+router.get('/signed', async (req, res) => {
     try {
         if (req.user && req.user.role === 'student') {
             const courseId = req.query && req.query.courseId ? String(req.query.courseId) : ''
@@ -118,7 +119,6 @@ router.get('/signed', async(req, res) => {
             }
         }
 
-        // normalize bucket name to an existing bucket (in case of stale urls/env)
         bucket = await resolveBucketName(bucket)
 
         if (!objectPath) {
@@ -135,16 +135,64 @@ router.get('/signed', async(req, res) => {
     }
 })
 
+/**
+ * GET /api/uploads/video-url
+ * Returns a signed, time-limited Cloudinary URL for secure video playback.
+ * Authentication required. Students must additionally have course access.
+ *
+ * Query params:
+ *   publicId  - Cloudinary public_id of the video (required)
+ *   courseId  - The course the video belongs to (required for students)
+ */
+router.get('/video-url', async (req, res) => {
+    try {
+        const publicId = req.query && req.query.publicId ? String(req.query.publicId) : ''
+        if (!publicId) {
+            return res.status(400).json({ message: 'publicId is required' })
+        }
 
-// Student assignment file upload - allowed for all authenticated users
-const assignmentUpload = multer({
-    storage: memory,
-    limits: {
-        fileSize: 100 * 1024 * 1024 // 100MB
+        if (req.user && req.user.role === 'student') {
+            const courseId = req.query && req.query.courseId ? String(req.query.courseId) : ''
+            if (!courseId) {
+                return res.status(400).json({ message: 'courseId is required for students' })
+            }
+
+            req.params.courseId = courseId
+            let allowed = false
+            await new Promise((resolve, reject) => {
+                attachCourse(req, res, (err) => (err ? reject(err) : resolve()))
+            })
+            await new Promise((resolve, reject) => {
+                canAccessCourse(req, res, (err) => {
+                    if (err) return reject(err)
+                    if (res.headersSent) return resolve()
+                    allowed = true
+                    return resolve()
+                })
+            })
+            if (!allowed) return
+        }
+
+        // URL valid for 2 hours
+        const { url, fallbackUrl, expiresAt } = generateSecureVideoUrl(publicId, 7200)
+
+        return res.status(200).json({ url, fallbackUrl, expiresAt, publicId })
+    } catch (e) {
+        const status = e && e.status ? e.status : 500
+        const message = e && e.message ? e.message : 'Failed to generate video URL'
+        return res.status(status).json({ message })
     }
 })
 
-router.post('/assignment', assignmentUpload.single('file'), async(req, res) => {
+// Student assignment file upload
+const assignmentUpload = multer({
+    storage: memory,
+    limits: {
+        fileSize: 100 * 1024 * 1024
+    }
+})
+
+router.post('/assignment', assignmentUpload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'file is required' })
     try {
         const mimetype = String(req.file.mimetype || '')
@@ -174,9 +222,8 @@ router.post('/assignment', assignmentUpload.single('file'), async(req, res) => {
     }
 })
 
-
-// Student presign for images/PDFs (assignment submissions)
-router.post('/presign/assignment', async(req, res) => {
+// Student presign for images/PDFs
+router.post('/presign/assignment', async (req, res) => {
     try {
         const body = req && req.body ? req.body : {}
         const mimetype = String(body.mimetype || '')
@@ -204,13 +251,21 @@ router.post('/presign/assignment', async(req, res) => {
 
 router.use(requireRole('teacher', 'team'))
 
-
-router.post('/', upload.single('file'), async(req, res) => {
+/**
+ * POST /api/uploads
+ * Main upload endpoint for teachers.
+ * Accepts optional courseId and lessonId in body to organize videos in Cloudinary subfolders.
+ */
+router.post('/', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'file is required' })
     try {
-        const up = await uploadAny({ file: req.file })
+        const courseId = req.body && req.body.courseId ? String(req.body.courseId) : ''
+        const lessonId = req.body && req.body.lessonId ? String(req.body.lessonId) : ''
+        const up = await uploadAny({ file: req.file, courseId, lessonId })
         return res.status(201).json({
             url: up.url,
+            publicId: up.publicId || '',
+            durationSec: up.durationSec || null,
             filename: up.filename,
             originalname: req.file.originalname,
             mimetype: req.file.mimetype,

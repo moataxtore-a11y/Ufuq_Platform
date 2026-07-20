@@ -6,13 +6,12 @@ import Spinner from '../../components/ui/Spinner.jsx'
 import Button from '../../components/ui/Button.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import Select from '../../components/ui/Select.jsx'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
 export default function StudentAssessmentsPage() {
   const { notify } = useToast()
   const navigate = useNavigate()
-
-  const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-  const isRtl = lang === 'ar'
+  const { isRtl } = useLanguage()
 
   const [courses, setCourses] = useState([])
   const [courseId, setCourseId] = useState('')
@@ -117,7 +116,7 @@ export default function StudentAssessmentsPage() {
     const cls = ratio < 0.5
       ? 'text-rose-600 dark:text-rose-300'
       : ratio < 0.75
-        ? 'text-[#EAB308]'
+        ? 'text-brand'
         : 'text-emerald-600 dark:text-emerald-300'
 
     return <span className={"font-extrabold tabular-nums " + cls}>{r.score}/{r.maxScore}</span>
@@ -130,10 +129,10 @@ export default function StudentAssessmentsPage() {
           <div className={(isRtl ? 'text-right' : 'text-left') + ' flex flex-col items-center'}>
             <div className="mt-3 text-center">
               <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
-                <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">{isRtl ? 'الاختبارات' : 'Assessments'}</span>
+                <span className="font-perfect text-slate-900 dark:text-white">{isRtl ? 'الاختبارات' : 'Assessments'}</span>
               </h1>
               <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#E0B300" strokeWidth="6" strokeLinecap="round" />
+                <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
               </svg>
             </div>
             <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">

@@ -39,7 +39,7 @@ function createApp() {
     app.use(
         rateLimit({
             windowMs: 15 * 60 * 1000,
-            limit: 300
+            limit: 5000 // Increased from 300 to avoid 429 errors during dev/testing
         })
     )
 

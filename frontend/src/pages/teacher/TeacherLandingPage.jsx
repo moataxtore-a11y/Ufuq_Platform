@@ -77,7 +77,7 @@ export default function TeacherLandingPage() {
           </div>
           <div className="mt-3 text-center">
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
-              <span className="font-perfect text-[rgb(212_175_55/var(--tw-text-opacity,1))]">{isRtl ? 'الرئيسية' : 'Home'}</span>
+              <span className="font-perfect text-slate-900 dark:text-white">{isRtl ? 'الرئيسية' : 'Home'}</span>
             </h1>
             <svg
               className="mx-auto mt-2 w-full max-w-[520px] h-4"
@@ -86,7 +86,7 @@ export default function TeacherLandingPage() {
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#E0B300" strokeWidth="6" strokeLinecap="round" />
+              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -157,7 +157,7 @@ export default function TeacherLandingPage() {
 
           <div className="flex justify-center mt-3">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
 

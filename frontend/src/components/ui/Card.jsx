@@ -4,7 +4,7 @@ export function Card({ className, ...props }) {
   return (
     <div
       className={cn(
-        'bg-white shadow-[0_10px_26px_rgba(15,23,42,0.06)] border border-black/5 rounded-3xl',
+        'bg-white/80 shadow-[0_10px_26px_rgba(15,23,42,0.06)] backdrop-blur-[2px] border border-black/5 rounded-3xl',
         'transition-all duration-200 ease-out',
         'hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)]',
         'dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none',

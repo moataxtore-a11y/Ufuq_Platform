@@ -40,7 +40,7 @@ export default function MotivationalBanner() {
   return (
     <div className="w-full">
       <div className="relative bg-white/70 dark:bg-white/[0.06] shadow-[0_10px_26px_rgba(15,23,42,0.08)] dark:shadow-none backdrop-blur px-3 py-3 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,206,125,0.22),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_60%)]" />
 
         <div className="relative flex sm:flex-row flex-col items-start sm:items-center gap-2 sm:gap-4">
           <button
@@ -70,7 +70,7 @@ export default function MotivationalBanner() {
                   href={msg.ctaUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex justify-center items-center bg-[rgb(244,206,125)] shadow-sm hover:brightness-95 px-4 py-2 rounded-xl font-extrabold text-slate-900 text-xs transition"
+                  className="inline-flex justify-center items-center bg-brand hover:bg-brand-600 shadow-sm px-4 py-2 rounded-xl font-extrabold text-white text-xs transition"
                 >
                   {ctaLabel}
                 </a>

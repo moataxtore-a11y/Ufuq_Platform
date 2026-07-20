@@ -89,7 +89,7 @@ export default function TeacherTeamPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-700 dark:text-slate-200 text-sm">
@@ -280,7 +280,7 @@ function AddTeamMemberModal({ open, onOpenChange, onCreated, isRtl }) {
                 onChange={() => togglePerm('courses')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'الكورسات' : 'Courses'}</span>
             </label>
 
@@ -292,7 +292,7 @@ function AddTeamMemberModal({ open, onOpenChange, onCreated, isRtl }) {
                 onChange={() => togglePerm('students')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'الطلاب' : 'Students'}</span>
             </label>
 
@@ -304,7 +304,7 @@ function AddTeamMemberModal({ open, onOpenChange, onCreated, isRtl }) {
                 onChange={() => togglePerm('grading')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'التصحيح' : 'Grading'}</span>
             </label>
           </div>
@@ -392,7 +392,7 @@ function EditTeamMemberModal({ open, onOpenChange, member, isRtl, onSaved }) {
                 onChange={() => togglePerm('courses')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'الكورسات' : 'Courses'}</span>
             </label>
 
@@ -404,7 +404,7 @@ function EditTeamMemberModal({ open, onOpenChange, member, isRtl, onSaved }) {
                 onChange={() => togglePerm('students')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'الطلاب' : 'Students'}</span>
             </label>
 
@@ -416,7 +416,7 @@ function EditTeamMemberModal({ open, onOpenChange, member, isRtl, onSaved }) {
                 onChange={() => togglePerm('grading')}
                 disabled={loading}
               />
-              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-amber-300 border border-slate-300/70 dark:border-white/20 peer-checked:border-amber-300 rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300/60 w-5 h-5 transition" />
+              <span className="flex justify-center items-center bg-white dark:bg-black/20 peer-checked:bg-brand border border-slate-300/70 dark:border-white/20 peer-checked:border-brand rounded-md peer-focus-visible:ring-2 peer-focus-visible:ring-brand/40 w-5 h-5 transition" />
               <span className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{isRtl ? 'التصحيح' : 'Grading'}</span>
             </label>
           </div>

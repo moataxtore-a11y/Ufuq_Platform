@@ -183,7 +183,7 @@ export default function SearchResultsPage() {
       <div className="relative" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="-top-28 -left-28 absolute bg-brand/20 blur-3xl rounded-full w-80 h-80" />
-          <div className="-right-28 -bottom-28 absolute bg-amber-300/10 blur-3xl rounded-full w-80 h-80" />
+          <div className="-right-28 -bottom-28 absolute bg-brand/10 blur-3xl rounded-full w-80 h-80" />
         </div>
 
         <div className="relative mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 max-w-7xl">
@@ -379,7 +379,7 @@ export default function SearchResultsPage() {
                             key={it.key}
                             type="button"
                             onClick={() => navigate(it.href)}
-                            className="bg-[rgb(247,244,236)] hover:bg-[rgb(244,206,125)] dark:bg-[#202020] dark:hover:bg-white/[0.08] px-4 py-4 border border-black/5 dark:border-white/10 rounded-2xl font-semibold text-slate-900 dark:text-slate-100 transition"
+                            className="bg-brand/10 hover:bg-brand/20 dark:bg-[#202020] dark:hover:bg-white/[0.08] px-4 py-4 border border-brand/20 dark:border-white/10 rounded-2xl font-semibold text-slate-900 dark:text-slate-100 transition"
                           >
                             {isRtl ? it.labelAr : it.labelEn}
                           </button>

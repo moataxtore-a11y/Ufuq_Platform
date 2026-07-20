@@ -11,7 +11,7 @@ export default function StatsSection() {
   ]
 
   return (
-    <section id="stats" className="mt-8 py-2 scroll-mt-24">
+    <section id="stats" className="mt-8 py-2 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
       <div className="bg-[rgb(243,246,244)] dark:bg-[#1d1d1d] rounded-3xl overflow-hidden">
         <div className="px-5 sm:px-6 py-6 sm:py-7">
           <div className="gap-2 grid text-center">

@@ -51,7 +51,7 @@ export function ToastProvider({ children }) {
               if (!open) dismiss(t.id)
             }}
             className={cn(
-              'toast-animate shadow-lg p-4 border rounded-xl',
+              'shadow-lg p-4 border rounded-xl toast-animate',
               'bg-white text-slate-900 border-black/5',
               'dark:bg-[#0f0f10] dark:text-slate-100 dark:border-white/10',
               t.variant === 'destructive' && 'border-red-200 dark:border-red-500/30'
@@ -62,7 +62,7 @@ export function ToastProvider({ children }) {
                 <div
                   className={cn(
                     'mt-0.5 shrink-0',
-                    t.variant === 'destructive' ? 'text-rose-600' : 'text-emerald-500'
+                    t.variant === 'destructive' ? 'text-rose-600' : 'text-brand'
                   )}
                 >
                   <motion.div
@@ -75,7 +75,7 @@ export function ToastProvider({ children }) {
                     ) : t.variant === 'destructive' ? (
                       <XCircle className="w-5 h-5" />
                     ) : (
-                      <CheckCircle2 className="w-5 h-5 stroke-[2.5px]" />
+                      <CheckCircle2 className="stroke-[2.5px] w-5 h-5" />
                     )}
                   </motion.div>
                 </div>

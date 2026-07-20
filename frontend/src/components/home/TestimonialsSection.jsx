@@ -2,7 +2,7 @@ import { useLanguage } from '../../context/LanguageContext.jsx'
 
 function Stars() {
   return (
-    <div className="flex items-center gap-1 text-[rgb(217,159,74)]" aria-label="Rating">
+    <div className="flex items-center gap-1 text-brand" aria-label="Rating">
       <span className="text-sm">★</span>
       <span className="text-sm">★</span>
       <span className="text-sm">★</span>
@@ -15,7 +15,7 @@ function Stars() {
 function Avatar({ name }) {
   const letter = (name || 'U').slice(0, 1).toUpperCase()
   return (
-    <div className="flex justify-center items-center bg-[rgb(244,206,125)] rounded-2xl w-10 h-10 text-slate-900">
+    <div className="flex justify-center items-center bg-brand/15 rounded-2xl w-10 h-10 text-brand">
       <span className="font-semibold text-sm">{letter}</span>
     </div>
   )
@@ -31,7 +31,7 @@ export default function TestimonialsSection() {
   ]
 
   return (
-    <section id="testimonials" className="mt-8 py-2 scroll-mt-24">
+    <section id="testimonials" className="mt-8 py-2 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
       <div className="mb-4">
         <h2 className={"font-semibold text-slate-800 dark:text-slate-100 text-lg " + (isRtl ? 'text-right' : 'text-left')}>
           {t('landing.testimonials.title')}

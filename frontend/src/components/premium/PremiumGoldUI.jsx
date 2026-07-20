@@ -206,13 +206,13 @@ function AppSurface({ lang, children }) {
         'min-h-screen',
         'bg-white text-slate-900',
         'dark:bg-neutral-950 dark:text-white',
-        'selection:bg-amber-200/50 dark:selection:bg-amber-200/20'
+        'selection:bg-brand/30 dark:selection:bg-brand/20'
       )}
     >
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-amber-200/20 blur-3xl dark:bg-amber-200/10" />
-        <div className="absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-amber-100/30 blur-3xl dark:bg-amber-200/10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.08),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.06),transparent_55%)]" />
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="-top-24 -left-24 absolute bg-brand/10 dark:bg-brand/5 blur-3xl rounded-full w-80 h-80" />
+        <div className="-right-24 -bottom-24 absolute bg-brand/10 dark:bg-brand/5 blur-3xl rounded-full w-80 h-80" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.05),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.03),transparent_55%)]" />
       </div>
 
       <div className="relative">{children}</div>
@@ -238,12 +238,12 @@ function SoftCard({ className, children }) {
   )
 }
 
-function GoldButton({ children, variant = 'primary', className }) {
+function BrandButton({ children, variant = 'primary', className }) {
   const base =
-    'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70 dark:focus-visible:ring-amber-200/40'
+    'inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40'
   const styles =
     variant === 'primary'
-      ? 'bg-amber-300 text-neutral-950 hover:bg-amber-200 active:bg-amber-300/90 dark:bg-amber-200 dark:hover:bg-amber-100'
+      ? 'bg-brand text-white hover:bg-brand-600 active:bg-brand-700'
       : 'border border-black/5 bg-white/70 text-slate-900 hover:bg-white dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.06]'
   return <button className={cx(base, styles, className)}>{children}</button>
 }
@@ -265,7 +265,7 @@ function MutedPill({ children, className }) {
 function Breadcrumbs({ lang, items }) {
   const isRtl = lang === 'ar'
   return (
-    <nav className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+    <nav className="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-xs">
       {items.map((it, idx) => (
         <React.Fragment key={it.key}>
           <span className={cx('font-medium', idx === items.length - 1 && 'text-slate-900 dark:text-white')}>{it.label}</span>
@@ -279,8 +279,8 @@ function Breadcrumbs({ lang, items }) {
 function SectionHeader({ title, subtitle, align = 'start' }) {
   return (
     <div className={cx('grid gap-1', align === 'center' ? 'text-center' : '')}>
-      <div className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">{title}</div>
-      {subtitle ? <div className="text-sm text-slate-600 dark:text-slate-300">{subtitle}</div> : null}
+      <div className="font-semibold text-slate-900 dark:text-white text-lg tracking-tight">{title}</div>
+      {subtitle ? <div className="text-slate-600 dark:text-slate-300 text-sm">{subtitle}</div> : null}
     </div>
   )
 }
@@ -295,9 +295,9 @@ function PlaceholderImage({ alt, className }) {
         className
       )}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(251,191,36,0.06),transparent_35%,rgba(251,191,36,0.06))] dark:bg-[linear-gradient(120deg,rgba(251,191,36,0.08),transparent_35%,rgba(251,191,36,0.08))]" />
-      <div className="flex h-full items-center justify-center">
-        <div className="rounded-xl border border-black/5 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300">
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(6,148,132,0.05),transparent_35%,rgba(6,148,132,0.05))] dark:bg-[linear-gradient(120deg,rgba(6,148,132,0.08),transparent_35%,rgba(6,148,132,0.08))]" />
+      <div className="flex justify-center items-center h-full">
+        <div className="bg-white dark:bg-white/[0.04] shadow-sm px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl font-semibold text-slate-600 dark:text-slate-300 text-xs">
           {alt}
         </div>
       </div>
@@ -310,19 +310,19 @@ function CourseCard({ lang, course, ctaLabelKey }) {
   return (
     <SoftCard className="group overflow-hidden">
       <div className={cx('flex gap-4 p-4', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-        <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border border-black/5 bg-slate-50 dark:border-white/10 dark:bg-white/[0.03]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_55%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/10 to-transparent dark:from-black/20" />
-          <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-slate-300">
+        <div className="relative bg-slate-50 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 rounded-xl w-28 h-20 overflow-hidden shrink-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.12),transparent_55%)]" />
+          <div className="bottom-0 absolute inset-x-0 bg-gradient-to-t from-black/10 dark:from-black/20 to-transparent h-8" />
+          <div className="absolute inset-0 flex justify-center items-center font-semibold text-slate-600 dark:text-slate-300 text-xs">
             {t(lang, 'placeholderImageAlt')}
           </div>
         </div>
 
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-start gap-3">
             <div className="min-w-0">
-              <div className="truncate text-sm font-semibold text-slate-900 dark:text-white">{course.title}</div>
-              <div className="mt-1 flex flex-wrap items-center gap-2">
+              <div className="font-semibold text-slate-900 dark:text-white text-sm truncate">{course.title}</div>
+              <div className="flex flex-wrap items-center gap-2 mt-1">
                 <MutedPill>
                   {t(lang, 'courseCategoryLabel')}: {course.category}
                 </MutedPill>
@@ -333,20 +333,20 @@ function CourseCard({ lang, course, ctaLabelKey }) {
             </div>
 
             <div className="shrink-0">
-              <GoldButton className="px-3 py-2" variant="primary">
+              <BrandButton className="px-3 py-2" variant="primary">
                 {t(lang, ctaLabelKey)}
-              </GoldButton>
+              </BrandButton>
             </div>
           </div>
 
-          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
-            <div className="h-full w-1/3 rounded-full bg-amber-300 dark:bg-amber-200" />
+          <div className="bg-slate-100 dark:bg-white/10 mt-3 rounded-full w-full h-1.5 overflow-hidden">
+            <div className="bg-brand dark:bg-brand-400 rounded-full w-1/3 h-full" />
           </div>
         </div>
       </div>
 
-      <div className="h-px bg-slate-200/70 dark:bg-white/10" />
-      <div className="px-4 py-3 text-xs text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextShort')}</div>
+      <div className="bg-slate-200/70 dark:bg-white/10 h-px" />
+      <div className="px-4 py-3 text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'placeholderTextShort')}</div>
     </SoftCard>
   )
 }
@@ -354,14 +354,14 @@ function CourseCard({ lang, course, ctaLabelKey }) {
 function StatCard({ title, value, hint }) {
   return (
     <SoftCard className="p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <div className="text-xs font-semibold text-slate-600 dark:text-slate-300">{title}</div>
-          <div className="text-2xl font-semibold tabular-nums tracking-tight text-slate-900 dark:text-white">{value}</div>
+      <div className="flex justify-between items-start gap-3">
+        <div className="gap-1 grid">
+          <div className="font-semibold text-slate-600 dark:text-slate-300 text-xs">{title}</div>
+          <div className="font-semibold tabular-nums text-slate-900 dark:text-white text-2xl tracking-tight">{value}</div>
         </div>
-        <div className="h-9 w-9 rounded-xl border border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-200/30 dark:bg-amber-200/10 dark:text-amber-200" />
+        <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-xl w-9 h-9 text-brand dark:text-brand-300" />
       </div>
-      {hint ? <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">{hint}</div> : null}
+      {hint ? <div className="mt-2 text-slate-600 dark:text-slate-300 text-xs">{hint}</div> : null}
     </SoftCard>
   )
 }
@@ -370,7 +370,7 @@ function Accordion({ lang, items }) {
   const [openKey, setOpenKey] = useState(items[0]?.key || null)
   const isRtl = lang === 'ar'
   return (
-    <div className="grid gap-2">
+    <div className="gap-2 grid">
       {items.map((it) => {
         const open = openKey === it.key
         return (
@@ -380,7 +380,7 @@ function Accordion({ lang, items }) {
               onClick={() => setOpenKey(open ? null : it.key)}
               className={cx('flex w-full items-center justify-between gap-3 p-4 text-start', 'hover:bg-slate-50 dark:hover:bg-white/[0.04]')}
             >
-              <div className="text-sm font-semibold text-slate-900 dark:text-white">{it.q}</div>
+              <div className="font-semibold text-slate-900 dark:text-white text-sm">{it.q}</div>
               <span
                 className={cx(
                   'inline-flex h-7 w-7 items-center justify-center rounded-lg border border-black/5 bg-white text-slate-700',
@@ -415,13 +415,13 @@ export function StudentLayout({ lang = 'en', children, breadcrumbKeys }) {
 
   return (
     <AppSurface lang={lang}>
-      <header className="relative border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-neutral-950/40">
+      <header className="relative bg-white/70 dark:bg-neutral-950/40 backdrop-blur border-black/5 dark:border-white/10 border-b">
         <Container className="py-5">
           <div className={cx('flex items-center justify-between gap-4', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-            <div className="grid gap-1">
+            <div className="gap-1 grid">
               <div className={cx('flex items-center gap-2', isRtl ? 'justify-end' : 'justify-start')}>
-                <div className="h-9 w-9 rounded-xl bg-amber-300 dark:bg-amber-200" />
-                <div className="text-sm font-semibold tracking-tight">{t(lang, 'brand')}</div>
+                <div className="bg-brand dark:bg-brand-400 rounded-xl w-9 h-9" />
+                <div className="font-semibold text-sm tracking-tight">{t(lang, 'brand')}</div>
                 <MutedPill>{t(lang, 'roleStudent')}</MutedPill>
               </div>
               <Breadcrumbs lang={lang} items={crumbs} />
@@ -431,8 +431,8 @@ export function StudentLayout({ lang = 'en', children, breadcrumbKeys }) {
               <MutedPill>
                 {t(lang, 'languageLabel')}: {lang.toUpperCase()}
               </MutedPill>
-              <GoldButton variant="secondary">{t(lang, 'heroCtaSecondary')}</GoldButton>
-              <GoldButton>{t(lang, 'heroCtaPrimary')}</GoldButton>
+              <BrandButton variant="secondary">{t(lang, 'heroCtaSecondary')}</BrandButton>
+              <BrandButton>{t(lang, 'heroCtaPrimary')}</BrandButton>
             </div>
           </div>
         </Container>
@@ -442,7 +442,7 @@ export function StudentLayout({ lang = 'en', children, breadcrumbKeys }) {
         <Container className="py-8">{children}</Container>
       </main>
 
-      <footer className="relative border-t border-black/5 bg-white/60 py-8 backdrop-blur dark:border-white/10 dark:bg-neutral-950/40">
+      <footer className="relative bg-white/60 dark:bg-neutral-950/40 backdrop-blur py-8 border-black/5 dark:border-white/10 border-t">
         <Container>
           <div className={cx('flex items-center justify-between gap-4 text-sm text-slate-600 dark:text-slate-300', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             <div className="font-semibold text-slate-900 dark:text-white">{t(lang, 'brand')}</div>
@@ -467,13 +467,13 @@ export function InstructorLayout({ lang = 'en', children, breadcrumbKeys }) {
 
   return (
     <AppSurface lang={lang}>
-      <header className="relative border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-neutral-950/40">
+      <header className="relative bg-white/70 dark:bg-neutral-950/40 backdrop-blur border-black/5 dark:border-white/10 border-b">
         <Container className="py-5">
           <div className={cx('flex items-center justify-between gap-4', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-            <div className="grid gap-1">
+            <div className="gap-1 grid">
               <div className={cx('flex items-center gap-2', isRtl ? 'justify-end' : 'justify-start')}>
-                <div className="h-9 w-9 rounded-xl bg-amber-300 dark:bg-amber-200" />
-                <div className="text-sm font-semibold tracking-tight">{t(lang, 'brand')}</div>
+                <div className="bg-brand dark:bg-brand-400 rounded-xl w-9 h-9" />
+                <div className="font-semibold text-sm tracking-tight">{t(lang, 'brand')}</div>
                 <MutedPill>{t(lang, 'roleInstructor')}</MutedPill>
               </div>
               <Breadcrumbs lang={lang} items={crumbs} />
@@ -483,8 +483,8 @@ export function InstructorLayout({ lang = 'en', children, breadcrumbKeys }) {
               <MutedPill>
                 {t(lang, 'languageLabel')}: {lang.toUpperCase()}
               </MutedPill>
-              <GoldButton variant="secondary">{t(lang, 'helpTitle')}</GoldButton>
-              <GoldButton>{t(lang, 'myCoursesTitle')}</GoldButton>
+              <BrandButton variant="secondary">{t(lang, 'helpTitle')}</BrandButton>
+              <BrandButton>{t(lang, 'myCoursesTitle')}</BrandButton>
             </div>
           </div>
         </Container>
@@ -532,16 +532,16 @@ export function InstructorAdminLayout({ lang = 'en', pageTitleKey, breadcrumbKey
         >
           <div className="p-5">
             <div className={cx('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              <div className="h-10 w-10 rounded-2xl bg-amber-300 dark:bg-amber-200" />
+              <div className="bg-brand dark:bg-brand-400 rounded-2xl w-10 h-10" />
               <div className={cx('min-w-0', isRtl ? 'text-right' : 'text-left')}>
-                <div className="truncate text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'brand')}</div>
-                <div className="text-xs text-slate-600 dark:text-slate-300">{t(lang, 'roleInstructorAdmin')}</div>
+                <div className="font-semibold text-slate-900 dark:text-white text-sm truncate">{t(lang, 'brand')}</div>
+                <div className="text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'roleInstructorAdmin')}</div>
               </div>
             </div>
 
-            <div className="mt-5 h-px bg-slate-200/70 dark:bg-white/10" />
+            <div className="bg-slate-200/70 dark:bg-white/10 mt-5 h-px" />
 
-            <nav className="mt-5 grid gap-1">
+            <nav className="gap-1 grid mt-5">
               {sidebarItems.map((it, idx) => {
                 const active = idx === 0
                 return (
@@ -549,18 +549,18 @@ export function InstructorAdminLayout({ lang = 'en', pageTitleKey, breadcrumbKey
                     key={it.key}
                     type="button"
                     className={cx(
-                      'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition',
+                      'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition w-full',
                       isRtl ? 'flex-row-reverse justify-end text-right' : 'justify-start text-left',
                       active
-                        ? 'border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-200/30 dark:bg-amber-200/10 dark:text-amber-200'
+                        ? 'border border-brand/20 bg-brand/10 text-brand dark:border-brand/30 dark:bg-brand/20 dark:text-brand-300'
                         : 'text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/[0.04]'
                     )}
                   >
                     <span
                       className={cx(
-                        'h-9 w-9 rounded-xl border',
+                        'h-9 w-9 rounded-xl border flex-shrink-0',
                         active
-                          ? 'border-amber-200 bg-amber-200/40 dark:border-amber-200/30 dark:bg-amber-200/10'
+                          ? 'border-brand/20 bg-brand/20 dark:border-brand/30 dark:bg-brand/30'
                           : 'border-black/5 bg-white dark:border-white/10 dark:bg-white/[0.04]'
                       )}
                     />
@@ -570,26 +570,26 @@ export function InstructorAdminLayout({ lang = 'en', pageTitleKey, breadcrumbKey
               })}
             </nav>
 
-            <div className="mt-5 h-px bg-slate-200/70 dark:bg-white/10" />
+            <div className="bg-slate-200/70 dark:bg-white/10 mt-5 h-px" />
 
             <SoftCard className="mt-5 p-4">
-              <div className="text-xs font-semibold text-slate-600 dark:text-slate-300">{t(lang, 'helpTitle')}</div>
-              <div className="mt-2 text-xs text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+              <div className="font-semibold text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'helpTitle')}</div>
+              <div className="mt-2 text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'placeholderTextLong')}</div>
               <div className={cx('mt-3 flex', isRtl ? 'justify-end' : 'justify-start')}>
-                <GoldButton className="px-3 py-2" variant="secondary">
+                <BrandButton className="px-3 py-2" variant="secondary">
                   {t(lang, 'helpTitle')}
-                </GoldButton>
+                </BrandButton>
               </div>
             </SoftCard>
           </div>
         </aside>
 
-        <div className="min-w-0 flex-1">
-          <header className="sticky top-0 z-10 border-b border-black/5 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-neutral-950/40">
+        <div className="flex-1 min-w-0">
+          <header className="top-0 z-10 sticky bg-white/70 dark:bg-neutral-950/40 backdrop-blur border-black/5 dark:border-white/10 border-b">
             <Container className="py-4">
               <div className={cx('flex items-center justify-between gap-4', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, pageTitleKey || 'adminHeaderTitle')}</div>
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, pageTitleKey || 'adminHeaderTitle')}</div>
                   <Breadcrumbs lang={lang} items={crumbs} />
                 </div>
 
@@ -645,22 +645,22 @@ export function StudentLandingPageUI({ lang = 'en', data }) {
 
   return (
     <StudentLayout lang={lang} breadcrumbKeys={['placeholderBreadcrumbCurrent']}>
-      <section className="grid gap-6">
+      <section className="gap-6 grid">
         <SoftCard className="overflow-hidden">
           <div className={cx('grid gap-6 p-6 lg:grid-cols-2 lg:items-center', isRtl ? 'lg:[direction:rtl]' : 'lg:[direction:ltr]')}>
             <div className={cx('grid gap-4', isRtl ? 'text-right' : 'text-left')}>
               <div className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-amber-300 dark:bg-amber-200" />
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">{t(lang, 'breadcrumbLearning')}</span>
+                <span className="bg-brand dark:bg-brand-400 rounded-full w-2 h-2" />
+                <span className="font-semibold text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider">{t(lang, 'breadcrumbLearning')}</span>
               </div>
 
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">{t(lang, 'heroTitle')}</h1>
+              <h1 className="font-semibold text-slate-900 dark:text-white text-3xl sm:text-4xl tracking-tight">{t(lang, 'heroTitle')}</h1>
 
-              <p className="max-w-xl text-sm leading-6 text-slate-600 dark:text-slate-300">{t(lang, 'heroSubtitle')}</p>
+              <p className="max-w-xl text-slate-600 dark:text-slate-300 text-sm leading-6">{t(lang, 'heroSubtitle')}</p>
 
               <div className={cx('flex flex-wrap gap-3', isRtl ? 'justify-end' : 'justify-start')}>
-                <GoldButton>{t(lang, 'heroCtaPrimary')}</GoldButton>
-                <GoldButton variant="secondary">{t(lang, 'heroCtaSecondary')}</GoldButton>
+                <BrandButton>{t(lang, 'heroCtaPrimary')}</BrandButton>
+                <BrandButton variant="secondary">{t(lang, 'heroCtaSecondary')}</BrandButton>
               </div>
 
               <div className={cx('flex flex-wrap gap-2 pt-1', isRtl ? 'justify-end' : 'justify-start')}>
@@ -671,21 +671,21 @@ export function StudentLandingPageUI({ lang = 'en', data }) {
             </div>
 
             <div className={cx(isRtl ? 'order-first lg:order-none' : '')}>
-              <PlaceholderImage alt={t(lang, 'heroImageAlt')} className="h-64 w-full lg:h-80" />
+              <PlaceholderImage alt={t(lang, 'heroImageAlt')} className="w-full h-64 lg:h-80" />
             </div>
           </div>
         </SoftCard>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'categoriesTitle')} subtitle={t(lang, 'categoriesSubtitle')} />
           <div className={cx('grid gap-3 sm:grid-cols-2 lg:grid-cols-3', isRtl ? 'text-right' : 'text-left')}>
             {categories.map((c) => (
               <SoftCard key={c.key} className="p-4">
                 <div className={cx('flex items-center gap-3', isRtl ? 'flex-row-reverse justify-end' : 'justify-start')}>
-                  <div className="h-10 w-10 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
+                  <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-10 h-10" />
                   <div className="min-w-0">
-                    <div className="truncate text-sm font-semibold text-slate-900 dark:text-white">{c.label}</div>
-                    <div className="mt-1 text-xs text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextShort')}</div>
+                    <div className="font-semibold text-slate-900 dark:text-white text-sm truncate">{c.label}</div>
+                    <div className="mt-1 text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'placeholderTextShort')}</div>
                   </div>
                 </div>
               </SoftCard>
@@ -693,72 +693,72 @@ export function StudentLandingPageUI({ lang = 'en', data }) {
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'advantagesTitle')} subtitle={t(lang, 'advantagesSubtitle')} />
           <div className={cx('grid gap-4 lg:grid-cols-2', isRtl ? 'lg:[direction:rtl]' : 'lg:[direction:ltr]')}>
-            <div className="grid gap-3">
+            <div className="gap-3 grid">
               {advantages.map((a) => (
                 <SoftCard key={a.key} className="p-4">
                   <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                    <div className="mt-0.5 h-10 w-10 rounded-2xl border border-black/5 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.04]" />
-                    <div className="grid gap-1">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-white">{a.title}</div>
-                      <div className="text-sm text-slate-600 dark:text-slate-300">{a.desc}</div>
+                    <div className="bg-white dark:bg-white/[0.04] shadow-sm mt-0.5 border border-black/5 dark:border-white/10 rounded-2xl w-10 h-10" />
+                    <div className="gap-1 grid">
+                      <div className="font-semibold text-slate-900 dark:text-white text-sm">{a.title}</div>
+                      <div className="text-slate-600 dark:text-slate-300 text-sm">{a.desc}</div>
                     </div>
                   </div>
                 </SoftCard>
               ))}
             </div>
 
-            <PlaceholderImage alt={t(lang, 'advantagesImageAlt')} className="h-64 w-full lg:h-full" />
+            <PlaceholderImage alt={t(lang, 'advantagesImageAlt')} className="w-full h-64 lg:h-full" />
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'coursesTitle')} subtitle={t(lang, 'coursesSubtitle')} />
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="gap-3 grid md:grid-cols-2">
             {courses.map((c, idx) => (
               <CourseCard key={`${c.title}-${idx}`} lang={lang} course={c} ctaLabelKey="courseCtaStart" />
             ))}
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'servicesTitle')} subtitle={t(lang, 'servicesSubtitle')} />
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="gap-3 grid md:grid-cols-3">
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'serviceCvTitle')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'serviceCvDesc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'serviceCvTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'serviceCvDesc')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'serviceMentoringTitle')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'serviceMentoringDesc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'serviceMentoringTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'serviceMentoringDesc')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'serviceCareerTitle')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'serviceCareerDesc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'serviceCareerTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'serviceCareerDesc')}</div>
                 </div>
               </div>
             </SoftCard>
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'faqTitle')} subtitle={t(lang, 'faqSubtitle')} />
           <Accordion
             lang={lang}
@@ -784,86 +784,86 @@ export function InstructorWorkspacePageUI({ lang = 'en', data }) {
 
   return (
     <InstructorLayout lang={lang} breadcrumbKeys={['placeholderBreadcrumbCurrent']}>
-      <section className="grid gap-6">
+      <section className="gap-6 grid">
         <SoftCard className="p-6">
           <div className={cx('flex flex-col gap-4 md:flex-row md:items-center md:justify-between', isRtl ? 'md:flex-row-reverse' : 'md:flex-row')}>
             <div className={cx('grid gap-1', isRtl ? 'text-right' : 'text-left')}>
-              <div className="text-lg font-semibold text-slate-900 dark:text-white">{t(lang, 'instructorHeaderTitle')}</div>
-              <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'instructorHeaderSubtitle')}</div>
+              <div className="font-semibold text-slate-900 dark:text-white text-lg">{t(lang, 'instructorHeaderTitle')}</div>
+              <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'instructorHeaderSubtitle')}</div>
             </div>
             <div className={cx('flex gap-2', isRtl ? 'justify-end md:flex-row-reverse' : 'justify-start')}>
-              <GoldButton variant="secondary">{t(lang, 'toolsTitle')}</GoldButton>
-              <GoldButton>{t(lang, 'myCoursesTitle')}</GoldButton>
+              <BrandButton variant="secondary">{t(lang, 'toolsTitle')}</BrandButton>
+              <BrandButton>{t(lang, 'myCoursesTitle')}</BrandButton>
             </div>
           </div>
         </SoftCard>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'overviewTitle')} subtitle={t(lang, 'placeholderTextShort')} />
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="gap-3 grid md:grid-cols-3">
             <StatCard title={t(lang, 'overviewCourses')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
             <StatCard title={t(lang, 'overviewStudents')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
             <StatCard title={t(lang, 'overviewContent')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'myCoursesTitle')} subtitle={t(lang, 'myCoursesSubtitle')} />
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="gap-3 grid md:grid-cols-2">
             {myCourses.map((c, idx) => (
               <CourseCard key={`${c.title}-${idx}`} lang={lang} course={c} ctaLabelKey="courseCtaManage" />
             ))}
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'toolsTitle')} subtitle={t(lang, 'toolsSubtitle')} />
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="gap-3 grid md:grid-cols-3">
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'tool1Title')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'tool1Desc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'tool1Title')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'tool1Desc')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'tool2Title')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'tool2Desc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'tool2Title')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'tool2Desc')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'tool3Title')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'tool3Desc')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'tool3Title')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'tool3Desc')}</div>
                 </div>
               </div>
             </SoftCard>
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'helpTitle')} subtitle={t(lang, 'helpSubtitle')} />
           <SoftCard className="p-6">
             <div className={cx('grid gap-4 md:grid-cols-2 md:items-center', isRtl ? 'md:[direction:rtl]' : 'md:[direction:ltr]')}>
               <div className={cx('grid gap-2', isRtl ? 'text-right' : 'text-left')}>
-                <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'helpTitle')}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+                <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'helpTitle')}</div>
+                <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'placeholderTextLong')}</div>
                 <div className={cx('flex gap-2 pt-1', isRtl ? 'justify-end' : 'justify-start')}>
-                  <GoldButton>{t(lang, 'helpTitle')}</GoldButton>
-                  <GoldButton variant="secondary">{t(lang, 'placeholderTextShort')}</GoldButton>
+                  <BrandButton>{t(lang, 'helpTitle')}</BrandButton>
+                  <BrandButton variant="secondary">{t(lang, 'placeholderTextShort')}</BrandButton>
                 </div>
               </div>
-              <PlaceholderImage alt={t(lang, 'placeholderImageAlt')} className="h-40 w-full" />
+              <PlaceholderImage alt={t(lang, 'placeholderImageAlt')} className="w-full h-40" />
             </div>
           </SoftCard>
         </section>
@@ -883,30 +883,30 @@ export function InstructorAdminDashboardPageUI({ lang = 'en', data }) {
 
   return (
     <InstructorAdminLayout lang={lang} pageTitleKey="adminHeaderTitle" breadcrumbKeys={['placeholderBreadcrumbCurrent']}>
-      <section className="grid gap-6">
+      <section className="gap-6 grid">
         <SoftCard className="p-6">
           <div className={cx('flex flex-col gap-3 md:flex-row md:items-center md:justify-between', isRtl ? 'md:flex-row-reverse' : 'md:flex-row')}>
             <div className={cx('grid gap-1', isRtl ? 'text-right' : 'text-left')}>
-              <div className="text-lg font-semibold text-slate-900 dark:text-white">{t(lang, 'adminHeaderTitle')}</div>
-              <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'adminHeaderSubtitle')}</div>
+              <div className="font-semibold text-slate-900 dark:text-white text-lg">{t(lang, 'adminHeaderTitle')}</div>
+              <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'adminHeaderSubtitle')}</div>
             </div>
             <div className={cx('flex items-center gap-2', isRtl ? 'justify-end md:flex-row-reverse' : 'justify-start')}>
-              <GoldButton variant="secondary">{t(lang, 'adminToolsTitle')}</GoldButton>
-              <GoldButton>{t(lang, 'adminCourseMgmtTitle')}</GoldButton>
+              <BrandButton variant="secondary">{t(lang, 'adminToolsTitle')}</BrandButton>
+              <BrandButton>{t(lang, 'adminCourseMgmtTitle')}</BrandButton>
             </div>
           </div>
         </SoftCard>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'adminOverviewTitle')} subtitle={t(lang, 'placeholderTextShort')} />
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="gap-3 grid md:grid-cols-3">
             <StatCard title={t(lang, 'overviewCourses')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
             <StatCard title={t(lang, 'overviewStudents')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
             <StatCard title={t(lang, 'overviewContent')} value={t(lang, 'placeholderNumber')} hint={t(lang, 'placeholderTextShort')} />
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'adminCourseMgmtTitle')} subtitle={t(lang, 'adminCourseMgmtSubtitle')} />
           <SoftCard className="overflow-hidden">
             <div className={cx('grid gap-2 p-4', isRtl ? 'text-right' : 'text-left')}>
@@ -917,9 +917,9 @@ export function InstructorAdminDashboardPageUI({ lang = 'en', data }) {
                 <div className="col-span-1">{t(lang, 'ctaManage')}</div>
               </div>
 
-              <div className="h-px bg-slate-200/70 dark:bg-white/10" />
+              <div className="bg-slate-200/70 dark:bg-white/10 h-px" />
 
-              <div className="grid gap-2">
+              <div className="gap-2 grid">
                 {courses.map((c, idx) => (
                   <div
                     key={`${c.title}-${idx}`}
@@ -930,8 +930,8 @@ export function InstructorAdminDashboardPageUI({ lang = 'en', data }) {
                   >
                     <div className={cx('grid gap-3 md:grid-cols-12 md:items-center', isRtl ? 'md:[direction:rtl]' : 'md:[direction:ltr]')}>
                       <div className={cx('md:col-span-6', isRtl ? 'text-right' : 'text-left')}>
-                        <div className="text-sm font-semibold text-slate-900 dark:text-white">{c.title}</div>
-                        <div className="mt-1 text-xs text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextShort')}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white text-sm">{c.title}</div>
+                        <div className="mt-1 text-slate-600 dark:text-slate-300 text-xs">{t(lang, 'placeholderTextShort')}</div>
                       </div>
 
                       <div className={cx('md:col-span-3', isRtl ? 'text-right' : 'text-left')}>
@@ -947,7 +947,7 @@ export function InstructorAdminDashboardPageUI({ lang = 'en', data }) {
                       </div>
 
                       <div className={cx('md:col-span-1', isRtl ? 'justify-end' : 'justify-start', 'flex')}>
-                        <GoldButton className="px-3 py-2">{t(lang, 'ctaManage')}</GoldButton>
+                        <BrandButton className="px-3 py-2">{t(lang, 'ctaManage')}</BrandButton>
                       </div>
                     </div>
                   </div>
@@ -957,54 +957,54 @@ export function InstructorAdminDashboardPageUI({ lang = 'en', data }) {
           </SoftCard>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'adminToolsTitle')} subtitle={t(lang, 'adminToolsSubtitle')} />
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="gap-3 grid md:grid-cols-3">
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'placeholderTextShort')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'adminCourseMgmtTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'adminCourseMgmtSubtitle')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'placeholderTextShort')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'adminToolsTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'adminToolsSubtitle')}</div>
                 </div>
               </div>
             </SoftCard>
 
             <SoftCard className="p-5">
               <div className={cx('flex items-start gap-3', isRtl ? 'flex-row-reverse text-right' : 'text-left')}>
-                <div className="h-11 w-11 rounded-2xl border border-amber-200 bg-amber-50 dark:border-amber-200/30 dark:bg-amber-200/10" />
-                <div className="grid gap-1">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'placeholderTextShort')}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+                <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 rounded-2xl w-11 h-11" />
+                <div className="gap-1 grid">
+                  <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'adminGuidelinesTitle')}</div>
+                  <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'adminGuidelinesSubtitle')}</div>
                 </div>
               </div>
             </SoftCard>
           </div>
         </section>
 
-        <section className="grid gap-4">
+        <section className="gap-4 grid">
           <SectionHeader title={t(lang, 'adminGuidelinesTitle')} subtitle={t(lang, 'adminGuidelinesSubtitle')} />
           <SoftCard className="p-6">
             <div className={cx('grid gap-4 md:grid-cols-2 md:items-center', isRtl ? 'md:[direction:rtl]' : 'md:[direction:ltr]')}>
               <div className={cx('grid gap-2', isRtl ? 'text-right' : 'text-left')}>
-                <div className="text-sm font-semibold text-slate-900 dark:text-white">{t(lang, 'adminGuidelinesTitle')}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">{t(lang, 'placeholderTextLong')}</div>
+                <div className="font-semibold text-slate-900 dark:text-white text-sm">{t(lang, 'adminGuidelinesTitle')}</div>
+                <div className="text-slate-600 dark:text-slate-300 text-sm">{t(lang, 'placeholderTextLong')}</div>
                 <div className={cx('flex gap-2 pt-1', isRtl ? 'justify-end' : 'justify-start')}>
-                  <GoldButton>{t(lang, 'helpTitle')}</GoldButton>
-                  <GoldButton variant="secondary">{t(lang, 'placeholderTextShort')}</GoldButton>
+                  <BrandButton>{t(lang, 'helpTitle')}</BrandButton>
+                  <BrandButton variant="secondary">{t(lang, 'placeholderTextShort')}</BrandButton>
                 </div>
               </div>
-              <PlaceholderImage alt={t(lang, 'placeholderImageAlt')} className="h-40 w-full" />
+              <PlaceholderImage alt={t(lang, 'placeholderImageAlt')} className="w-full h-40" />
             </div>
           </SoftCard>
         </section>

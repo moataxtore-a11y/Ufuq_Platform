@@ -182,34 +182,35 @@ export default function InlineMediaViewer({ media, onClose, isRtl, courseId, les
   return (
     <div ref={ref} className="bg-transparent mx-auto w-full max-w-5xl">
       <div className="relative pt-24 sm:pt-28">
-        <div className="top-3 left-1/2 z-10 absolute w-auto max-w-[92%] sm:max-w-[720px] -translate-x-1/2">
-          <div className="relative">
-            <div className="absolute inset-0 bg-emerald-950/90 rounded-[999px] translate-y-[7px]" />
-            <div className="relative bg-[#19c3b0] shadow-[0_14px_26px_rgba(2,24,20,0.22)] p-[7px] rounded-[999px]">
-              <div
-                dir={isRtl ? 'rtl' : 'ltr'}
-                className={
-                  'inline-flex items-center gap-2 sm:gap-3 rounded-[999px] ' +
-                  'bg-emerald-700 px-4 sm:px-6 py-2.5 sm:py-3.5 ' +
-                  'shadow-[inset_0_0_0_3px_rgba(255,255,255,0.06)]'
-                }
-              >
-                {kindIcon ? (
-                  <div className="flex justify-center items-center bg-emerald-900 shadow-[0_7px_0_rgba(0,0,0,0.12)] border border-[#19c3b0]/50 rounded-full w-11 sm:w-13 h-11 sm:h-13 shrink-0">
-                    <img src={kindIcon} alt="" className="w-5 sm:w-6.5 h-5 sm:h-6.5" draggable={false} />
-                  </div>
-                ) : null}
-
-                <div className={'min-w-0 flex-1 max-w-[78vw] sm:max-w-[560px] ' + (isRtl ? 'text-right' : 'text-left')}>
-                  <div
-                    className="py-[1px] font-extrabold text-[#EAB308] text-[17px] sm:text-[20px] leading-[2.5]"
-                    style={{ textShadow: '0 3px 0 rgba(0,0,0,0.28), 2px 3px 0 rgba(0,0,0,0.22)' }}
-                  >
-                    <span className="block break-words line-clamp-2">{title}</span>
-                  </div>
-                </div>
-              </div>
+        <div className="top-4 left-1/2 z-10 absolute -translate-x-1/2">
+          <div
+            className={cn(
+              'inline-flex relative items-center shadow-[0_12px_24px_rgba(0,0,0,0.3)] rounded-full min-h-[44px] sm:min-h-[52px] transition-all',
+              'bg-[#064e3b]/90 backdrop-blur-sm border border-emerald-500/20',
+              isRtl ? 'pr-14 pl-6' : 'pl-14 pr-6'
+            )}
+          >
+            <div className={'min-w-0 ' + (isRtl ? 'text-right' : 'text-left')}>
+            <div className="font-extrabold text-[15px] text-brand sm:text-[18px] truncate leading-tight">
+              {title}
             </div>
+              {actualKind === 'pdf' && (
+                <div className="font-bold text-[9px] text-emerald-400/70 uppercase tracking-tighter sm:tracking-normal">
+                  PDF Document
+                </div>
+              )}
+            </div>
+
+            <span
+              className={cn(
+                'inline-flex top-1/2 absolute justify-center items-center bg-[#10b981] shadow-lg border-[#064e3b] border-2 rounded-full w-11 sm:w-13 h-11 sm:h-13 -translate-y-1/2',
+                isRtl ? 'right-[-4px]' : 'left-[-4px]'
+              )}
+            >
+              {kindIcon ? (
+                <img src={kindIcon} alt="" className="w-5 sm:w-6.5 h-5 sm:h-6.5" draggable={false} />
+              ) : null}
+            </span>
           </div>
         </div>
 

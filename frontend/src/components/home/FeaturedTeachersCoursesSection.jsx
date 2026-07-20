@@ -17,6 +17,10 @@ export default function FeaturedTeachersCoursesSection() {
   const [mineIds, setMineIds] = useState(new Set())
   const [visibleLimit, setVisibleLimit] = useState(3)
 
+  const userRole = auth?.role || auth?.user?.role
+  const isAdmin = userRole === 'admin'
+  const shouldFetchMine = Boolean(auth?.token) && !isAdmin && ['teacher', 'team', 'student'].includes(userRole)
+
   const titleNode = useMemo(() => {
     return (
       <>
@@ -35,7 +39,7 @@ export default function FeaturedTeachersCoursesSection() {
       try {
         const [res, mineRes] = await Promise.all([
           api.get('/courses?limit=48'),
-          auth?.token ? api.get('/courses/mine').catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
+          shouldFetchMine ? api.get('/courses/mine').catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
         ])
         const items = Array.isArray(res.data) ? res.data : []
         const mine = Array.isArray(mineRes?.data) ? mineRes.data : []
@@ -53,7 +57,7 @@ export default function FeaturedTeachersCoursesSection() {
     return () => {
       alive = false
     }
-  }, [auth?.token, t])
+  }, [auth?.token, isAdmin, t])
 
   const courses = useMemo(() => (Array.isArray(coursesState.items) ? coursesState.items : []), [coursesState.items])
 
@@ -99,7 +103,7 @@ export default function FeaturedTeachersCoursesSection() {
       titleDecoration={
         <div className="flex justify-center">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
       }

@@ -164,7 +164,6 @@ export default function LoginPage() {
           <Button
             type="button"
             className="mt-6 rounded-2xl w-full text-white"
-            style={{ background: 'linear-gradient(110deg, #D4AF37, #ffc400ff)' }}
             onClick={() => setOpenSuspended(false)}
           >
             {isRtl ? 'حسناً' : 'OK'}
@@ -200,31 +199,23 @@ export default function LoginPage() {
       </Modal>
 
       {/* ===== Main Split Layout ===== */}
-      <div className="relative z-10 flex flex-1">
+      <div className="z-10 relative flex flex-1">
 
         {/* Image Side */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-          className="hidden md:flex flex-1 items-center justify-center relative overflow-hidden"
+          className="hidden relative md:flex flex-1 justify-center items-center overflow-hidden"
         >
           {/* Subtle glow behind image */}
           <div
-            className="absolute rounded-full blur-3xl pointer-events-none opacity-40"
-            style={{
-              width: '380px',
-              height: '380px',
-              background: 'radial-gradient(circle, rgba(212,175,55,0.35) 0%, transparent 70%)',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
+            className="top-1/2 left-1/2 absolute bg-[radial-gradient(circle,rgba(6,148,132,0.30)_0%,transparent_70%)] opacity-40 blur-3xl rounded-full w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
           />
           <motion.img
             src={loginImage}
             alt="تسجيل الدخول"
-            className="relative z-10 object-contain drop-shadow-2xl"
+            className="z-10 relative drop-shadow-2xl object-contain"
             style={{ maxHeight: '100vh', maxWidth: '100%' }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
@@ -236,35 +227,34 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 py-14"
+          className="flex flex-col justify-center px-8 md:px-16 py-14 w-full md:w-1/2"
         >
           {/* Title */}
           <div className="mb-8" dir={isRtl ? 'rtl' : 'ltr'}>
-            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+            <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl">
               {isRtl ? (
                 <>
                   تسجيل{' '}
-                  <span style={{ color: '#D4AF37' }}>الدخول</span>{' '}
+                  <span className="text-brand">الدخول</span>{' '}
                   <span className="text-slate-900 dark:text-slate-100">:</span>
                 </>
               ) : (
                 <>
-                  <span style={{ color: '#D4AF37' }}>Sign</span>{' '}
+                  <span className="text-brand">Sign</span>{' '}
                   In
                 </>
               )}
             </h1>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 max-w-sm">
+            <p className="mt-2 max-w-sm text-slate-600 dark:text-slate-400 text-sm">
               {isRtl
                 ? 'ادخل على حسابك بإدخال رقم الهاتف و كلمة المرور المسجل بهم من قبل'
                 : 'Enter your phone number and password to access your account'}
             </p>
-            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+            <p className="mt-1 text-slate-600 dark:text-slate-400 text-sm">
               {isRtl ? 'لا يوجد لديك حساب؟ ' : "Don't have an account? "}
               <Link
                 to="/register"
-                className="font-semibold underline underline-offset-4"
-                style={{ color: '#D4AF37' }}
+                className="font-semibold text-brand underline underline-offset-4"
               >
                 {isRtl ? 'أنشئ حسابك الآن !' : 'Create one now!'}
               </Link>
@@ -277,12 +267,7 @@ export default function LoginPage() {
             {/* Phone / Email field */}
             <div className="relative flex items-center">
               <span
-                className="absolute pointer-events-none"
-                style={{
-                  [isRtl ? 'right' : 'left']: '0',
-                  color: '#D4AF37',
-                  fontSize: '1rem',
-                }}
+                className={"absolute pointer-events-none text-brand " + (isRtl ? 'right-0' : 'left-0')}
               >
                 <Phone size={18} />
               </span>
@@ -292,25 +277,19 @@ export default function LoginPage() {
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder={isRtl ? 'رقم الهاتف' : 'Phone number or email'}
                 autoComplete="username"
-                className="w-full h-11 text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
-                style={{
-                  borderBottomColor: '#cbd5e1',
-                  paddingLeft: isRtl ? '0' : '1.75rem',
-                  paddingRight: isRtl ? '1.75rem' : '0',
-                }}
-                onFocus={(e) => { e.target.style.borderBottomColor = '#D4AF37' }}
-                onBlur={(e) => { e.target.style.borderBottomColor = '#cbd5e1' }}
+                className={
+                  'bg-transparent border-0 border-b-2 outline-none w-full h-11 text-sm transition-colors duration-200 ' +
+                  'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 ' +
+                  'border-slate-300 dark:border-slate-600 focus:border-brand ' +
+                  (isRtl ? 'pr-7 pl-0' : 'pl-7 pr-0')
+                }
               />
             </div>
 
             {/* Password field */}
             <div className="relative flex items-center">
               <span
-                className="absolute pointer-events-none"
-                style={{
-                  [isRtl ? 'right' : 'left']: '0',
-                  color: '#D4AF37',
-                }}
+                className={"absolute pointer-events-none text-brand " + (isRtl ? 'right-0' : 'left-0')}
               >
                 <Lock size={18} />
               </span>
@@ -318,35 +297,35 @@ export default function LoginPage() {
                 dir={isRtl ? 'rtl' : 'ltr'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={isRtl ? 'كلمة السر' : 'Password'}
+                placeholder={isRtl ? 'كلمة المرور' : 'Password'}
                 type="password"
                 autoComplete="current-password"
-                className="w-full h-11 text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
-                style={{
-                  borderBottomColor: '#cbd5e1',
-                  paddingLeft: isRtl ? '0' : '1.75rem',
-                  paddingRight: isRtl ? '1.75rem' : '0',
-                }}
-                onFocus={(e) => { e.target.style.borderBottomColor = '#D4AF37' }}
-                onBlur={(e) => { e.target.style.borderBottomColor = '#cbd5e1' }}
+                className={
+                  'bg-transparent border-0 border-b-2 outline-none w-full h-11 text-sm transition-colors duration-200 ' +
+                  'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 ' +
+                  'border-slate-300 dark:border-slate-600 focus:border-brand ' +
+                  (isRtl ? 'pr-7 pl-0' : 'pl-7 pr-0')
+                }
               />
             </div>
 
             {/* Forgot & code row */}
-            <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 flex-wrap gap-2">
+            <div className="flex flex-wrap justify-between items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
               <span>{isRtl ? 'أو قم بتسجيل الدخول عن طريق الكود' : 'Or login with a code'}</span>
               <button
                 type="button"
-                className="font-semibold underline underline-offset-4 transition-colors hover:opacity-80"
-                style={{ color: '#D4AF37', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                className="hover:opacity-80 font-semibold text-brand transition-colors"
                 onClick={() => {
                   setOpenForgot(true)
                   setFpError('')
                   setFpStep('email')
-                  setFpEmail(String(identifier || '').includes('@') ? identifier : '')
+                  setFpEmail('')
+                  setFpCode('')
+                  setFpNew('')
+                  setFpConfirm('')
                 }}
               >
-                {isRtl ? 'هل نسيت كلمة السر؟ اضغط هنا' : 'Forgot password? Click here'}
+                {isRtl ? 'نسيت كلمة المرور؟' : 'Forgot password?'}
               </button>
             </div>
 
@@ -356,20 +335,15 @@ export default function LoginPage() {
               disabled={loading}
               whileHover={{ scale: loading ? 1 : 1.02 }}
               whileTap={{ scale: loading ? 1 : 0.98 }}
-              className="w-full h-12 rounded-2xl font-bold text-base text-white shadow-md flex items-center justify-center gap-2 transition-all mt-1"
-              style={{
-                background: 'linear-gradient(110deg, #D4AF37, #ffc400)',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.8 : 1,
-              }}
+              className="flex justify-center items-center gap-2 bg-brand hover:bg-brand-600 disabled:opacity-80 shadow-md mt-1 rounded-2xl w-full h-12 font-bold text-white text-base transition-colors disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <Spinner className="border-t-white w-4 h-4" />
+                  <Spinner className="w-4 h-4" />
                   {t('auth.loggingIn')}
                 </span>
               ) : (
-                isRtl ? 'تسجيل الدخول' : 'Login'
+                isRtl ? 'تسجيل الدخول' : 'Sign in'
               )}
             </motion.button>
           </form>
@@ -392,7 +366,7 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4" dir={isRtl ? 'rtl' : 'ltr'}>
           {fpStep === 'email' && (
             <>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
                 {isRtl ? 'أدخل بريدك الإلكتروني لإرسال كود الاسترجاع' : 'Enter your email to receive a reset code'}
               </p>
               <Input
@@ -404,35 +378,33 @@ export default function LoginPage() {
                 className="rounded-2xl h-12"
               />
               {fpError && <p className="text-red-500 text-sm">{fpError}</p>}
-              <Button
+              <button
                 type="button"
                 disabled={fpLoading}
-                className="rounded-2xl w-full h-11 text-white"
-                style={{ background: 'linear-gradient(110deg, #D4AF37, #ffc400ff)' }}
+                className="bg-brand hover:bg-brand-600 disabled:opacity-80 rounded-2xl w-full h-11 text-white transition-colors disabled:cursor-not-allowed"
                 onClick={sendResetCode}
               >
-                {fpLoading ? <Spinner className="border-t-white w-4 h-4 mx-auto" /> : (isRtl ? 'إرسال' : 'Send')}
-              </Button>
+                {fpLoading ? <Spinner className="mx-auto border-t-white w-4 h-4" /> : (isRtl ? 'إرسال' : 'Send')}
+              </button>
             </>
           )}
           {fpStep === 'code' && (
             <>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
                 {isRtl ? 'أدخل الكود المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة' : 'Enter the code sent to your email and your new password'}
               </p>
               <Input dir="ltr" value={fpCode} onChange={(e) => setFpCode(e.target.value)} placeholder={isRtl ? 'الكود' : 'Code'} className="rounded-2xl h-12" />
               <Input dir="ltr" value={fpNew} onChange={(e) => setFpNew(e.target.value)} placeholder={isRtl ? 'كلمة المرور الجديدة' : 'New password'} type="password" className="rounded-2xl h-12" />
               <Input dir="ltr" value={fpConfirm} onChange={(e) => setFpConfirm(e.target.value)} placeholder={isRtl ? 'تأكيد كلمة المرور' : 'Confirm password'} type="password" className="rounded-2xl h-12" />
               {fpError && <p className="text-red-500 text-sm">{fpError}</p>}
-              <Button
+              <button
                 type="button"
                 disabled={fpLoading}
-                className="rounded-2xl w-full h-11 text-white"
-                style={{ background: 'linear-gradient(110deg, #D4AF37, #ffc400ff)' }}
+                className="bg-brand hover:bg-brand-600 disabled:opacity-80 rounded-2xl w-full h-11 text-white transition-colors disabled:cursor-not-allowed"
                 onClick={resetPassword}
               >
-                {fpLoading ? <Spinner className="border-t-white w-4 h-4 mx-auto" /> : (isRtl ? 'تأكيد' : 'Confirm')}
-              </Button>
+                {fpLoading ? <Spinner className="mx-auto border-t-white w-4 h-4" /> : (isRtl ? 'تأكيد' : 'Confirm')}
+              </button>
             </>
           )}
         </div>

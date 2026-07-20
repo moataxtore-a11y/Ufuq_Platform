@@ -129,7 +129,7 @@ export default function AdminCoursesPage() {
         </div>
 
         <div className="flex justify-center mt-7 pointer-events-none">
-          <div className="bg-gradient-to-r from-transparent via-amber-500/70 dark:via-amber-300/70 to-transparent rounded-full w-[92%] max-w-4xl h-[3px]" />
+          <div className="bg-gradient-to-r from-transparent via-brand/70 dark:via-brand/70 to-transparent rounded-full w-[92%] max-w-4xl h-[3px]" />
         </div>
 
         <div className="flex justify-center mt-6">

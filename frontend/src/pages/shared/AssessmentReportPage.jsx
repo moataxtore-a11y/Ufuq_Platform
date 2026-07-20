@@ -6,11 +6,9 @@ import Spinner from '../../components/ui/Spinner.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import ScorePill from '../../components/ui/ScorePill.jsx'
 import { BadgeCheck, Clock, Minus, Users, FileCheck2 } from 'lucide-react'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
-const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-const isRtl = lang === 'ar'
-
-function StatusPill({ status }) {
+function StatusPill({ status, isRtl }) {
   const cfg =
     status === 'graded'
       ? {
@@ -20,7 +18,7 @@ function StatusPill({ status }) {
       : status === 'submitted'
         ? {
           label: isRtl ? 'تم الإرسال' : 'Submitted',
-          cls: 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-500/30'
+          cls: 'bg-brand/10 dark:bg-brand/20 text-brand-700 dark:text-brand-300 border-brand/20 dark:border-brand/30'
         }
         : status === 'in_progress'
           ? {
@@ -46,7 +44,7 @@ function StatCard({ icon, label, value, iconCls }) {
         <span className={`flex items-center justify-center w-8 h-8 rounded-xl ${iconCls}`}>
           {icon}
         </span>
-        <span className="text-slate-500 dark:text-slate-400 text-xs font-medium">{label}</span>
+        <span className="font-medium text-slate-500 dark:text-slate-400 text-xs">{label}</span>
       </div>
       <div className="font-bold tabular-nums text-slate-900 dark:text-slate-100 text-2xl leading-none">
         {value ?? '-'}
@@ -55,7 +53,7 @@ function StatCard({ icon, label, value, iconCls }) {
   )
 }
 
-function fmt(dt) {
+function fmt(dt, isRtl) {
   if (!dt) return '-'
   try {
     return new Date(dt).toLocaleString(isRtl ? 'ar-EG' : 'en-US', {
@@ -70,6 +68,7 @@ function fmt(dt) {
 export default function AssessmentReportPage() {
   const { assessmentId } = useParams()
   const { notify } = useToast()
+  const { isRtl } = useLanguage()
 
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -118,7 +117,7 @@ export default function AssessmentReportPage() {
         <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-2xl sm:text-3xl">
           {isRtl ? 'تقرير الاختبار' : 'Assessment Report'}
         </h1>
-        <div className="mt-1 text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1.5 flex-wrap">
+        <div className="flex flex-wrap items-center gap-1.5 mt-1 text-slate-500 dark:text-slate-400 text-sm">
           {data?.course?.title && (
             <>
               <span className="font-medium text-slate-600 dark:text-slate-300">{data.course.title}</span>
@@ -150,8 +149,8 @@ export default function AssessmentReportPage() {
           value={summary?.in_progress}
         />
         <StatCard
-          icon={<BadgeCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />}
-          iconCls="bg-amber-50 dark:bg-amber-500/10"
+          icon={<BadgeCheck className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
+          iconCls="bg-brand/10 dark:bg-brand/20"
           label={isRtl ? 'تم الإرسال' : 'Submitted'}
           value={summary?.submitted}
         />
@@ -166,7 +165,7 @@ export default function AssessmentReportPage() {
       {/* Table */}
       <div className="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/[0.06] rounded-2xl overflow-x-auto">
         {(data.rows || []).length === 0 ? (
-          <div className="p-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+          <div className="p-8 text-slate-500 dark:text-slate-400 text-sm text-center">
             {isRtl ? 'لا يوجد طلاب في هذا الكورس.' : 'No students in this course.'}
           </div>
         ) : (
@@ -186,10 +185,10 @@ export default function AssessmentReportPage() {
                 <TR key={r.studentId}>
                   <TD>
                     <div className="font-medium text-slate-900 dark:text-slate-100">{r.name || '-'}</div>
-                    <div className="text-slate-400 dark:text-slate-500 text-xs mt-0.5">{r.email || '-'}</div>
+                    <div className="mt-0.5 text-slate-400 dark:text-slate-500 text-xs">{r.email || '-'}</div>
                   </TD>
-                  <TD className="text-center">
-                    <StatusPill status={r.status} />
+                    <TD className="text-center">
+                    <StatusPill status={r.status} isRtl={isRtl} />
                   </TD>
                   <TD className="text-center">
                     <ScorePill
@@ -197,9 +196,9 @@ export default function AssessmentReportPage() {
                       maxScore={typeof r.maxScore === 'number' ? r.maxScore : null}
                     />
                   </TD>
-                  <TD className="text-slate-600 dark:text-slate-300 text-center text-sm">{fmt(r.startedAt)}</TD>
-                  <TD className="text-slate-600 dark:text-slate-300 text-center text-sm">{fmt(r.submittedAt)}</TD>
-                  <TD className="text-slate-600 dark:text-slate-300 text-center text-sm">{fmt(r.gradedAt)}</TD>
+                  <TD className="text-slate-600 dark:text-slate-300 text-sm text-center">{fmt(r.startedAt, isRtl)}</TD>
+                  <TD className="text-slate-600 dark:text-slate-300 text-sm text-center">{fmt(r.submittedAt, isRtl)}</TD>
+                  <TD className="text-slate-600 dark:text-slate-300 text-sm text-center">{fmt(r.gradedAt, isRtl)}</TD>
                 </TR>
               ))}
             </TBody>

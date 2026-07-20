@@ -11,7 +11,7 @@ export default function SectionWrapper({
   children
 }) {
   return (
-    <section id={id} className={'mt-8 scroll-mt-24 ' + className}>
+    <section id={id} className={'mt-8 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px] ' + className}>
       {title || subtitle || action ? (
         <div
           className={

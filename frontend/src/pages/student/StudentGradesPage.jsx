@@ -11,17 +11,11 @@ function fmt(dt) {
   try { return new Date(dt).toLocaleDateString() } catch { return '-' }
 }
 
-function StatCard({ label, value, sub, color = 'amber' }) {
-  const colors = {
-    amber: 'from-amber-400/20 to-amber-600/10 border-amber-400/20 text-amber-400',
-    green: 'from-green-400/20 to-green-600/10 border-green-400/20 text-green-400',
-    blue: 'from-blue-400/20 to-blue-600/10  border-blue-400/20  text-blue-400',
-    rose: 'from-rose-400/20 to-rose-600/10  border-rose-400/20  text-rose-400',
-  }
-  const cls = colors[color] || colors.amber
+function StatCard({ label, value, sub }) {
+  const cls = 'from-brand/15 to-brand/5 border-brand/20 text-brand'
   return (
     <div className={`bg-gradient-to-br ${cls} border rounded-2xl p-4 flex flex-col gap-1`}>
-      <div className="text-slate-400 text-xs font-medium">{label}</div>
+      <div className="font-medium text-slate-400 text-xs">{label}</div>
       <div className={`text-2xl font-bold ${cls.split(' ').find(c => c.startsWith('text-'))}`}>{value}</div>
       {sub && <div className="text-slate-500 text-xs">{sub}</div>}
     </div>
@@ -35,7 +29,7 @@ function TabBtn({ active, onClick, children }) {
       className={
         'px-4 py-2 rounded-xl text-sm font-semibold transition-all ' +
         (active
-          ? 'bg-amber-400 text-slate-900 shadow-lg shadow-amber-400/20'
+          ? 'bg-brand text-white shadow-lg shadow-[0_12px_24px_rgba(6,148,132,0.22)]'
           : 'text-slate-400 hover:text-slate-200 hover:bg-white/5')
       }
     >
@@ -120,7 +114,7 @@ export default function StudentGradesPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="420" height="24" viewBox="0 0 420 24" className="max-w-full" aria-hidden="true">
-            <path d="M20 18 C 130 0, 290 0, 400 18" stroke="rgba(212,175,55,0.85)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M20 18 C 130 0, 290 0, 400 18" stroke="rgba(6,148,132,0.75)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm">
@@ -133,29 +127,25 @@ export default function StudentGradesPage() {
         <StatCard
           label={isRtl ? 'إجمالي الدرجات' : 'Total Grades'}
           value={totalGraded}
-          color="amber"
         />
         <StatCard
           label={isRtl ? 'واجبات مصححة' : 'Graded Assignments'}
           value={assignmentGrades.length}
-          color="blue"
         />
         <StatCard
           label={isRtl ? 'متوسط الواجبات' : 'Avg. Assignments'}
           value={avgAssignments != null ? `${avgAssignments}` : '-'}
           sub={isRtl ? 'درجة' : 'pts'}
-          color="green"
         />
         <StatCard
           label={isRtl ? 'متوسط الاختبارات' : 'Avg. Assessments'}
           value={avgAssessments != null ? `${avgAssessments}` : '-'}
           sub={isRtl ? 'درجة' : 'pts'}
-          color="rose"
         />
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-black/5 dark:bg-white/5 rounded-xl w-fit">
+      <div className="flex gap-2 bg-black/5 dark:bg-white/5 p-1 rounded-xl w-fit">
         <TabBtn active={tab === 'all'} onClick={() => setTab('all')}>
           {isRtl ? `الكل (${allRows.length})` : `All (${allRows.length})`}
         </TabBtn>
@@ -169,7 +159,7 @@ export default function StudentGradesPage() {
 
       {/* Grades list */}
       {displayed.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
+        <div className="flex flex-col justify-center items-center gap-3 py-16 text-center">
           <div className="text-5xl">📊</div>
           <div className="text-slate-500 dark:text-slate-400 text-sm">
             {isRtl ? 'لا توجد درجات في هذا القسم بعد.' : 'No grades in this section yet.'}
@@ -189,15 +179,15 @@ export default function StudentGradesPage() {
             return (
               <div
                 key={g._id}
-                className="flex flex-row items-center justify-between gap-3 p-4 border border-black/5 dark:border-white/[0.06] rounded-2xl hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
+                className="flex flex-row justify-between items-center gap-3 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] p-4 border border-black/5 dark:border-white/[0.06] rounded-2xl transition-colors"
               >
                 {/* Left: icon + info */}
-                <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="flex flex-1 items-center gap-3 min-w-0">
                   <div className={
                     'flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ' +
                     (isAssignment
-                      ? 'bg-blue-400/10 text-blue-400'
-                      : 'bg-purple-400/10 text-purple-400')
+                      ? 'bg-brand/10 text-brand'
+                      : 'bg-brand/10 text-brand')
                   }>
                     {isAssignment
                       ? <FileText className="w-5 h-5" />
@@ -205,22 +195,22 @@ export default function StudentGradesPage() {
                   </div>
 
                   <div className="gap-0.5 grid min-w-0">
-                    <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm leading-snug truncate">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm truncate leading-snug">
                       {title}
                     </div>
                     <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
                       <span className={
                         'px-2 py-0.5 rounded-full text-xs font-medium ' +
                         (isAssignment
-                          ? 'bg-blue-400/10 text-blue-500 dark:text-blue-400'
-                          : 'bg-purple-400/10 text-purple-500 dark:text-purple-400')
+                          ? 'bg-brand/10 text-brand'
+                          : 'bg-brand/10 text-brand')
                       }>
                         {isAssignment ? (isRtl ? 'واجب' : 'Assignment') : (isRtl ? 'اختبار' : 'Assessment')}
                       </span>
                       <span className="text-slate-400 dark:text-slate-500 text-xs">{date}</span>
                     </div>
                     {g.feedback && (
-                      <div className="mt-0.5 text-slate-500 dark:text-slate-400 text-xs italic line-clamp-1 hidden sm:block">
+                      <div className="hidden sm:block mt-0.5 text-slate-500 dark:text-slate-400 text-xs italic line-clamp-1">
                         💬 {g.feedback}
                       </div>
                     )}
@@ -228,11 +218,11 @@ export default function StudentGradesPage() {
                 </div>
 
                 {/* Right: score - always visible, same row */}
-                <div className="flex-shrink-0 flex items-center justify-end">
-                  <span className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+                <div className="flex flex-shrink-0 justify-end items-center">
+                  <span className="font-extrabold text-slate-900 dark:text-slate-100 text-xl sm:text-2xl tracking-tight">
                     {score != null ? score : '—'}
                     {maxScore != null && (
-                      <span className="text-sm font-medium text-slate-400 dark:text-slate-500">/{maxScore}</span>
+                      <span className="font-medium text-slate-400 dark:text-slate-500 text-sm">/{maxScore}</span>
                     )}
                   </span>
                 </div>

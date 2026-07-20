@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { BarChart3, BookOpen, CheckCircle, ClipboardCheck, ClipboardList, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogIn, LogOut, Menu, MessageSquareQuote, Search, UserPlus, Users } from 'lucide-react'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
 import Button from '../ui/Button.jsx'
-import logo from '../../cvg/logo (2).svg'
+import logo from '../../cvg/logo (2)_3.webp'
 import LanguageToggle from '../ui/LanguageToggle.jsx'
 import defaultProfileAvatar from '../../cvg/profile.svg'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -184,8 +184,8 @@ export default function SiteHeader() {
 
   return (
     <>
-      <header className="top-0 z-40 sticky inset-x-0 bg-white/90 dark:bg-[#121212]/80 backdrop-blur border-slate-300/60 dark:border-white/10 border-b">
-        <div className={"mx-auto px-3 sm:px-4 py-3 min-w-0 w-full max-w-7xl"}>
+      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
+        <div className={"mx-auto px-3 sm:px-4 py-2 min-w-0 w-full max-w-7xl"}>
           <div className="md:hidden items-center grid grid-cols-3">
             <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
               <button
@@ -198,10 +198,18 @@ export default function SiteHeader() {
                 <Search className="w-4 h-4" />
               </button>
 
+              <ThemeToggle className="shrink-0" />
+            </div>
+
+            <Link to="/" className="flex justify-center items-center">
+              <img src={logo} alt="Education Platform" className="w-auto h-11" />
+            </Link>
+
+            <div className="flex justify-end items-center gap-2">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="relative flex justify-center items-center bg-black rounded-full w-8 h-8 text-slate-100"
+                className="relative flex justify-center items-center bg-black rounded-full w-9 h-9 text-slate-100"
                 aria-label={t('dashboard.ui.menu')}
                 title={t('dashboard.ui.menu')}
               >
@@ -219,96 +227,11 @@ export default function SiteHeader() {
                 ) : null}
               </button>
             </div>
-
-            <Link to="/" className="flex justify-center items-center">
-              <img src={logo} alt="Education Platform" className="w-auto h-14" />
-            </Link>
-
-            <div className="flex justify-end items-center gap-2">
-              <ThemeToggle className="shrink-0" />
-            </div>
           </div>
 
-          <div className={"hidden md:flex justify-between items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
-            <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
-              <Link to="/" className="flex items-center gap-2">
-                <img src={logo} alt="Education Platform" className="w-auto h-14 sm:h-16 md:h-[72px]" />
-              </Link>
-
-              <ThemeToggle className="shrink-0" />
-            </div>
-
-            <nav className={cn('hidden md:flex items-center gap-1', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              {quickLinks.map((it) => (
-                <NavLink
-                  key={it.to}
-                  to={it.to}
-                  end={it.to === '/admin' || it.to === '/teacher' || it.to === '/team' || it.to === '/student'}
-                  className={({ isActive }) =>
-                    cn(
-                      'inline-flex justify-center items-center rounded-xl w-10 h-10 transition-colors',
-                      isActive
-                        ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                        : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]'
-                    )
-                  }
-                  aria-label={it.label}
-                  title={it.label}
-                >
-                  {it.icon ? <it.icon className="w-5 h-5" /> : null}
-                </NavLink>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-2">
-              {!loggedIn ? (
-                <>
-                  <Button
-                    asChild
-                    size="sm"
-                    className="bg-brand hover:bg-transparent px-5 border border-transparent hover:border-brand focus-visible:border-brand rounded-xl text-white hover:text-brand transition"
-                  >
-                    <Link to="/register" className={cn('inline-flex items-center gap-2', isRtl ? 'flex-row' : 'flex-row-reverse')}>
-                      <UserPlus className="w-4 h-4" />
-                      {isRtl ? 'اعمل حساب جديد!' : 'Create account'}
-                    </Link>
-                  </Button>
-                  <Link
-                    to="/login"
-                    className={cn(
-                      'inline-flex items-center gap-2 px-3 py-2 rounded-xl font-semibold text-brand text-sm transition',
-                      'bg-white/70 border border-black/5 shadow-sm hover:shadow-md',
-                      'dark:bg-transparent dark:border dark:border-transparent dark:shadow-none dark:hover:shadow-none',
-                      'dark:hover:bg-transparent dark:hover:border-brand dark:focus-visible:border-brand',
-                      isRtl ? 'text-right' : 'text-left'
-                    )}
-                  >
-                    <LogIn className="w-4 h-4" />
-                    {isRtl ? 'سجل دخولك' : t('auth.login')}
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={openSearch}
-                    aria-label={isRtl ? 'ابحث في الموقع' : 'Search the site'}
-                    className={cn(
-                      'group inline-flex items-center gap-2 bg-transparent shadow-none px-3 py-2 border border-transparent rounded-xl text-slate-700 transition',
-                      'hover:bg-transparent hover:shadow-none',
-                      'dark:bg-transparent dark:border-transparent dark:text-slate-200 dark:hover:bg-transparent',
-                      isRtl ? 'flex-row' : 'flex-row-reverse'
-                    )}
-                  >
-                    <Search className="w-5 h-5" />
-                    <span
-                      className={cn(
-                        'opacity-0 max-w-0 overflow-hidden whitespace-nowrap transition-all duration-200',
-                        'group-hover:max-w-[140px] group-hover:opacity-100'
-                      )}
-                    >
-                      {isRtl ? 'ابحث في الموقع' : 'Search'}
-                    </span>
-                  </button>
-                </>
-              ) : (
+          {loggedIn ? (
+            <div className={"hidden md:flex justify-between items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
+              <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
                 <button
                   type="button"
                   onClick={() => setOpen(true)}
@@ -325,27 +248,122 @@ export default function SiteHeader() {
                     </span>
                   ) : null}
                 </button>
-              )}
+
+                <ThemeToggle className="shrink-0" />
+              </div>
+
+              <nav className={cn('hidden md:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                {quickLinks.map((it) => (
+                  <NavLink
+                    key={it.to}
+                    to={it.to}
+                    end={it.to === '/admin' || it.to === '/teacher' || it.to === '/team' || it.to === '/student'}
+                    className={({ isActive }) =>
+                      cn(
+                        'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
+                        isRtl ? 'flex-row-reverse' : 'flex-row',
+                        isActive
+                          ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
+                          : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
+                        isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
+                      )
+                    }
+                    aria-label={it.label}
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
+                        <span
+                          className={cn(
+                            'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
+                            isRtl ? 'origin-right' : 'origin-left',
+                            isActive
+                              ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
+                              : cn(
+                                  'max-w-0 opacity-0 scale-90',
+                                  isRtl ? 'translate-x-3' : '-translate-x-3',
+                                  'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
+                                )
+                          )}
+                        >
+                          {it.label}
+                        </span>
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </nav>
+
+              <div className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2">
+                  <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+                </Link>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className={"hidden md:flex justify-between items-center" + (isRtl ? ' flex-row-reverse' : '')}>
+              <div className={"flex items-center gap-2 " + (isRtl ? 'flex-row-reverse' : '')}>
+                <button
+                  type="button"
+                  onClick={openSearch}
+                  aria-label={isRtl ? 'ابحث في الموقع' : 'Search the site'}
+                  className="inline-flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-700 dark:text-slate-200 transition"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
+                <ThemeToggle className="shrink-0" />
+              </div>
+
+              <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
+                <Link
+                  to="/login"
+                  className={cn(
+                    'inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-brand text-sm transition-colors',
+                    'bg-white/70 border border-black/5 shadow-sm hover:shadow-md',
+                    'dark:bg-transparent dark:border dark:border-transparent dark:shadow-none dark:hover:shadow-none',
+                    'dark:hover:bg-transparent dark:hover:border-brand dark:focus-visible:border-brand'
+                  )}
+                >
+                  <LogIn className="w-4 h-4" />
+                  {isRtl ? 'سجل دخولك' : t('auth.login')}
+                </Link>
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-brand hover:bg-brand-600 px-5 border border-brand/20 rounded-xl text-white transition"
+                >
+                  <Link to="/register" className={cn('inline-flex items-center gap-2', isRtl ? 'flex-row' : 'flex-row-reverse')}>
+                    <UserPlus className="w-4 h-4" />
+                    {isRtl ? 'اعمل حساب جديد!' : 'Create account'}
+                  </Link>
+                </Button>
+                <Link to="/" className="flex items-center gap-2">
+                  <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
       {open ? (
-        <div className="z-50 fixed inset-0">
+        <div className="z-[110] fixed inset-0">
           <button type="button" className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-label={isRtl ? 'إغلاق القائمة' : 'Close menu'} />
           <div
             className={cn(
-              'top-0 absolute bg-white dark:bg-[#1a1a1a] shadow-2xl p-3 border border-black/5 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
-              isRtl ? 'right-0 rounded-l-3xl' : 'left-0 rounded-r-3xl'
+              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
+              'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl'
             )}
             dir={isRtl ? 'rtl' : 'ltr'}
           >
             <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{isRtl ? 'القائمة' : 'Menu'}</div>
-              <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
-                {isRtl ? 'إغلاق' : 'Close'}
-              </Button>
+              <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                <LanguageToggle />
+                <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
+                  {isRtl ? 'إغلاق' : 'Close'}
+                </Button>
+              </div>
             </div>
 
             <div className="gap-2 grid px-2 pt-2">
@@ -353,7 +371,7 @@ export default function SiteHeader() {
                 <div className="gap-2 grid">
                   <Button
                     asChild
-                    className="bg-brand hover:bg-transparent px-5 border border-transparent hover:border-brand focus-visible:border-brand rounded-xl w-full text-white hover:text-brand transition"
+                    className="bg-brand hover:bg-brand-600 px-5 border border-brand/20 rounded-xl w-full text-white transition"
                     onClick={() => setOpen(false)}
                   >
                     <Link to="/register">{isRtl ? 'اعمل حساب جديد!' : 'Create account'}</Link>
@@ -419,7 +437,7 @@ export default function SiteHeader() {
                               'flex items-center gap-2 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
                               isRtl ? 'flex-row-reverse text-right' : 'text-left',
                               isActive
-                                ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100'
+                                ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
                                 : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
                             )
                           }

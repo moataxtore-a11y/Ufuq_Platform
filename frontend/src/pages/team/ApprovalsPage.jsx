@@ -56,7 +56,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
           // ignore stats error here
         }
       } catch (e) {
-        notify({ title: 'Failed to load profile', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
+        notify({ title: isRtl ? 'فشل تحميل الملف الشخصي' : 'Failed to load profile', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
       } finally {
         if (mounted) setLoading(false)
       }
@@ -82,19 +82,19 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
       {loading ? (
         <div className="flex items-center gap-2 text-slate-700">
           <Spinner />
-          {t('adminUsersPage.loading') === 'adminUsersPage.loading' ? 'Loading' : t('adminUsersPage.loading')}
+          {t('adminUsersPage.loading') === 'adminUsersPage.loading' ? (isRtl ? 'جاري التحميل' : 'Loading') : t('adminUsersPage.loading')}
         </div>
       ) : !user ? (
-        <div className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.noData') === 'adminUsersPage.noData' ? 'No data' : t('adminUsersPage.noData')}</div>
+        <div className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.noData') === 'adminUsersPage.noData' ? (isRtl ? 'لا توجد بيانات' : 'No data') : t('adminUsersPage.noData')}</div>
       ) : (
         <div className="gap-3 grid">
 
           <div className={"flex items-center gap-3 mb-2 " + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
             <div className={"flex-1 " + (isRtl ? 'text-right' : 'text-left')}>
-              <div className="text-xl font-bold mb-1 break-words">{user.name || '-'}</div>
-              <div className="text-sm text-slate-500 font-medium mb-3">{user.email}</div>
-              <div className="text-sm font-semibold">{isRtl ? 'رقم الطالب:' : 'Student ID:'} {user.studentId || '-'}</div>
-              <div className="text-sm font-semibold">{isRtl ? 'الحالة:' : 'Status:'} {user.status || '-'}</div>
+              <div className="mb-1 font-bold text-xl break-words">{user.name || '-'}</div>
+              <div className="mb-3 font-medium text-slate-500 text-sm">{user.email}</div>
+              <div className="font-semibold text-sm">{isRtl ? 'رقم الطالب:' : 'Student ID:'} {user.studentId || '-'}</div>
+              <div className="font-semibold text-sm">{isRtl ? 'الحالة:' : 'Status:'} {user.status || '-'}</div>
             </div>
             {user?.profile?.avatarUrl ? (
               <img
@@ -103,37 +103,37 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
                 className="border border-black/5 rounded-2xl w-24 h-24 object-cover shrink-0"
               />
             ) : (
-              <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-24 h-24 flex items-center justify-center shrink-0">
+              <div className="flex justify-center items-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-24 h-24 shrink-0">
                 <svg className="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
               </div>
             )}
           </div>
 
           <div className="gap-2 grid grid-cols-1 md:grid-cols-2 mt-2">
-            <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl flex flex-col justify-center items-end text-right">
-              <div className="text-slate-500 font-semibold mb-1 w-full text-right">{isRtl ? 'العنوان' : 'Address'}</div>
-              <div className="text-sm w-full text-right">{info.address || info.governorate || '-'}</div>
+            <div className="flex flex-col justify-center items-end p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
+              <div className="mb-1 w-full font-semibold text-slate-500 text-right">{isRtl ? 'العنوان' : 'Address'}</div>
+              <div className="w-full text-sm text-right">{info.address || info.governorate || '-'}</div>
             </div>
-            <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl flex flex-col justify-center items-end text-right">
-              <div className="text-slate-500 font-semibold mb-1 w-full text-right">{isRtl ? 'الهاتف' : 'Phone'}</div>
-              <div className="text-sm w-full text-right" dir="ltr">{info.studentPhone || info.phone || '-'}</div>
+            <div className="flex flex-col justify-center items-end p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
+              <div className="mb-1 w-full font-semibold text-slate-500 text-right">{isRtl ? 'الهاتف' : 'Phone'}</div>
+              <div className="w-full text-sm text-right" dir="ltr">{info.studentPhone || info.phone || '-'}</div>
             </div>
           </div>
 
           <div className="gap-2 grid grid-cols-1 md:grid-cols-2 mt-2">
             <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
-              <div className="text-slate-500 font-semibold mb-1">{isRtl ? 'المدرسة' : 'School'}</div>
+              <div className="mb-1 font-semibold text-slate-500">{isRtl ? 'المدرسة' : 'School'}</div>
               <div className="text-sm">{info.schoolName || '-'}</div>
             </div>
             <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
-              <div className="text-slate-500 font-semibold mb-1">{isRtl ? 'هاتف ولي الأمر' : 'Parent Phone'}</div>
+              <div className="mb-1 font-semibold text-slate-500">{isRtl ? 'هاتف ولي الأمر' : 'Parent Phone'}</div>
               <div className="text-sm" dir="ltr">{info.parentPhone || '-'}</div>
             </div>
           </div>
 
           <div className="gap-2 grid grid-cols-1 md:grid-cols-3 mt-2">
             <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
-              <div className="text-slate-500 font-semibold mb-1">{isRtl ? 'الصف' : 'Grade'}</div>
+              <div className="mb-1 font-semibold text-slate-500">{isRtl ? 'الصف' : 'Grade'}</div>
               <div className="text-sm">
                 {(() => {
                   const v = String(info.gradeYear || '').trim()
@@ -146,7 +146,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
               </div>
             </div>
             <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
-              <div className="text-slate-500 font-semibold mb-1">{isRtl ? 'القسم' : 'Section'}</div>
+              <div className="mb-1 font-semibold text-slate-500">{isRtl ? 'القسم' : 'Section'}</div>
               <div className="text-sm">
                 {(() => {
                   const v = String(info.section || '').trim()
@@ -159,29 +159,29 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
               </div>
             </div>
             <div className="p-3 border border-black/5 dark:border-white/10 rounded-2xl text-right">
-              <div className="text-slate-500 font-semibold mb-1">{isRtl ? 'الرقم القومي' : 'National ID'}</div>
+              <div className="mb-1 font-semibold text-slate-500">{isRtl ? 'الرقم القومي' : 'National ID'}</div>
               <div className="text-sm" dir="ltr">{info.nationalId || '-'}</div>
             </div>
           </div>
 
-          <div className="border border-black/5 dark:border-white/10 rounded-2xl p-4 mt-3">
+          <div className="mt-3 p-4 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className={"font-extrabold text-lg mb-4 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'إحصائيات الطالب' : 'Student Statistics'}</div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-[#143B33] dark:bg-[rgba(20,184,166,0.15)] rounded-xl p-3 border border-[#1B4E44] dark:border-teal-900/50">
-                <div className="text-[#a1b8b2] text-xs font-semibold text-right mb-1">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
-                <div className="text-white text-xl font-bold text-right">{stats ? formatNum(stats.courses?.watchedTotalHours) : 0}</div>
+            <div className="gap-3 grid grid-cols-2">
+              <div className="bg-[#143B33] dark:bg-[rgba(20,184,166,0.15)] p-3 border border-[#1B4E44] dark:border-teal-900/50 rounded-xl">
+                <div className="mb-1 font-semibold text-[#a1b8b2] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
+                <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.courses?.watchedTotalHours) : 0}</div>
               </div>
-              <div className="bg-[#382B14] dark:bg-[rgba(212,175,55,0.15)] rounded-xl p-3 border border-[#4F3C1C] dark:border-yellow-900/50">
-                <div className="text-[#c7baa6] text-xs font-semibold text-right mb-1">{isRtl ? 'كورسات نفس السنة' : 'Same Year Courses'}</div>
-                <div className="text-white text-xl font-bold text-right">{stats ? formatNum(stats.courses?.enrolledSameYear) : 0}</div>
+              <div className="bg-brand/10 dark:bg-brand/20 p-3 border border-brand/20 dark:border-brand/30 rounded-xl">
+                <div className="mb-1 font-semibold text-brand-600 dark:text-brand-200 text-xs text-right">{isRtl ? 'كورسات نفس السنة' : 'Same Year Courses'}</div>
+                <div className="font-bold text-slate-900 dark:text-white text-xl text-right">{stats ? formatNum(stats.courses?.enrolledSameYear) : 0}</div>
               </div>
-              <div className="bg-[#2E2818] dark:bg-[rgba(212,175,55,0.1)] rounded-xl p-3 border border-[#403822] dark:border-yellow-900/30">
-                <div className="text-[#b1aa9c] text-xs font-semibold text-right mb-1">{isRtl ? 'أعلى درجة' : 'Highest Score'}</div>
-                <div className="text-white text-xl font-bold text-right">{stats ? formatNum(stats.assessments?.bestPercent) : 0}%</div>
+              <div className="bg-brand/5 dark:bg-brand/10 p-3 border border-brand/15 dark:border-brand/20 rounded-xl">
+                <div className="mb-1 font-semibold text-brand-500 dark:text-brand-300 text-xs text-right">{isRtl ? 'أعلى درجة' : 'Highest Score'}</div>
+                <div className="font-bold text-slate-900 dark:text-white text-xl text-right">{stats ? formatNum(stats.assessments?.bestPercent) : 0}%</div>
               </div>
-              <div className="bg-[#142B28] dark:bg-[rgba(20,184,166,0.1)] rounded-xl p-3 border border-[#1A3834] dark:border-teal-900/30">
-                <div className="text-[#9ab1ad] text-xs font-semibold text-right mb-1">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
-                <div className="text-white text-xl font-bold text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
+              <div className="bg-[#142B28] dark:bg-[rgba(20,184,166,0.1)] p-3 border border-[#1A3834] dark:border-teal-900/30 rounded-xl">
+                <div className="mb-1 font-semibold text-[#9ab1ad] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
+                <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
               </div>
             </div>
             <div className={"font-semibold text-sm mt-4 mb-2 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'آخر النتائج' : 'Recent Results'}</div>
@@ -191,7 +191,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
                   {stats.assessments.recentResults.slice(0, 3).map(r => (
                     <div key={r.attemptId} className="flex justify-between items-center text-xs">
                       <span className="font-medium text-slate-700 dark:text-slate-300">{r.assessmentTitle}</span>
-                      <span className="font-bold font-mono" dir="ltr">{formatNum(r.percent)}%</span>
+                      <span className="font-mono font-bold" dir="ltr">{formatNum(r.percent)}%</span>
                     </div>
                   ))}
                 </div>
@@ -203,7 +203,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
 
           <div className="flex justify-end pt-2">
             <Button variant="secondary" onClick={() => onOpenChange(false)}>
-              {t('common.close') === 'common.close' ? 'Close' : t('common.close')}
+              {t('common.close') === 'common.close' ? (isRtl ? 'إغلاق' : 'Close') : t('common.close')}
             </Button>
           </div>
         </div>
@@ -302,7 +302,7 @@ export default function ApprovalsPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('approvalsPage.subtitle')}</div>
@@ -317,7 +317,7 @@ export default function ApprovalsPage() {
         <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
           <div className="flex flex-col justify-center items-center gap-3 text-center">
             <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
-            <div className="font-semibold text-base" style={{ color: '#F74343' }}>
+            <div className="font-semibold text-rose-600 dark:text-rose-400 text-base">
               {t('approvalsPage.empty')}
             </div>
           </div>
@@ -380,7 +380,7 @@ export default function ApprovalsPage() {
                     <div className="flex justify-end gap-2">
                       {isAdmin ? (
                         <Button size="sm" variant="outline" onClick={() => onViewProfile(u._id || u.id)}>
-                          {t('adminUsersPage.actions.profile') === 'adminUsersPage.actions.profile' ? 'Profile' : t('adminUsersPage.actions.profile')}
+                          {t('adminUsersPage.actions.profile') === 'adminUsersPage.actions.profile' ? (isRtl ? 'الملف الشخصي' : 'Profile') : t('adminUsersPage.actions.profile')}
                         </Button>
                       ) : null}
                       <Button size="sm" variant="secondary" onClick={() => reject(u._id || u.id)}>
@@ -414,7 +414,7 @@ export default function ApprovalsPage() {
 
 function AutoAssignTeamModal({ open, onOpenChange, userId, onAssigned }) {
   const { notify } = useToast()
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
 
   const [teachers, setTeachers] = useState([])
   const [loading, setLoading] = useState(false)
@@ -499,7 +499,7 @@ function AutoAssignTeamModal({ open, onOpenChange, userId, onAssigned }) {
             {t('approvalsPage.teacherSubject')}: {selectedSubject || '-'}
           </div>
           <div className="text-slate-600 dark:text-slate-300 text-xs">
-            Team ID: {selectedTeamId || '-'}
+            {isRtl ? 'رقم الفريق' : 'Team ID'}: {selectedTeamId || '-'}
           </div>
         </div>
 

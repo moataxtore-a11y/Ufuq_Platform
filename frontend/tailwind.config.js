@@ -24,47 +24,63 @@ export default {
             },
             colors: {
                 primary: {
-                    DEFAULT: '#0F172A',
-                    50: '#F8FAFC',
-                    100: '#F1F5F9',
-                    200: '#E2E8F0',
-                    300: '#CBD5E1',
-                    400: '#94A3B8',
-                    500: '#64748B',
-                    600: '#475569',
-                    700: '#334155',
-                    800: '#1E293B',
-                    900: '#0F172A',
-                    950: '#020617'
+                    DEFAULT: '#069484',
+                    50: '#E6F7F4',
+                    100: '#CFF0EB',
+                    200: '#A3E2D6',
+                    300: '#6DD0BE',
+                    400: '#3DBAA8',
+                    500: '#069484',
+                    600: '#057F72',
+                    700: '#046659',
+                    800: '#034C43',
+                    900: '#02352F'
                 },
                 brand: {
-                    DEFAULT: '#D4AF37',
-                    50: '#FFFBEB',
-                    100: '#FEF3C7',
-                    200: '#FDE68A',
-                    300: '#FCD34D',
-                    400: '#FBBF24',
-                    500: '#D4AF37',
-                    600: '#B98C14',
-                    700: '#9A6B06',
-                    800: '#7C5306',
-                    900: '#65420A',
-                    950: '#3B2504'
+                    DEFAULT: '#069484',
+                    50: '#E6F7F4',
+                    100: '#CFF0EB',
+                    200: '#A3E2D6',
+                    300: '#6DD0BE',
+                    400: '#3DBAA8',
+                    500: '#069484',
+                    600: '#057F72',
+                    700: '#046659',
+                    800: '#034C43',
+                    900: '#02352F'
                 },
                 accent: {
-                    DEFAULT: '#F59E0B',
-                    50: '#FFFBEB',
-                    100: '#FEF3C7',
-                    200: '#FDE68A',
-                    300: '#FCD34D',
-                    400: '#FBBF24',
-                    500: '#F59E0B',
-                    600: '#D97706',
-                    700: '#B45309',
-                    800: '#92400E',
-                    900: '#78350F',
-                    950: '#451A03'
+                    DEFAULT: '#069484',
+                    50: '#E6F7F4',
+                    100: '#CFF0EB',
+                    200: '#A3E2D6',
+                    300: '#6DD0BE',
+                    400: '#3DBAA8',
+                    500: '#069484',
+                    600: '#057F72',
+                    700: '#046659',
+                    800: '#034C43',
+                    900: '#02352F'
+                },
+                surface: {
+                    glass: 'rgba(255, 255, 255, 0.05)',
+                    glassHover: 'rgba(255, 255, 255, 0.1)',
+                    glassBorder: 'rgba(255, 255, 255, 0.15)',
                 }
+            },
+            boxShadow: {
+                'glass-sm': '0 4px 16px 0 rgba(0, 0, 0, 0.15)',
+                'glass-md': '0 8px 32px 0 rgba(0, 0, 0, 0.2)',
+                'glass-lg': '0 16px 40px 0 rgba(0, 0, 0, 0.3)',
+                'glow-brand': '0 0 20px rgba(6, 148, 132, 0.35)',
+                'glow-brand-lg': '0 0 35px rgba(6, 148, 132, 0.55)',
+            },
+            backdropBlur: {
+                'glass': '16px',
+                'glass-heavy': '24px',
+            },
+            borderRadius: {
+                '2.5xl': '1.25rem',
             },
             keyframes: {
                 fadeIn: {
@@ -78,12 +94,22 @@ export default {
                 slideUp: {
                     from: { opacity: '0', transform: 'translateY(6px)' },
                     to: { opacity: '1', transform: 'translateY(0)' }
+                },
+                shimmer: {
+                    from: { backgroundPosition: '200% 0' },
+                    to: { backgroundPosition: '-200% 0' }
+                },
+                blob: {
+                    '0%': { transform: 'translateY(0) scale(1)' },
+                    '100%': { transform: 'translateY(-20px) scale(1.05)' }
                 }
             },
             animation: {
                 'fade-in': 'fadeIn 180ms ease-out',
                 'scale-in': 'scaleIn 180ms ease-out',
-                'slide-up': 'slideUp 200ms ease-out'
+                'slide-up': 'slideUp 200ms ease-out',
+                'shimmer': 'shimmer 2s linear infinite',
+                'blob-float': 'blob 10s infinite alternate'
             }
         }
     },

@@ -48,6 +48,7 @@ async function compressImage(file, { maxSide = 1280, quality = 0.82 } = {}) {
 }
 
 export async function uploadFile(file, endpoint = '/uploads', options = {}) {
+    // options: { maxSide, quality, presignEndpoint, skipPresign, timeout, onProgress, courseId, lessonId }
     const finalFile = await compressImage(file, {
         maxSide: typeof options.maxSide === 'number' ? options.maxSide : 1280,
         quality: typeof options.quality === 'number' ? options.quality : 0.82
@@ -121,6 +122,9 @@ export async function uploadFile(file, endpoint = '/uploads', options = {}) {
 
     const form = new FormData()
     form.append('file', finalFile)
+    // Pass courseId/lessonId so backend organizes videos in the correct Cloudinary folder
+    if (options.courseId) form.append('courseId', String(options.courseId))
+    if (options.lessonId) form.append('lessonId', String(options.lessonId))
     const res = await api.post(endpoint, form, {
         timeout: typeof options.timeout === 'number' ? options.timeout : 0,
         onUploadProgress: typeof options.onProgress === 'function' ? options.onProgress : undefined

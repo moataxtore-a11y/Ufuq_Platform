@@ -20,26 +20,18 @@ import joinus from '../img/join us.png'
 /* ─── tiny underline-input ─────────────────────────────────────── */
 function LineInput({ icon: Icon, label, children, ...inputProps }) {
   const { isRtl } = useLanguage()
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
-
-  useEffect(() => {
-    const obs = new MutationObserver(() => setIsDark(document.documentElement.classList.contains('dark')))
-    obs.observe(document.documentElement, { attributeFilter: ['class'] })
-    return () => obs.disconnect()
-  }, [])
 
   return (
     <div className="flex flex-col gap-1">
       {label && (
-        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+        <span className="font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
           {label}
         </span>
       )}
       <div className="relative flex items-center">
         {Icon && (
           <span
-            className="absolute pointer-events-none"
-            style={{ [isRtl ? 'right' : 'left']: '0', color: '#D4AF37' }}
+            className={"absolute pointer-events-none text-brand " + (isRtl ? 'right-0' : 'left-0')}
           >
             <Icon size={16} />
           </span>
@@ -48,15 +40,12 @@ function LineInput({ icon: Icon, label, children, ...inputProps }) {
           <input
             {...inputProps}
             dir={isRtl ? 'rtl' : 'ltr'}
-            className="w-full h-10 text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
-            style={{
-              borderBottomColor: isDark ? '#334155' : '#cbd5e1',
-              colorScheme: isDark ? 'dark' : 'light',
-              paddingLeft: isRtl ? '0' : (Icon ? '1.6rem' : '0'),
-              paddingRight: isRtl ? (Icon ? '1.6rem' : '0') : '0',
-            }}
-            onFocus={(e) => { e.target.style.borderBottomColor = '#D4AF37' }}
-            onBlur={(e) => { e.target.style.borderBottomColor = isDark ? '#334155' : '#cbd5e1' }}
+            className={
+              'w-full h-10 text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 ' +
+              'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 ' +
+              'border-slate-300 dark:border-slate-600 focus:border-brand focus:ring-0 ' +
+              (isRtl ? (Icon ? 'pr-6 pl-0' : 'px-0') : (Icon ? 'pl-6 pr-0' : 'px-0'))
+            }
           />
         )}
       </div>
@@ -67,26 +56,18 @@ function LineInput({ icon: Icon, label, children, ...inputProps }) {
 /* ─── underline-textarea ───────────────────────────────────────── */
 function LineTextarea({ icon: Icon, label, ...inputProps }) {
   const { isRtl } = useLanguage()
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
-
-  useEffect(() => {
-    const obs = new MutationObserver(() => setIsDark(document.documentElement.classList.contains('dark')))
-    obs.observe(document.documentElement, { attributeFilter: ['class'] })
-    return () => obs.disconnect()
-  }, [])
 
   return (
     <div className="flex flex-col gap-1">
       {label && (
-        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+        <span className="font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wide">
           {label}
         </span>
       )}
       <div className="relative flex items-start pt-2">
         {Icon && (
           <span
-            className="absolute pointer-events-none mt-1"
-            style={{ [isRtl ? 'right' : 'left']: '0', color: '#D4AF37' }}
+            className={"absolute pointer-events-none mt-1 text-brand " + (isRtl ? 'right-0' : 'left-0')}
           >
             <Icon size={16} />
           </span>
@@ -94,14 +75,12 @@ function LineTextarea({ icon: Icon, label, ...inputProps }) {
         <textarea
           {...inputProps}
           dir={isRtl ? 'rtl' : 'ltr'}
-          className="w-full text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 min-h-[80px] resize-y"
-          style={{
-            borderBottomColor: isDark ? '#334155' : '#cbd5e1',
-            paddingLeft: isRtl ? '0' : (Icon ? '1.6rem' : '0'),
-            paddingRight: isRtl ? (Icon ? '1.6rem' : '0') : '0',
-          }}
-          onFocus={(e) => { e.target.style.borderBottomColor = '#D4AF37' }}
-          onBlur={(e) => { e.target.style.borderBottomColor = isDark ? '#334155' : '#cbd5e1' }}
+          className={
+            'w-full text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 ' +
+            'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 min-h-[80px] resize-y ' +
+            'border-slate-300 dark:border-slate-600 focus:border-brand focus:ring-0 ' +
+            (isRtl ? (Icon ? 'pr-6 pl-0' : 'px-0') : (Icon ? 'pl-6 pr-0' : 'px-0'))
+          }
         />
       </div>
     </div>
@@ -112,15 +91,7 @@ function LineTextarea({ icon: Icon, label, ...inputProps }) {
 function LineSelect({ icon: Icon, value, onChange, options, placeholder }) {
   const { isRtl } = useLanguage()
   const [open, setOpen] = useState(false)
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'))
   const ref = useRef(null)
-
-  // track dark mode
-  useEffect(() => {
-    const obs = new MutationObserver(() => setIsDark(document.documentElement.classList.contains('dark')))
-    obs.observe(document.documentElement, { attributeFilter: ['class'] })
-    return () => obs.disconnect()
-  }, [])
 
   // close on outside click
   useEffect(() => {
@@ -131,77 +102,58 @@ function LineSelect({ icon: Icon, value, onChange, options, placeholder }) {
 
   const selected = options.find((o) => o.value === value)
 
-  // color tokens
-  const bg = isDark ? '#1e293b' : 'rgba(255,255,255,0.95)'
-  const bgHover = isDark ? '#273449' : '#f8fafc'
-  const bdrClr = open || value ? '#D4AF37' : (isDark ? '#334155' : '#e2e8f0')
-  const txtMain = isDark ? '#e2e8f0' : '#1e293b'
-  const txtPlh = isDark ? '#64748b' : '#94a3b8'
-  const divider = isDark ? '#334155' : '#f1f5f9'
-  const dropBg = isDark ? '#1e293b' : '#ffffff'
-  const dropBdr = isDark ? '#334155' : '#e2e8f0'
-  const selBg = 'rgba(212,175,55,0.18)'
-
   return (
     <div ref={ref} className="relative w-full" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* trigger button */}
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
-        className="w-full h-10 flex items-center rounded-xl border text-sm font-medium transition-all duration-200 outline-none"
-        style={{
-          background: bg,
-          borderColor: bdrClr,
-          boxShadow: open ? '0 0 0 3px rgba(212,175,55,0.18)' : '0 1px 3px rgba(0,0,0,0.08)',
-          paddingLeft: isRtl ? '28px' : (Icon ? '34px' : '12px'),
-          paddingRight: isRtl ? (Icon ? '34px' : '12px') : '28px',
-          color: value ? txtMain : txtPlh,
-        }}
+        className={
+          'flex items-center border rounded-xl outline-none w-full h-10 font-medium text-sm transition-all duration-200 ' +
+          'bg-white/90 dark:bg-slate-800/60 shadow-sm ' +
+          (open || value ? 'border-brand ring-2 ring-brand/20' : 'border-slate-200 dark:border-slate-600') + ' ' +
+          (value ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400') + ' ' +
+          (isRtl ? 'pl-7 ' + (Icon ? 'pr-9' : 'pr-3') : 'pr-7 ' + (Icon ? 'pl-9' : 'pl-3'))
+        }
       >
         {/* icon */}
         {Icon && (
-          <span className="absolute pointer-events-none" style={{ [isRtl ? 'right' : 'left']: '10px', color: '#D4AF37' }}>
+          <span className={"absolute pointer-events-none text-brand " + (isRtl ? 'right-2.5' : 'left-2.5')}>
             <Icon size={15} />
           </span>
         )}
         {/* label */}
-        <span className="flex-1 truncate text-start">{selected ? selected.label : placeholder}</span>
+        <span className="flex-1 text-start truncate">{selected ? selected.label : placeholder}</span>
         {/* chevron */}
         <span
-          className="absolute pointer-events-none transition-transform duration-200"
-          style={{ [isRtl ? 'left' : 'right']: '10px', color: txtPlh, transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+          className="absolute transition-transform duration-200 pointer-events-none"
+          style={{ [isRtl ? 'left' : 'right']: '10px', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
         >
+          <span className="text-slate-400 dark:text-slate-400">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <path d="m6 9 6 6 6-6" />
           </svg>
+          </span>
         </span>
       </button>
 
       {/* dropdown list */}
       {open && (
         <div
-          className="absolute z-50 mt-1 w-full rounded-xl border overflow-hidden"
-          style={{
-            background: dropBg,
-            borderColor: dropBdr,
-            boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.45)' : '0 8px 24px rgba(0,0,0,0.12)',
-            maxHeight: '220px',
-            overflowY: 'auto',
-          }}
+          className="z-50 absolute bg-white dark:bg-slate-800 shadow-[0_8px_24px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.45)] mt-1 border border-slate-200 dark:border-slate-600 rounded-xl w-full max-h-[220px] overflow-hidden overflow-y-auto"
         >
           {options.map((o) => (
             <button
               key={o.value}
               type="button"
               onClick={() => { onChange(o.value); setOpen(false) }}
-              className="w-full text-sm text-start px-4 py-2.5 transition-colors duration-150 font-medium"
-              style={{
-                background: o.value === value ? selBg : 'transparent',
-                color: o.value === value ? '#D4AF37' : txtMain,
-                borderBottom: `1px solid ${divider}`,
-              }}
-              onMouseEnter={(e) => { if (o.value !== value) e.currentTarget.style.background = bgHover }}
-              onMouseLeave={(e) => { if (o.value !== value) e.currentTarget.style.background = 'transparent' }}
+              className={
+                'px-4 py-2.5 w-full font-medium text-sm text-start transition-colors duration-150 border-b last:border-b-0 ' +
+                'border-slate-100 dark:border-slate-700 ' +
+                (o.value === value
+                  ? 'bg-brand/10 text-brand'
+                  : 'bg-transparent text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-white/[0.06]')
+              }
             >
               {o.label}
             </button>
@@ -404,27 +356,27 @@ export default function JoinTeachersPage() {
       </Modal>
 
       {/* ===== Main Split Layout ===== */}
-      <div className="relative z-10 flex flex-1">
+      <div className="z-10 relative flex flex-1">
 
         {/* Image Side — left */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-          className="hidden md:flex flex-1 items-center justify-center relative overflow-hidden"
+          className="hidden relative md:flex flex-1 justify-center items-center overflow-hidden"
         >
           <div
-            className="absolute rounded-full blur-3xl pointer-events-none opacity-40"
+            className="absolute opacity-40 blur-3xl rounded-full pointer-events-none"
             style={{
               width: '380px', height: '380px',
-              background: 'radial-gradient(circle, rgba(212,175,55,0.35) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(6,148,132,0.30) 0%, transparent 70%)',
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             }}
           />
           <motion.img
             src={joinus}
             alt="Join Us"
-            className="relative z-10 object-contain drop-shadow-2xl"
+            className="z-10 relative drop-shadow-2xl object-contain"
             style={{ maxHeight: '100vh', maxWidth: '100%' }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
@@ -436,21 +388,21 @@ export default function JoinTeachersPage() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex flex-col justify-start w-full md:w-1/2 px-8 md:px-14 py-10"
+          className="flex flex-col justify-start px-8 md:px-14 py-10 w-full md:w-1/2"
         >
           {/* Header */}
           <div className="mb-7" dir={isRtl ? 'rtl' : 'ltr'}>
-            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">
+            <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl">
               {isRtl ? (
                 <>
                   انضم إلى{' '}
-                  <span style={{ color: '#D4AF37' }}>فريقنا</span>
+                  <span className="text-brand">فريقنا</span>
                 </>
               ) : (
-                <><span style={{ color: '#D4AF37' }}>Join</span>{' our Team'}</>
+                <><span className="text-brand">Join</span>{' our Team'}</>
               )}
             </h1>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            <p className="mt-2 text-slate-600 dark:text-slate-400 text-sm">
               {isRtl ? 'سجّل بياناتك وسنقوم بالتواصل معك في أقرب وقت' : 'Fill in your details and we will get back to you soon'}
             </p>
           </div>
@@ -459,18 +411,18 @@ export default function JoinTeachersPage() {
           <form onSubmit={onSubmit} className="flex flex-col gap-5" dir={isRtl ? 'rtl' : 'ltr'}>
 
             {/* Section label */}
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-700 pb-1">
+            <p className="pb-1 border-slate-200 dark:border-slate-700 border-b font-bold text-slate-400 text-xs uppercase tracking-widest">
               {isRtl ? 'الاسم الرباعي' : 'Full Name'}
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="gap-4 grid grid-cols-2">
               <LineInput icon={User} placeholder={isRtl ? 'الاسم الأول' : 'First name'}
                 value={firstName} onChange={(e) => setFirstName(e.target.value)} />
               <LineInput icon={User} placeholder={isRtl ? 'الاسم الثاني' : 'Second name'}
                 value={secondName} onChange={(e) => setSecondName(e.target.value)} />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="gap-4 grid grid-cols-2">
               <LineInput icon={User} placeholder={isRtl ? 'الاسم الثالث' : 'Third name'}
                 value={thirdName} onChange={(e) => setThirdName(e.target.value)} />
               <LineInput icon={User} placeholder={isRtl ? 'الاسم الأخير' : 'Last name'}
@@ -478,18 +430,18 @@ export default function JoinTeachersPage() {
             </div>
 
             {/* Section label */}
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-700 pb-1 mt-1">
+            <p className="mt-1 pb-1 border-slate-200 dark:border-slate-700 border-b font-bold text-slate-400 text-xs uppercase tracking-widest">
               {isRtl ? 'البيانات الشخصية' : 'Personal Info'}
             </p>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="gap-4 grid grid-cols-2">
               <LineInput icon={Phone} placeholder={isRtl ? 'رقم الهاتف' : 'Phone'}
                 value={phone} onChange={(e) => setPhone(e.target.value)} />
               <LineInput icon={Mail} placeholder="Email" type="email" autoComplete="email"
                 value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="gap-4 grid grid-cols-2">
               <LineInput icon={CreditCard} placeholder={isRtl ? 'الرقم القومي' : 'National ID'}
                 value={nationalId} onChange={(e) => setNationalId(e.target.value)} />
               <LineSelect icon={MapPin} placeholder={isRtl ? 'المحافظة' : 'Governorate'}
@@ -497,29 +449,29 @@ export default function JoinTeachersPage() {
             </div>
 
             {/* Section label */}
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-700 pb-1 mt-1">
+            <p className="mt-1 pb-1 border-slate-200 dark:border-slate-700 border-b font-bold text-slate-400 text-xs uppercase tracking-widest">
               {isRtl ? 'بيانات العمل' : 'Work Info'}
             </p>
 
             <LineSelect icon={Briefcase} placeholder={isRtl ? 'الوظيفة' : 'Job title'}
               value={jobTitle} onChange={setJobTitle} options={jobOptions} />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="gap-4 grid grid-cols-2">
               <LineInput icon={BookOpen} placeholder={isRtl ? 'المادة (إن وجد)' : 'Subject (if any)'}
                 value={subject} onChange={(e) => setSubject(e.target.value)} />
               <LineInput icon={Banknote} placeholder={isRtl ? 'الراتب المتوقع' : 'Expected salary'}
                 value={expectedSalary} onChange={(e) => setExpectedSalary(e.target.value)} />
             </div>
 
-            <LineTextarea icon={MessageSquare} placeholder={isRtl ? 'هتضيف ايه لبيرفكت ؟' : 'What would you add to Perfect?'}
+            <LineTextarea icon={MessageSquare} placeholder={isRtl ? 'هتضيف ايه لأُفُق ؟' : 'What would you add to Ufuq?'}
               value={notes} onChange={(e) => setNotes(e.target.value)} />
 
             {/* Section label */}
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-200 dark:border-slate-700 pb-1 mt-1">
+            <p className="mt-1 pb-1 border-slate-200 dark:border-slate-700 border-b font-bold text-slate-400 text-xs uppercase tracking-widest">
               {isRtl ? 'المرفقات' : 'Attachments'}
             </p>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
               {/* CV Upload */}
               <div className="flex flex-col gap-2">
                 <input
@@ -535,15 +487,15 @@ export default function JoinTeachersPage() {
                 />
                 <label
                   htmlFor="teacher-cv-upload"
-                  className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                  className="flex flex-col justify-center items-center hover:bg-slate-50 dark:hover:bg-slate-800/50 border-2 border-slate-300 dark:border-slate-600 border-dashed rounded-xl h-24 transition-colors cursor-pointer"
                 >
-                  <FileText className="w-6 h-6 text-slate-400 mb-1 pointer-events-none" />
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-300 pointer-events-none">
+                  <FileText className="mb-1 w-6 h-6 text-slate-400 pointer-events-none" />
+                  <span className="font-medium text-slate-600 dark:text-slate-300 text-xs pointer-events-none">
                     {cvUploading ? (isRtl ? 'جاري الرفع...' : 'Uploading...') : (isRtl ? 'رفع الـ CV' : 'Upload CV')}
                   </span>
                 </label>
                 {(cvFile?.name || cvUrl) && (
-                  <div className="text-[11px] text-brand font-medium truncate px-1">
+                  <div className="px-1 font-medium text-[11px] text-brand truncate">
                     {cvUrl ? (isRtl ? 'تم الرفع بنجاح ✓' : 'Uploaded successfully ✓') : cvFile?.name}
                   </div>
                 )}
@@ -564,15 +516,15 @@ export default function JoinTeachersPage() {
                 />
                 <label
                   htmlFor="teacher-photo-upload"
-                  className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                  className="flex flex-col justify-center items-center hover:bg-slate-50 dark:hover:bg-slate-800/50 border-2 border-slate-300 dark:border-slate-600 border-dashed rounded-xl h-24 transition-colors cursor-pointer"
                 >
-                  <ImageIcon className="w-6 h-6 text-slate-400 mb-1 pointer-events-none" />
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-300 pointer-events-none">
+                  <ImageIcon className="mb-1 w-6 h-6 text-slate-400 pointer-events-none" />
+                  <span className="font-medium text-slate-600 dark:text-slate-300 text-xs pointer-events-none">
                     {photoUploading ? (isRtl ? 'جاري الرفع...' : 'Uploading...') : (isRtl ? 'رفع صورة شخصية' : 'Upload photo')}
                   </span>
                 </label>
                 {(photoFile?.name || photoUrl) && (
-                  <div className="text-[11px] text-brand font-medium truncate px-1">
+                  <div className="px-1 font-medium text-[11px] text-brand truncate">
                     {photoUrl ? (isRtl ? 'تم الرفع بنجاح ✓' : 'Uploaded successfully ✓') : photoFile?.name}
                   </div>
                 )}
@@ -581,7 +533,7 @@ export default function JoinTeachersPage() {
 
             {/* Errors / Success */}
             {error && (
-              <div className="text-red-500 text-sm bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 rounded-xl px-4 py-2 mt-2">
+              <div className="bg-red-50 dark:bg-red-950/30 mt-2 px-4 py-2 border border-red-200 dark:border-red-900/40 rounded-xl text-red-500 text-sm">
                 {error}
               </div>
             )}
@@ -592,12 +544,11 @@ export default function JoinTeachersPage() {
               disabled={loading}
               whileHover={{ scale: loading ? 1 : 1.02 }}
               whileTap={{ scale: loading ? 1 : 0.98 }}
-              className="w-full h-12 rounded-2xl font-bold text-base text-white shadow-md flex items-center justify-center gap-2 transition-all mt-4"
-              style={{
-                background: 'linear-gradient(110deg, #D4AF37, #ffc400)',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.8 : 1,
-              }}
+              className={
+                'flex justify-center items-center gap-2 shadow-md mt-4 rounded-2xl w-full h-12 font-bold text-white text-base transition-all ' +
+                'bg-gradient-to-r from-brand to-brand-600 ' +
+                (loading ? 'opacity-80 cursor-not-allowed' : 'hover:brightness-110 active:brightness-95')
+              }
             >
               {loading ? (
                 <span className="flex items-center gap-2">

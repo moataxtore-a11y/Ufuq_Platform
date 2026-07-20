@@ -143,7 +143,7 @@ export default function TeacherAssessmentsPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -166,8 +166,8 @@ export default function TeacherAssessmentsPage() {
             className={
               'text-center rounded-2xl border p-4 transition ' +
               (isAllMode
-                ? 'border-[rgba(244,206,125,0.65)] bg-[rgba(244,206,125,0.18)]'
-                : 'border-black/5 bg-white hover:border-[rgba(244,206,125,0.55)] dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-[rgba(244,206,125,0.55)]')
+                ? 'border-brand/60 bg-brand/15'
+                : 'border-black/5 bg-white hover:border-brand/40 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-brand/40')
             }
           >
             <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{safeT('assessmentsPage.allAssessments', 'كل الاختبارات')}</div>
@@ -187,8 +187,8 @@ export default function TeacherAssessmentsPage() {
                 className={
                   'text-center rounded-2xl border p-4 transition ' +
                   (active
-                    ? 'border-[rgba(244,206,125,0.65)] bg-[rgba(244,206,125,0.18)]'
-                    : 'border-black/5 bg-white hover:border-[rgba(244,206,125,0.55)] dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-[rgba(244,206,125,0.55)]')
+                    ? 'border-brand/60 bg-brand/15'
+                    : 'border-black/5 bg-white hover:border-brand/40 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-brand/40')
                 }
               >
                 <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{c.title}</div>

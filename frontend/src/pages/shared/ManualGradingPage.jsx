@@ -181,7 +181,7 @@ export default function ManualGradingPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('manualGrading.subtitle')}</div>
@@ -224,7 +224,7 @@ export default function ManualGradingPage() {
                             {isRtl ? '✓ مصحح' : '✓ Graded'}
                           </span>
                         ) : (
-                          <span className="bg-amber-100 dark:bg-amber-400/15 px-2 py-0.5 rounded-full font-semibold text-amber-700 dark:text-amber-400 text-xs">
+                          <span className="bg-brand/10 dark:bg-brand/20 px-2 py-0.5 rounded-full font-semibold text-brand dark:text-brand-200 text-xs">
                             {isRtl ? '⏳ معلق' : '⏳ Pending'}
                           </span>
                         )}
@@ -233,7 +233,7 @@ export default function ManualGradingPage() {
                         {t('manualGrading.student')}: {a?.student?.name || '-'} ({a?.student?.email || '-'})
                       </div>
                       <div className="text-slate-500 dark:text-slate-400 text-xs">{t('manualGrading.submitted')}: {fmt(a?.submittedAt)}</div>
-                      <div className="text-slate-500 dark:text-slate-400 text-xs flex items-center gap-2">
+                      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs">
                         {t('manualGrading.auto')}: <ScorePill score={typeof a?.autoGradedScore === 'number' ? a.autoGradedScore : 0} maxScore={typeof a?.maxScore === 'number' ? a.maxScore : null} className="ml-2" />
                         {a.status === 'graded' && typeof a.score === 'number' && (
                           <>
@@ -300,7 +300,7 @@ export default function ManualGradingPage() {
                             {isRtl ? '✓ مصحح' : '✓ Graded'}
                           </span>
                         ) : (
-                          <span className="bg-amber-100 dark:bg-amber-400/15 px-2 py-0.5 rounded-full font-semibold text-amber-700 dark:text-amber-400 text-xs">
+                          <span className="bg-brand/10 dark:bg-brand/20 px-2 py-0.5 rounded-full font-semibold text-brand dark:text-brand-200 text-xs">
                             {isRtl ? '⏳ معلق' : '⏳ Pending'}
                           </span>
                         )}
@@ -315,7 +315,7 @@ export default function ManualGradingPage() {
                         <button
                           type="button"
                           onClick={() => openSubmissionUrl(s.contentUrl)}
-                          className="inline-flex items-center gap-1 w-fit font-medium text-amber-600 dark:text-amber-400 text-xs hover:underline"
+                          className="inline-flex items-center gap-1 w-fit font-medium text-brand text-xs hover:underline"
                         >
                           {/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|png|jpg|jpeg|gif|webp|mp4|mp3)(\?|$)/i.test(s.contentUrl)
                             ? (isRtl ? '📎 عرض الملف المرفق' : '📎 View attachment')
@@ -408,7 +408,7 @@ export default function ManualGradingPage() {
                               <button
                                 type="button"
                                 onClick={() => openSubmissionUrl(displayValue)}
-                                className="inline-flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-400/10 dark:hover:bg-amber-400/20 px-3 py-1.5 border border-amber-200 dark:border-amber-400/20 rounded-lg font-medium text-amber-700 dark:text-amber-400 text-xs transition-colors"
+                                className="inline-flex items-center gap-1.5 bg-brand/10 hover:bg-brand/15 dark:bg-brand/20 dark:hover:bg-brand/25 px-3 py-1.5 border border-brand/20 dark:border-brand/25 rounded-lg font-medium text-brand dark:text-brand-200 text-xs transition-colors"
                               >
                                 <span>📎</span>
                                 <span>{isRtl ? 'عرض الملف المرفوع' : 'Open uploaded file'}</span>
@@ -486,7 +486,7 @@ export default function ManualGradingPage() {
                   <button
                     type="button"
                     onClick={() => openSubmissionUrl(selectedSub.contentUrl)}
-                    className="inline-flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-400/10 dark:hover:bg-amber-400/20 px-3 py-1.5 border border-amber-200 dark:border-amber-400/20 rounded-lg font-medium text-amber-700 dark:text-amber-400 text-xs transition-colors"
+                    className="inline-flex items-center gap-1.5 bg-brand/10 hover:bg-brand/15 dark:bg-brand/20 dark:hover:bg-brand/25 px-3 py-1.5 border border-brand/20 dark:border-brand/25 rounded-lg font-medium text-brand dark:text-brand-200 text-xs transition-colors"
                   >
                     {/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|png|jpg|jpeg|gif|webp|mp4|mp3)(\?|$)/i.test(selectedSub.contentUrl)
                       ? (isRtl ? '📎 عرض الملف المرفق' : '📎 View attachment')

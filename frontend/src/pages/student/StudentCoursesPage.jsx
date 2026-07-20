@@ -4,15 +4,14 @@ import { api } from '../../utils/api.js'
 import Spinner from '../../components/ui/Spinner.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
 export default function StudentCoursesPage() {
   const { notify } = useToast()
   const navigate = useNavigate()
+  const { isRtl, t } = useLanguage()
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
-
-  const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-  const isRtl = lang === 'ar'
 
   useEffect(() => {
     let mounted = true
@@ -22,7 +21,7 @@ export default function StudentCoursesPage() {
         const res = await api.get('/courses/mine')
         if (mounted) setCourses(res.data)
       } catch (e) {
-        notify({ title: 'Failed to load courses', description: e?.response?.data?.message || 'Error', variant: 'destructive' })
+        notify({ title: t('studentCourses.failedToLoad'), description: e?.response?.data?.message || t('common.error'), variant: 'destructive' })
       } finally {
         if (mounted) setLoading(false)
       }
@@ -31,13 +30,13 @@ export default function StudentCoursesPage() {
     return () => {
       mounted = false
     }
-  }, [notify])
+  }, [notify, t])
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-slate-700">
+      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200" dir={isRtl ? 'rtl' : 'ltr'}>
         <Spinner />
-        Loading...
+        {t('studentCourses.loading')}
       </div>
     )
   }
@@ -45,8 +44,8 @@ export default function StudentCoursesPage() {
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="gap-4 grid">
       <div className={isRtl ? 'text-right' : 'text-left'}>
-        <div className="font-semibold text-slate-900 dark:text-white text-lg tracking-tight">My Courses</div>
-        <div className="text-slate-700 dark:text-slate-200 text-sm">Courses you are enrolled in.</div>
+        <div className="font-semibold text-slate-900 dark:text-white text-lg tracking-tight">{t('studentCourses.title')}</div>
+        <div className="text-slate-700 dark:text-slate-200 text-sm">{t('studentCourses.subtitle')}</div>
       </div>
 
       <div className="app-grid-cards">
@@ -55,8 +54,8 @@ export default function StudentCoursesPage() {
             <CourseCard
               course={c}
               isRtl={isRtl}
-              badge={isRtl ? 'كورس' : 'Course'}
-              ctaLabel={isRtl ? 'الدخول للكورس' : 'Enter course'}
+              badge={t('studentCourses.badge')}
+              ctaLabel={t('studentCourses.enterCourse')}
               onOpen={() => navigate(`/student/courses/${c._id}`)}
             />
           </div>

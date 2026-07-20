@@ -4,14 +4,13 @@ import { api } from '../../utils/api.js'
 import { useToast } from '../../components/ui/toast.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
 import Button from '../../components/ui/Button.jsx'
+import { useLanguage } from '../../context/LanguageContext.jsx'
 
 export default function StudentAssessmentResultPage() {
   const { attemptId } = useParams()
   const { notify } = useToast()
   const navigate = useNavigate()
-
-  const lang = typeof document !== 'undefined' && document.documentElement.dir === 'rtl' ? 'ar' : 'en'
-  const isRtl = lang === 'ar'
+  const { isRtl } = useLanguage()
 
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState(null)
@@ -103,7 +102,7 @@ export default function StudentAssessmentResultPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
 
@@ -124,7 +123,7 @@ export default function StudentAssessmentResultPage() {
                     : ratio < 0.5
                       ? 'bg-rose-500'
                       : ratio < 0.75
-                        ? 'bg-[#EAB308]'
+                        ? 'bg-brand'
                         : 'bg-emerald-500'
 
                   const scoreTextCls = ratio === null
@@ -132,7 +131,7 @@ export default function StudentAssessmentResultPage() {
                     : ratio < 0.5
                       ? 'text-rose-700 dark:text-rose-200'
                       : ratio < 0.75
-                        ? 'text-[#EAB308]'
+                        ? 'text-brand'
                         : 'text-emerald-700 dark:text-emerald-200'
 
                   const scoreText = score !== null && maxScore !== null
@@ -205,7 +204,7 @@ export default function StudentAssessmentResultPage() {
                           ? boolLabel(a.booleanAnswer)
                           : q.type === 'file_upload'
                             ? (a.fileUrl
-                              ? <a href={a.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 font-semibold text-xs hover:underline">
+                              ? <a href={a.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-teal-100 dark:bg-teal-900/30 px-3 py-1.5 rounded-lg font-semibold text-teal-700 dark:text-teal-300 text-xs hover:underline">
                                 <span>📎</span>
                                 <span>{isRtl ? 'عرض الملف' : 'View File'}</span>
                               </a>
@@ -238,7 +237,7 @@ export default function StudentAssessmentResultPage() {
                   ) : null}
 
                   {!canJudge && (q.type === 'essay' || q.type === 'file_upload') ? (
-                    <div className="bg-amber-50 dark:bg-amber-200/10 p-3 border border-amber-200 dark:border-amber-200/30 rounded-xl text-amber-900 dark:text-amber-200">
+                    <div className="bg-brand/10 dark:bg-brand/20 p-3 border border-brand/20 dark:border-brand/30 rounded-xl text-brand-700 dark:text-brand-200">
                       {isRtl ? 'قد يحتاج هذا السؤال إلى تصحيح يدوي.' : 'Manual grading may apply.'}
                     </div>
                   ) : null}

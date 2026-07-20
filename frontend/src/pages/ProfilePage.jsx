@@ -265,7 +265,7 @@ export default function ProfilePage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('profilePage.subtitle')}</div>
@@ -284,7 +284,7 @@ export default function ProfilePage() {
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="avatar" className="border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-cover" />
                 ) : (
-                  <img src={defaultProfileAvatar} alt="avatar" className="border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-cover opacity-80" />
+                  <img src={defaultProfileAvatar} alt="avatar" className="opacity-80 border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-cover" />
                 )}
                 <div className="flex flex-wrap items-center gap-2">
                   <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => setAvatarFile(e.target.files?.[0] || null)} />
@@ -329,7 +329,7 @@ export default function ProfilePage() {
 
             {/* ── Student Info ── */}
             {isStudent && (
-              <div className="gap-3 grid border-t border-black/5 dark:border-white/10 pt-4">
+              <div className="gap-3 grid pt-4 border-black/5 dark:border-white/10 border-t">
                 <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
                   {isRtl ? 'بيانات الطالب' : 'Student Info'}
                 </div>
@@ -372,7 +372,7 @@ export default function ProfilePage() {
 
             {/* ── Staff / Teacher Info ── */}
             {isStaff && (
-              <div className="gap-3 grid border-t border-black/5 dark:border-white/10 pt-4">
+              <div className="gap-3 grid pt-4 border-black/5 dark:border-white/10 border-t">
                 <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
                   {isRtl ? '💼 بيانات الوظيفة' : '💼 Job Info'}
                 </div>
@@ -404,7 +404,7 @@ export default function ProfilePage() {
                       </Button>
                       {cvFile && <span className="text-slate-500 text-xs">{cvFile.name}</span>}
                       {cvUrl && !cvFile && (
-                        <a href={cvUrl} target="_blank" rel="noreferrer" className="text-brand underline underline-offset-4 text-xs">
+                        <a href={cvUrl} target="_blank" rel="noreferrer" className="text-brand text-xs underline underline-offset-4">
                           {isRtl ? 'عرض الـ CV الحالي' : 'View current CV'}
                         </a>
                       )}

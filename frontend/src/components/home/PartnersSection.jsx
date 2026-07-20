@@ -19,7 +19,7 @@ export default function PartnersSection() {
         {logos.map((x) => (
           <div
             key={x}
-            className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] border border-black/5 dark:border-white/10 rounded-2xl h-14 font-semibold text-slate-600 dark:text-slate-300 text-sm"
+            className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] shadow-[0_4px_12px_rgba(15,23,42,0.04)] border border-black/5 dark:border-white/10 rounded-2xl h-14 font-semibold text-slate-600 dark:text-slate-300 text-sm"
           >
             {x}
           </div>

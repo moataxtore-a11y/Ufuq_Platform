@@ -4,8 +4,8 @@ import defaultProfileAvatar from '../../cvg/profile.svg'
 function PhotoPlaceholder({ name }) {
   return (
     <div className="relative bg-[rgb(247,244,236)] dark:bg-[#202020] shadow-[0_18px_44px_rgba(15,23,42,0.10)] dark:shadow-none border border-black/10 dark:border-white/10 rounded-3xl w-32 sm:w-44 h-32 sm:h-44 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.26),transparent_55%)]" />
-      <img src={defaultProfileAvatar} alt={name || 'Teacher'} className="relative z-10 w-full h-full object-cover opacity-80" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
+      <img src={defaultProfileAvatar} alt={name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-cover" />
     </div>
   )
 }
@@ -65,7 +65,7 @@ export default function TeacherCard({ teacher, action }) {
                 </span>
               ) : null}
               {sectionLabels.map((lbl) => (
-                <span key={lbl} className="inline-flex items-center bg-amber-50 dark:bg-amber-200/10 px-3 py-1 border border-amber-200/70 dark:border-amber-200/30 rounded-full font-semibold text-amber-900 dark:text-amber-200 text-xs">
+                <span key={lbl} className="inline-flex items-center bg-brand/10 px-3 py-1 border border-brand/20 rounded-full font-semibold text-brand dark:text-brand-200 text-xs">
                   {lbl}
                 </span>
               ))}

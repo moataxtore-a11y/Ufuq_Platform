@@ -4,6 +4,7 @@ const attachmentItemSchema = new mongoose.Schema({
     name: { type: String, default: '' },
     description: { type: String, default: '' },
     url: { type: String, default: '' },
+    publicId: { type: String, default: '' },   // Cloudinary public_id for secure video URL generation
     storageRef: { type: String, default: '' },
     durationSec: { type: Number, default: null }
 }, { _id: false })
@@ -24,6 +25,7 @@ const lessonSchema = new mongoose.Schema({
     isFree: { type: Boolean, default: false },
     coverImageUrl: { type: String, default: '' },
     videoUrl: { type: String, default: '' },
+    videoPublicId: { type: String, default: '' },   // Cloudinary public_id for the main video
     pdfUrl: { type: String, default: '' },
     imageUrls: { type: [String], default: [] },
     contentSections: { type: [lessonSectionSchema], default: [] },

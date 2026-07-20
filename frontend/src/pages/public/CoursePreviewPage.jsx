@@ -23,6 +23,7 @@ export default function CoursePreviewPage() {
   const { notify } = useToast()
 
   const loggedIn = Boolean(auth?.token)
+  const isAdmin = auth?.user?.role === 'admin'
 
   const [enrolled, setEnrolled] = useState(false)
 
@@ -48,10 +49,10 @@ export default function CoursePreviewPage() {
       try {
         const [outlineRes, mineRes] = await Promise.all([
           api.get(`/courses/${courseId}/outline`),
-          loggedIn ? api.get('/courses/mine').catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
+          loggedIn && !isAdmin ? api.get('/courses/mine').catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
         ])
         const mine = Array.isArray(mineRes?.data) ? mineRes.data : []
-        const isInMine = mine.some((c) => String(c?._id || c?.id) === String(courseId))
+        const isInMine = isAdmin || mine.some((c) => String(c?._id || c?.id) === String(courseId))
         if (alive) setEnrolled(Boolean(isInMine))
 
         const res = outlineRes
@@ -66,7 +67,7 @@ export default function CoursePreviewPage() {
     return () => {
       alive = false
     }
-  }, [courseId, loggedIn])
+  }, [courseId, loggedIn, isAdmin])
 
   const title = state.data?.title || (isRtl ? 'الكورس' : 'Course')
   const thumb = state.data?.thumbnailUrl || ''
@@ -74,6 +75,7 @@ export default function CoursePreviewPage() {
   const courseIsFree = Boolean(state.data?.isFree) || Number(state.data?.price || 0) <= 0
 
   function enterCourseHref() {
+    if (auth?.role === 'admin') return `/admin/courses/${courseId}`
     if (auth?.role === 'teacher') return `/teacher/courses/${courseId}`
     if (auth?.role === 'team') return `/team/courses/${courseId}`
     if (auth?.role === 'student') return `/student/courses/${courseId}`
@@ -81,6 +83,7 @@ export default function CoursePreviewPage() {
   }
 
   function ensureCanOpenLockedContent() {
+    if (isAdmin) return true
     if (!loggedIn) {
       notify({
         title: isRtl ? 'سجل الدخول أولًا' : 'Login required',
@@ -108,6 +111,13 @@ export default function CoursePreviewPage() {
     const list = state.data?.units
     return Array.isArray(list) ? list : []
   }, [state.data])
+
+  const visibleUnits = useMemo(() => {
+    return (Array.isArray(units) ? units : []).filter((u) => {
+      const t = String(u?.title || '').trim()
+      return !(t === 'جزء المرفقات' || t === 'Attachments' || t === 'المرفقات' || t === 'مرفقات')
+    })
+  }, [units])
 
   function isHttpUrl(u) {
     if (!u) return false
@@ -339,10 +349,10 @@ export default function CoursePreviewPage() {
             discountPercent={state.data?.discountPercent || 0}
             createdAt={state.data?.createdAt}
             updatedAt={state.data?.updatedAt}
-            status={enrolled ? (courseIsFree ? 'free' : 'available') : 'locked'}
+            status={(enrolled || isAdmin) ? (courseIsFree ? 'free' : 'available') : 'locked'}
             primaryAction={{
               label: loggedIn
-                ? (enrolled
+                ? ((enrolled || isAdmin)
                   ? (isRtl ? 'الدخول للكورس' : 'Enter course')
                   : (courseIsFree ? (isRtl ? 'لوحة التحكم' : 'Dashboard') : (isRtl ? 'الاشتراك والدفع' : 'Checkout')))
                 : (isRtl ? 'تسجيل الدخول' : 'Login'),
@@ -351,7 +361,7 @@ export default function CoursePreviewPage() {
                   navigate('/login')
                   return
                 }
-                if (enrolled) {
+                if (enrolled || isAdmin) {
                   navigate(enterCourseHref())
                   return
                 }
@@ -395,10 +405,9 @@ export default function CoursePreviewPage() {
               <div className="font-semibold text-slate-900 dark:text-white">
                 {isRtl ? 'المحاضرات' : 'Lectures'}
               </div>
-            </div>
 
-            <div className="gap-4 grid">
-              {units.length === 0 ? (
+              <div className="gap-4 grid mt-4">
+              {visibleUnits.length === 0 ? (
                 <div className="py-10">
                   <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                     <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
@@ -408,7 +417,7 @@ export default function CoursePreviewPage() {
                   </div>
                 </div>
               ) : (
-                units.map((u) => (
+                visibleUnits.map((u) => (
                   <div key={u.id} className="bg-white dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden">
                     <button
                       type="button"
@@ -429,7 +438,7 @@ export default function CoursePreviewPage() {
                       </div>
 
                       <div className={isRtl ? 'text-right pr-12' : 'text-left pl-12'}>
-                        <div className="font-extrabold text-[22px] truncate">{u.title}</div>
+                        <div className="font-extrabold text-[22px] truncate">{u.title ? u.title.replace(/^جزء (من )?/, '') : ''}</div>
                       </div>
                     </button>
 
@@ -493,6 +502,7 @@ export default function CoursePreviewPage() {
                   </div>
                 ))
               )}
+              </div>
             </div>
           </>
         ) : null}

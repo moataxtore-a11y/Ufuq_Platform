@@ -238,10 +238,10 @@ export default function CreateAssessmentModal({
                             setCoursePickerOpen(false)
                           }}
                           className={
-                            'text-left rounded-xl border px-3 py-2 transition ' +
+                            'rounded-xl border px-3 py-2 transition ' +
                             (active
-                              ? 'border-[rgba(244,206,125,0.65)] bg-[rgba(244,206,125,0.18)] dark:bg-[rgba(244,206,125,0.1)]'
-                              : 'border-black/5 dark:border-white/10 hover:border-[rgba(244,206,125,0.55)] dark:hover:border-[rgba(244,206,125,0.55)] hover:bg-slate-50 dark:hover:bg-neutral-800')
+                              ? 'border-brand/60 bg-brand/10 dark:bg-brand/5'
+                              : 'border-black/5 dark:border-white/10 hover:border-brand/40 dark:hover:border-brand/40 hover:bg-slate-50 dark:hover:bg-neutral-800')
                           }
                         >
                           <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm truncate">{c.title}</div>
@@ -267,7 +267,7 @@ export default function CreateAssessmentModal({
                   onClick={() => setType('quiz')}
                   className={
                     'rounded-lg px-3 py-2 text-sm font-semibold transition ' +
-                    (type === 'quiz' ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
+                    (type === 'quiz' ? 'bg-brand/20 text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
                   }
                 >
                   {t('createAssessmentModal.quiz')}
@@ -277,7 +277,7 @@ export default function CreateAssessmentModal({
                   onClick={() => setType('exam')}
                   className={
                     'rounded-lg px-3 py-2 text-sm font-semibold transition ' +
-                    (type === 'exam' ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
+                    (type === 'exam' ? 'bg-brand/20 text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
                   }
                 >
                   {t('createAssessmentModal.exam')}
@@ -287,7 +287,7 @@ export default function CreateAssessmentModal({
                   onClick={() => setType('homework')}
                   className={
                     'rounded-lg px-3 py-2 text-sm font-semibold transition ' +
-                    (type === 'homework' ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
+                    (type === 'homework' ? 'bg-brand/20 text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-neutral-800')
                   }
                 >
                   <span className={'inline-flex items-center justify-center gap-2 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
@@ -526,7 +526,7 @@ export default function CreateAssessmentModal({
                 ) : null}
 
                 {q.type === 'essay' || q.type === 'file_upload' ? (
-                  <div className="bg-amber-50 p-3 border border-amber-200 rounded-lg text-amber-900 text-sm">
+                  <div className="bg-brand/10 p-3 border border-brand/20 rounded-lg text-brand-700 dark:text-brand-300 text-sm">
                     {t('createAssessmentModal.manualGradingRequired')}
                   </div>
                 ) : null}

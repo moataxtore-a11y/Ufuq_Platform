@@ -166,7 +166,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
                 <Button
                   type="button"
                   variant="secondary"
-                  className="bg-[#EAB308] hover:bg-[#EAB308]/90 dark:bg-[#EAB308] dark:hover:bg-[#EAB308]/90 px-4 sm:px-5 py-1.5 h-auto min-h-[36px] sm:min-h-[40px] text-slate-900 text-sm sm:text-base w-full sm:w-auto whitespace-normal text-center leading-tight"
+                  className="bg-brand hover:bg-brand-600 dark:bg-brand dark:hover:bg-brand-600 px-4 sm:px-5 py-1.5 w-full sm:w-auto h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base text-center leading-tight whitespace-normal"
                   onClick={() => openMedia?.({ kind: 'video', url: v.url, title: itemTitle(v, isRtl ? 'فيديو' : 'Video') })}
                 >
                   {isRtl ? 'مشاهدة الفيديو' : 'Play'}
@@ -188,7 +188,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
                 <Button
                   type="button"
                   variant="secondary"
-                  className="bg-[#60A5FA] hover:bg-[#60A5FA]/90 dark:bg-[#60A5FA] dark:hover:bg-[#60A5FA]/90 px-4 sm:px-5 py-1.5 h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base w-full sm:w-auto whitespace-normal text-center leading-tight"
+                  className="bg-[#60A5FA] hover:bg-[#60A5FA]/90 dark:bg-[#60A5FA] dark:hover:bg-[#60A5FA]/90 px-4 sm:px-5 py-1.5 w-full sm:w-auto h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base text-center leading-tight whitespace-normal"
                   onClick={() => {
                     openSigned?.(p.url, itemTitle(p, 'PDF'))
                   }}
@@ -212,7 +212,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
                 <Button
                   type="button"
                   variant="secondary"
-                  className="bg-[#EAB308] hover:bg-[#EAB308]/90 dark:bg-[#EAB308] dark:hover:bg-[#EAB308]/90 px-4 sm:px-5 py-1.5 h-auto min-h-[36px] sm:min-h-[40px] text-slate-900 text-sm sm:text-base w-full sm:w-auto whitespace-normal text-center leading-tight"
+                  className="bg-brand hover:bg-brand-600 dark:bg-brand dark:hover:bg-brand-600 px-4 sm:px-5 py-1.5 w-full sm:w-auto h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base text-center leading-tight whitespace-normal"
                   onClick={() => openMedia?.({ kind: 'image', url: img.url, title: itemTitle(img, isRtl ? 'صورة' : 'Image') })}
                 >
                   {isRtl ? 'فتح الصورة' : 'Open'}
@@ -288,14 +288,14 @@ export default function StudentCourseDetailPage() {
   const attachmentsUnit = useMemo(() => {
     return (Array.isArray(units) ? units : []).find((u) => {
       const t = String(u?.title || '').trim()
-      return t === 'جزء المرفقات' || t === 'Attachments'
+      return t === 'جزء المرفقات' || t === 'Attachments' || t === 'المرفقات' || t === 'مرفقات'
     })
   }, [units])
 
   const visibleUnits = useMemo(() => {
     return (Array.isArray(units) ? units : []).filter((u) => {
       const t = String(u?.title || '').trim()
-      return !(t === 'جزء المرفقات' || t === 'Attachments')
+      return !(t === 'جزء المرفقات' || t === 'Attachments' || t === 'المرفقات' || t === 'مرفقات')
     })
   }, [units])
   const [loading, setLoading] = useState(true)
@@ -314,6 +314,7 @@ export default function StudentCourseDetailPage() {
 
   async function ensureFreeCourseAddedToMine() {
     if (!auth?.token) return
+    if (auth?.role === 'admin') return // Admins can see everything
     if (auth?.role !== 'student') return
     if (!courseId) return
     if (!isCourseFree) return
@@ -378,6 +379,10 @@ export default function StudentCourseDetailPage() {
     } catch (e) {
       const msg = e?.response?.data?.message || 'Error'
       if (String(msg).toLowerCase().includes('locked') || String(msg).toLowerCase().includes('forbidden')) {
+        if (auth?.user?.role === 'admin') {
+          // Admin shouldn't be locked out, but if they are, they should still see full content
+          setLockedCourseInfo(null)
+        }
         try {
           const out = await api.get(`/courses/${courseId}/outline`)
           const outlineCourse = out?.data || null
@@ -490,11 +495,20 @@ export default function StudentCourseDetailPage() {
   const activeUnit = useMemo(() => units.find((u) => u._id === activeUnitId) || null, [units, activeUnitId])
 
   const lockedUnits = useMemo(() => {
+    if (auth?.user?.role === 'admin') return [] // Admins don't see locked view
     const list = Array.isArray(lockedCourseInfo?.units) ? lockedCourseInfo.units : []
-    return list
+    return list.filter((u) => {
+      const t = String(u?.title || '').trim()
+      // Skip attachments unit in locked view
+      if (t === 'جزء المرفقات' || t === 'المرفقات' || t === 'Attachments' || t === 'مرفقات') return false
+      // Skip empty units
+      if (!(Array.isArray(u?.lessons) && u.lessons.length > 0)) return false
+      return true
+    })
   }, [lockedCourseInfo])
 
   const lockedHasContent = useMemo(() => {
+    if (auth?.user?.role === 'admin') return true
     if (!lockedCourseInfo || Boolean(lockedCourseInfo?.isFree) || Number(lockedCourseInfo?.price || 0) <= 0) return true
     if (!lockedUnits.length) return false
     for (const u of lockedUnits) {
@@ -548,7 +562,7 @@ export default function StudentCourseDetailPage() {
         />
       ) : null}
 
-      {lockedCourseInfo && !lockedCourseInfo?.isFree ? (
+      {lockedCourseInfo && !lockedCourseInfo?.isFree && lockedUnits.length > 0 ? (
         <div className="gap-3 grid">
           <Card>
             <CardContent>
@@ -589,7 +603,9 @@ export default function StudentCourseDetailPage() {
                     >
                       <img src={lecIcon} alt="" className="w-16 h-16 shrink-0" />
                       <div className={'min-w-0 flex-1 ' + (isRtl ? 'text-right' : 'text-left')}>
-                        <div className="font-semibold text-[30px] truncate">{u?.title || '-'}</div>
+                        <div className="font-semibold text-[30px] truncate">
+                          {u?.title ? u.title.replace(/^جزء (من )?/, '') : '-'}
+                        </div>
                       </div>
                     </button>
 
@@ -649,14 +665,7 @@ export default function StudentCourseDetailPage() {
                         const unitId = String(attachmentsUnit?._id || '')
                         const unitLessons = (lessonsByUnitId || {})[unitId] || []
                         return unitLessons.length === 0
-                      })() ? (
-                        <div className="py-8">
-                          <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
-                            <img src={noAttachIcon} alt="" aria-hidden="true" className="w-9 h-9 shrink-0" />
-                            <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
-                          </div>
-                        </div>
-                      ) : (
+                      })() ? null : (
                         <div className="gap-2 grid">
                           {(() => {
                             const unitId = String(attachmentsUnit?._id || '')
@@ -805,7 +814,9 @@ export default function StudentCourseDetailPage() {
                           <img src={lecIcon} alt="" className="w-16 h-16 shrink-0" />
 
                           <div className={'min-w-0 flex-1 ' + (isRtl ? 'text-right' : 'text-left')}>
-                            <div className="font-semibold text-[30px] truncate">{u.title}</div>
+                            <div className="font-semibold text-[30px] truncate">
+                              {u.title ? u.title.replace(/^جزء (من )?/, '') : '-'}
+                            </div>
                           </div>
                         </button>
 

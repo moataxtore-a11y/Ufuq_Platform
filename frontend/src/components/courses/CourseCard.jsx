@@ -1,3 +1,4 @@
+import { cn } from '../../utils/cn.js'
 import Button from '../ui/Button.jsx'
 
 export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, footerText, meta, onSubscribe, hideSubscribe }) {
@@ -42,10 +43,10 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
   function getCourseHours() {
     const raw =
       typeof course?.totalHours === 'number' ? course.totalHours :
-      typeof course?.hours === 'number' ? course.hours :
-      typeof course?.durationHours === 'number' ? course.durationHours :
-      typeof course?.duration === 'number' ? course.duration :
-      null
+        typeof course?.hours === 'number' ? course.hours :
+          typeof course?.durationHours === 'number' ? course.durationHours :
+            typeof course?.duration === 'number' ? course.duration :
+              null
 
     if (raw === null) return null
     const n = Number(raw)
@@ -130,15 +131,15 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
           onOpen?.()
         }
       }}
-      className={
-        'group overflow-hidden rounded-[16px] border border-black/5 bg-white text-left shadow-[0_14px_34px_rgba(15,23,42,0.10)] transition-all duration-200 ease-out ' +
-        'hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(15,23,42,0.16)] ' +
-        'dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_14px_34px_rgba(0,0,0,0.45)] dark:hover:shadow-[0_22px_50px_rgba(0,0,0,0.60)]'
-      }
+      className={cn(
+        'group rounded-[1.25rem] overflow-hidden text-left transition-all duration-300 ease-out',
+        'bg-white/80 dark:bg-white/[0.04] backdrop-blur-glass shadow-glass-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)] border border-slate-200/50 dark:border-white/10 relative',
+        'hover:-translate-y-2 hover:shadow-glow-brand hover:border-brand/40'
+      )}
     >
       <div className="relative">
         {course?.thumbnailUrl ? (
-          <div className="relative bg-[rgb(247,244,236)] dark:bg-[#202020]">
+          <div className="relative bg-white/20 dark:bg-white/[0.02]">
             <div className="w-full aspect-[16/10]">
               <img src={course.thumbnailUrl} alt={course?.title || 'Course'} className="w-full h-full object-cover" />
             </div>
@@ -161,11 +162,11 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
               </div>
             ) : null}
 
-            <div className="z-0 absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(244,206,125,0.22),transparent_55%)] pointer-events-none" />
+            <div className="z-0 absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.12),transparent_55%)] pointer-events-none" />
           </div>
         ) : null}
 
-        <div className={'grid gap-4 bg-[rgb(243,243,243)] p-5 dark:bg-[#171717] ' + (isRtl ? 'text-right' : 'text-left')}>
+        <div className={cn('z-10 relative gap-4 grid p-5', isRtl ? 'text-right' : 'text-left')}>
           {!course?.thumbnailUrl && isPinned ? (
             <div className={isRtl ? 'flex justify-start' : 'flex justify-end'}>
               <div className="bg-[#E11D48] shadow px-3 py-1 rounded-full font-extrabold text-[11px] text-white">
@@ -221,12 +222,12 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
       </div>
 
       {footerText ? (
-        <div className="bg-white/60 dark:bg-[#1a1a1a] px-4 py-3 border-black/5 dark:border-white/10 border-t text-slate-600 dark:text-slate-300 text-xs">
+        <div className="z-10 relative px-4 py-3 border-slate-200/50 dark:border-white/10 border-t text-slate-600 dark:text-slate-300 text-xs">
           {footerText}
         </div>
       ) : null}
 
-      <div className={(footerText ? '' : 'border-t ') + 'bg-white/60 dark:bg-[#1a1a1a] px-4 py-3 border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-300 text-xs'}>
+      <div className={cn('z-10 relative px-4 py-3 border-slate-200/50 dark:border-white/10 text-slate-600 dark:text-slate-300 text-xs', footerText ? '' : 'border-t')}>
         <div className={'flex items-center justify-between gap-3 ' + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
           <div className={'grid gap-2 ' + (isRtl ? 'text-right' : 'text-left')}>
             <div className="gap-1 grid">

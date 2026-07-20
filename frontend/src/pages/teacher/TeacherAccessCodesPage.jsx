@@ -23,7 +23,7 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
           />
           <div className="absolute inset-0 flex flex-col justify-center items-center">
             <div
-              className="text-[11px] font-semibold text-center"
+              className="font-semibold text-[11px] text-center"
               style={{ color: finalCodeColor, textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
             >
               {kind === 'discount' ? (isRtl ? 'كود خصم' : 'Discount code') : (isRtl ? 'كود فتح الكورس' : 'Course access code')}
@@ -36,13 +36,13 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
         </div>
       ) : (
         <>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.20),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
           <div className="relative p-4">
             <div
               className={"text-xs font-semibold text-slate-700 dark:text-slate-200 " + (isRtl ? 'text-right' : 'text-left')}
               style={{ fontFamily: 'PDFArabicLocal, Arial, sans-serif' }}
             >
-              {isRtl ? 'منصة بيرفكت التعليمية' : 'Perfect Platform'}
+              {isRtl ? 'منصة أُفُق التعليمية' : 'Ufuq Platform'}
             </div>
             <div className={"mt-1 text-[11px] text-slate-600 dark:text-slate-300 " + (isRtl ? 'text-right' : 'text-left')}>
               {teacherName || (isRtl ? 'مدرس' : 'Teacher')}
@@ -56,7 +56,7 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
             </div>
 
             <div className="flex justify-center mt-4">
-              <div className="bg-[rgb(247,244,236)] dark:bg-white/[0.06] px-5 py-2.5 border border-black/10 dark:border-white/10 rounded-2xl">
+              <div className="bg-brand/10 dark:bg-white/[0.06] px-5 py-2.5 border border-black/10 dark:border-white/10 rounded-2xl">
                 <div className="text-[10px] text-slate-600 dark:text-slate-300 text-center">
                   {kind === 'discount' ? (isRtl ? 'كود خصم' : 'Discount code') : (isRtl ? 'كود فتح الكورس' : 'Course access code')}
                 </div>
@@ -133,7 +133,7 @@ function PrintableSheet({ items, isRtl, title }) {
       `}</style>
 
       <div style={{ position: 'fixed', left: '-99999px', top: 0, fontFamily: 'PDFArabicLocal, Arial, sans-serif' }}>
-        {isRtl ? 'منصة بيرفكت التعليمية' : 'Perfect Platform'}
+        {isRtl ? 'منصة أُفُق التعليمية' : 'Ufuq Platform'}
       </div>
 
       <div className="no-print" />
@@ -412,7 +412,7 @@ export default function TeacherAccessCodesPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -463,7 +463,7 @@ export default function TeacherAccessCodesPage() {
                           else next.delete(id)
                           setSelectedCourseIds(Array.from(next))
                         }}
-                        className="bg-white dark:bg-neutral-900/40 shadow-sm border-2 border-slate-300 dark:border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500/35 focus:ring-offset-0 w-5 h-5 text-amber-600 accent-amber-600 dark:accent-amber-400"
+                        className="bg-white dark:bg-neutral-900/40 shadow-sm border-2 border-slate-300 dark:border-white/20 rounded-md focus:outline-none focus:ring-2 focus:ring-brand/30 focus:ring-offset-0 w-5 h-5 text-brand accent-brand"
                       />
                       <span className="truncate">{c.title}</span>
                     </label>
@@ -571,14 +571,14 @@ export default function TeacherAccessCodesPage() {
                       : 'Upload PNG/JPG. The code will be placed centered automatically.'}
                   </div>
 
-                  <div className="mt-4 bg-slate-50/80 dark:bg-white/[0.03] p-5 rounded-2xl border border-black/5 dark:border-white/10">
+                  <div className="bg-slate-50/80 dark:bg-white/[0.03] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-2xl">
                     <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm text-center">
                       {isRtl ? 'لون الكود' : 'Code color'}
                     </div>
 
                     {/* Large color preview - centered */}
-                    <div className="flex flex-col items-center mt-4 gap-3">
-                      <label className="relative cursor-pointer group">
+                    <div className="flex flex-col items-center gap-3 mt-4">
+                      <label className="group relative cursor-pointer">
                         <input
                           type="color"
                           value={codeColor}
@@ -586,7 +586,7 @@ export default function TeacherAccessCodesPage() {
                           className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
                         />
                         <div
-                          className="w-16 h-16 rounded-2xl shadow-lg transition-all duration-200 group-hover:scale-105 group-hover:shadow-xl"
+                          className="shadow-lg group-hover:shadow-xl rounded-2xl w-16 h-16 group-hover:scale-105 transition-all duration-200"
                           style={{
                             backgroundColor: codeColor,
                             border: codeColor.toLowerCase() === '#ffffff' || codeColor.toLowerCase() === '#fff'
@@ -594,14 +594,14 @@ export default function TeacherAccessCodesPage() {
                               : '2px solid rgba(255,255,255,0.15)',
                           }}
                         />
-                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-white dark:bg-neutral-800 text-[9px] text-slate-500 dark:text-slate-400 px-1.5 py-0.5 rounded-md shadow-sm border border-black/5 dark:border-white/10 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        <div className="-bottom-1 left-1/2 absolute bg-white dark:bg-neutral-800 opacity-0 group-hover:opacity-100 shadow-sm px-1.5 py-0.5 border border-black/5 dark:border-white/10 rounded-md text-[9px] text-slate-500 dark:text-slate-400 whitespace-nowrap transition-opacity -translate-x-1/2 pointer-events-none">
                           {isRtl ? 'اضغط للتغيير' : 'Click to change'}
                         </div>
                       </label>
 
                       {/* Hex input */}
-                      <div className="flex items-center bg-white dark:bg-neutral-900 border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-sm">
-                        <span className="px-3 py-2.5 text-slate-400 dark:text-slate-500 text-sm font-mono select-none bg-slate-50 dark:bg-white/[0.04] border-e border-black/5 dark:border-white/10">#</span>
+                      <div className="flex items-center bg-white dark:bg-neutral-900 shadow-sm border border-black/10 dark:border-white/10 rounded-xl overflow-hidden">
+                        <span className="bg-slate-50 dark:bg-white/[0.04] px-3 py-2.5 border-black/5 border-e dark:border-white/10 font-mono text-slate-400 dark:text-slate-500 text-sm select-none">#</span>
                         <input
                           type="text"
                           value={codeColor.replace('#', '')}
@@ -609,7 +609,7 @@ export default function TeacherAccessCodesPage() {
                             const val = e.target.value.replace(/[^0-9a-fA-F]/g, '').slice(0, 6)
                             setCodeColor('#' + val)
                           }}
-                          className="px-3 py-2.5 text-sm font-mono w-24 bg-transparent outline-none text-center text-slate-800 dark:text-slate-100 uppercase tracking-wider"
+                          className="bg-transparent px-3 py-2.5 outline-none w-24 font-mono text-slate-800 dark:text-slate-100 text-sm text-center uppercase tracking-wider"
                           placeholder="ffffff"
                           maxLength={6}
                         />
@@ -618,37 +618,36 @@ export default function TeacherAccessCodesPage() {
 
                     {/* Divider */}
                     <div className="flex items-center gap-3 mt-5 mb-3">
-                      <div className="flex-1 h-px bg-black/5 dark:bg-white/10" />
+                      <div className="flex-1 bg-black/5 dark:bg-white/10 h-px" />
                       <span className="text-[11px] text-slate-400 dark:text-slate-500 select-none">
                         {isRtl ? 'ألوان سريعة' : 'Quick picks'}
                       </span>
-                      <div className="flex-1 h-px bg-black/5 dark:bg-white/10" />
+                      <div className="flex-1 bg-black/5 dark:bg-white/10 h-px" />
                     </div>
 
                     {/* Preset swatches grid */}
-                    <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
+                    <div className="gap-3 grid grid-cols-4 sm:grid-cols-8">
                       {[
                         { color: '#ffffff', label: isRtl ? 'أبيض' : 'White' },
                         { color: '#000000', label: isRtl ? 'أسود' : 'Black' },
-                        { color: '#D4AF37', label: isRtl ? 'ذهبي' : 'Gold' },
-                        { color: '#EAB308', label: isRtl ? 'أصفر' : 'Yellow' },
+                        { color: '#069484', label: isRtl ? 'الأساسي' : 'Brand' },
                         { color: '#F43F5E', label: isRtl ? 'وردي' : 'Rose' },
                         { color: '#14B8A6', label: isRtl ? 'تركواز' : 'Teal' },
                         { color: '#60A5FA', label: isRtl ? 'أزرق' : 'Blue' },
                         { color: '#A78BFA', label: isRtl ? 'بنفسجي' : 'Purple' },
                       ].map(({ color: c, label }) => {
                         const isActive = codeColor.toLowerCase() === c.toLowerCase()
-                        const isLight = ['#ffffff', '#EAB308', '#D4AF37'].includes(c)
+                        const isLight = ['#ffffff', '#069484'].includes(c)
                         return (
                           <button
                             key={c}
                             type="button"
-                            className="flex flex-col items-center gap-1.5 group"
+                            className="group flex flex-col items-center gap-1.5"
                             onClick={() => setCodeColor(c)}
                             title={label}
                           >
                             <div
-                              className={"relative w-10 h-10 rounded-full transition-all duration-200 " + (isActive ? 'ring-[3px] ring-offset-2 ring-blue-500 dark:ring-offset-neutral-900 scale-110' : 'group-hover:scale-110 group-hover:shadow-lg')}
+                              className={"relative w-10 h-10 rounded-full transition-all duration-200 " + (isActive ? 'ring-[3px] ring-offset-2 ring-brand dark:ring-offset-neutral-900 scale-110' : 'group-hover:scale-110 group-hover:shadow-lg')}
                               style={{
                                 backgroundColor: c,
                                 border: isLight ? '2px solid rgba(0,0,0,0.1)' : '2px solid rgba(255,255,255,0.12)',
@@ -660,7 +659,7 @@ export default function TeacherAccessCodesPage() {
                                 </svg>
                               ) : null}
                             </div>
-                            <span className={"text-[10px] leading-none transition-colors " + (isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-slate-500 dark:text-slate-400')}>{label}</span>
+                            <span className={"text-[10px] leading-none transition-colors " + (isActive ? 'text-brand font-semibold' : 'text-slate-500 dark:text-slate-400')}>{label}</span>
                           </button>
                         )
                       })}

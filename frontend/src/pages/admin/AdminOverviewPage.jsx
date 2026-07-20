@@ -64,7 +64,7 @@ export default function AdminOverviewPage() {
             <div className="font-semibold text-slate-900 dark:text-white text-sm">{t('adminOverviewPage.usersByRole.title')}</div>
             <div className="mt-1 text-slate-700 dark:text-slate-200 text-xs">{t('adminOverviewPage.usersByRole.subtitle')}</div>
           </div>
-          <div className="bg-amber-50 dark:bg-amber-200/10 border border-amber-200 dark:border-amber-200/30 rounded-xl w-9 h-9" />
+          <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/25 rounded-xl w-9 h-9" />
         </div>
         <div className="bg-slate-200/70 dark:bg-white/10 h-px" />
         <div className="gap-3 grid sm:grid-cols-2 lg:grid-cols-4 p-5">
@@ -73,14 +73,14 @@ export default function AdminOverviewPage() {
               key={r.role}
               className={
                 'rounded-2xl border border-slate-300/60 bg-white p-4 shadow-sm transition ' +
-                'hover:-translate-y-0.5 hover:border-amber-200 hover:bg-white hover:shadow-sm ' +
+                'hover:-translate-y-0.5 hover:border-brand/25 hover:bg-white hover:shadow-sm ' +
                 'dark:border-white/15 dark:bg-white/[0.06] dark:hover:bg-white/[0.08]'
               }
             >
               <div className="font-semibold text-slate-600 dark:text-slate-300 text-xs">{t(`roles.${r.role}`)}</div>
               <div className="flex justify-between items-end gap-3 mt-2">
                 <div className="font-semibold tabular-nums text-slate-900 dark:text-white text-2xl tracking-tight">{r.count}</div>
-                <span className="inline-flex items-center bg-amber-50 dark:bg-amber-200/10 px-2.5 py-1 border border-amber-200 dark:border-amber-200/30 rounded-full font-semibold text-amber-900 dark:text-amber-200 text-xs">
+                <span className="inline-flex items-center bg-brand/10 dark:bg-brand/20 px-2.5 py-1 border border-brand/20 dark:border-brand/25 rounded-full font-semibold text-brand dark:text-brand-200 text-xs">
                   {t('adminOverviewPage.usersByRole.active')}
                 </span>
               </div>
@@ -103,10 +103,10 @@ function Stat({ title, value, isRtl }) {
           <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">{title}</div>
           <div className="font-semibold tabular-nums text-slate-900 dark:text-white text-2xl tracking-tight">{value ?? 0}</div>
         </div>
-        <div className="bg-amber-50 dark:bg-amber-200/10 border border-amber-200 dark:border-amber-200/30 rounded-xl w-9 h-9" />
+        <div className="bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/25 rounded-xl w-9 h-9" />
       </div>
       <div className="bg-slate-100 dark:bg-white/10 mt-3 rounded-full w-full h-1.5 overflow-hidden">
-        <div className="bg-amber-300 dark:bg-amber-200 rounded-full w-1/3 h-full" />
+        <div className="bg-brand rounded-full w-1/3 h-full" />
       </div>
     </div>
   )

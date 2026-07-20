@@ -1,5 +1,5 @@
 import { PhoneCall } from 'lucide-react'
-import logo from '../../cvg/logo (2).svg'
+import logo from '../../cvg/logo (2)_3.webp'
 
 function BrandIcon({ name, className }) {
   if (name === 'youtube') {
@@ -38,15 +38,15 @@ function BrandIcon({ name, className }) {
 export default function SiteFooter() {
   return (
     <footer className="z-10 relative mt-10 border-black/5 dark:border-white/10 border-t">
-      <div className="bg-[#F4F2ED] dark:bg-[#1E1E1E]">
+      <div className="bg-[#DDF1E7] dark:bg-[#2a3533]">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 w-full max-w-6xl">
           <div className="flex flex-col items-center text-center">
             <img src={logo} alt="Education Platform" className="w-auto h-24 sm:h-28" />
 
             <div className="mt-3 font-extrabold text-white text-3xl tracking-tight"></div>
 
-            <div className="inline-flex items-center gap-4 bg-black/35 mt-8 px-9 py-5 border border-white/10 rounded-3xl text-[#FABC38]">
-              <div className="inline-flex items-center gap-2 bg-[#FABC38]/15 px-5 py-2.5 rounded-2xl font-extrabold text-lg tracking-widest">
+            <div className="inline-flex items-center gap-4 bg-[#069484]/35 mt-8 px-9 py-5 border border-white/10 rounded-3xl text-[#069484]">
+              <div className="inline-flex items-center gap-2 bg-[#E0F3E9]/15 px-5 py-2.5 rounded-2xl font-extrabold text-lg tracking-widest">
                 <PhoneCall className="w-6 h-6" />
                 <span>16546</span>
               </div>
@@ -58,7 +58,7 @@ export default function SiteFooter() {
                 href="https://www.youtube.com"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex justify-center items-center bg-[#FABC38]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#FABC38] transition"
+                className="inline-flex justify-center items-center bg-[#069484]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#069484] transition"
                 aria-label="YouTube"
               >
                 <BrandIcon name="youtube" className="w-8 h-8" />
@@ -67,7 +67,7 @@ export default function SiteFooter() {
                 href="https://www.tiktok.com"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex justify-center items-center bg-[#FABC38]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#FABC38] transition"
+                className="inline-flex justify-center items-center bg-[#069484]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#069484] transition"
                 aria-label="TikTok"
               >
                 <BrandIcon name="tiktok" className="w-8 h-8" />
@@ -76,7 +76,7 @@ export default function SiteFooter() {
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex justify-center items-center bg-[#FABC38]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#FABC38] transition"
+                className="inline-flex justify-center items-center bg-[#069484]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#069484] transition"
                 aria-label="Instagram"
               >
                 <BrandIcon name="instagram" className="w-8 h-8" />
@@ -85,14 +85,14 @@ export default function SiteFooter() {
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex justify-center items-center bg-[#FABC38]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#FABC38] transition"
+                className="inline-flex justify-center items-center bg-[#069484]/10 hover:bg-white/15 border border-white/10 rounded-full w-16 h-16 text-[#069484] transition"
                 aria-label="Facebook"
               >
                 <BrandIcon name="facebook" className="w-8 h-8" />
               </a>
             </div>
 
-            <div className="mt-12 text-[#FABC38]/85 text-lg sm:text-xl leading-9">
+            <div className="mt-12 text-[#069484]/85 text-lg sm:text-xl leading-9">
               تم صنع هذه المنصه بهدف تهيئة الطالب بكامل جوانب الثانوية العامة و ما بعدها
             </div>
           </div>

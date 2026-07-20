@@ -17,7 +17,7 @@ import Input from '../ui/Input.jsx'
 import { cn } from '../../utils/cn.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
-import logo from '../../cvg/logo (2).svg'
+import logo from '../../cvg/logo (2)_3.webp'
 import walletBadgeIcon from '../../cvg/WALLET.svg'
 import LanguageToggle from '../ui/LanguageToggle.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -113,8 +113,14 @@ export default function AppShell({ title, titleKey }) {
   const avatarUrl = me?.profile?.avatarUrl || ''
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="bg-[#FCF9F4] dark:bg-[#121212] min-h-screen text-slate-800 dark:text-slate-100">
-      <header className="top-0 right-0 left-0 z-50 fixed bg-[rgba(252,249,244,0.86)] dark:bg-[rgba(18,18,18,0.78)] backdrop-blur border-black/5 dark:border-white/10 border-b w-full will-change-transform">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="relative bg-[#E0F3E9] dark:bg-[#0a0a0a] min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
+      {/* Modern floating background aesthetic */}
+      <div className="z-0 fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="top-[-10%] left-[-10%] absolute bg-brand/10 dark:bg-brand/[0.15] blur-[120px] rounded-full w-[50%] h-[50%] animate-blob-float" />
+        <div className="right-[-10%] bottom-[-10%] absolute bg-brand/10 dark:bg-brand/[0.12] opacity-70 blur-[100px] rounded-full w-[40%] h-[40%] animate-blob-float" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <header className="top-0 right-0 left-0 z-50 fixed bg-white/60 dark:bg-[#0a0a0a]/80 shadow-glass-sm backdrop-blur-glass border-slate-200/50 dark:border-white/10 border-b w-full will-change-transform">
         <div className="flex justify-between items-center gap-3 mx-auto px-4 sm:px-6 py-2 w-full max-w-7xl">
           <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             <button
@@ -135,7 +141,7 @@ export default function AppShell({ title, titleKey }) {
 
             <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <Link to="/">
-                <img src={logo} alt="Education Platform" className="w-auto h-14 sm:h-16 md:h-[72px]" />
+                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
               </Link>
               <div className={cn('grid leading-tight', isRtl ? 'text-right' : 'text-left')}>
                 <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm tracking-tight">{computedTitle}</div>
@@ -151,7 +157,7 @@ export default function AppShell({ title, titleKey }) {
           <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             {auth?.role === 'teacher' || auth?.role === 'team' ? (
               <div className="hidden sm:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-                <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+                <span className="bg-brand rounded-full w-1.5 h-1.5" />
                 <span>{t('dashboard.ui.scope')}</span>
                 <span className="text-slate-500 dark:text-slate-400">{auth?.teamId || '-'}</span>
               </div>
@@ -163,11 +169,11 @@ export default function AppShell({ title, titleKey }) {
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
                   'hidden sm:flex items-center gap-3 shadow-[0_10px_22px_rgba(15,23,42,0.10)] px-3 py-1.5 rounded-full transition',
-                  'bg-[#EAB308] hover:bg-[#EAB308]/90',
+                  'bg-brand hover:bg-brand-600',
                   isRtl ? 'flex-row-reverse' : 'flex-row'
                 )}
               >
-                <span className="font-extrabold text-slate-900 text-xs tracking-wide">
+                <span className="font-extrabold text-white text-xs tracking-wide">
                   {walletBalance === null
                     ? '-'
                     : `${Number(walletBalance || 0).toFixed(2)} ${isRtl ? 'جنيه' : 'EGP'}`}
@@ -186,10 +192,10 @@ export default function AppShell({ title, titleKey }) {
         </div>
       </header>
 
-      <div className="h-[88px] sm:h-[96px] md:h-[104px]" />
+      <div className="h-[72px] sm:h-[76px] md:h-[80px]" />
 
       {open ? (
-        <div className="md:hidden z-50 fixed inset-0">
+        <div className="md:hidden z-[70] fixed inset-0">
           <button
             type="button"
             className="absolute inset-0 bg-black/40"
@@ -198,8 +204,8 @@ export default function AppShell({ title, titleKey }) {
           />
           <div
             className={cn(
-              'top-0 absolute bg-white dark:bg-[#1a1a1a] shadow-2xl p-3 border border-black/5 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
-              isRtl ? 'right-0 rounded-l-3xl' : 'left-0 rounded-r-3xl'
+              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
+              isRtl ? 'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl' : 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl'
             )}
           >
             <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
@@ -213,16 +219,16 @@ export default function AppShell({ title, titleKey }) {
         </div>
       ) : null}
 
-      <div className="mx-auto px-4 sm:px-6 pt-2.5 pb-4 w-full max-w-7xl">
+      <div className="z-10 relative mx-auto px-4 sm:px-6 pt-2.5 pb-4 w-full max-w-7xl">
         <div className="gap-4 grid grid-cols-1 md:grid-cols-[280px_1fr]">
           <aside className="hidden md:block">
-            <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-3 border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className="bg-white/80 dark:bg-white/[0.04] shadow-glass-sm backdrop-blur-glass p-4 border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl">
               <SidebarNav items={items} isRtl={isRtl} onNavigate={() => {}} auth={auth} />
             </div>
           </aside>
 
           <main className="min-w-0">
-            <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-4 md:p-6 border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className="bg-white/80 dark:bg-white/[0.04] shadow-glass-sm backdrop-blur-glass p-5 md:p-8 border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl">
               <div key={location.pathname} className="animate-fade-in">
                 <Outlet />
               </div>
@@ -256,7 +262,7 @@ function SidebarNav({ items, isRtl, onNavigate, auth }) {
                 isRtl ? 'flex-row-reverse text-right' : 'text-left',
                 'hover:-translate-y-0.5',
                 isActive
-                  ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100'
+                  ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
                   : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
               )
             }

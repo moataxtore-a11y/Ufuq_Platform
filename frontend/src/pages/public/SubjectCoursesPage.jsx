@@ -198,7 +198,7 @@ export default function SubjectCoursesPage() {
 
             <div className="flex justify-center mt-3">
               <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(212,175,55,0.85)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
               </svg>
             </div>
           </div>

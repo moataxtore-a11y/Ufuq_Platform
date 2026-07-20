@@ -54,14 +54,14 @@ export default function Select({
         type="button"
         onClick={() => !disabled && setOpen((v) => !v)}
         className={cn(
-          'flex items-center justify-between w-full h-10 px-3 gap-2',
+          'flex justify-between items-center gap-2 px-3 w-full h-10',
           'rounded-xl border text-sm font-medium text-left',
           'bg-white dark:bg-white/[0.06]',
           'border-slate-200 dark:border-white/10',
           'text-slate-900 dark:text-slate-100',
           'transition-all outline-none',
           open
-            ? 'ring-2 ring-amber-300/50 border-amber-400/60 dark:border-amber-300/50'
+            ? 'ring-2 ring-brand/30 border-brand/50 dark:border-brand/40'
             : 'hover:border-slate-300 dark:hover:border-white/20',
           className
         )}
@@ -69,12 +69,12 @@ export default function Select({
         aria-haspopup="listbox"
         disabled={disabled}
       >
-        <span className={cn('truncate flex-1 text-right', !displayLabel && 'text-slate-400 dark:text-slate-500')}>
+        <span className={cn('flex-1 text-right truncate', !displayLabel && 'text-slate-400 dark:text-slate-500')}>
           {displayLabel || placeholder}
         </span>
         <ChevronDown
           className={cn(
-            'w-4 h-4 shrink-0 text-slate-400 dark:text-slate-500 transition-transform duration-200',
+            'w-4 h-4 text-slate-400 dark:text-slate-500 transition-transform duration-200 shrink-0',
             open && 'rotate-180'
           )}
         />
@@ -85,7 +85,7 @@ export default function Select({
         <ul
           role="listbox"
           className={cn(
-            'absolute z-50 mt-1 w-full overflow-auto max-h-60',
+            'z-50 absolute mt-1 w-full max-h-60 overflow-auto',
             'bg-white dark:bg-[#1e1e1e]',
             'border border-slate-200 dark:border-white/10',
             'rounded-xl shadow-xl shadow-black/10 dark:shadow-black/40',
@@ -101,21 +101,21 @@ export default function Select({
                 aria-selected={isSelected}
                 onClick={() => pick(opt.value)}
                 className={cn(
-                  'flex items-center px-3 py-2 text-sm cursor-pointer select-none transition-colors',
+                  'flex items-center px-3 py-2 text-sm transition-colors cursor-pointer select-none',
                   isSelected
-                    ? 'bg-amber-50 dark:bg-amber-400/10 text-amber-700 dark:text-amber-400 font-semibold'
+                    ? 'bg-brand/10 dark:bg-brand/20 text-brand dark:text-brand-300 font-semibold'
                     : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.05]'
                 )}
               >
                 {isSelected && (
-                  <span className="me-2 text-amber-500 dark:text-amber-400 text-xs">✓</span>
+                  <span className="me-2 text-brand dark:text-brand-400 text-xs">✓</span>
                 )}
                 <span className={cn('truncate', !isSelected && 'ms-5')}>{opt.label}</span>
               </li>
             )
           })}
           {options.length === 0 && (
-            <li className="px-3 py-2 text-sm text-slate-400 dark:text-slate-500 text-center">لا يوجد خيارات</li>
+            <li className="px-3 py-2 text-slate-400 dark:text-slate-500 text-sm text-center">لا يوجد خيارات</li>
           )}
         </ul>
       )}

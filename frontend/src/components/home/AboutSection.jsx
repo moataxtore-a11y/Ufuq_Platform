@@ -12,14 +12,14 @@ export default function AboutSection() {
   ]
 
   return (
-    <section id="about" className="mt-8 py-2 scroll-mt-24">
+    <section id="about" className="mt-8 py-2 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
       <div className="py-10" dir={isRtl ? 'rtl' : 'ltr'}>
         <div className="text-center">
           <div className="inline-flex items-center gap-2 font-semibold text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider">
-            <span className="bg-[rgb(244,206,125)] rounded-full w-1.5 h-1.5" />
+            <span className="bg-brand rounded-full w-1.5 h-1.5" />
             {t('landing.about.label')}
           </div>
-          <h2 className="mt-3 font-semibold text-slate-800 dark:text-slate-100 text-2xl sm:text-3xl leading-snug">
+          <h2 className="mt-5 font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight">
             {t('landing.about.title')}
           </h2>
           <p className="mx-auto mt-2 max-w-3xl text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-7">

@@ -55,17 +55,17 @@ export default function SubjectsSection() {
   }
 
   return (
-    <section id="subjects" className="mt-8 scroll-mt-24" dir={isRtl ? 'rtl' : 'ltr'}>
+    <section id="subjects" className="mt-8 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="relative px-3 sm:px-5 lg:px-6 py-10">
         <div className="text-center">
           <h2 className="font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight">
-            {t('landing.subjects.titlePrefix')}{' '}
-            <span className="text-brand">{t('landing.subjects.titleBrand')}</span>
+            {isRtl ? 'المواد' : 'Available'}{' '}
+            <span className="text-slate-900 dark:text-white">{isRtl ? 'المتاحة' : 'Subjects'}</span>
           </h2>
 
           <div className="flex justify-center mt-3">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(225, 181, 2, 0.94)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
 
@@ -114,10 +114,10 @@ export default function SubjectsSection() {
                       </div>
                     </div>
 
-                    <div className="bg-[#322C18] shadow-[0_22px_60px_rgba(15,23,42,0.10)] border border-black/10 dark:border-white/10 rounded-3xl overflow-hidden">
+                    <div className="bg-white dark:bg-[#171717] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden transition-all">
                       <div className="p-6">
                         {visible.length === 0 ? (
-                          <div className="text-white/90 text-sm">
+                          <div className="text-slate-600 dark:text-slate-300 text-sm">
                             {t('landing.subjects.empty')}
                           </div>
                         ) : (
@@ -135,8 +135,9 @@ export default function SubjectsSection() {
                                   navigate(`/subjects/${encodeURIComponent(subj)}?${q}`)
                                 }}
                                 className={
-                                  'w-full text-white font-semibold text-lg sm:text-xl text-center ' +
-                                  'transition hover:text-white/90 ' +
+                                  'w-full font-semibold text-lg sm:text-xl text-center ' +
+                                  'text-slate-800 dark:text-slate-100 hover:text-brand ' +
+                                  'transition-colors ' +
                                   (isRtl ? 'text-center' : 'text-center')
                                 }
                               >
@@ -152,7 +153,7 @@ export default function SubjectsSection() {
                           <button
                             type="button"
                             onClick={() => toggleExpand(y.key)}
-                            className="bg-amber-300 hover:bg-amber-200 active:bg-amber-300/90 dark:bg-amber-200 dark:hover:bg-amber-100 px-5 py-2 rounded-xl font-semibold text-neutral-950 transition"
+                            className="bg-brand hover:bg-brand-600 active:bg-brand-700 px-5 py-2 rounded-xl font-semibold text-white text-sm transition"
                           >
                             {expanded ? t('landing.subjects.showLess') : t('landing.subjects.showMore')}
                           </button>

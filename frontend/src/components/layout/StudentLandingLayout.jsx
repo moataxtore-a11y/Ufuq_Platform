@@ -5,7 +5,7 @@ import AnimatedBackdrop from '../ui/AnimatedBackdrop.jsx'
 import Button from '../ui/Button.jsx'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
 import LanguageToggle from '../ui/LanguageToggle.jsx'
-import logo from '../../cvg/logo (2).svg'
+import logo from '../../cvg/logo (2)_3.webp'
 import defaultProfileAvatar from '../../cvg/profile.svg'
 import { api } from '../../utils/api.js'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -107,7 +107,7 @@ export default function StudentLandingLayout() {
         onClick={() => navigate('/student/wallet')}
         className={cn(
           'inline-flex relative items-center shadow-[0_10px_22px_rgba(15,23,42,0.10)] rounded-full max-w-[160px] sm:max-w-none h-10 transition',
-          'bg-[#322C18] hover:bg-[#66582F]/90',
+          'bg-brand-800 hover:bg-brand-700',
           isRtl ? 'pr-12 pl-4' : 'pl-12 pr-4',
           className
         )}
@@ -120,7 +120,7 @@ export default function StudentLandingLayout() {
         <span
           className={cn(
             'inline-flex top-1/2 absolute justify-center items-center rounded-full w-10 sm:w-10 h-10 sm:h-10 -translate-y-1/2',
-            'bg-[#66582F]',
+            'bg-brand',
             isRtl ? 'right-[-6px]' : 'left-[-6px]'
           )}
         >
@@ -150,8 +150,8 @@ export default function StudentLandingLayout() {
     <div className="relative flex flex-col min-h-screen text-slate-900 dark:text-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
       <AnimatedBackdrop />
 
-      <header className="top-0 right-0 left-0 z-50 fixed bg-white/90 dark:bg-[#121212]/80 backdrop-blur border-slate-300/60 dark:border-white/10 border-b">
-        <div className="mx-auto px-3 sm:px-4 py-3 min-w-0 max-w-7xl">
+      <header className="top-0 right-0 left-0 z-50 fixed bg-white/60 dark:bg-[#0a0a0a]/80 shadow-glass-sm backdrop-blur-glass border-slate-200/50 dark:border-white/10 border-b">
+        <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
           <div className="sm:hidden">
             {/* <div className="bg-white/65 dark:bg-white/[0.06] shadow-[0_10px_26px_rgba(15,23,42,0.10)] dark:shadow-none backdrop-blur px-3 py-2 border border-black/5 dark:border-white/10 rounded-3xl"> */}
             <div className="px-1 py-1">
@@ -175,7 +175,7 @@ export default function StudentLandingLayout() {
                 </div>
 
                 <Link to="/" className={cn('flex justify-center items-center gap-2 min-w-0', isRtl ? 'order-2' : 'order-2')}>
-                  <img src={logo} alt="Education Platform" className="w-auto h-14" />
+                  <img src={logo} alt="Education Platform" className="w-auto h-11" />
                 </Link>
 
                 <div className={cn('flex items-center gap-2 min-w-0', isRtl ? 'order-3 justify-end' : 'order-1 justify-start')}>
@@ -188,12 +188,13 @@ export default function StudentLandingLayout() {
           <div className={'hidden sm:flex justify-between items-center gap-2 min-w-0 ' + (isRtl ? 'flex-row-reverse' : '')}>
             <div className={'flex items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
               <Link to="/" className="flex items-center">
-                <img src={logo} alt="Education Platform" className="w-auto h-14 sm:h-16 md:h-[72px]" />
+                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
               </Link>
+              <LanguageToggle />
               <ThemeToggle className="shrink-0" />
             </div>
 
-            <nav className={cn('hidden sm:flex items-center gap-1', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               {quickLinks.map((it) => (
                 <NavLink
                   key={it.to}
@@ -201,16 +202,36 @@ export default function StudentLandingLayout() {
                   end={it.to === '/student'}
                   className={({ isActive }) =>
                     cn(
-                      'inline-flex justify-center items-center rounded-xl w-10 h-10 transition-colors',
+                      'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
+                      isRtl ? 'flex-row-reverse' : 'flex-row',
                       isActive
                         ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                        : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]'
+                        : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
+                      isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
                     )
                   }
                   aria-label={it.label}
-                  title={it.label}
                 >
-                  {it.icon ? <it.icon className="w-5 h-5" /> : null}
+                  {({ isActive }) => (
+                    <>
+                      {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
+                      <span
+                        className={cn(
+                          'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
+                          isRtl ? 'origin-right' : 'origin-left',
+                          isActive
+                            ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
+                            : cn(
+                                'max-w-0 opacity-0 scale-90',
+                                isRtl ? 'translate-x-3' : '-translate-x-3',
+                                'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
+                              )
+                        )}
+                      >
+                        {it.label}
+                      </span>
+                    </>
+                  )}
                 </NavLink>
               ))}
             </nav>
@@ -230,9 +251,7 @@ export default function StudentLandingLayout() {
                 <span className="relative flex justify-center items-center bg-black rounded-full w-8 sm:w-10 h-8 sm:h-10 overflow-hidden text-slate-100 shrink-0">
                   <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
                 </span>
-                <span className="hidden xs:inline max-w-[140px] text-slate-700 hover:text-slate-900 dark:hover:text-slate-100 dark:text-slate-200 truncate">
-                  {displayName || t('dashboard.titles.profile')}
-                </span>
+
               </button>
             </div>
           </div>
@@ -240,7 +259,7 @@ export default function StudentLandingLayout() {
       </header>
 
       {open ? (
-        <div className="z-50 fixed inset-0">
+        <div className="z-[70] fixed inset-0">
           <button
             type="button"
             className="absolute inset-0 bg-black/40"
@@ -249,8 +268,8 @@ export default function StudentLandingLayout() {
           />
           <div
             className={cn(
-              'top-0 absolute bg-white dark:bg-[#1a1a1a] shadow-2xl p-3 border border-black/5 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
-              isRtl ? 'right-0 rounded-l-3xl' : 'left-0 rounded-r-3xl'
+              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
+              isRtl ? 'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl' : 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl'
             )}
             dir={isRtl ? 'rtl' : 'ltr'}
           >
@@ -306,7 +325,7 @@ export default function StudentLandingLayout() {
                         'flex items-center gap-2 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
                         isRtl ? 'flex-row-reverse text-right' : 'text-left',
                         isActive
-                          ? 'bg-[rgba(244,206,125,0.35)] text-slate-900 dark:text-slate-100'
+                          ? 'bg-brand/20 text-brand-900 dark:text-brand-100'
                           : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
                       )
                     }
@@ -321,7 +340,7 @@ export default function StudentLandingLayout() {
         </div>
       ) : null}
 
-      <div className="h-[88px] sm:h-[96px] md:h-[104px]" />
+      <div className="h-[72px] sm:h-[76px] md:h-[80px]" />
 
       <div className="mx-auto px-4 sm:px-6 lg:px-8 pt-3 max-w-7xl">
         <MotivationalBanner />
