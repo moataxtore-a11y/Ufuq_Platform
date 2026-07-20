@@ -356,7 +356,7 @@ export default function JoinTeachersPage() {
       </Modal>
 
       {/* ===== Main Split Layout ===== */}
-      <div className="z-10 relative flex flex-1">
+      <div className="z-10 relative flex flex-1 pt-20">
 
         {/* Image Side — left */}
         <motion.div

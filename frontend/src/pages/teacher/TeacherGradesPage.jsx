@@ -67,16 +67,9 @@ export default function TeacherGradesPage() {
 
   return (
     <div className="gap-4 grid">
-      <div className="text-center">
-        <h2 className="font-extrabold text-slate-900 dark:text-white text-3xl sm:text-4xl md:text-5xl tracking-tight">
-          {t('gradesPage.title')}
-        </h2>
-        <div className="flex justify-center mt-2">
-          <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('gradesPage.subtitle')}</div>
+      <div>
+        <h2 className="font-bold text-slate-900 dark:text-white text-lg">{t('gradesPage.title')}</h2>
+        <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-xs">{t('gradesPage.subtitle')}</p>
       </div>
 
       <div className="gap-1 grid">

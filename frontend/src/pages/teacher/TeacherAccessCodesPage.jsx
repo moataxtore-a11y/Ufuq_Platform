@@ -406,30 +406,24 @@ export default function TeacherAccessCodesPage() {
           .print-only { display: block !important; }
         }
       `}</style>
-      <div className="text-center">
-        <h2 className="font-extrabold text-slate-900 dark:text-white text-3xl sm:text-4xl md:text-5xl tracking-tight">
-          {mode === 'discount' ? (isRtl ? 'أكواد خصم' : 'Discount codes') : (isRtl ? 'أكواد فتح الكورسات' : 'Course access codes')}
-        </h2>
-        <div className="flex justify-center mt-2">
-          <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
-          </svg>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="font-bold text-slate-900 dark:text-white text-lg">
+            {mode === 'discount' ? (isRtl ? 'أكواد خصم' : 'Discount codes') : (isRtl ? 'أكواد فتح الكورسات' : 'Course access codes')}
+          </h2>
+          <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-xs">
+            {mode === 'discount'
+              ? (isRtl ? 'ولّد أكواد خصم (مرة واحدة لكل طالب) على كورسات محددة.' : 'Generate single-use discount codes for selected courses.')
+              : (isRtl ? 'ولّد أكواد (مرة واحدة لكل طالب) لفتح كورس كامل.' : 'Generate single-use codes to unlock a full course.')}
+          </p>
         </div>
-        <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
-          {mode === 'discount'
-            ? (isRtl ? 'ولّد أكواد خصم (مرة واحدة لكل طالب) على كورسات محددة.' : 'Generate single-use discount codes for selected courses.')
-            : (isRtl ? 'ولّد أكواد (مرة واحدة لكل طالب) لفتح كورس كامل.' : 'Generate single-use codes to unlock a full course.')}
-        </div>
-
-        <div className="flex justify-center mt-4">
-          <div className={'flex flex-wrap items-center gap-2 ' + (isRtl ? 'flex-row-reverse' : '')}>
-            <Button type="button" variant={mode === 'access' ? 'default' : 'secondary'} onClick={() => setMode('access')}>
-              {isRtl ? 'أكواد فتح' : 'Access'}
-            </Button>
-            <Button type="button" variant={mode === 'discount' ? 'default' : 'secondary'} onClick={() => setMode('discount')}>
-              {isRtl ? 'أكواد خصم' : 'Discount'}
-            </Button>
-          </div>
+        <div className={'flex items-center gap-2 ' + (isRtl ? 'flex-row-reverse' : '')}>
+          <Button type="button" size="sm" variant={mode === 'access' ? 'default' : 'secondary'} onClick={() => setMode('access')}>
+            {isRtl ? 'أكواد فتح' : 'Access'}
+          </Button>
+          <Button type="button" size="sm" variant={mode === 'discount' ? 'default' : 'secondary'} onClick={() => setMode('discount')}>
+            {isRtl ? 'أكواد خصم' : 'Discount'}
+          </Button>
         </div>
       </div>
 

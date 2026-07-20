@@ -47,9 +47,19 @@ export default function StudentWalletPage() {
     }
   }, [])
 
-  const parsedAmount = useMemo(() => {
-    const n = Number(String(amount || '').trim())
+  function parseNumber(str) {
+    const arabic = '٠١٢٣٤٥٦٧٨٩'
+    const western = '0123456789'
+    let s = String(str || '').trim()
+    for (let i = 0; i < arabic.length; i++) {
+      s = s.replaceAll(arabic[i], western[i])
+    }
+    const n = Number(s)
     return Number.isFinite(n) ? n : 0
+  }
+
+  const parsedAmount = useMemo(() => {
+    return parseNumber(amount)
   }, [amount])
 
   function translateType(type) {
@@ -92,23 +102,18 @@ export default function StudentWalletPage() {
   return (
     <div className="gap-5 grid overflow-x-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="relative text-center">
-        <div className="top-0 absolute flex justify-end w-full">
-          <Button variant="secondary" onClick={() => navigate(-1)}>
-            {isRtl ? 'رجوع' : 'Back'}
-          </Button>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="font-bold text-slate-900 dark:text-white text-lg">
+            {isRtl ? 'محفظتي' : 'My Wallet'}
+          </h2>
+          <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-xs">
+            {isRtl ? 'اشحن رصيدك وافتح الكورسات.' : 'Top up your balance and unlock courses.'}
+          </p>
         </div>
-        <h2 className="font-extrabold text-slate-900 dark:text-white text-3xl sm:text-4xl md:text-5xl tracking-tight">
-          {isRtl ? 'محفظتي' : 'My Wallet'}
-        </h2>
-        <div className="flex justify-center mt-2">
-          <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
-          {isRtl ? 'اشحن رصيدك وافتح الكورسات.' : 'Top up your balance and unlock courses.'}
-        </div>
+        <Button variant="secondary" size="sm" onClick={() => navigate(-1)}>
+          {isRtl ? 'رجوع' : 'Back'}
+        </Button>
       </div>
 
       {state.status === 'loading' ? (
@@ -142,23 +147,43 @@ export default function StudentWalletPage() {
             <div className="font-extrabold text-slate-900 dark:text-white text-lg">
               {isRtl ? 'شحن رصيد' : 'Top up'}
             </div>
-            <div className={'flex items-end gap-3 mt-3 ' + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">
-                  {isRtl ? 'المبلغ' : 'Amount'}
+            <div className={'flex flex-col gap-2 mt-3 ' + (isRtl ? 'items-end' : 'items-start')}>
+              <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs">
+                {isRtl ? 'اختر المبلغ' : 'Choose amount'}
+              </div>
+              <div className={'flex flex-wrap items-center gap-2 ' + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                {[50, 100, 200, 500, 1000].map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => setAmount(String(v))}
+                    className={
+                      'px-5 py-2 rounded-xl font-semibold text-sm transition-all border ' +
+                      (String(amount) === String(v)
+                        ? 'bg-brand text-white border-brand shadow-md'
+                        : 'bg-white/70 dark:bg-white/[0.04] text-slate-700 dark:text-slate-200 border-black/10 dark:border-white/10 hover:border-brand/50')
+                    }
+                  >
+                    {v} {isRtl ? 'جنيه' : 'EGP'}
+                  </button>
+                ))}
+              </div>
+              <div className="w-full mt-1">
+                <div className="font-semibold text-slate-700 dark:text-slate-200 text-xs mb-1">
+                  {isRtl ? 'أو أدخل مبلغ مخصص' : 'Or enter a custom amount'}
                 </div>
                 <input
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="bg-white/70 dark:bg-white/[0.04] mt-2 px-4 py-3 border border-black/10 dark:border-white/10 rounded-2xl w-full text-sm"
+                  className="bg-white/70 dark:bg-white/[0.04] px-4 py-3 border border-black/10 dark:border-white/10 rounded-2xl w-full text-sm"
                   placeholder={isRtl ? 'مثال: 100' : 'e.g. 100'}
                 />
               </div>
-              <Button type="button" onClick={createTopup} disabled={creating || parsedAmount <= 0} className="h-[46px] shrink-0">
+              <Button type="button" onClick={createTopup} disabled={creating || parsedAmount <= 0} className="w-full sm:w-auto h-[46px] mt-2">
                 {creating ? (isRtl ? 'جاري الإرسال...' : 'Submitting...') : (isRtl ? 'طلب شحن' : 'Request topup')}
               </Button>
             </div>
-            <div className="mt-3 text-slate-600 dark:text-slate-300 text-sm">
+            <div className="mt-3 text-slate-600 dark:text-slate-300 text-xs">
               {isRtl ? 'ملاحظة: الشحن مؤقتًا يتم تأكيده يدويًا إلى أن يتم ربط فوري.' : 'Note: Topups are manually confirmed until payment integration is added.'}
             </div>
           </div>

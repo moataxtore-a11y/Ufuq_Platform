@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { BookOpen, CheckCircle, ClipboardCheck, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogOut, MessageSquareQuote, Users } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnimatedBackdrop from '../ui/AnimatedBackdrop.jsx'
 import Button from '../ui/Button.jsx'
@@ -25,15 +25,15 @@ export default function TeacherLandingLayout() {
   const [me, setMe] = useState(null)
 
   const [badgeTotal, setBadgeTotal] = useState(0)
-  const [rawTotal, setRawTotal] = useState(0)
-  const [seenTotal, setSeenTotal] = useState(0)
+
+  const seenRef = useRef(0)
 
   useEffect(() => {
     try {
       const s = Number(sessionStorage.getItem('seen_total_teacher') || 0)
-      setSeenTotal(Number.isFinite(s) ? s : 0)
+      seenRef.current = Number.isFinite(s) ? s : 0
     } catch {
-      setSeenTotal(0)
+      seenRef.current = 0
     }
   }, [])
 
@@ -41,12 +41,12 @@ export default function TeacherLandingLayout() {
     const path = String(location?.pathname || '')
     if (!path.startsWith('/teacher/approvals')) return
     try {
-      sessionStorage.setItem('seen_total_teacher', String(rawTotal || 0))
-      setSeenTotal(rawTotal || 0)
+      sessionStorage.setItem('seen_total_teacher', String(badgeTotal || 0))
+      seenRef.current = badgeTotal || 0
     } catch {
       // ignore
     }
-  }, [location?.pathname, rawTotal])
+  }, [location?.pathname, badgeTotal])
 
   useEffect(() => {
     let alive = true
@@ -77,12 +77,11 @@ export default function TeacherLandingLayout() {
         const total = Number(res?.data?.total || 0)
         if (!alive) return
         const safeTotal = Number.isFinite(total) ? total : 0
-        setRawTotal(safeTotal)
-        const unread = Math.max(0, safeTotal - (seenTotal || 0))
+        const unread = Math.max(0, safeTotal - seenRef.current)
+        if (!alive) return
         setBadgeTotal(unread)
       } catch {
         if (!alive) return
-        setRawTotal(0)
         setBadgeTotal(0)
       }
     }
