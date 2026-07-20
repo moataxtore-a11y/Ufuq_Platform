@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Download, Printer } from 'lucide-react'
+import { Check, Download, Printer } from 'lucide-react'
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
 import Button from '../../components/ui/Button.jsx'
@@ -648,9 +648,7 @@ export default function TeacherAccessCodesPage() {
                               }}
                             >
                               {isActive ? (
-                                <svg className="absolute inset-0 m-auto w-4.5 h-4.5" viewBox="0 0 20 20" fill="none">
-                                  <path d="M5 10l3.5 3.5L15 7" stroke={isLight ? '#000' : '#fff'} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                                <Check className="absolute inset-0 m-auto w-4.5 h-4.5" stroke={isLight ? '#000' : '#fff'} strokeWidth="2.5" />
                               ) : null}
                             </div>
                             <span className={"text-[10px] leading-none transition-colors " + (isActive ? 'text-brand font-semibold' : 'text-slate-500 dark:text-slate-400')}>{label}</span>

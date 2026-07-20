@@ -1,3 +1,4 @@
+import { Calendar, Clock, RefreshCw } from 'lucide-react'
 import { cn } from '../../utils/cn.js'
 import Button from '../ui/Button.jsx'
 
@@ -55,32 +56,11 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
   }
 
   function DateIcon({ kind }) {
-    if (kind === 'updated') {
-      return (
-        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 12a9 9 0 1 1-3.02-6.7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M21 3v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
-    }
-
-    return (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 3v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M16 3v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M3 9h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <path d="M6 5h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    )
+    return kind === 'updated' ? <RefreshCw className="w-5 h-5" /> : <Calendar className="w-5 h-5" />
   }
 
   function HoursIcon() {
-    return (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    )
+    return <Clock className="w-5 h-5" />
   }
 
   function getPriceMeta() {

@@ -9,6 +9,7 @@ import { useToast } from '../../components/ui/toast.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
+import { User } from 'lucide-react'
 import noSvg from '../../cvg/NO.svg'
 
 function normalizePermissions(raw) {
@@ -104,7 +105,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
               />
             ) : (
               <div className="flex justify-center items-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-24 h-24 shrink-0">
-                <svg className="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                <User className="w-10 h-10 text-slate-400" />
               </div>
             )}
           </div>

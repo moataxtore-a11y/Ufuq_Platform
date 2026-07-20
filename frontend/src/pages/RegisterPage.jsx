@@ -14,7 +14,7 @@ import { Modal } from '../components/ui/Modal.jsx'
 import approvIcon from '../cvg/approv.svg'
 import { motion } from 'framer-motion'
 import {
-  User, Phone, School, Calendar, BookOpen,
+  ChevronDown, User, Phone, School, Calendar, BookOpen,
   GraduationCap, MapPin, CreditCard, Mail, Lock, CheckCircle
 } from 'lucide-react'
 import registerImage from '../img/اعمل.webp'
@@ -97,11 +97,7 @@ function LineSelect({ icon: Icon, value, onChange, options, placeholder }) {
           className="absolute transition-transform duration-200 pointer-events-none"
           style={{ [isRtl ? 'left' : 'right']: '10px', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
         >
-          <span className="text-slate-400 dark:text-slate-400">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-          </span>
+          <ChevronDown className="w-3 h-3 text-slate-400" />
         </span>
       </button>
 

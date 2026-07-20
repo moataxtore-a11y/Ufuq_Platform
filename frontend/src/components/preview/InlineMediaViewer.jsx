@@ -5,6 +5,7 @@ import vidIcon from '../../cvg/vid.svg'
 import imgIcon from '../../cvg/img.svg'
 import { api } from '../../utils/api.js'
 import { X } from 'lucide-react'
+import { cn } from '../../utils/cn.js'
 
 function isYoutubeUrl(u) {
   if (!u) return false
@@ -185,17 +186,17 @@ export default function InlineMediaViewer({ media, onClose, isRtl, courseId, les
         <div className="top-4 left-1/2 z-10 absolute -translate-x-1/2">
           <div
             className={cn(
-              'inline-flex relative items-center shadow-[0_12px_24px_rgba(0,0,0,0.3)] rounded-full min-h-[44px] sm:min-h-[52px] transition-all',
-              'bg-[#064e3b]/90 backdrop-blur-sm border border-emerald-500/20',
+              'inline-flex relative items-center rounded-full min-h-[44px] sm:min-h-[52px] transition-all',
+              'bg-black/50 backdrop-blur-glass border border-white/10 shadow-glass-md',
               isRtl ? 'pr-14 pl-6' : 'pl-14 pr-6'
             )}
           >
             <div className={'min-w-0 ' + (isRtl ? 'text-right' : 'text-left')}>
-            <div className="font-extrabold text-[15px] text-brand sm:text-[18px] truncate leading-tight">
+            <div className="font-bold text-[15px] text-white sm:text-[18px] truncate leading-tight">
               {title}
             </div>
               {actualKind === 'pdf' && (
-                <div className="font-bold text-[9px] text-emerald-400/70 uppercase tracking-tighter sm:tracking-normal">
+                <div className="font-semibold text-[9px] text-white/50 uppercase tracking-wider sm:tracking-normal">
                   PDF Document
                 </div>
               )}
@@ -203,7 +204,7 @@ export default function InlineMediaViewer({ media, onClose, isRtl, courseId, les
 
             <span
               className={cn(
-                'inline-flex top-1/2 absolute justify-center items-center bg-[#10b981] shadow-lg border-[#064e3b] border-2 rounded-full w-11 sm:w-13 h-11 sm:h-13 -translate-y-1/2',
+                'inline-flex top-1/2 absolute justify-center items-center bg-brand shadow-glow-brand border-2 border-white/20 rounded-full w-11 sm:w-13 h-11 sm:h-13 -translate-y-1/2',
                 isRtl ? 'right-[-4px]' : 'left-[-4px]'
               )}
             >
