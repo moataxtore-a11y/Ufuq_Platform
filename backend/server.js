@@ -22,7 +22,14 @@ const { createApp } = require('./app')
 const { ensureDefaultAdmin } = require('./bootstrap/adminBootstrap')
 
 async function start() {
-    await ensureDefaultAdmin(prisma)
+    try {
+        await prisma.$connect()
+        console.log('Database connected.')
+        await ensureDefaultAdmin(prisma)
+    } catch (err) {
+        console.warn('Database connection failed. Server will start but DB operations will fail.')
+        console.warn(err.message)
+    }
 
     const app = createApp(prisma)
     const port = process.env.PORT || 5000
