@@ -1,19 +1,39 @@
-const mongoose = require('mongoose')
-const { Course } = require('../models/Course')
-const { StudentVideoProgress } = require('../models/StudentVideoProgress')
-const { StudentLessonProgress } = require('../models/StudentLessonProgress')
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
 async function ensureEnrolled(studentId, courseId) {
-    if (!mongoose.Types.ObjectId.isValid(courseId)) return false
-    const course = await Course.findById(courseId).select('students isFree price')
+    const course = await prisma.course.findUnique({
+        where: { id: courseId },
+        select: { id: true, isFree: true, price: true }
+    })
     if (!course) return false
     const isFree = Boolean(course.isFree) || Number(course.price || 0) <= 0
-    const enrolled = Array.isArray(course.students) && course.students.some((s) => String(s) === String(studentId))
-    return Boolean(enrolled || isFree)
+    if (isFree) return true
+
+    const enrollment = await prisma.courseEnrollment.findFirst({
+        where: { courseId, studentId }
+    })
+    return !!enrollment
 }
 
-const markLessonOpened = asyncHandler(async(req, res) => {
+const markLessonOpened = asyncHandler(async (req, res) => {
+    const studentId = req.user.id
+    const { courseId, lessonId } = req.body || {}
+    if (!courseId || !lessonId) return res.status(400).json({ message: 'courseId and lessonId are required' })
+
+    const ok = await ensureEnrolled(studentId, courseId)
+    if (!ok) return res.status(403).json({ message: 'Forbidden' })
+
+    await prisma.studentLessonProgress.upsert({
+        where: { studentId_courseId_lessonId: { studentId, courseId, lessonId } },
+        update: {},
+        create: { studentId, courseId, lessonId, openedAt: new Date() }
+    })
+
+    res.json({ ok: true })
+})
+
+const markLessonCompleted = asyncHandler(async (req, res) => {
     const studentId = req.user.id
     const { courseId, lessonId } = req.body || {}
     if (!courseId || !lessonId) return res.status(400).json({ message: 'courseId and lessonId are required' })
@@ -22,34 +42,16 @@ const markLessonOpened = asyncHandler(async(req, res) => {
     if (!ok) return res.status(403).json({ message: 'Forbidden' })
 
     const now = new Date()
-    await StudentLessonProgress.findOneAndUpdate(
-        { student: studentId, course: courseId, lesson: lessonId },
-        { $setOnInsert: { openedAt: now } },
-        { upsert: true, new: true }
-    )
+    await prisma.studentLessonProgress.upsert({
+        where: { studentId_courseId_lessonId: { studentId, courseId, lessonId } },
+        update: { completedAt: now, openedAt: now },
+        create: { studentId, courseId, lessonId, openedAt: now, completedAt: now }
+    })
 
     res.json({ ok: true })
 })
 
-const markLessonCompleted = asyncHandler(async(req, res) => {
-    const studentId = req.user.id
-    const { courseId, lessonId } = req.body || {}
-    if (!courseId || !lessonId) return res.status(400).json({ message: 'courseId and lessonId are required' })
-
-    const ok = await ensureEnrolled(studentId, courseId)
-    if (!ok) return res.status(403).json({ message: 'Forbidden' })
-
-    const now = new Date()
-    await StudentLessonProgress.findOneAndUpdate(
-        { student: studentId, course: courseId, lesson: lessonId },
-        { $set: { completedAt: now }, $setOnInsert: { openedAt: now } },
-        { upsert: true, new: true }
-    )
-
-    res.json({ ok: true })
-})
-
-const reportVideoWatch = asyncHandler(async(req, res) => {
+const reportVideoWatch = asyncHandler(async (req, res) => {
     const studentId = req.user.id
     const { courseId, lessonId, videoUrl, deltaSeconds, positionSeconds, durationSeconds } = req.body || {}
     if (!courseId || !lessonId || !videoUrl) return res.status(400).json({ message: 'courseId, lessonId, videoUrl are required' })
@@ -66,15 +68,29 @@ const reportVideoWatch = asyncHandler(async(req, res) => {
     const pos = Number(positionSeconds || 0)
     const dur = Number(durationSeconds || 0)
 
-    await StudentVideoProgress.findOneAndUpdate(
-        { student: studentId, course: courseId, lesson: lessonId, videoUrl: String(videoUrl) },
-        {
-            $inc: { totalSecondsWatched: delta },
-            $max: { lastPositionSeconds: Number.isFinite(pos) ? Math.max(0, pos) : 0 },
-            $set: { lastDurationSeconds: Number.isFinite(dur) ? Math.max(0, dur) : 0 }
-        },
-        { upsert: true, new: true }
-    )
+    const existing = await prisma.studentVideoProgress.findFirst({
+        where: { studentId, courseId, lessonId, videoUrl: String(videoUrl) }
+    })
+
+    if (existing) {
+        await prisma.studentVideoProgress.update({
+            where: { id: existing.id },
+            data: {
+                totalSecondsWatched: { increment: delta },
+                lastPositionSeconds: Number.isFinite(pos) ? Math.max(0, pos) : existing.lastPositionSeconds,
+                lastDurationSeconds: Number.isFinite(dur) ? Math.max(0, dur) : existing.lastDurationSeconds
+            }
+        })
+    } else {
+        await prisma.studentVideoProgress.create({
+            data: {
+                studentId, courseId, lessonId, videoUrl: String(videoUrl),
+                totalSecondsWatched: delta,
+                lastPositionSeconds: Number.isFinite(pos) ? Math.max(0, pos) : 0,
+                lastDurationSeconds: Number.isFinite(dur) ? Math.max(0, dur) : 0
+            }
+        })
+    }
 
     res.json({ ok: true })
 })

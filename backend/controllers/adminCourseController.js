@@ -1,6 +1,4 @@
-const { Course } = require('../models/Course')
-const { Unit } = require('../models/Unit')
-const { Lesson } = require('../models/Lesson')
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
 function normalizeBool(value) {
@@ -14,114 +12,112 @@ function normalizeBool(value) {
     return undefined
 }
 
-const listCourses = asyncHandler(async(req, res) => {
+const listCourses = asyncHandler(async (req, res) => {
     const qRaw = typeof req.query.q === 'string' ? req.query.q : ''
     const q = String(qRaw || '').trim()
     const hiddenRaw = req.query.hidden
     const pinnedRaw = req.query.pinned
 
-    const filter = {}
+    const where = {}
     if (q) {
-        filter.$or = [
-            { title: new RegExp(q, 'i') },
-            { description: new RegExp(q, 'i') }
+        where.OR = [
+            { title: { contains: q, mode: 'insensitive' } },
+            { description: { contains: q, mode: 'insensitive' } }
         ]
     }
 
     const hidden = normalizeBool(hiddenRaw)
     if (typeof hidden === 'boolean') {
-        filter.isHiddenFromStudents = hidden
+        where.isHiddenFromStudents = hidden
     }
 
     const pinned = normalizeBool(pinnedRaw)
     if (typeof pinned === 'boolean') {
-        filter.pinnedAt = pinned ? { $ne: null } : null
+        where.pinnedAt = pinned ? { not: null } : null
     }
 
-    const courses = await Course.find(filter)
-        .sort({ pinnedAt: -1, createdAt: -1 })
-        .select('title description thumbnailUrl teacher isFree price discountPercent createdAt updatedAt section gradeYear isIndividual courseType isHiddenFromStudents pinnedAt')
-        .populate('teacher', 'name email')
+    const courses = await prisma.course.findMany({
+        where,
+        orderBy: [{ pinnedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
+        include: { teacher: { select: { id: true, name: true, email: true } } }
+    })
 
-    res.json(courses.map((c) => ({
-        id: c._id.toString(),
-        _id: c._id.toString(),
-        title: c.title,
-        description: c.description || '',
-        thumbnailUrl: c.thumbnailUrl || '',
-        teacherId: c.teacher && c.teacher._id ? c.teacher._id.toString() : '',
-        teacherName: c.teacher && c.teacher.name ? c.teacher.name : '',
-        isFree: Boolean(c.isFree) || Number(c.price || 0) <= 0,
-        price: typeof c.price === 'number' ? c.price : 0,
-        discountPercent: typeof c.discountPercent === 'number' ? c.discountPercent : 0,
-        section: typeof c.section === 'string' ? c.section : '',
-        gradeYear: typeof c.gradeYear === 'string' ? c.gradeYear : '',
-        isIndividual: Boolean(c.isIndividual),
-        courseType: c.courseType === 'individual' ? 'individual' : 'monthly',
-        isHiddenFromStudents: Boolean(c.isHiddenFromStudents),
-        pinnedAt: c.pinnedAt || null,
-        createdAt: c.createdAt,
-        updatedAt: c.updatedAt
-    })))
+    res.json(
+        courses.map((c) => ({
+            id: c.id,
+            _id: c.id,
+            title: c.title,
+            description: c.description || '',
+            thumbnailUrl: c.thumbnailUrl || '',
+            teacherId: c.teacher ? c.teacher.id : '',
+            teacherName: c.teacher ? c.teacher.name : '',
+            isFree: Boolean(c.isFree) || Number(c.price || 0) <= 0,
+            price: typeof c.price === 'number' ? c.price : 0,
+            discountPercent: typeof c.discountPercent === 'number' ? c.discountPercent : 0,
+            section: typeof c.section === 'string' ? c.section : '',
+            gradeYear: typeof c.gradeYear === 'string' ? c.gradeYear : '',
+            isIndividual: Boolean(c.isIndividual),
+            courseType: c.courseType === 'individual' ? 'individual' : 'monthly',
+            isHiddenFromStudents: Boolean(c.isHiddenFromStudents),
+            pinnedAt: c.pinnedAt || null,
+            createdAt: c.createdAt,
+            updatedAt: c.updatedAt
+        }))
+    )
 })
 
-const pinCourse = asyncHandler(async(req, res) => {
+const pinCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    course.pinnedAt = new Date()
-    await course.save()
-    res.json({ message: 'Pinned', courseId: String(courseId), pinnedAt: course.pinnedAt })
+    const updated = await prisma.course.update({
+        where: { id: courseId },
+        data: { pinnedAt: new Date() }
+    })
+    res.json({ message: 'Pinned', courseId, pinnedAt: updated.pinnedAt })
 })
 
-const unpinCourse = asyncHandler(async(req, res) => {
+const unpinCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    course.pinnedAt = null
-    await course.save()
-    res.json({ message: 'Unpinned', courseId: String(courseId) })
+    await prisma.course.update({ where: { id: courseId }, data: { pinnedAt: null } })
+    res.json({ message: 'Unpinned', courseId })
 })
 
-const hideCourseFromStudents = asyncHandler(async(req, res) => {
+const hideCourseFromStudents = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    course.isHiddenFromStudents = true
-    await course.save()
-    res.json({ message: 'Hidden', courseId: String(courseId) })
+    await prisma.course.update({ where: { id: courseId }, data: { isHiddenFromStudents: true } })
+    res.json({ message: 'Hidden', courseId })
 })
 
-const unhideCourseFromStudents = asyncHandler(async(req, res) => {
+const unhideCourseFromStudents = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    course.isHiddenFromStudents = false
-    await course.save()
-    res.json({ message: 'Unhidden', courseId: String(courseId) })
+    await prisma.course.update({ where: { id: courseId }, data: { isHiddenFromStudents: false } })
+    res.json({ message: 'Unhidden', courseId })
 })
 
-const deleteCourseAsAdmin = asyncHandler(async(req, res) => {
+const deleteCourseAsAdmin = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
-    const units = await Unit.find({ course: courseId }).select('_id')
-    const unitIds = units.map((u) => u._id)
+    const units = await prisma.unit.findMany({ where: { courseId }, select: { id: true } })
+    const unitIds = units.map((u) => u.id)
     if (unitIds.length) {
-        await Lesson.deleteMany({ unit: { $in: unitIds } })
+        await prisma.lesson.deleteMany({ where: { unitId: { in: unitIds } } })
     }
-    await Unit.deleteMany({ course: courseId })
+    await prisma.unit.deleteMany({ where: { courseId } })
+    await prisma.course.delete({ where: { id: courseId } })
 
-    await Course.deleteOne({ _id: courseId })
-    res.json({ message: 'Deleted', courseId: String(courseId) })
+    res.json({ message: 'Deleted', courseId })
 })
 
 module.exports = {
-    listCourses,
-    pinCourse,
-    unpinCourse,
-    hideCourseFromStudents,
-    unhideCourseFromStudents,
-    deleteCourseAsAdmin
+    listCourses, pinCourse, unpinCourse,
+    hideCourseFromStudents, unhideCourseFromStudents, deleteCourseAsAdmin
 }

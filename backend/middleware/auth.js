@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { User } = require('../models/User')
+const { prisma } = require('../config/prisma')
 
 async function auth(req, res, next) {
     const header = req.headers.authorization
@@ -10,7 +10,7 @@ async function auth(req, res, next) {
     const token = header.slice('Bearer '.length)
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const user = await User.findById(decoded.sub)
+        const user = await prisma.user.findUnique({ where: { id: decoded.sub } })
         if (!user) return res.status(401).json({ message: 'Unauthorized' })
 
         if (user.isSuspended) {
@@ -21,7 +21,7 @@ async function auth(req, res, next) {
         const teamPermissions = user.role === 'team' && rawTeamPerms.length === 0 ? ['courses', 'students', 'grading'] : rawTeamPerms
 
         req.user = {
-            id: user._id.toString(),
+            id: user.id,
             role: user.role,
             email: user.email,
             teamId: user.teamId,
@@ -44,7 +44,7 @@ async function optionalAuth(req, res, next) {
     const token = header.slice('Bearer '.length)
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const user = await User.findById(decoded.sub)
+        const user = await prisma.user.findUnique({ where: { id: decoded.sub } })
         if (!user) return next()
 
         if (user.isSuspended) return next()
@@ -53,7 +53,7 @@ async function optionalAuth(req, res, next) {
         const teamPermissions = user.role === 'team' && rawTeamPerms.length === 0 ? ['courses', 'students', 'grading'] : rawTeamPerms
 
         req.user = {
-            id: user._id.toString(),
+            id: user.id,
             role: user.role,
             email: user.email,
             teamId: user.teamId,

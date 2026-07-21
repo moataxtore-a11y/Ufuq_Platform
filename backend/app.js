@@ -24,7 +24,7 @@ const { progressRoutes } = require('./routes/progressRoutes')
 const { notificationRoutes } = require('./routes/notificationRoutes')
 const { errorHandler } = require('./middleware/errorHandler')
 
-function createApp() {
+function createApp(_prisma) {
     const app = express()
 
     app.use(

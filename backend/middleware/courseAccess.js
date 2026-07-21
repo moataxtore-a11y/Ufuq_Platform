@@ -1,4 +1,4 @@
-const { Course } = require('../models/Course')
+const { prisma } = require('../config/prisma')
 
 function courseIsFree(course) {
     if (!course) return false
@@ -12,7 +12,7 @@ async function attachCourse(req, res, next) {
         const courseId = req.params.courseId || req.body?.courseId || req.query?.courseId
         if (!courseId) return res.status(400).json({ message: 'courseId is required' })
 
-        const course = await Course.findById(courseId)
+        const course = await prisma.course.findUnique({ where: { id: courseId } })
         if (!course) return res.status(404).json({ message: 'Course not found' })
 
         req.course = course
@@ -22,7 +22,7 @@ async function attachCourse(req, res, next) {
     }
 }
 
-function canAccessCourse(req, res, next) {
+async function canAccessCourse(req, res, next) {
     const course = req.course
     const user = req.user
 
@@ -34,19 +34,19 @@ function canAccessCourse(req, res, next) {
     if (isFree && user.role === 'student') return next()
 
     if (user.role === 'teacher') {
-        if (String(course.teacher) === String(user.id)) return next()
+        if (String(course.teacherId) === String(user.id)) return next()
         return res.status(403).json({ message: 'Forbidden' })
     }
 
     if (user.role === 'team') {
-        // Team permissions are enforced at route-level in this codebase.
-        // Here we only block unknown access; team->course scoping is enforced elsewhere.
         return next()
     }
 
     if (user.role === 'student') {
-        const enrolled = Array.isArray(course.students) && course.students.some((s) => String(s) === String(user.id))
-        if (enrolled) return next()
+        const enrollment = await prisma.courseEnrollment.findFirst({
+            where: { courseId: course.id, studentId: user.id }
+        })
+        if (enrollment) return next()
         return res.status(403).json({ message: 'Course locked' })
     }
 

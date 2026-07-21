@@ -1,5 +1,4 @@
-const { MotivationalMessage } = require('../models/MotivationalMessage')
-const { StudentMessageDismissal } = require('../models/StudentMessageDismissal')
+const { prisma } = require('../config/prisma')
 
 function canManage(req) {
     return Boolean(req?.user && ['admin', 'teacher', 'team'].includes(req.user.role))
@@ -13,19 +12,25 @@ function normalizeUrl(url) {
 }
 
 async function getActiveForStudent(req, res) {
-    // Student sees the message unless they dismissed it.
     const userId = req.user?.id
     if (!userId) return res.status(401).json({ message: 'Unauthorized' })
 
-    const message = await MotivationalMessage.findOne({ isActive: true }).sort({ updatedAt: -1 })
+    const messages = await prisma.motivationalMessage.findMany({
+        where: { isActive: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 1
+    })
+    const message = messages[0]
     if (!message) return res.json({ message: null })
 
-    const dismissed = await StudentMessageDismissal.findOne({ userId, messageId: message._id })
+    const dismissed = await prisma.studentMessageDismissal.findFirst({
+        where: { userId, messageId: message.id }
+    })
     if (dismissed) return res.json({ message: null })
 
     return res.json({
         message: {
-            id: message._id,
+            id: message.id,
             title: message.title,
             body: message.body,
             ctaLabel: message.ctaLabel,
@@ -47,33 +52,29 @@ async function upsertMessage(req, res) {
         return res.status(400).json({ message: 'Title or body is required' })
     }
 
-    // Keep a single active message document (upsert latest).
-    let message = await MotivationalMessage.findOne({ isActive: true }).sort({ updatedAt: -1 })
+    const messages = await prisma.motivationalMessage.findMany({
+        where: { isActive: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 1
+    })
+    let message = messages[0]
 
     if (!message) {
-        message = await MotivationalMessage.create({
-            title,
-            body,
-            ctaLabel,
-            ctaUrl,
-            isActive: true,
-            updatedBy: req.user.id
+        message = await prisma.motivationalMessage.create({
+            data: { title, body, ctaLabel, ctaUrl, isActive: true, updatedBy: req.user.id }
         })
     } else {
-        message.title = title
-        message.body = body
-        message.ctaLabel = ctaLabel
-        message.ctaUrl = ctaUrl
-        message.updatedBy = req.user.id
-        await message.save()
-
-        // When message changes, all students should see it again.
-        await StudentMessageDismissal.deleteMany({ messageId: message._id })
+        await prisma.motivationalMessage.update({
+            where: { id: message.id },
+            data: { title, body, ctaLabel, ctaUrl, updatedBy: req.user.id }
+        })
+        await prisma.studentMessageDismissal.deleteMany({ where: { messageId: message.id } })
+        message = { ...message, title, body, ctaLabel, ctaUrl, updatedBy: req.user.id }
     }
 
     return res.json({
         message: {
-            id: message._id,
+            id: message.id,
             title: message.title,
             body: message.body,
             ctaLabel: message.ctaLabel,
@@ -86,12 +87,16 @@ async function upsertMessage(req, res) {
 async function deleteMessage(req, res) {
     if (!canManage(req)) return res.status(403).json({ message: 'Forbidden' })
 
-    const message = await MotivationalMessage.findOne({ isActive: true }).sort({ updatedAt: -1 })
+    const messages = await prisma.motivationalMessage.findMany({
+        where: { isActive: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 1
+    })
+    const message = messages[0]
     if (!message) return res.json({ ok: true })
 
-    // Hard delete for simplicity.
-    await StudentMessageDismissal.deleteMany({ messageId: message._id })
-    await MotivationalMessage.deleteOne({ _id: message._id })
+    await prisma.studentMessageDismissal.deleteMany({ where: { messageId: message.id } })
+    await prisma.motivationalMessage.delete({ where: { id: message.id } })
 
     return res.json({ ok: true })
 }
@@ -104,11 +109,11 @@ async function dismissForMe(req, res) {
     const messageId = String(req.body?.messageId || '').trim()
     if (!messageId) return res.status(400).json({ message: 'messageId is required' })
 
-    await StudentMessageDismissal.updateOne(
-        { userId, messageId },
-        { $setOnInsert: { userId, messageId, dismissedAt: new Date() } },
-        { upsert: true }
-    )
+    await prisma.studentMessageDismissal.upsert({
+        where: { userId_messageId: { userId, messageId } },
+        update: {},
+        create: { userId, messageId, dismissedAt: new Date() }
+    })
 
     return res.json({ ok: true })
 }
@@ -116,12 +121,17 @@ async function dismissForMe(req, res) {
 async function getActiveForManager(req, res) {
     if (!canManage(req)) return res.status(403).json({ message: 'Forbidden' })
 
-    const message = await MotivationalMessage.findOne({ isActive: true }).sort({ updatedAt: -1 })
+    const messages = await prisma.motivationalMessage.findMany({
+        where: { isActive: true },
+        orderBy: { updatedAt: 'desc' },
+        take: 1
+    })
+    const message = messages[0]
     if (!message) return res.json({ message: null })
 
     return res.json({
         message: {
-            id: message._id,
+            id: message.id,
             title: message.title,
             body: message.body,
             ctaLabel: message.ctaLabel,
@@ -132,9 +142,6 @@ async function getActiveForManager(req, res) {
 }
 
 module.exports = {
-    getActiveForStudent,
-    upsertMessage,
-    deleteMessage,
-    dismissForMe,
-    getActiveForManager
+    getActiveForStudent, upsertMessage, deleteMessage,
+    dismissForMe, getActiveForManager
 }

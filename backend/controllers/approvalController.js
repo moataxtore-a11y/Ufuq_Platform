@@ -1,65 +1,74 @@
-const { User } = require('../models/User')
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
-const listPendingStudents = asyncHandler(async(req, res) => {
+const listPendingStudents = asyncHandler(async (req, res) => {
     const role = req.user && req.user.role ? String(req.user.role) : ''
     const teamId = req.user && req.user.teamId ? String(req.user.teamId) : ''
 
-    const filter = { role: 'student', status: 'pending' }
+    const where = { role: 'student', status: 'pending' }
     if (role === 'admin') {
-        // admin sees all pending students
+        // admin sees all
     } else if (role === 'teacher' || role === 'team') {
         if (!teamId) return res.json([])
-        filter.teamId = teamId
+        where.teamId = teamId
     }
 
-    const users = await User.find(filter).select('name email role teamId status createdAt')
+    const users = await prisma.user.findMany({
+        where,
+        select: { id: true, name: true, email: true, role: true, teamId: true, status: true, createdAt: true }
+    })
     res.json(users)
 })
 
-const approveUser = asyncHandler(async(req, res) => {
+const approveUser = asyncHandler(async (req, res) => {
     const { userId } = req.params
-    const user = await User.findById(userId)
+    const user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) return res.status(404).json({ message: 'User not found' })
 
-    user.status = 'approved'
-    user.rejectionReason = undefined
-    user.approvedAt = new Date()
-    user.approvedBy = req.user ? req.user.id : null;
-
-    await user.save()
+    const updated = await prisma.user.update({
+        where: { id: userId },
+        data: {
+            status: 'approved',
+            rejectionReason: null,
+            approvedAt: new Date(),
+            approvedBy: req.user ? req.user.id : null
+        }
+    })
 
     res.json({
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        status: user.status,
-        approvedAt: user.approvedAt
+        id: updated.id,
+        name: updated.name,
+        email: updated.email,
+        role: updated.role,
+        status: updated.status,
+        approvedAt: updated.approvedAt
     })
 })
 
-const rejectUser = asyncHandler(async(req, res) => {
+const rejectUser = asyncHandler(async (req, res) => {
     const { userId } = req.params
     const { reason } = req.body || {}
 
-    const user = await User.findById(userId)
+    const user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) return res.status(404).json({ message: 'User not found' })
 
-    user.status = 'rejected'
-    user.rejectionReason = typeof reason === 'string' ? reason : undefined
-    user.approvedAt = undefined
-    user.approvedBy = undefined
-
-    await user.save()
+    const updated = await prisma.user.update({
+        where: { id: userId },
+        data: {
+            status: 'rejected',
+            rejectionReason: typeof reason === 'string' ? reason : null,
+            approvedAt: null,
+            approvedBy: null
+        }
+    })
 
     res.json({
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        status: user.status,
-        rejectionReason: user.rejectionReason
+        id: updated.id,
+        name: updated.name,
+        email: updated.email,
+        role: updated.role,
+        status: updated.status,
+        rejectionReason: updated.rejectionReason
     })
 })
 

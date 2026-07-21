@@ -147,11 +147,11 @@ export default function StudentLandingPage() {
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
               {isRtl ? (
                 <>
-                  <span className="font-perfect text-slate-900 dark:text-white">كورساتك</span>
+                  <span className="text-slate-900 dark:text-white">كورساتك</span>
                 </>
               ) : (
                 <>
-                  <span className="font-perfect text-slate-900 dark:text-white">Your Courses</span>
+                  <span className="text-slate-900 dark:text-white">Your Courses</span>
                 </>
               )}
             </h1>

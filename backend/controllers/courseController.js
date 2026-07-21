@@ -1,8 +1,4 @@
-const mongoose = require('mongoose')
-const { Course } = require('../models/Course')
-const { Unit } = require('../models/Unit')
-const { Lesson } = require('../models/Lesson')
-const { User } = require('../models/User')
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
 function normalizeBoolean(value) {
@@ -16,42 +12,40 @@ function normalizeBoolean(value) {
     return undefined
 }
 
-function courseTeacherId(course) {
-    if (!course) return null
-    if (course.teacher && course.teacher._id) return course.teacher._id.toString()
-    if (course.teacher) return course.teacher.toString()
-    return null
-}
-
 async function canAccessCourse(course, user) {
     if (!course) return false
     if (!user) return false
     if (user.role === 'admin') return true
-
     const courseIsFree = Boolean(course.isFree) || Number(course.price || 0) <= 0
-    const teacherId = courseTeacherId(course)
+    const teacherId = typeof course.teacherId === 'string' ? course.teacherId : ''
 
-    if (user.role === 'teacher') {
-        return teacherId === user.id
-    }
-
+    if (user.role === 'teacher') return teacherId === user.id
     if (user.role === 'team') {
-        if (!user.teamId) return false
-        if (!teacherId) return false
-        const teacher = await User.findById(teacherId).select('teamId role')
+        if (!user.teamId || !teacherId) return false
+        const teacher = await prisma.user.findUnique({ where: { id: teacherId }, select: { teamId: true, role: true } })
         if (!teacher || teacher.role !== 'teacher') return false
         return String(teacher.teamId || '') === String(user.teamId)
     }
-
     if (user.role === 'student') {
         if (courseIsFree) return true
-        return (course.students || []).some((s) => {
-            const sid = s && s._id ? s._id.toString() : s ? s.toString() : null
-            return sid === user.id
+        const enrollment = await prisma.courseEnrollment.findFirst({
+            where: { courseId: course.id, studentId: user.id }
         })
+        return !!enrollment
     }
-
     return false
+}
+
+function normalizeSection(sec) {
+    const obj = sec && typeof sec === 'object' ? sec : {}
+    return {
+        key: typeof obj.key === 'string' ? obj.key : '',
+        enabled: typeof obj.enabled === 'boolean' ? obj.enabled : true,
+        videos: Array.isArray(obj.videos) ? obj.videos.map(normalizeAttachmentItem) : [],
+        pdfs: Array.isArray(obj.pdfs) ? obj.pdfs.map(normalizeAttachmentItem) : [],
+        images: Array.isArray(obj.images) ? obj.images.map(normalizeAttachmentItem) : [],
+        assessmentId: typeof obj.assessmentId === 'string' && obj.assessmentId ? obj.assessmentId : undefined
+    }
 }
 
 function normalizeAttachmentItem(it) {
@@ -67,19 +61,6 @@ function normalizeAttachmentItem(it) {
     }
 }
 
-function normalizeSection(sec) {
-    const obj = sec && typeof sec === 'object' ? sec : {}
-    const key = typeof obj.key === 'string' ? obj.key : ''
-    return {
-        key,
-        enabled: typeof obj.enabled === 'boolean' ? obj.enabled : true,
-        videos: Array.isArray(obj.videos) ? obj.videos.map(normalizeAttachmentItem) : [],
-        pdfs: Array.isArray(obj.pdfs) ? obj.pdfs.map(normalizeAttachmentItem) : [],
-        images: Array.isArray(obj.images) ? obj.images.map(normalizeAttachmentItem) : [],
-        assessmentId: typeof obj.assessmentId === 'string' && obj.assessmentId ? obj.assessmentId : undefined
-    }
-}
-
 function stripAttachmentUrls(section) {
     const sec = section && typeof section === 'object' ? section : {}
     return {
@@ -89,68 +70,62 @@ function stripAttachmentUrls(section) {
         videos: Array.isArray(sec.videos) ? sec.videos.map((it) => ({
             name: typeof it.name === 'string' ? it.name : '',
             description: typeof it.description === 'string' ? it.description : '',
-            url: '',
-            storageRef: '',
+            url: '', storageRef: '',
             durationSec: typeof it.durationSec === 'number' && Number.isFinite(it.durationSec) ? it.durationSec : null
         })) : [],
         pdfs: Array.isArray(sec.pdfs) ? sec.pdfs.map((it) => ({
-            name: typeof it.name === 'string' ? it.name : '',
-            description: typeof it.description === 'string' ? it.description : '',
-            url: '',
-            storageRef: ''
+            name: typeof it.name === 'string' ? it.name : '', description: typeof it.description === 'string' ? it.description : '', url: '', storageRef: ''
         })) : [],
         images: Array.isArray(sec.images) ? sec.images.map((it) => ({
-            name: typeof it.name === 'string' ? it.name : '',
-            description: typeof it.description === 'string' ? it.description : '',
-            url: '',
-            storageRef: ''
+            name: typeof it.name === 'string' ? it.name : '', description: typeof it.description === 'string' ? it.description : '', url: '', storageRef: ''
         })) : []
     }
 }
 
-const listPublicCourses = asyncHandler(async(req, res) => {
+const listPublicCourses = asyncHandler(async (req, res) => {
     const limitRaw = Number(req.query.limit)
     const limit = Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 24) : 6
-
-    const qRaw = typeof req.query.q === 'string' ? req.query.q : ''
-    const q = String(qRaw || '').trim()
-
+    const q = typeof req.query.q === 'string' ? req.query.q.trim() : ''
     const section = typeof req.query.section === 'string' ? req.query.section.trim() : ''
     const gradeYear = typeof req.query.gradeYear === 'string' ? req.query.gradeYear.trim() : ''
 
-    const filter = {}
-    const and = []
+    const where = {}
+    const andConditions = []
     if (q) {
-        and.push({
-            $or: [
-                { title: new RegExp(q, 'i') },
-                { description: new RegExp(q, 'i') }
+        andConditions.push({
+            OR: [
+                { title: { contains: q, mode: 'insensitive' } },
+                { description: { contains: q, mode: 'insensitive' } }
             ]
         })
     }
     if (section) {
-        and.push({ $or: [{ section: '' }, { section }, { section: { $exists: false } }] })
+        andConditions.push({
+            OR: [{ section: '' }, { section }, { section: null }]
+        })
     }
     if (gradeYear) {
-        const cond = [{ gradeYear: '' }, { gradeYear }, { gradeYear: { $exists: false } }]
-        and.push({ $or: cond })
+        andConditions.push({
+            OR: [{ gradeYear: '' }, { gradeYear }, { gradeYear: null }]
+        })
     }
-    if (and.length) filter.$and = and
+    if (andConditions.length > 0) where.AND = andConditions
 
     if (!req.user || req.user.role === 'student') {
-        filter.isHiddenFromStudents = { $ne: true }
+        where.isHiddenFromStudents = { not: true }
     }
 
-    const courses = await Course.find(filter)
-        .sort({ pinnedAt: -1, createdAt: -1 })
-        .limit(limit)
-        .select('title description thumbnailUrl teacher isFree price discountPercent createdAt updatedAt section gradeYear isIndividual courseType isHiddenFromStudents pinnedAt')
-        .populate('teacher', 'name')
+    const courses = await prisma.course.findMany({
+        where,
+        orderBy: [{ pinnedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
+        take: limit,
+        include: { teacher: { select: { id: true, name: true } } }
+    })
 
     res.json(
         courses.map((c) => ({
-            id: c._id.toString(),
-            _id: c._id.toString(),
+            id: c.id,
+            _id: c.id,
             title: c.title,
             description: c.description || '',
             thumbnailUrl: c.thumbnailUrl || '',
@@ -165,28 +140,28 @@ const listPublicCourses = asyncHandler(async(req, res) => {
             gradeYear: typeof c.gradeYear === 'string' ? c.gradeYear : '',
             isHiddenFromStudents: Boolean(c.isHiddenFromStudents),
             pinnedAt: c.pinnedAt || null,
-            teacherId: c.teacher && c.teacher._id ? c.teacher._id.toString() : '',
-            teacherName: c.teacher && c.teacher.name ? c.teacher.name : ''
+            teacherId: c.teacher ? c.teacher.id : '',
+            teacherName: c.teacher ? c.teacher.name : ''
         }))
     )
 })
 
-const listPublicCoursesForTeacher = asyncHandler(async(req, res) => {
+const listPublicCoursesForTeacher = asyncHandler(async (req, res) => {
     const { teacherId } = req.params
-
     const limitRaw = Number(req.query.limit)
     const limit = Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 48) : 24
 
-    const courses = await Course.find({ teacher: teacherId })
-        .sort({ pinnedAt: -1, createdAt: -1 })
-        .limit(limit)
-        .select('title description thumbnailUrl teacher isFree price discountPercent createdAt updatedAt section gradeYear isIndividual courseType isHiddenFromStudents pinnedAt')
-        .populate('teacher', 'name')
+    const courses = await prisma.course.findMany({
+        where: { teacherId },
+        orderBy: [{ pinnedAt: { sort: 'desc', nulls: 'last' } }, { createdAt: 'desc' }],
+        take: limit,
+        include: { teacher: { select: { id: true, name: true } } }
+    })
 
     res.json(
         courses.map((c) => ({
-            id: c._id.toString(),
-            _id: c._id.toString(),
+            id: c.id,
+            _id: c.id,
             title: c.title,
             description: c.description || '',
             thumbnailUrl: c.thumbnailUrl || '',
@@ -201,21 +176,21 @@ const listPublicCoursesForTeacher = asyncHandler(async(req, res) => {
             gradeYear: typeof c.gradeYear === 'string' ? c.gradeYear : '',
             isHiddenFromStudents: Boolean(c.isHiddenFromStudents),
             pinnedAt: c.pinnedAt || null,
-            teacherId: c.teacher && c.teacher._id ? c.teacher._id.toString() : '',
-            teacherName: c.teacher && c.teacher.name ? c.teacher.name : ''
+            teacherId: c.teacher ? c.teacher.id : '',
+            teacherName: c.teacher ? c.teacher.name : ''
         }))
     )
 })
 
-const createCourse = asyncHandler(async(req, res) => {
+const createCourse = asyncHandler(async (req, res) => {
     const { title, description, thumbnailUrl, price, isFree, section, gradeYear, isIndividual, courseType, discountPercent, pinned } = req.body || {}
     if (!title) return res.status(400).json({ message: 'title is required' })
 
     const normalizedIsFree = normalizeBoolean(isFree)
     const normalizedIsIndividual = normalizeBoolean(isIndividual)
-
     const normalizedCourseType = courseType === 'individual' ? 'individual' : courseType === 'monthly' ? 'monthly' : undefined
     const effectiveCourseType = normalizedCourseType || (normalizedIsIndividual ? 'individual' : 'monthly')
+
     const p = (typeof normalizedIsFree === 'boolean' && normalizedIsFree) ? 0 : (price === undefined || price === null || price === '' ? 0 : Number(price))
     if (!Number.isFinite(p) || p < 0) return res.status(400).json({ message: 'price must be a non-negative number' })
 
@@ -228,104 +203,107 @@ const createCourse = asyncHandler(async(req, res) => {
     let teacherId = req.user.id
     if (req.user.role === 'team') {
         if (!req.user.teamId) return res.status(403).json({ message: 'Forbidden' })
-        const teacher = await User.findOne({ role: 'teacher', teamId: req.user.teamId }).select('_id')
+        const teacher = await prisma.user.findFirst({
+            where: { role: 'teacher', teamId: req.user.teamId },
+            select: { id: true }
+        })
         if (!teacher) return res.status(400).json({ message: 'No teacher found for this team scope' })
-        teacherId = teacher._id
+        teacherId = teacher.id
     }
 
-    const course = await Course.create({
-        title,
-        description: description || '',
-        thumbnailUrl: typeof thumbnailUrl === 'string' ? thumbnailUrl : '',
-        pinnedAt: normalizedPinned ? new Date() : null,
-        isIndividual: effectiveCourseType === 'individual',
-        courseType: effectiveCourseType,
-        isFree: typeof normalizedIsFree === 'boolean' ? normalizedIsFree : p <= 0,
-        price: p,
-        discountPercent: dp,
-        section: typeof section === 'string' ? section.trim() : '',
-        gradeYear: typeof gradeYear === 'string' ? gradeYear.trim() : '',
-        teacher: teacherId,
-        students: []
+    const course = await prisma.course.create({
+        data: {
+            title,
+            description: description || '',
+            thumbnailUrl: typeof thumbnailUrl === 'string' ? thumbnailUrl : '',
+            pinnedAt: normalizedPinned ? new Date() : null,
+            isIndividual: effectiveCourseType === 'individual',
+            courseType: effectiveCourseType,
+            isFree: typeof normalizedIsFree === 'boolean' ? normalizedIsFree : p <= 0,
+            price: p,
+            discountPercent: dp,
+            section: typeof section === 'string' ? section.trim() : '',
+            gradeYear: typeof gradeYear === 'string' ? gradeYear.trim() : '',
+            teacherId
+        }
     })
 
     res.status(201).json(course)
 })
 
-const updateCourse = asyncHandler(async(req, res) => {
+const updateCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
     const { title, description, price, isFree, section, gradeYear, isIndividual, courseType, discountPercent } = req.body || {}
 
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    if (typeof title === 'string' && title.trim()) course.title = title.trim()
-    if (typeof description === 'string') course.description = description
+    const data = {}
+    if (typeof title === 'string' && title.trim()) data.title = title.trim()
+    if (typeof description === 'string') data.description = description
 
     const normalizedIsIndividual = normalizeBoolean(isIndividual)
     const normalizedCourseType = courseType === 'individual' ? 'individual' : courseType === 'monthly' ? 'monthly' : undefined
     if (normalizedCourseType) {
-        course.courseType = normalizedCourseType
-        course.isIndividual = normalizedCourseType === 'individual'
+        data.courseType = normalizedCourseType
+        data.isIndividual = normalizedCourseType === 'individual'
     } else if (typeof normalizedIsIndividual === 'boolean') {
-        course.isIndividual = normalizedIsIndividual
-        course.courseType = normalizedIsIndividual ? 'individual' : 'monthly'
+        data.isIndividual = normalizedIsIndividual
+        data.courseType = normalizedIsIndividual ? 'individual' : 'monthly'
     }
 
     const normalizedIsFree = normalizeBoolean(isFree)
     if (typeof normalizedIsFree === 'boolean') {
-        course.isFree = normalizedIsFree
-        if (normalizedIsFree) course.price = 0
+        data.isFree = normalizedIsFree
+        if (normalizedIsFree) data.price = 0
     }
 
     if (price !== undefined && price !== null && price !== '') {
         const p = Number(price)
         if (!Number.isFinite(p) || p < 0) return res.status(400).json({ message: 'price must be a non-negative number' })
-        course.price = p
-        if (p <= 0) course.isFree = true
+        data.price = p
+        if (p <= 0) data.isFree = true
     }
 
     if (discountPercent !== undefined && discountPercent !== null && discountPercent !== '') {
         const dp = Number(discountPercent)
         if (!Number.isFinite(dp) || dp < 0 || dp > 100) return res.status(400).json({ message: 'discountPercent must be between 0 and 100' })
-        course.discountPercent = (Boolean(course.isFree) || Number(course.price || 0) <= 0) ? 0 : dp
+        const finalFree = typeof data.isFree === 'boolean' ? data.isFree : (Boolean(course.isFree) || Number(data.price != null ? data.price : course.price || 0) <= 0)
+        data.discountPercent = finalFree ? 0 : dp
     }
 
-    if (Boolean(course.isFree) || Number(course.price || 0) <= 0) {
-        course.discountPercent = 0
-    }
+    const finalFree = typeof data.isFree === 'boolean' ? data.isFree : (Boolean(course.isFree) || Number(data.price != null ? data.price : course.price || 0) <= 0)
+    if (finalFree) data.discountPercent = 0
 
-    if (typeof section === 'string') course.section = section.trim()
-    if (typeof gradeYear === 'string') course.gradeYear = gradeYear.trim()
+    if (typeof section === 'string') data.section = section.trim()
+    if (typeof gradeYear === 'string') data.gradeYear = gradeYear.trim()
 
-    await course.save()
+    const updated = await prisma.course.update({ where: { id: courseId }, data })
 
     res.json({
-        id: course._id.toString(),
-        title: course.title,
-        description: course.description || '',
-        thumbnailUrl: course.thumbnailUrl || '',
-        isIndividual: Boolean(course.isIndividual),
-        courseType: course.courseType === 'individual' ? 'individual' : 'monthly',
-        isFree: Boolean(course.isFree) || Number(course.price || 0) <= 0,
-        price: typeof course.price === 'number' ? course.price : 0,
-        discountPercent: typeof course.discountPercent === 'number' ? course.discountPercent : 0,
-        section: typeof course.section === 'string' ? course.section : '',
-        gradeYear: typeof course.gradeYear === 'string' ? course.gradeYear : '',
-        createdAt: course.createdAt,
-        updatedAt: course.updatedAt
+        id: updated.id,
+        title: updated.title,
+        description: updated.description || '',
+        thumbnailUrl: updated.thumbnailUrl || '',
+        isIndividual: Boolean(updated.isIndividual),
+        courseType: updated.courseType === 'individual' ? 'individual' : 'monthly',
+        isFree: Boolean(updated.isFree) || Number(updated.price || 0) <= 0,
+        price: typeof updated.price === 'number' ? updated.price : 0,
+        discountPercent: typeof updated.discountPercent === 'number' ? updated.discountPercent : 0,
+        section: typeof updated.section === 'string' ? updated.section : '',
+        gradeYear: typeof updated.gradeYear === 'string' ? updated.gradeYear : '',
+        createdAt: updated.createdAt,
+        updatedAt: updated.updatedAt
     })
 })
 
-const myCourses = asyncHandler(async(req, res) => {
+const myCourses = asyncHandler(async (req, res) => {
     function mapCourseForCard(c) {
-        const id = c && c._id ? c._id.toString() : ''
         return {
-            id,
-            _id: id,
+            id: c.id,
+            _id: c.id,
             title: c.title,
             description: c.description || '',
             thumbnailUrl: c.thumbnailUrl || '',
@@ -343,93 +321,99 @@ const myCourses = asyncHandler(async(req, res) => {
         }
     }
 
-    const selectFields = 'title description thumbnailUrl isFree price discountPercent createdAt updatedAt section gradeYear isIndividual courseType isHiddenFromStudents pinnedAt'
+    const selectFields = { id: true, title: true, description: true, thumbnailUrl: true, isFree: true, price: true, discountPercent: true, createdAt: true, updatedAt: true, section: true, gradeYear: true, isIndividual: true, courseType: true, isHiddenFromStudents: true, pinnedAt: true }
 
     if (req.user.role === 'teacher') {
-        const courses = await Course.find({ teacher: req.user.id }).sort({ createdAt: -1 }).select(selectFields)
+        const courses = await prisma.course.findMany({ where: { teacherId: req.user.id }, orderBy: { createdAt: 'desc' }, select: selectFields })
         return res.json(courses.map(mapCourseForCard))
     }
     if (req.user.role === 'student') {
-        const courses = await Course.find({ students: req.user.id }).sort({ createdAt: -1 }).select(selectFields)
+        const enrollments = await prisma.courseEnrollment.findMany({ where: { studentId: req.user.id }, select: { courseId: true } })
+        const courseIds = enrollments.map((e) => e.courseId)
+        if (!courseIds.length) return res.json([])
+        const courses = await prisma.course.findMany({ where: { id: { in: courseIds } }, orderBy: { createdAt: 'desc' }, select: selectFields })
         return res.json(courses.map(mapCourseForCard))
     }
     if (req.user.role === 'team') {
         if (!req.user.teamId) return res.json([])
-        const teachers = await User.find({ role: 'teacher', teamId: req.user.teamId }).select('_id')
-        const teacherIds = teachers.map((t) => t._id)
-        const courses = await Course.find({ teacher: { $in: teacherIds } }).sort({ createdAt: -1 }).select(selectFields)
+        const teachers = await prisma.user.findMany({ where: { role: 'teacher', teamId: req.user.teamId }, select: { id: true } })
+        const teacherIds = teachers.map((t) => t.id)
+        if (!teacherIds.length) return res.json([])
+        const courses = await prisma.course.findMany({ where: { teacherId: { in: teacherIds } }, orderBy: { createdAt: 'desc' }, select: selectFields })
         return res.json(courses.map(mapCourseForCard))
     }
     return res.status(403).json({ message: 'Forbidden' })
 })
 
-const getCourse = asyncHandler(async(req, res) => {
+const getCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    if (req.user.role !== 'teacher' && req.user.role !== 'student' && req.user.role !== 'admin' && req.user.role !== 'team') {
+    if (!['teacher', 'student', 'admin', 'team'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
 
-    const course = await Course.findById(courseId)
-        .populate('teacher', 'name email teamId role')
-        .populate('students', 'name email')
-
+    const course = await prisma.course.findUnique({
+        where: { id: courseId },
+        include: {
+            teacher: { select: { id: true, name: true, email: true, teamId: true, role: true } },
+            enrollments: { include: { student: { select: { id: true, name: true, email: true } } } }
+        }
+    })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
     if (req.user.role === 'teacher') {
-        if (courseTeacherId(course) !== req.user.id) return res.status(403).json({ message: 'Forbidden' })
+        if (course.teacherId !== req.user.id) return res.status(403).json({ message: 'Forbidden' })
         return res.json(course)
     }
-
-    if (req.user.role === 'team') {
+    if (req.user.role === 'team' || req.user.role === 'student') {
         if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
         return res.json(course)
     }
-
-    if (req.user.role === 'student') {
-        if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
-        return res.json(course)
-    }
-
     return res.json(course)
 })
 
-const getPublicCourseOutline = asyncHandler(async(req, res) => {
+const getPublicCourseOutline = asyncHandler(async (req, res) => {
     const { courseId } = req.params
 
-    const course = await Course.findById(courseId)
-        .select('title description thumbnailUrl teacher createdAt isFree price discountPercent isIndividual courseType')
-        .populate('teacher', 'name')
-
+    const course = await prisma.course.findUnique({
+        where: { id: courseId },
+        include: { teacher: { select: { id: true, name: true } } }
+    })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
-    const units = await Unit.find({ course: courseId }).sort({ order: 1, createdAt: 1 }).select('_id title description order')
+    const units = await prisma.unit.findMany({
+        where: { courseId },
+        orderBy: { order: 'asc' },
+        select: { id: true, title: true, description: true, order: true }
+    })
 
-    const unitIds = units.map((u) => u._id)
-    const lessons = await Lesson.find({ unit: { $in: unitIds } })
-        .sort({ order: 1, createdAt: 1 })
-        .select('_id unit title order createdAt isFree coverImageUrl videoUrl pdfUrl imageUrls kind contentSections')
+    const unitIds = units.map((u) => u.id)
+    const lessons = await prisma.lesson.findMany({
+        where: { unitId: { in: unitIds } },
+        orderBy: { order: 'asc' },
+        select: { id: true, unitId: true, title: true, order: true, isFree: true, coverImageUrl: true, videoUrl: true, pdfUrl: true, imageUrls: true, kind: true, contentSections: true, createdAt: true }
+    })
 
     let lessonsCount = 0
     let videoLessonsCount = 0
-
     const lessonsByUnitId = new Map()
 
     const courseIsFree = Boolean(course.isFree) || Number(course.price || 0) <= 0
     const canRevealCourseContent = Boolean(req.user && req.user.id && courseIsFree)
 
     for (const l of lessons) {
-        lessonsCount += 1
-        if (l.videoUrl) videoLessonsCount += 1
-        const uid = l.unit ? l.unit.toString() : ''
+        lessonsCount++
+        if (l.videoUrl) videoLessonsCount++
+        const uid = l.unitId || ''
         if (!lessonsByUnitId.has(uid)) lessonsByUnitId.set(uid, [])
         const isFree = Boolean(l.isFree)
         const canRevealContent = canRevealCourseContent || (isFree && req.user && req.user.id)
+
         const normalizedSections = Array.isArray(l.contentSections) ? l.contentSections.map(normalizeSection) : []
         const revealedSections = canRevealContent ? normalizedSections : normalizedSections.map(stripAttachmentUrls)
+        const imageUrls = Array.isArray(l.imageUrls) ? l.imageUrls : []
 
         lessonsByUnitId.get(uid).push({
-            id: l._id.toString(),
+            id: l.id,
             title: l.title,
             order: l.order,
             kind: l.kind || 'lesson',
@@ -437,21 +421,21 @@ const getPublicCourseOutline = asyncHandler(async(req, res) => {
             coverImageUrl: canRevealContent ? (l.coverImageUrl || '') : '',
             videoUrl: canRevealContent ? (l.videoUrl || '') : '',
             pdfUrl: canRevealContent ? (l.pdfUrl || '') : '',
-            imageUrls: canRevealContent ? (Array.isArray(l.imageUrls) ? l.imageUrls : []) : [],
+            imageUrls: canRevealContent ? imageUrls : [],
             contentSections: revealedSections
         })
     }
 
     const unitsWithLessons = units.map((u) => ({
-        id: u._id.toString(),
+        id: u.id,
         title: u.title,
         description: u.description || '',
         order: u.order,
-        lessons: lessonsByUnitId.get(u._id.toString()) || []
+        lessons: lessonsByUnitId.get(u.id) || []
     }))
 
     res.json({
-        id: course._id.toString(),
+        id: course.id,
         title: course.title,
         description: course.description || '',
         thumbnailUrl: course.thumbnailUrl || '',
@@ -466,31 +450,38 @@ const getPublicCourseOutline = asyncHandler(async(req, res) => {
     })
 })
 
-const getCourseStats = asyncHandler(async(req, res) => {
+const getCourseStats = asyncHandler(async (req, res) => {
     const { courseId } = req.params
 
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
-    const units = await Unit.find({ course: courseId }).sort({ order: 1, createdAt: 1 }).select('_id title description order')
+    const units = await prisma.unit.findMany({
+        where: { courseId },
+        orderBy: { order: 'asc' },
+        select: { id: true, title: true, description: true, order: true }
+    })
 
-    const unitIds = units.map((u) => u._id)
-    const lessons = await Lesson.find({ unit: { $in: unitIds } })
-        .sort({ order: 1, createdAt: 1 })
-        .select('_id unit title order createdAt isFree coverImageUrl videoUrl pdfUrl imageUrls kind contentSections')
+    const unitIds = units.map((u) => u.id)
+    const lessons = await prisma.lesson.findMany({
+        where: { unitId: { in: unitIds } },
+        orderBy: { order: 'asc' }
+    })
 
     let lessonsCount = 0
     let videoLessonsCount = 0
-
     const lessonsByUnitId = new Map()
 
     for (const l of lessons) {
-        lessonsCount += 1
-        if (l.videoUrl) videoLessonsCount += 1
-        const uid = l.unit ? l.unit.toString() : ''
+        lessonsCount++
+        if (l.videoUrl) videoLessonsCount++
+        const uid = l.unitId || ''
         if (!lessonsByUnitId.has(uid)) lessonsByUnitId.set(uid, [])
+        const imageUrls = Array.isArray(l.imageUrls) ? l.imageUrls : []
+        const contentSections = Array.isArray(l.contentSections) ? l.contentSections.map(normalizeSection) : []
+
         lessonsByUnitId.get(uid).push({
-            id: l._id.toString(),
+            id: l.id,
             title: l.title,
             order: l.order,
             kind: l.kind || 'lesson',
@@ -498,21 +489,21 @@ const getCourseStats = asyncHandler(async(req, res) => {
             coverImageUrl: l.coverImageUrl || '',
             videoUrl: l.videoUrl || '',
             pdfUrl: l.pdfUrl || '',
-            imageUrls: Array.isArray(l.imageUrls) ? l.imageUrls : [],
-            contentSections: Array.isArray(l.contentSections) ? l.contentSections.map(normalizeSection) : []
+            imageUrls,
+            contentSections
         })
     }
 
     const unitsWithLessons = units.map((u) => ({
-        id: u._id.toString(),
+        id: u.id,
         title: u.title,
         description: u.description || '',
         order: u.order,
-        lessons: lessonsByUnitId.get(u._id.toString()) || []
+        lessons: lessonsByUnitId.get(u.id) || []
     }))
 
     res.json({
-        id: course._id.toString(),
+        id: course.id,
         title: course.title,
         description: course.description || '',
         thumbnailUrl: course.thumbnailUrl || '',
@@ -527,404 +518,331 @@ const getCourseStats = asyncHandler(async(req, res) => {
     })
 })
 
-const updateCourseThumbnail = asyncHandler(async(req, res) => {
+const updateCourseThumbnail = asyncHandler(async (req, res) => {
     const { courseId } = req.params
     const { thumbnailUrl } = req.body || {}
 
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    if (typeof thumbnailUrl === 'string') course.thumbnailUrl = thumbnailUrl
-
-    await course.save()
+    const data = {}
+    if (typeof thumbnailUrl === 'string') data.thumbnailUrl = thumbnailUrl
+    const updated = await prisma.course.update({ where: { id: courseId }, data })
 
     res.json({
-        id: course._id.toString(),
-        title: course.title,
-        description: course.description || '',
-        thumbnailUrl: course.thumbnailUrl || '',
-        isIndividual: Boolean(course.isIndividual),
-        courseType: course.courseType === 'individual' ? 'individual' : 'monthly',
-        isFree: Boolean(course.isFree) || Number(course.price || 0) <= 0,
-        price: typeof course.price === 'number' ? course.price : 0,
-        discountPercent: typeof course.discountPercent === 'number' ? course.discountPercent : 0,
-        section: typeof course.section === 'string' ? course.section : '',
-        gradeYear: typeof course.gradeYear === 'string' ? course.gradeYear : ''
+        id: updated.id,
+        title: updated.title,
+        description: updated.description || '',
+        thumbnailUrl: updated.thumbnailUrl || '',
+        isIndividual: Boolean(updated.isIndividual),
+        courseType: updated.courseType === 'individual' ? 'individual' : 'monthly',
+        isFree: Boolean(updated.isFree) || Number(updated.price || 0) <= 0,
+        price: typeof updated.price === 'number' ? updated.price : 0,
+        discountPercent: typeof updated.discountPercent === 'number' ? updated.discountPercent : 0,
+        section: typeof updated.section === 'string' ? updated.section : '',
+        gradeYear: typeof updated.gradeYear === 'string' ? updated.gradeYear : ''
     })
 })
 
-const pinCourse = asyncHandler(async(req, res) => {
+const pinCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
-
-    course.pinnedAt = new Date()
-    await course.save()
-
-    res.json({ message: 'Pinned', courseId: String(courseId), pinnedAt: course.pinnedAt })
+    const updated = await prisma.course.update({ where: { id: courseId }, data: { pinnedAt: new Date() } })
+    res.json({ message: 'Pinned', courseId, pinnedAt: updated.pinnedAt })
 })
 
-const unpinCourse = asyncHandler(async(req, res) => {
+const unpinCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
-
-    course.pinnedAt = null
-    await course.save()
-
-    res.json({ message: 'Unpinned', courseId: String(courseId) })
+    await prisma.course.update({ where: { id: courseId }, data: { pinnedAt: null } })
+    res.json({ message: 'Unpinned', courseId })
 })
 
-const deleteCourse = asyncHandler(async(req, res) => {
+const deleteCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
-
-    await Course.deleteOne({ _id: courseId })
-    res.json({ message: 'Deleted', courseId: String(courseId) })
+    await prisma.course.delete({ where: { id: courseId } })
+    res.json({ message: 'Deleted', courseId })
 })
 
-const listUnits = asyncHandler(async(req, res) => {
+const listUnits = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
-    if (req.user.role !== 'teacher' && req.user.role !== 'student' && req.user.role !== 'admin' && req.user.role !== 'team') {
+    if (!['teacher', 'student', 'admin', 'team'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
-
-    const units = await Unit.find({ course: courseId }).sort({ order: 1, createdAt: 1 }).select('_id title description order')
-
+    const units = await prisma.unit.findMany({ where: { courseId }, orderBy: { order: 'asc' } })
     res.json(units)
 })
 
-const listLessonsForUnit = asyncHandler(async(req, res) => {
+const listLessonsForUnit = asyncHandler(async (req, res) => {
     const { unitId } = req.params
-
-    const unit = await Unit.findById(unitId)
+    const unit = await prisma.unit.findUnique({ where: { id: unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
-
-    const course = await Course.findById(unit.course)
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId }, select: { id: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
-    if (req.user.role !== 'teacher' && req.user.role !== 'student' && req.user.role !== 'admin' && req.user.role !== 'team') {
+    if (!['teacher', 'student', 'admin', 'team'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
-
-    const lessons = await Lesson.find({ unit: unitId })
-        .sort({ order: 1, createdAt: 1 })
-        .select('_id unit title order createdAt isFree coverImageUrl videoUrl pdfUrl imageUrls kind contentSections assessmentId gateAssessmentId gateNextLessons')
-
+    const lessons = await prisma.lesson.findMany({ where: { unitId }, orderBy: { order: 'asc' } })
     res.json(lessons)
 })
 
-const listStudents = asyncHandler(async(req, res) => {
+const listStudents = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    const students = await User.find({ _id: { $in: course.students } }).select('_id name email')
-
-    res.json(students)
+    const enrollments = await prisma.courseEnrollment.findMany({
+        where: { courseId },
+        include: { student: { select: { id: true, name: true, email: true } } }
+    })
+    res.json(enrollments.map((e) => e.student))
 })
 
-const listMyCourseStudents = asyncHandler(async(req, res) => {
+const listMyCourseStudents = asyncHandler(async (req, res) => {
     const { q, status } = req.query
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') {
         return res.status(403).json({ message: 'Forbidden' })
     }
 
     let teacherIds = []
     if (req.user.role === 'teacher') {
-        teacherIds = [new mongoose.Types.ObjectId(String(req.user.id))]
+        teacherIds = [req.user.id]
     } else {
         if (!req.user.teamId) return res.json([])
-        const teachers = await User.find({ role: 'teacher', teamId: req.user.teamId }).select('_id')
-        teacherIds = teachers.map((t) => t._id)
+        const teachers = await prisma.user.findMany({ where: { role: 'teacher', teamId: req.user.teamId }, select: { id: true } })
+        teacherIds = teachers.map((t) => t.id)
     }
 
-    const rows = await Course.aggregate([
-        { $match: { teacher: { $in: teacherIds } } },
-        { $unwind: '$students' },
-        { $group: { _id: '$students' } }
-    ])
+    if (!teacherIds.length) return res.json([])
 
-    const studentIds = rows.map((r) => r && r._id).filter(Boolean)
-    if (studentIds.length === 0) return res.json([])
+    const enrollments = await prisma.courseEnrollment.findMany({
+        where: { course: { teacherId: { in: teacherIds } } },
+        select: { studentId: true }
+    })
+    const studentIds = [...new Set(enrollments.map((e) => e.studentId))]
+    if (!studentIds.length) return res.json([])
 
-    const filter = { _id: { $in: studentIds }, role: 'student' }
-    if (typeof status === 'string' && status) filter.status = status
+    const where = { id: { in: studentIds }, role: 'student' }
+    if (typeof status === 'string' && status.trim()) where.status = status.trim()
     if (q) {
         const qq = String(q).trim()
         if (qq) {
-            filter.$or = [
-                { name: new RegExp(qq, 'i') },
-                { email: new RegExp(qq, 'i') },
-                { studentId: new RegExp(qq, 'i') }
+            where.OR = [
+                { name: { contains: qq, mode: 'insensitive' } },
+                { email: { contains: qq, mode: 'insensitive' } },
+                { studentId: { contains: qq, mode: 'insensitive' } }
             ]
         }
     }
 
-    const users = await User.find(filter).select('name email role teamId studentId status mustChangePassword profile createdAt isSuspended suspendedAt')
+    const users = await prisma.user.findMany({
+        where,
+        select: { id: true, name: true, email: true, role: true, teamId: true, studentId: true, status: true, mustChangePassword: true, profile: true, createdAt: true, isSuspended: true, suspendedAt: true }
+    })
     res.json(users)
 })
 
-const addUnit = asyncHandler(async(req, res) => {
+const addUnit = asyncHandler(async (req, res) => {
     const { courseId } = req.params
     const { title, description, order } = req.body || {}
 
-    const course = await Course.findById(courseId)
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    const unit = await Unit.create({
-        course: courseId,
-        title: title || '',
-        description: description || '',
-        order: order || 0
+    const unit = await prisma.unit.create({
+        data: {
+            courseId,
+            title: title || '',
+            description: description || '',
+            order: order || 0
+        }
     })
 
     res.status(201).json(unit)
 })
 
-const addLesson = asyncHandler(async(req, res) => {
+const addLesson = asyncHandler(async (req, res) => {
     const { unitId } = req.params
     const { title, isFree, coverImageUrl, videoUrl, pdfUrl, imageUrls, order, gateAssessmentId, gateNextLessons, kind, assessmentId, contentSections } = req.body || {}
 
-    const unit = await Unit.findById(unitId)
+    const unit = await prisma.unit.findUnique({ where: { id: unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
 
-    const course = await Course.findById(unit.course)
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
     const normalizedKind = kind === 'exam' ? 'exam' : 'lesson'
-
     const normalizedIsFree = normalizeBoolean(isFree)
     const normalizedGateNextLessons = normalizeBoolean(gateNextLessons)
-
     const normalizedContentSections = Array.isArray(contentSections) ? contentSections.map(normalizeSection) : undefined
 
-    const lesson = await Lesson.create({
-        unit: unit._id,
-        kind: normalizedKind,
-        title,
-        isFree: typeof normalizedIsFree === 'boolean' ? normalizedIsFree : false,
-        coverImageUrl: coverImageUrl || '',
-        videoUrl: videoUrl || '',
-        pdfUrl: pdfUrl || '',
-        imageUrls: Array.isArray(imageUrls) ? imageUrls : [],
-        contentSections: normalizedContentSections,
-        assessmentId: typeof assessmentId === 'string' && assessmentId ? assessmentId : undefined,
-        gateAssessmentId: typeof gateAssessmentId === 'string' && gateAssessmentId ? gateAssessmentId : undefined,
-        gateNextLessons: typeof normalizedGateNextLessons === 'boolean' ? normalizedGateNextLessons : false,
-        order: order || 0
+    const lesson = await prisma.lesson.create({
+        data: {
+            unitId,
+            kind: normalizedKind,
+            title,
+            isFree: typeof normalizedIsFree === 'boolean' ? normalizedIsFree : false,
+            coverImageUrl: coverImageUrl || '',
+            videoUrl: videoUrl || '',
+            pdfUrl: pdfUrl || '',
+            imageUrls: Array.isArray(imageUrls) ? imageUrls : undefined,
+            contentSections: normalizedContentSections,
+            assessmentId: typeof assessmentId === 'string' && assessmentId ? assessmentId : null,
+            gateAssessmentId: typeof gateAssessmentId === 'string' && gateAssessmentId ? gateAssessmentId : null,
+            gateNextLessons: typeof normalizedGateNextLessons === 'boolean' ? normalizedGateNextLessons : false,
+            order: order || 0
+        }
     })
     res.status(201).json(lesson)
 })
 
-const deleteUnit = asyncHandler(async(req, res) => {
+const deleteUnit = asyncHandler(async (req, res) => {
     const { unitId } = req.params
-
-    const unit = await Unit.findById(unitId)
+    const unit = await prisma.unit.findUnique({ where: { id: unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
-
-    const course = await Course.findById(unit.course)
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    await Lesson.deleteMany({ unit: unitId })
-    await Unit.deleteOne({ _id: unitId })
-
-    res.json({ message: 'Unit deleted', unitId: String(unitId), courseId: String(course._id) })
+    await prisma.lesson.deleteMany({ where: { unitId } })
+    await prisma.unit.delete({ where: { id: unitId } })
+    res.json({ message: 'Unit deleted', unitId, courseId: course.id })
 })
 
-const updateLesson = asyncHandler(async(req, res) => {
+const updateLesson = asyncHandler(async (req, res) => {
     const { lessonId } = req.params
     const { title, isFree, coverImageUrl, videoUrl, pdfUrl, imageUrls, order, gateAssessmentId, gateNextLessons, kind, assessmentId, contentSections } = req.body || {}
 
-    const lesson = await Lesson.findById(lessonId)
+    const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } })
     if (!lesson) return res.status(404).json({ message: 'Lesson not found' })
-    const unit = await Unit.findById(lesson.unit)
+    const unit = await prisma.unit.findUnique({ where: { id: lesson.unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
-
-    const course = await Course.findById(unit.course)
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
+    const data = {}
     const normalizedIsFree = normalizeBoolean(isFree)
     const normalizedGateNextLessons = normalizeBoolean(gateNextLessons)
+    if (typeof title === 'string') data.title = title
+    if (typeof normalizedIsFree === 'boolean') data.isFree = normalizedIsFree
+    if (typeof coverImageUrl === 'string') data.coverImageUrl = coverImageUrl
+    if (typeof videoUrl === 'string') data.videoUrl = videoUrl
+    if (typeof pdfUrl === 'string') data.pdfUrl = pdfUrl
+    if (Array.isArray(imageUrls)) data.imageUrls = imageUrls
+    if (Array.isArray(contentSections)) data.contentSections = contentSections.map(normalizeSection)
+    if (typeof order === 'number') data.order = order
+    if (typeof kind === 'string') data.kind = kind === 'exam' ? 'exam' : 'lesson'
+    if (typeof assessmentId === 'string') data.assessmentId = assessmentId || null
+    if (typeof gateAssessmentId === 'string') data.gateAssessmentId = gateAssessmentId || null
+    if (typeof normalizedGateNextLessons === 'boolean') data.gateNextLessons = normalizedGateNextLessons
 
-    if (typeof title === 'string') lesson.title = title
-    if (typeof normalizedIsFree === 'boolean') lesson.isFree = normalizedIsFree
-    if (typeof coverImageUrl === 'string') lesson.coverImageUrl = coverImageUrl
-    if (typeof videoUrl === 'string') lesson.videoUrl = videoUrl
-    if (typeof pdfUrl === 'string') lesson.pdfUrl = pdfUrl
-    if (Array.isArray(imageUrls)) lesson.imageUrls = imageUrls
-    if (Array.isArray(contentSections)) lesson.contentSections = contentSections.map(normalizeSection)
-
-    if (typeof order === 'number') lesson.order = order
-    if (typeof kind === 'string') {
-        lesson.kind = kind === 'exam' ? 'exam' : 'lesson'
-    }
-    if (typeof assessmentId === 'string') {
-        lesson.assessmentId = assessmentId ? assessmentId : undefined
-    }
-    if (typeof gateAssessmentId === 'string') {
-        lesson.gateAssessmentId = gateAssessmentId ? gateAssessmentId : undefined
-    }
-
-    if (typeof normalizedGateNextLessons === 'boolean') lesson.gateNextLessons = normalizedGateNextLessons
-
-    await lesson.save()
-    res.json(lesson)
+    const updated = await prisma.lesson.update({ where: { id: lessonId }, data })
+    res.json(updated)
 })
 
-const deleteLesson = asyncHandler(async(req, res) => {
+const deleteLesson = asyncHandler(async (req, res) => {
     const { lessonId } = req.params
-
-    const lesson = await Lesson.findById(lessonId)
+    const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } })
     if (!lesson) return res.status(404).json({ message: 'Lesson not found' })
-
-    const unit = await Unit.findById(lesson.unit)
+    const unit = await prisma.unit.findUnique({ where: { id: lesson.unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
-
-    const course = await Course.findById(unit.course)
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
-    await Lesson.deleteOne({ _id: lessonId })
-    res.json({ message: 'Deleted', lessonId: String(lessonId) })
+    await prisma.lesson.delete({ where: { id: lessonId } })
+    res.json({ message: 'Deleted', lessonId })
 })
 
-const selfEnrollFreeCourse = asyncHandler(async(req, res) => {
+const selfEnrollFreeCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-
     if (req.user.role !== 'student') return res.status(403).json({ message: 'Forbidden' })
-    if (!mongoose.Types.ObjectId.isValid(courseId)) return res.status(400).json({ message: 'Invalid courseId' })
 
-    const courseDoc = await Course.findById(courseId)
+    const courseDoc = await prisma.course.findUnique({ where: { id: courseId } })
     if (!courseDoc) return res.status(404).json({ message: 'Course not found' })
 
     const courseIsFree = Boolean(courseDoc.isFree) || Number(courseDoc.price || 0) <= 0
     if (!courseIsFree) return res.status(403).json({ message: 'Course locked' })
 
-    const exists = (courseDoc.students || []).some((s) => String(s) === String(req.user.id))
-    if (!exists) {
-        courseDoc.students.push(req.user.id)
-        await courseDoc.save()
+    const existing = await prisma.courseEnrollment.findFirst({ where: { courseId, studentId: req.user.id } })
+    if (!existing) {
+        await prisma.courseEnrollment.create({ data: { courseId, studentId: req.user.id } })
     }
 
-    res.json({ message: 'Enrolled', courseId: String(courseId), studentId: String(req.user.id) })
+    res.json({ message: 'Enrolled', courseId, studentId: req.user.id })
 })
 
-const enrollStudent = asyncHandler(async(req, res) => {
+const enrollStudent = asyncHandler(async (req, res) => {
     const { courseId } = req.params
     const { studentId } = req.body || {}
     if (!studentId) return res.status(400).json({ message: 'studentId is required' })
 
-    if (!mongoose.Types.ObjectId.isValid(courseId)) return res.status(400).json({ message: 'Invalid courseId' })
-    const studentIdRaw = String(studentId).trim()
-    const isMongoId = mongoose.Types.ObjectId.isValid(studentIdRaw)
-
-    const courseDoc = await Course.findById(courseId)
+    const courseDoc = await prisma.course.findUnique({ where: { id: courseId } })
     if (!courseDoc) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(courseDoc, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    const student = isMongoId ?
-        await User.findById(studentIdRaw).select('_id role studentId') :
-        await User.findOne({ studentId: studentIdRaw }).select('_id role studentId')
+    const studentIdRaw = String(studentId).trim()
+    const student = await prisma.user.findFirst({
+        where: { OR: [{ id: studentIdRaw }, { studentId: studentIdRaw }], role: 'student' },
+        select: { id: true, role: true }
+    })
     if (!student || student.role !== 'student') return res.status(400).json({ message: 'Student not found' })
 
-    const exists = (courseDoc.students || []).some((s) => String(s) === String(student._id))
-    if (!exists) {
-        courseDoc.students.push(student._id)
-        await courseDoc.save()
+    const existing = await prisma.courseEnrollment.findFirst({ where: { courseId, studentId: student.id } })
+    if (!existing) {
+        await prisma.courseEnrollment.create({ data: { courseId, studentId: student.id } })
     }
-    res.json({ message: 'Enrolled', courseId: String(courseId), studentId: String(student._id) })
+    res.json({ message: 'Enrolled', courseId, studentId: student.id })
 })
 
-const removeStudent = asyncHandler(async(req, res) => {
+const removeStudent = asyncHandler(async (req, res) => {
     const { courseId, studentId } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(courseId)) return res.status(400).json({ message: 'Invalid courseId' })
-    const studentIdRaw = String(studentId).trim()
-    const isMongoId = mongoose.Types.ObjectId.isValid(studentIdRaw)
-    let studentObjectId = null
-    if (isMongoId) {
-        studentObjectId = studentIdRaw
-    } else {
-        const student = await User.findOne({ studentId: studentIdRaw }).select('_id')
-        if (!student) return res.status(400).json({ message: 'Student not found' })
-        studentObjectId = student._id.toString()
-    }
-
-    const courseDoc = await Course.findById(courseId)
+    const courseDoc = await prisma.course.findUnique({ where: { id: courseId } })
     if (!courseDoc) return res.status(404).json({ message: 'Course not found' })
-
     if (req.user.role !== 'teacher' && req.user.role !== 'team') return res.status(403).json({ message: 'Forbidden' })
     if (!(await canAccessCourse(courseDoc, req.user))) return res.status(403).json({ message: 'Forbidden' })
 
-    courseDoc.students = (courseDoc.students || []).filter((s) => String(s) !== String(studentObjectId))
-    await courseDoc.save()
-    res.json({ message: 'Removed', courseId: String(courseId), studentId: String(studentIdRaw) })
+    const studentIdRaw = String(studentId).trim()
+    const student = await prisma.user.findFirst({
+        where: { OR: [{ id: studentIdRaw }, { studentId: studentIdRaw }], role: 'student' },
+        select: { id: true }
+    })
+    if (!student) return res.status(400).json({ message: 'Student not found' })
+
+    await prisma.courseEnrollment.deleteMany({ where: { courseId, studentId: student.id } })
+    res.json({ message: 'Removed', courseId, studentId: studentIdRaw })
 })
 
 module.exports = {
-    listPublicCourses,
-    listPublicCoursesForTeacher,
-    getPublicCourseOutline,
-    createCourse,
-    myCourses,
-    getCourse,
-    getCourseStats,
-    updateCourse,
-    updateCourseThumbnail,
-    pinCourse,
-    unpinCourse,
-    listUnits,
-    listLessonsForUnit,
-    listStudents,
-    listMyCourseStudents,
-    addUnit,
-    addLesson,
-    deleteUnit,
-    deleteCourse,
-    updateLesson,
-    deleteLesson,
-    selfEnrollFreeCourse,
-    enrollStudent,
-    removeStudent
+    listPublicCourses, listPublicCoursesForTeacher, getPublicCourseOutline,
+    createCourse, myCourses, getCourse, getCourseStats, updateCourse,
+    updateCourseThumbnail, pinCourse, unpinCourse, listUnits, listLessonsForUnit,
+    listStudents, listMyCourseStudents, addUnit, addLesson, deleteUnit,
+    deleteCourse, updateLesson, deleteLesson, selfEnrollFreeCourse,
+    enrollStudent, removeStudent
 }

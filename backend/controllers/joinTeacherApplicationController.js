@@ -1,22 +1,10 @@
-const { JoinTeacherApplication } = require('../models/JoinTeacherApplication')
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
-const submitJoinTeacherApplication = asyncHandler(async(req, res) => {
+const submitJoinTeacherApplication = asyncHandler(async (req, res) => {
     const {
-        firstName,
-        secondName,
-        thirdName,
-        lastName,
-        phone,
-        email,
-        nationalId,
-        governorate,
-        jobTitle,
-        subject,
-        expectedSalary,
-        notes,
-        cvUrl,
-        photoUrl
+        firstName, secondName, thirdName, lastName, phone, email, nationalId,
+        governorate, jobTitle, subject, expectedSalary, notes, cvUrl, photoUrl
     } = req.body || {}
 
     if (!firstName || !secondName || !thirdName || !lastName) {
@@ -26,52 +14,51 @@ const submitJoinTeacherApplication = asyncHandler(async(req, res) => {
         return res.status(400).json({ message: 'Phone, email, and National ID are required' })
     }
 
-    const doc = await JoinTeacherApplication.create({
-        firstName: String(firstName).trim(),
-        secondName: String(secondName).trim(),
-        thirdName: String(thirdName).trim(),
-        lastName: String(lastName).trim(),
-        phone: String(phone).trim(),
-        email: String(email).toLowerCase().trim(),
-        nationalId: String(nationalId).trim(),
-        governorate: typeof governorate === 'string' ? governorate.trim() : '',
-        jobTitle: typeof jobTitle === 'string' ? jobTitle.trim() : '',
-        subject: typeof subject === 'string' ? subject.trim() : '',
-        expectedSalary: typeof expectedSalary === 'string' ? expectedSalary.trim() : '',
-        notes: typeof notes === 'string' ? notes : '',
-        cvUrl: typeof cvUrl === 'string' ? cvUrl : '',
-        photoUrl: typeof photoUrl === 'string' ? photoUrl : ''
+    const doc = await prisma.joinTeacherApplication.create({
+        data: {
+            firstName: String(firstName).trim(),
+            secondName: String(secondName).trim(),
+            thirdName: String(thirdName).trim(),
+            lastName: String(lastName).trim(),
+            phone: String(phone).trim(),
+            email: String(email).toLowerCase().trim(),
+            nationalId: String(nationalId).trim(),
+            governorate: typeof governorate === 'string' ? governorate.trim() : '',
+            jobTitle: typeof jobTitle === 'string' ? jobTitle.trim() : '',
+            subject: typeof subject === 'string' ? subject.trim() : '',
+            expectedSalary: typeof expectedSalary === 'string' ? expectedSalary.trim() : '',
+            notes: typeof notes === 'string' ? notes : '',
+            cvUrl: typeof cvUrl === 'string' ? cvUrl : '',
+            photoUrl: typeof photoUrl === 'string' ? photoUrl : ''
+        }
     })
 
-    res.status(201).json({
-        id: doc._id.toString(),
-        createdAt: doc.createdAt
-    })
+    res.status(201).json({ id: doc.id, createdAt: doc.createdAt })
 })
 
-const listJoinTeacherApplications = asyncHandler(async(req, res) => {
+const listJoinTeacherApplications = asyncHandler(async (req, res) => {
     const role = req.user && req.user.role ? String(req.user.role) : ''
     const teamId = req.user && req.user.teamId ? String(req.user.teamId) : ''
 
-    const filter = {}
-    if (role === 'admin') {
-        // admin sees all
-    } else {
+    const where = {}
+    if (role !== 'admin') {
         if (!teamId) return res.json([])
-        filter.assignedTeamId = teamId
+        where.assignedTeamId = teamId
     }
 
-    const items = await JoinTeacherApplication.find(filter).sort({ createdAt: -1 })
+    const items = await prisma.joinTeacherApplication.findMany({
+        where,
+        orderBy: { createdAt: 'desc' }
+    })
     res.json(items)
 })
 
-const getJoinTeacherApplicationById = asyncHandler(async(req, res) => {
+const getJoinTeacherApplicationById = asyncHandler(async (req, res) => {
     const { applicationId } = req.params
-
     const role = req.user && req.user.role ? String(req.user.role) : ''
     const teamId = req.user && req.user.teamId ? String(req.user.teamId) : ''
 
-    const doc = await JoinTeacherApplication.findById(applicationId)
+    const doc = await prisma.joinTeacherApplication.findUnique({ where: { id: applicationId } })
     if (!doc) return res.status(404).json({ message: 'Application not found' })
 
     if (role !== 'admin') {
@@ -83,33 +70,36 @@ const getJoinTeacherApplicationById = asyncHandler(async(req, res) => {
     res.json(doc)
 })
 
-const assignJoinTeacherApplicationTeam = asyncHandler(async(req, res) => {
+const assignJoinTeacherApplicationTeam = asyncHandler(async (req, res) => {
     const { applicationId } = req.params
     const { teamId } = req.body || {}
 
-    const doc = await JoinTeacherApplication.findById(applicationId)
+    const doc = await prisma.joinTeacherApplication.findUnique({ where: { id: applicationId } })
     if (!doc) return res.status(404).json({ message: 'Application not found' })
 
-    if (typeof teamId !== 'string' || !teamId.trim()) {
-        doc.assignedTeamId = undefined
-        doc.assignedBy = req.user ? req.user.id : undefined
-        doc.assignedAt = new Date()
-    } else {
-        doc.assignedTeamId = teamId.trim()
-        doc.assignedBy = req.user ? req.user.id : undefined
-        doc.assignedAt = new Date()
+    const updateData = {
+        assignedTeamId: (typeof teamId === 'string' && teamId.trim()) ? teamId.trim() : null,
+        assignedBy: req.user ? req.user.id : null,
+        assignedAt: new Date()
     }
 
-    await doc.save()
-    res.json({ id: doc._id.toString(), assignedTeamId: doc.assignedTeamId || null })
+    const updated = await prisma.joinTeacherApplication.update({
+        where: { id: applicationId },
+        data: updateData
+    })
+
+    res.json({ id: updated.id, assignedTeamId: updated.assignedTeamId || null })
 })
 
-const deleteJoinTeacherApplication = asyncHandler(async(req, res) => {
+const deleteJoinTeacherApplication = asyncHandler(async (req, res) => {
     const { applicationId } = req.params
-    const doc = await JoinTeacherApplication.findById(applicationId).select('_id')
+    const doc = await prisma.joinTeacherApplication.findUnique({ where: { id: applicationId }, select: { id: true } })
     if (!doc) return res.status(404).json({ message: 'Application not found' })
-    await JoinTeacherApplication.deleteOne({ _id: doc._id })
-    res.json({ message: 'Deleted', id: doc._id.toString() })
+    await prisma.joinTeacherApplication.delete({ where: { id: doc.id } })
+    res.json({ message: 'Deleted', id: doc.id })
 })
 
-module.exports = { submitJoinTeacherApplication, listJoinTeacherApplications, getJoinTeacherApplicationById, assignJoinTeacherApplicationTeam, deleteJoinTeacherApplication }
+module.exports = {
+    submitJoinTeacherApplication, listJoinTeacherApplications,
+    getJoinTeacherApplicationById, assignJoinTeacherApplicationTeam, deleteJoinTeacherApplication
+}

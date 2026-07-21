@@ -131,7 +131,7 @@ export default function StudentStatsPage() {
           </div>
           <div className="mt-3 text-center">
             <h1 className="font-extrabold text-slate-900 dark:text-slate-100 text-3xl sm:text-5xl leading-[1.1]">
-              <span className="font-perfect text-slate-900 dark:text-white">{isRtl ? 'إحصائياتي' : 'My Stats'}</span>
+              <span className="text-slate-900 dark:text-white">{isRtl ? 'إحصائياتي' : 'My Stats'}</span>
             </h1>
             <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />

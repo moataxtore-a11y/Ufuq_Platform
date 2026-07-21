@@ -12,6 +12,13 @@ yarn-error.log*
 # build outputs
 /dist
 /build
+frontend/dist/
+
+# AI/IDE configs
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
 
 # OS
 .DS_Store

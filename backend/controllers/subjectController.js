@@ -1,47 +1,43 @@
+const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
-const { User } = require('../models/User')
-const { Course } = require('../models/Course')
 
-function escapeRegExp(s) {
-    return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-const listSubjects = asyncHandler(async(req, res) => {
+const listSubjects = asyncHandler(async (req, res) => {
     const section = typeof req.query.section === 'string' ? req.query.section.trim() : ''
     const gradeYear = typeof req.query.gradeYear === 'string' ? req.query.gradeYear.trim() : ''
 
-    const filter = { role: 'teacher', status: 'approved', 'profile.teachingSubject': { $exists: true, $ne: '' } }
-
-    const teachers = await User.find(filter).select('_id profile')
+    const teachers = await prisma.user.findMany({
+        where: { role: 'teacher', status: 'approved' },
+        select: { id: true, profile: true }
+    })
 
     const subjectToTeacherIds = new Map()
     for (const t of teachers) {
-        const subject = (t.profile && typeof t.profile.teachingSubject === 'string') ? t.profile.teachingSubject.trim() : ''
+        const p = t.profile || {}
+        const subject = typeof p.teachingSubject === 'string' ? p.teachingSubject.trim() : ''
         if (!subject) continue
         if (!subjectToTeacherIds.has(subject)) subjectToTeacherIds.set(subject, [])
-        subjectToTeacherIds.get(subject).push(t._id)
+        subjectToTeacherIds.get(subject).push(t.id)
     }
 
     const out = []
     for (const [subject, teacherIds] of subjectToTeacherIds.entries()) {
-        const courseFilter = { teacher: { $in: teacherIds } }
+        const courseWhere = { teacherId: { in: teacherIds } }
         if (section) {
-            courseFilter.$or = [{ section: '' }, { section }]
+            courseWhere.OR = [{ section: '' }, { section }]
         }
         if (gradeYear) {
-            courseFilter.$and = [{ $or: [{ gradeYear: '' }, { gradeYear }] }]
+            courseWhere.AND = [{ OR: [{ gradeYear: '' }, { gradeYear }] }]
         }
 
-        const courseCount = await Course.countDocuments(courseFilter)
+        const courseCount = await prisma.course.count({ where: courseWhere })
         out.push({ subject, teacherCount: teacherIds.length, courseCount })
     }
 
     out.sort((a, b) => a.subject.localeCompare(b.subject, 'ar'))
-
     res.json(out)
 })
 
-const listSubjectCourses = asyncHandler(async(req, res) => {
+const listSubjectCourses = asyncHandler(async (req, res) => {
     const subjectRaw = typeof req.params.subject === 'string' ? req.params.subject : ''
     const subject = decodeURIComponent(subjectRaw).trim()
     if (!subject) return res.status(400).json({ message: 'Subject is required' })
@@ -49,33 +45,45 @@ const listSubjectCourses = asyncHandler(async(req, res) => {
     const section = typeof req.query.section === 'string' ? req.query.section.trim() : ''
     const gradeYear = typeof req.query.gradeYear === 'string' ? req.query.gradeYear.trim() : ''
 
-    const filter = { role: 'teacher', status: 'approved' }
-    filter['profile.teachingSubject'] = new RegExp(`^${escapeRegExp(subject)}$`, 'i')
+    const teachers = await prisma.user.findMany({
+        where: { role: 'teacher', status: 'approved' },
+        select: { id: true, profile: true }
+    })
+    const teacherIds = teachers
+        .filter((t) => {
+            const p = t.profile || {}
+            return typeof p.teachingSubject === 'string' && p.teachingSubject.toLowerCase() === subject.toLowerCase()
+        })
+        .map((t) => t.id)
 
-    const teachers = await User.find(filter).select('_id')
-    const teacherIds = teachers.map((t) => t._id)
     if (!teacherIds.length) return res.json([])
 
     const limitRaw = Number(req.query.limit)
     const limit = Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 48) : 48
 
-    const courseFilter = { teacher: { $in: teacherIds } }
+    const courseWhere = { teacherId: { in: teacherIds } }
     if (section) {
-        courseFilter.$or = [{ section: '' }, { section }]
+        courseWhere.OR = [{ section: '' }, { section }]
     }
     if (gradeYear) {
-        courseFilter.$and = [{ $or: [{ gradeYear: '' }, { gradeYear }] }]
+        courseWhere.AND = [{ OR: [{ gradeYear: '' }, { gradeYear }] }]
     }
 
-    const courses = await Course.find(courseFilter)
-        .sort({ createdAt: -1 })
-        .limit(limit)
-        .select('title description thumbnailUrl teacher isFree price createdAt section gradeYear')
-        .populate('teacher', 'name')
+    const courses = await prisma.course.findMany({
+        where: courseWhere,
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        select: {
+            id: true, title: true, description: true, thumbnailUrl: true,
+            isFree: true, price: true, createdAt: true, section: true, gradeYear: true, teacherId: true
+        }
+    })
+
+    const teacherMap = new Map(teachers.map((t) => [t.id, t.profile?.teachingSubject || '']))
 
     res.json(
         courses.map((c) => ({
-            id: c._id.toString(),
+            id: c.id,
             title: c.title,
             description: c.description || '',
             thumbnailUrl: c.thumbnailUrl || '',
@@ -83,8 +91,8 @@ const listSubjectCourses = asyncHandler(async(req, res) => {
             price: typeof c.price === 'number' ? c.price : 0,
             section: typeof c.section === 'string' ? c.section : '',
             gradeYear: typeof c.gradeYear === 'string' ? c.gradeYear : '',
-            teacherId: c.teacher && c.teacher._id ? c.teacher._id.toString() : '',
-            teacherName: c.teacher && c.teacher.name ? c.teacher.name : ''
+            teacherId: c.teacherId || '',
+            teacherName: teacherMap.get(c.teacherId) || ''
         }))
     )
 })
