@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { prisma } = require('../config/prisma')
+const { supabase } = require('../config/supabase')
 const { asyncHandler } = require('../utils/asyncHandler')
 const { generateOtp, hashOtp } = require('../utils/otp')
 const { sendEmail } = require('../services/emailService')
@@ -188,11 +189,13 @@ const login = asyncHandler(async (req, res) => {
         ].filter(Boolean)
 
         for (const p of phoneCandidates) {
-            const found = await prisma.$queryRawUnsafe(
-                `SELECT * FROM "User" WHERE "profile"->>'studentPhone' = $1 OR "profile"->>'phone' = $1 LIMIT 1`,
-                p
-            )
-            if (found && found.length > 0) { user = found[0]; break }
+            const { data: found } = await supabase
+                .from('User')
+                .select('*')
+                .or(`profile->>studentPhone.eq.${p},profile->>phone.eq.${p}`)
+                .limit(1)
+                .maybeSingle()
+            if (found) { user = found; break }
         }
     }
 

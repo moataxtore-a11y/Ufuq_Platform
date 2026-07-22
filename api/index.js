@@ -1,10 +1,6 @@
+require('dotenv').config()
 const { createApp } = require('../backend/app')
-const { prisma } = require('../backend/config/prisma')
 
-let app
-
-if (!app) {
-    app = createApp(prisma)
-}
+const app = createApp()
 
 module.exports = app

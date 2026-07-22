@@ -8,30 +8,24 @@ require('dotenv').config({
     path: fs.existsSync(envPath) ? envPath : envExamplePath
 })
 
-if (!process.env.DATABASE_URL) {
-    console.warn('DATABASE_URL not set. Please set it in .env for Supabase connection.')
-}
-
 if (!process.env.JWT_SECRET) {
     process.env.JWT_SECRET = 'dev_secret_change_me'
     console.warn('JWT_SECRET not set. Using default dev_secret_change_me (change for production)')
 }
 
-const { prisma } = require('./config/prisma')
 const { createApp } = require('./app')
+const { prisma } = require('./config/prisma')
 const { ensureDefaultAdmin } = require('./bootstrap/adminBootstrap')
 
 async function start() {
     try {
-        await prisma.$connect()
-        console.log('Database connected.')
-        await ensureDefaultAdmin(prisma)
+        await ensureDefaultAdmin()
+        console.log('Admin bootstrap done.')
     } catch (err) {
-        console.warn('Database connection failed. Server will start but DB operations will fail.')
-        console.warn(err.message)
+        console.warn('Admin bootstrap failed:', err.message)
     }
 
-    const app = createApp(prisma)
+    const app = createApp()
     const port = process.env.PORT || 5000
 
     const server = app.listen(port, () => {
