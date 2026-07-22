@@ -1,6 +1,6 @@
 const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const listPublicTeachers = asyncHandler(async (req, res) => {
     const querySubject = typeof req.query.subject === 'string' ? req.query.subject.trim().toLowerCase() : ''

@@ -20,7 +20,7 @@ const createStudent = asyncHandler(async (req, res) => {
     if (!name || !email || !password) return res.status(400).json({ message: 'name, email, password are required' })
     const existing = await prisma.user.findUnique({ where: { email: String(email).toLowerCase().trim() }, select: { id: true } })
     if (existing) return res.status(409).json({ message: 'Email already exists' })
-    const bcrypt = require('bcrypt')
+    const bcrypt = require('bcryptjs')
     const hashed = await bcrypt.hash(password, 12)
     const profile = {}
     const teamId = req.user && (req.user.role === 'teacher' || req.user.role === 'team') ? req.user.teamId : null
