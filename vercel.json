@@ -6,10 +6,7 @@
     "functions": {
         "api/index.js": {
             "maxDuration": 10,
-            "includeFiles": [
-                "backend/**",
-                "node_modules/**"
-            ]
+            "includeFiles": "backend/**"
         }
     },
     "rewrites": [
