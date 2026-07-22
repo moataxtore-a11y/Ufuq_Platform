@@ -1,17 +1,6 @@
 {
-  "name": "education-platform-system",
-  "version": "1.0.0",
+  "name": "api-serverless",
   "private": true,
-  "scripts": {
-    "start": "npm --prefix backend start",
-    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
-    "dev:backend": "npm --prefix backend run dev",
-    "dev:frontend": "npm --prefix frontend run dev",
-    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install"
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.0",
