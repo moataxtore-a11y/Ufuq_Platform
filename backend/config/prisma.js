@@ -161,7 +161,7 @@ class TableProxy {
             const { data, error } = await supabase.from(this.tableName)
                 .select(buildSelect(args.select, args.include))
                 .eq('id', where.id)
-                .single()
+                .maybeSingle()
             if (error) throw error
             return data
         }
@@ -169,7 +169,7 @@ class TableProxy {
             const { data, error } = await supabase.from(this.tableName)
                 .select(buildSelect(args.select, args.include))
                 .eq('email', where.email)
-                .single()
+                .maybeSingle()
             if (error) throw error
             return data
         }
@@ -177,7 +177,7 @@ class TableProxy {
             const { data, error } = await supabase.from(this.tableName)
                 .select(buildSelect(args.select, args.include))
                 .eq('code', where.code)
-                .single()
+                .maybeSingle()
             if (error) throw error
             return data
         }
@@ -196,13 +196,18 @@ class TableProxy {
     }
 
     async create(args = {}) {
-        const row = args.data || {}
-        const { data, error } = await supabase.from(this.tableName)
+        const row = { ...args.data }
+        if (!row.id) {
+            const { randomUUID } = require('crypto')
+            row.id = randomUUID()
+        }
+        const now = new Date().toISOString()
+        if (!row.createdAt) row.createdAt = now
+        if (!row.updatedAt) row.updatedAt = now
+        const { error } = await supabase.from(this.tableName)
             .insert(row)
-            .select()
-            .single()
         if (error) throw error
-        return data
+        return row
     }
 
     async createMany(args = {}) {
@@ -224,7 +229,7 @@ class TableProxy {
                 else q = q.eq(k, v)
             }
         }
-        const { data: updated, error } = await q.select().single()
+        const { data: updated, error } = await q.select().maybeSingle()
         if (error) throw error
         return updated
     }
@@ -307,7 +312,7 @@ class TableProxy {
         const { data, error } = await supabase.from(this.tableName)
             .upsert(row)
             .select()
-            .single()
+            .maybeSingle()
         if (error) throw error
         return data
     }
