@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     async function refreshMe() {
       if (!auth?.token) return
       try {
-        const res = await api.get('/auth/me')
+        const res = await api.get('/account/me')
         if (!alive) return
         const me = res?.data || {}
         setAuth((prev) => {

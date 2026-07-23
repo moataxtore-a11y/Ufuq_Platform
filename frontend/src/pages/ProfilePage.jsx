@@ -124,7 +124,7 @@ export default function ProfilePage() {
     e.preventDefault()
     try {
       setPwLoading(true)
-      const res = await api.post('/auth/change-password', { currentPassword: pwCurrent, newPassword: pwNew })
+      const res = await api.post('/account/change-password', { currentPassword: pwCurrent, newPassword: pwNew })
       setAuth(res.data)
       setPwCurrent('')
       setPwNew('')
@@ -140,7 +140,7 @@ export default function ProfilePage() {
     e.preventDefault()
     try {
       setEmailLoading(true)
-      await api.post('/auth/request-email-change', { newEmail })
+      await api.post('/account/request-email-change', { newEmail })
       setEmailStep('code')
       notify({ title: t('auth.sendCode') })
     } catch (e2) {
@@ -154,7 +154,7 @@ export default function ProfilePage() {
     e.preventDefault()
     try {
       setEmailLoading(true)
-      const res = await api.post('/auth/confirm-email-change', { code: emailCode })
+      const res = await api.post('/account/confirm-email-change', { code: emailCode })
       setAuth(res.data)
       setNewEmail('')
       setEmailCode('')

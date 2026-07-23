@@ -45,7 +45,7 @@ export default function LoginPage() {
     setFpError('')
     try {
       setFpLoading(true)
-      await api.post('/auth/forgot-password', { email: fpEmail })
+      await api.post('/account/forgot-password', { email: fpEmail })
       setFpStep('code')
     } catch (e) {
       const msg = e?.response?.data?.message || e?.message || 'Failed'
@@ -67,7 +67,7 @@ export default function LoginPage() {
     }
     try {
       setFpLoading(true)
-      await api.post('/auth/reset-password', { email: fpEmail, code: fpCode, newPassword: fpNew })
+      await api.post('/account/reset-password', { email: fpEmail, code: fpCode, newPassword: fpNew })
       notify({ title: t('auth.passwordUpdated') })
       setOpenForgot(false)
       setFpStep('email')
@@ -104,7 +104,7 @@ export default function LoginPage() {
         return
       }
       const finalIdentifier = normalizedIdentifier.includes('@') ? normalizedIdentifier.toLowerCase() : normalizedIdentifier
-      const { data } = await api.post('/auth/login', { identifier: finalIdentifier, password })
+      const { data } = await api.post('/account/login', { identifier: finalIdentifier, password })
       setAuth(data)
       if (data.mustChangePassword) {
         navigate('/change-password', { replace: true })

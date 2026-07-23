@@ -28,7 +28,7 @@ export default function ChangePasswordPage() {
     setError('')
     try {
       setLoading(true)
-      const { data } = await api.post('/auth/change-password', {
+      const { data } = await api.post('/account/change-password', {
         currentPassword,
         newPassword
       })

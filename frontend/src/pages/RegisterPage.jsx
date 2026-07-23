@@ -228,7 +228,7 @@ export default function RegisterPage() {
     }
     try {
       setLoading(true)
-      await api.post('/auth/register', {
+      await api.post('/account/register', {
         firstName, secondName, thirdName, lastName,
         studentPhone, parentPhone, schoolName, birthDate,
         section, gradeYear, governorate, nationalId, email, password,
