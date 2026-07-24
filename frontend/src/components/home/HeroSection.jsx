@@ -85,15 +85,15 @@ export default function HeroSection() {
           </div>
 
           {/* Left Column in RTL: 3D Character standing on left side */}
-          <div className="lg:col-span-6 order-2 flex justify-center lg:justify-start items-end h-full relative pt-2 lg:pt-0 z-10">
-            <div className="relative w-full max-w-[360px] sm:max-w-[460px] lg:max-w-[540px] flex items-end justify-center lg:justify-start">
+          <div className="lg:col-span-6 order-2 flex justify-center lg:justify-start items-end h-full relative pt-2 lg:pt-0 z-10 overflow-hidden">
+            <div className="relative w-full max-w-[420px] sm:max-w-[540px] lg:max-w-[660px] xl:max-w-[720px] flex items-end justify-center lg:justify-start">
               {/* Glow backdrop behind character */}
               <div className="absolute inset-0 bg-teal-400/25 dark:bg-teal-500/15 rounded-full blur-2xl scale-95 transform translate-y-6 pointer-events-none" />
               
               <img
                 src={heroPic}
                 alt="Character Hero"
-                className="relative z-10 w-full h-auto object-contain max-h-[65vh] lg:max-h-[75vh] drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-[1.01]"
+                className="relative z-10 w-full h-auto object-contain max-h-[75vh] lg:max-h-[88vh] scale-105 sm:scale-110 lg:scale-115 origin-bottom drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-[1.18]"
                 draggable="false"
               />
             </div>
