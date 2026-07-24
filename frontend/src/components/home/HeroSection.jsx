@@ -63,11 +63,11 @@ export default function HeroSection() {
           <div className="lg:col-span-6 order-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-right space-y-4 sm:space-y-6 z-20 pb-6 lg:pb-0">
             
             {/* Main Title: منصة أُفُق */}
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08]">
-              <span className="inline-block text-slate-900 dark:text-slate-100 font-extrabold ml-3">
+            <h1 className="font-perfect text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-950 dark:text-teal-200 leading-[1.08] drop-shadow-sm">
+              <span className="inline-block ml-2">
                 {t('hero.titlePrefix') || 'منصة'}
               </span>
-              <span className="inline-block font-perfect text-slate-950 dark:text-teal-200 drop-shadow-sm">
+              <span className="inline-block">
                 {t('hero.titleBrand') || 'أُفُق'}
               </span>
             </h1>
