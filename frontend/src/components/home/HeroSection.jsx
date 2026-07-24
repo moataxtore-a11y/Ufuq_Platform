@@ -93,7 +93,7 @@ export default function HeroSection() {
               <img
                 src={heroPic}
                 alt="Character Hero"
-                className="relative z-10 w-full h-auto object-contain max-h-[75vh] lg:max-h-[88vh] scale-105 sm:scale-110 lg:scale-115 origin-bottom translate-y-8 sm:translate-y-12 lg:translate-y-16 drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-[0.75]"
+                className="relative z-10 w-full h-auto object-contain max-h-[75vh] lg:max-h-[88vh] scale-105 sm:scale-110 lg:scale-115 origin-bottom translate-y-8 sm:translate-y-12 lg:translate-y-16 drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500"
                 draggable="false"
               />
             </div>
