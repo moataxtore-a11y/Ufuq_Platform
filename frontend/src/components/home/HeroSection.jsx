@@ -1,5 +1,54 @@
+import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import heroPic from '../../img/3M@72x-8.png'
+
+function useCountUp(target, duration = 2000) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true
+          const start = performance.now()
+          function tick(now) {
+            const elapsed = now - start
+            const progress = Math.min(elapsed / duration, 1)
+            const eased = 1 - Math.pow(1 - progress, 3)
+            setCount(Math.floor(eased * target))
+            if (progress < 1) requestAnimationFrame(tick)
+          }
+          requestAnimationFrame(tick)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, duration])
+
+  return { ref, count }
+}
+
+function StatItem({ target, label, suffix = '+' }) {
+  const { ref, count } = useCountUp(target, 2200)
+  return (
+    <div ref={ref} className="px-2 sm:px-6 py-1 flex flex-col items-center justify-center">
+      <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-sm">
+        {suffix}{count}
+      </span>
+      <span className="text-xs sm:text-base lg:text-lg font-bold text-teal-100 dark:text-teal-200 mt-1">
+        {label}
+      </span>
+    </div>
+  )
+}
 
 export default function HeroSection() {
   const { isRtl, t } = useLanguage()
@@ -102,40 +151,12 @@ export default function HeroSection() {
         </div>
 
         {/* Floating Glassmorphic Stats Bar (Bottom Overlap Pill) */}
-        <div className="relative z-30 -mt-12 sm:-mt-16 lg:-mt-20 mb-4 sm:mb-6 w-full flex justify-center lg:justify-center">
+        <div className="relative z-30 -mt-16 sm:-mt-20 lg:-mt-28 mb-4 sm:mb-6 w-full flex justify-center">
           <div className="w-full max-w-3xl lg:max-w-4xl bg-[#0c6b73]/85 dark:bg-[#07474d]/90 backdrop-blur-md border border-white/30 dark:border-teal-500/30 rounded-[24px] sm:rounded-[32px] px-4 py-4 sm:px-8 sm:py-6 shadow-[0_20px_50px_rgba(12,107,115,0.35)] transition-all duration-300 hover:shadow-[0_25px_60px_rgba(12,107,115,0.45)]">
             <div className="grid grid-cols-3 divide-x divide-x-reverse divide-white/30 dark:divide-teal-500/30 items-center text-center">
-              
-              {/* Stat Item 1 (Rightmost in RTL): +300 كورس */}
-              <div className="px-2 sm:px-6 py-1 flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-sm">
-                  +300
-                </span>
-                <span className="text-xs sm:text-base lg:text-lg font-bold text-teal-100 dark:text-teal-200 mt-1">
-                  كورس
-                </span>
-              </div>
-
-              {/* Stat Item 2 (Middle in RTL): +50 مدرس */}
-              <div className="px-2 sm:px-6 py-1 flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-sm">
-                  +50
-                </span>
-                <span className="text-xs sm:text-base lg:text-lg font-bold text-teal-100 dark:text-teal-200 mt-1">
-                  مدرس
-                </span>
-              </div>
-
-              {/* Stat Item 3 (Leftmost in RTL): +5000 طالب */}
-              <div className="px-2 sm:px-6 py-1 flex flex-col items-center justify-center">
-                <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-sm">
-                  +5000
-                </span>
-                <span className="text-xs sm:text-base lg:text-lg font-bold text-teal-100 dark:text-teal-200 mt-1">
-                  طالب
-                </span>
-              </div>
-
+              <StatItem target={300} label="كورس" />
+              <StatItem target={50} label="مدرس" />
+              <StatItem target={5000} label="طالب" />
             </div>
           </div>
         </div>
