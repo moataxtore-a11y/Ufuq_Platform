@@ -15,13 +15,15 @@ import approvIcon from '../cvg/approv.svg'
 import { motion } from 'framer-motion'
 import {
   ChevronDown, User, Phone, School, Calendar, BookOpen,
-  GraduationCap, MapPin, CreditCard, Mail, Lock, CheckCircle
+  GraduationCap, MapPin, CreditCard, Mail, Lock, CheckCircle, Eye, EyeOff
 } from 'lucide-react'
 import registerImage from '../img/اعمل.webp'
 
 /* ─── tiny underline-input ─────────────────────────────────────── */
-function LineInput({ icon: Icon, label, children, ...inputProps }) {
+function LineInput({ icon: Icon, label, children, showToggle, ...inputProps }) {
   const { isRtl } = useLanguage()
+  const [visible, setVisible] = useState(false)
+  const isPassword = inputProps.type === 'password'
 
   return (
     <div className="flex flex-col gap-1">
@@ -41,14 +43,26 @@ function LineInput({ icon: Icon, label, children, ...inputProps }) {
         {children || (
           <input
             {...inputProps}
+            type={isPassword && showToggle ? (visible ? 'text' : 'password') : inputProps.type}
             dir={isRtl ? 'rtl' : 'ltr'}
             className={
               'w-full h-10 text-sm bg-transparent border-0 border-b-2 outline-none transition-colors duration-200 ' +
               'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 ' +
               'border-slate-300 dark:border-slate-600 focus:border-brand focus:ring-0 ' +
-              (isRtl ? (Icon ? 'pr-6 pl-0' : 'px-0') : (Icon ? 'pl-6 pr-0' : 'px-0'))
+              (isRtl ? (Icon ? 'pr-6' : 'px-0') : (Icon ? 'pl-6' : 'px-0')) +
+              (isPassword && showToggle ? (isRtl ? ' pl-8' : ' pr-8') : '')
             }
           />
+        )}
+        {isPassword && showToggle && (
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => setVisible((p) => !p)}
+            className={"absolute text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors " + (isRtl ? 'left-0' : 'right-0')}
+          >
+            {visible ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
         )}
       </div>
     </div>
@@ -402,10 +416,10 @@ export default function RegisterPage() {
             {/* Passwords */}
             <div className="gap-4 grid grid-cols-2">
               <LineInput icon={Lock} placeholder={isRtl ? 'كلمة السر' : 'Password'}
-                type="password" autoComplete="new-password"
+                type="password" autoComplete="new-password" showToggle
                 value={password} onChange={(e) => setPassword(e.target.value)} />
               <LineInput icon={CheckCircle} placeholder={isRtl ? 'تأكيد كلمة السر' : 'Confirm password'}
-                type="password" autoComplete="new-password"
+                type="password" autoComplete="new-password" showToggle
                 value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
 

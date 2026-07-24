@@ -13,6 +13,8 @@ import { useLanguage } from '../context/LanguageContext.jsx'
 import SiteFooter from '../components/layout/SiteFooter.jsx'
 import SiteHeader from '../components/layout/SiteHeader.jsx'
 
+import { Eye, EyeOff } from 'lucide-react'
+
 export default function ChangePasswordPage() {
   const navigate = useNavigate()
   const { auth, setAuth, logout } = useAuth()
@@ -20,6 +22,8 @@ export default function ChangePasswordPage() {
   const { isRtl, t } = useLanguage()
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [showCurrent, setShowCurrent] = useState(false)
+  const [showNew, setShowNew] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -69,23 +73,35 @@ export default function ChangePasswordPage() {
           <form onSubmit={onSubmit} className="gap-3 grid">
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('auth.currentPasswordLabel')}</label>
-              <Input
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Current password"
-                type="password"
-                autoComplete="current-password"
-              />
+              <div className="relative">
+                <Input
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Current password"
+                  type={showCurrent ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  className="pr-10"
+                />
+                <button type="button" tabIndex={-1} onClick={() => setShowCurrent((p) => !p)} className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showCurrent ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('auth.newPasswordLabel')}</label>
-              <Input
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="New password"
-                type="password"
-                autoComplete="new-password"
-              />
+              <div className="relative">
+                <Input
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="New password"
+                  type={showNew ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  className="pr-10"
+                />
+                <button type="button" tabIndex={-1} onClick={() => setShowNew((p) => !p)} className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <Button type="submit" disabled={loading}>

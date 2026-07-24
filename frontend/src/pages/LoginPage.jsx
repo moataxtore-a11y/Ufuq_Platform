@@ -8,7 +8,7 @@ import Button from '../components/ui/Button.jsx'
 import Spinner from '../components/ui/Spinner.jsx'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { CircleX, Lock, Phone } from 'lucide-react'
+import { CircleX, Eye, EyeOff, Lock, Phone } from 'lucide-react'
 import AnimatedBackdrop from '../components/ui/AnimatedBackdrop.jsx'
 import { Modal } from '../components/ui/Modal.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
@@ -23,6 +23,7 @@ export default function LoginPage() {
   const { notify } = useToast()
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [openSuspended, setOpenSuspended] = useState(false)
@@ -40,6 +41,8 @@ export default function LoginPage() {
   const [fpConfirm, setFpConfirm] = useState('')
   const [fpLoading, setFpLoading] = useState(false)
   const [fpError, setFpError] = useState('')
+  const [showFpNew, setShowFpNew] = useState(false)
+  const [showFpConfirm, setShowFpConfirm] = useState(false)
 
   async function sendResetCode() {
     setFpError('')
@@ -298,15 +301,23 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={isRtl ? 'كلمة المرور' : 'Password'}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 className={
                   'bg-transparent border-0 border-b-2 outline-none w-full h-11 text-sm transition-colors duration-200 ' +
                   'text-slate-800 dark:text-slate-100 placeholder:text-slate-400 ' +
                   'border-slate-300 dark:border-slate-600 focus:border-brand ' +
-                  (isRtl ? 'pr-7 pl-0' : 'pl-7 pr-0')
+                  (isRtl ? 'pr-7 pl-8' : 'pl-7 pr-8')
                 }
               />
+              <button
+                type="button"
+                tabIndex={-1}
+                onClick={() => setShowPassword((p) => !p)}
+                className={"absolute text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors " + (isRtl ? 'left-0' : 'right-0')}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
             {/* Forgot & code row */}
@@ -394,8 +405,18 @@ export default function LoginPage() {
                 {isRtl ? 'أدخل الكود المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة' : 'Enter the code sent to your email and your new password'}
               </p>
               <Input dir="ltr" value={fpCode} onChange={(e) => setFpCode(e.target.value)} placeholder={isRtl ? 'الكود' : 'Code'} className="rounded-2xl h-12" />
-              <Input dir="ltr" value={fpNew} onChange={(e) => setFpNew(e.target.value)} placeholder={isRtl ? 'كلمة المرور الجديدة' : 'New password'} type="password" className="rounded-2xl h-12" />
-              <Input dir="ltr" value={fpConfirm} onChange={(e) => setFpConfirm(e.target.value)} placeholder={isRtl ? 'تأكيد كلمة المرور' : 'Confirm password'} type="password" className="rounded-2xl h-12" />
+              <div className="relative">
+                <Input dir="ltr" value={fpNew} onChange={(e) => setFpNew(e.target.value)} placeholder={isRtl ? 'كلمة المرور الجديدة' : 'New password'} type={showFpNew ? 'text' : 'password'} className="rounded-2xl h-12 pr-10" />
+                <button type="button" tabIndex={-1} onClick={() => setShowFpNew((p) => !p)} className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showFpNew ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              <div className="relative">
+                <Input dir="ltr" value={fpConfirm} onChange={(e) => setFpConfirm(e.target.value)} placeholder={isRtl ? 'تأكيد كلمة المرور' : 'Confirm password'} type={showFpConfirm ? 'text' : 'password'} className="rounded-2xl h-12 pr-10" />
+                <button type="button" tabIndex={-1} onClick={() => setShowFpConfirm((p) => !p)} className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                  {showFpConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
               {fpError && <p className="text-red-500 text-sm">{fpError}</p>}
               <button
                 type="button"
