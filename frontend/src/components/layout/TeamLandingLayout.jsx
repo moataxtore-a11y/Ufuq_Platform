@@ -152,9 +152,20 @@ export default function TeamLandingLayout() {
 
           <div className={'hidden sm:flex justify-between items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
             <div className={'flex items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-              <Link to="/team/profile" className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+                aria-label={isRtl ? 'القائمة' : 'Menu'}
+                title={isRtl ? 'القائمة' : 'Menu'}
+              >
                 <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
-              </Link>
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
+              </button>
               <ThemeToggle className="shrink-0" />
             </div>
 
@@ -201,20 +212,6 @@ export default function TeamLandingLayout() {
             </nav>
 
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
-                aria-label={isRtl ? 'القائمة' : 'Menu'}
-                title={isRtl ? 'القائمة' : 'Menu'}
-              >
-                <Menu className="w-5 h-5" />
-                {badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
               <Link to="/" className="flex items-center gap-2">
                 <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
               </Link>
@@ -226,7 +223,7 @@ export default function TeamLandingLayout() {
       <div className="h-[72px] sm:h-[76px] md:h-[80px]" />
 
       {open ? (
-        <div className="z-50 fixed inset-0">
+        <div className="z-[110] fixed inset-0">
           <button
             type="button"
             className="absolute inset-0 bg-black/40"

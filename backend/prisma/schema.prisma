@@ -27,6 +27,7 @@ model User {
   emailChange      Json?
   passwordReset    Json?
   mustChangePassword Boolean @default(false)
+  walletBalance    Float    @default(0)
   status           String   @default("approved") // pending, approved, rejected
   approvedAt       DateTime?
   approvedBy       String?

@@ -243,11 +243,22 @@ export default function SiteHeader() {
           {loggedIn ? (
             <div className={"hidden md:flex justify-between items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
               <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
-                <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
-                </Link>
-                <ThemeToggle className="shrink-0" />
-              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+                aria-label={t('dashboard.ui.menu')}
+                title={t('dashboard.ui.menu')}
+              >
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
+              </button>
+              <ThemeToggle className="shrink-0" />
+            </div>
 
               <nav className={cn('hidden md:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
                 {quickLinks.map((it) => (
@@ -292,20 +303,6 @@ export default function SiteHeader() {
               </nav>
 
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setOpen(true)}
-                  className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
-                  aria-label={t('dashboard.ui.menu')}
-                  title={t('dashboard.ui.menu')}
-                >
-                  <Menu className="w-5 h-5" />
-                  {badgeTotal > 0 ? (
-                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                      {badgeTotal > 99 ? '99+' : badgeTotal}
-                    </span>
-                  ) : null}
-                </button>
                 <Link to="/" className="flex items-center gap-2">
                   <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
                 </Link>
