@@ -302,41 +302,34 @@ export default function SiteHeader() {
             </div>
           ) : (
             <div className={"hidden md:flex justify-between items-center" + (isRtl ? ' flex-row-reverse' : '')}>
-              <div className={"flex items-center gap-2 " + (isRtl ? 'flex-row-reverse' : '')}>
+              <div className={"flex items-center gap-2.5 " + (isRtl ? 'flex-row-reverse' : '')}>
                 <button
                   type="button"
                   onClick={openSearch}
                   aria-label={isRtl ? 'ابحث في الموقع' : 'Search the site'}
-                  className="inline-flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-700 dark:text-slate-200 transition"
+                  className="inline-flex justify-center items-center hover:bg-black/[0.06] dark:hover:bg-white/[0.1] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
                 >
                   <Search className="w-5 h-5" />
                 </button>
+                <LanguageToggle className="rounded-full bg-white/70 dark:bg-white/10" />
                 <ThemeToggle className="shrink-0" />
               </div>
 
               <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
                 <Link
                   to="/login"
-                  className={cn(
-                    'inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-brand text-sm transition-colors',
-                    'bg-white/70 border border-black/5 shadow-sm hover:shadow-md',
-                    'dark:bg-transparent dark:border dark:border-transparent dark:shadow-none dark:hover:shadow-none',
-                    'dark:hover:bg-transparent dark:hover:border-brand dark:focus-visible:border-brand'
-                  )}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#d4f5f0] text-[#00897b] dark:bg-teal-950/70 dark:text-teal-300 hover:bg-[#c2f0e8] dark:hover:bg-teal-900/80 border border-teal-200/50 dark:border-teal-800/50 shadow-sm transition"
                 >
                   <LogIn className="w-4 h-4" />
-                  {isRtl ? 'سجل دخولك' : t('auth.login')}
+                  {isRtl ? 'تسجيل الدخول' : t('auth.login')}
                 </Link>
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-brand hover:bg-brand-600 px-5 border border-brand/20 rounded-xl text-white transition"
+                <Link
+                  to="/register"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#009688] hover:bg-[#00887b] text-white shadow-sm transition"
                 >
-                  <Link to="/register" className={cn('inline-flex items-center gap-2', isRtl ? 'flex-row' : 'flex-row-reverse')}>
-                    <UserPlus className="w-4 h-4" />
-                    {isRtl ? 'اعمل حساب جديد!' : 'Create account'}
-                  </Link>
-                </Button>
+                  <UserPlus className="w-4 h-4" />
+                  {isRtl ? 'إنشاء حساب جديد!' : 'Create account'}
+                </Link>
                 <Link to="/" className="flex items-center gap-2">
                   <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
                 </Link>
