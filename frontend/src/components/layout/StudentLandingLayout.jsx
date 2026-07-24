@@ -26,6 +26,8 @@ export default function StudentLandingLayout() {
 
   const [walletBalance, setWalletBalance] = useState(null)
 
+  const [badgeTotal] = useState(0)
+
   useEffect(() => {
     let alive = true
 
@@ -150,41 +152,45 @@ export default function StudentLandingLayout() {
     <div className="relative flex flex-col min-h-screen text-slate-900 dark:text-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
       <AnimatedBackdrop />
 
-      <header className="top-0 right-0 left-0 z-50 fixed bg-white/60 dark:bg-[#0a0a0a]/80 shadow-glass-sm backdrop-blur-glass border-slate-200/50 dark:border-white/10 border-b">
+      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
           <div className="sm:hidden">
-            {/* <div className="bg-white/65 dark:bg-white/[0.06] shadow-[0_10px_26px_rgba(15,23,42,0.10)] dark:shadow-none backdrop-blur px-3 py-2 border border-black/5 dark:border-white/10 rounded-3xl"> */}
-            <div className="px-1 py-1">
-              <div className="flex justify-between items-center gap-2 min-w-0">
-                <div className={cn('flex items-center gap-2', isRtl ? 'order-1 justify-start' : 'order-3 justify-end')}>
+            <div className="px-3 py-2">
+              <div className="items-center grid grid-cols-3">
+                <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
+                  <Link to="/student/profile" className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                  </Link>
+                  <ThemeToggle className="shrink-0" />
+                </div>
+                <Link to="/" className="flex justify-center items-center">
+                  <img src={logo} alt="Education Platform" className="w-auto h-11" />
+                </Link>
+                <div className={cn('flex items-center gap-2', isRtl ? 'justify-start flex-row-reverse' : 'justify-end flex-row')}>
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
+                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
                     <Menu className="w-5 h-5" />
+                    {badgeTotal > 0 ? (
+                      <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                        {badgeTotal > 99 ? '99+' : badgeTotal}
+                      </span>
+                    ) : null}
                   </button>
-                </div>
-
-                <Link to="/" className={cn('flex justify-center items-center gap-2 min-w-0', isRtl ? 'order-2' : 'order-2')}>
-                  <img src={logo} alt="Education Platform" className="w-auto h-11" />
-                </Link>
-
-                <div className={cn('flex items-center gap-2 min-w-0', isRtl ? 'order-3 justify-end' : 'order-1 justify-start')}>
-                  <WalletBadge className="shadow-none" />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className={'hidden sm:flex justify-between items-center gap-2 min-w-0 ' + (isRtl ? 'flex-row-reverse' : '')}>
+          <div className={'hidden sm:flex justify-between items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
             <div className={'flex items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-              <Link to="/" className="flex items-center">
-                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+              <Link to="/student/profile" className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
               </Link>
-              <LanguageToggle />
               <ThemeToggle className="shrink-0" />
             </div>
 
@@ -230,23 +236,25 @@ export default function StudentLandingLayout() {
               ))}
             </nav>
 
-            <div className={'flex items-center gap-2 min-w-0 ' + (isRtl ? 'flex-row-reverse' : '')}>
-              <WalletBadge />
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className={
-                  'flex items-center gap-2 text-xs font-semibold transition ' +
-                  (isRtl ? 'flex-row-reverse' : 'flex-row')
-                }
-                title={t('dashboard.ui.menu')}
-                aria-label={t('dashboard.ui.menu')}
+                className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
+                aria-label={isRtl ? 'القائمة' : 'Menu'}
+                title={isRtl ? 'القائمة' : 'Menu'}
               >
-                <span className="relative flex justify-center items-center bg-black rounded-full w-8 sm:w-10 h-8 sm:h-10 overflow-hidden text-slate-100 shrink-0">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
-                </span>
-
+                <Menu className="w-5 h-5" />
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
               </button>
+              <Link to="/" className="flex items-center gap-2">
+                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+              </Link>
+              <WalletBadge />
             </div>
           </div>
         </div>
@@ -269,9 +277,12 @@ export default function StudentLandingLayout() {
           >
             <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{t('dashboard.ui.menu')}</div>
-              <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
-                {t('dashboard.ui.close')}
-              </Button>
+              <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                <LanguageToggle />
+                <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
+                  {t('dashboard.ui.close')}
+                </Button>
+              </div>
             </div>
 
             <div className="gap-2 grid px-2 pt-2">

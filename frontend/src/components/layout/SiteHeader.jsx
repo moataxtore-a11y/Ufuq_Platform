@@ -123,6 +123,15 @@ export default function SiteHeader() {
     return '/'
   }
 
+  const profileLink = useMemo(() => {
+    const role = auth?.role
+    if (role === 'admin') return '/admin/profile'
+    if (role === 'teacher') return '/teacher/profile'
+    if (role === 'team') return '/team/profile'
+    if (role === 'student') return '/student/profile'
+    return '/profile'
+  }, [auth?.role])
+
   const quickLinks = useMemo(() => {
     const role = auth?.role
 
@@ -188,17 +197,25 @@ export default function SiteHeader() {
         <div className={"mx-auto px-3 sm:px-4 py-2 min-w-0 w-full max-w-7xl"}>
           <div className="md:hidden items-center grid grid-cols-3">
             <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
-              <button
-                type="button"
-                aria-label={isRtl ? 'بحث' : 'Search'}
-                title={isRtl ? 'بحث' : 'Search'}
-                onClick={openSearch}
-                className="flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
-              >
-                <Search className="w-4 h-4" />
-              </button>
-
-              <ThemeToggle className="shrink-0" />
+              {loggedIn ? (
+                <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                </Link>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    aria-label={isRtl ? 'بحث' : 'Search'}
+                    title={isRtl ? 'بحث' : 'Search'}
+                    onClick={openSearch}
+                    className="flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
+                  >
+                    <Search className="w-4 h-4" />
+                  </button>
+                  <ThemeToggle className="shrink-0" />
+                </>
+              )}
+              {loggedIn ? <ThemeToggle className="shrink-0" /> : null}
             </div>
 
             <Link to="/" className="flex justify-center items-center">
@@ -226,23 +243,9 @@ export default function SiteHeader() {
           {loggedIn ? (
             <div className={"hidden md:flex justify-between items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
               <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(true)}
-                  className="relative flex justify-center items-center bg-black rounded-full w-10 h-10 text-slate-100"
-                  aria-label={t('dashboard.ui.menu')}
-                  title={t('dashboard.ui.menu')}
-                >
-                  <span className="absolute inset-0 rounded-full overflow-hidden">
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
-                  </span>
-                  {badgeTotal > 0 ? (
-                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-5 h-5 text-[11px] text-white">
-                      {badgeTotal > 99 ? '99+' : badgeTotal}
-                    </span>
-                  ) : null}
-                </button>
-
+                <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                </Link>
                 <ThemeToggle className="shrink-0" />
               </div>
 
@@ -289,6 +292,20 @@ export default function SiteHeader() {
               </nav>
 
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
+                  aria-label={t('dashboard.ui.menu')}
+                  title={t('dashboard.ui.menu')}
+                >
+                  <Menu className="w-5 h-5" />
+                  {badgeTotal > 0 ? (
+                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                      {badgeTotal > 99 ? '99+' : badgeTotal}
+                    </span>
+                  ) : null}
+                </button>
                 <Link to="/" className="flex items-center gap-2">
                   <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
                 </Link>

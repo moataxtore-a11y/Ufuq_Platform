@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   ListChecks,
   LogOut,
+  Menu,
   Search,
   Users
 } from 'lucide-react'
@@ -19,7 +20,6 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
 import logo from '../../cvg/logo (2)_3.webp'
 import walletBadgeIcon from '../../cvg/WALLET.svg'
-import LanguageToggle from '../ui/LanguageToggle.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { api } from '../../utils/api.js'
 import defaultProfileAvatar from '../../cvg/profile.svg'
@@ -112,6 +112,15 @@ export default function AppShell({ title, titleKey }) {
   const displayName = String(me?.name || me?.email || auth?.email || '').trim()
   const avatarUrl = me?.profile?.avatarUrl || ''
 
+  const profileLink = (() => {
+    const role = auth?.role
+    if (role === 'admin') return '/admin/profile'
+    if (role === 'teacher') return '/teacher/profile'
+    if (role === 'team') return '/team/profile'
+    if (role === 'student') return '/student/profile'
+    return '/profile'
+  })()
+
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="relative bg-[#E0F3E9] dark:bg-[#0a0a0a] min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
       {/* Modern floating background aesthetic */}
@@ -120,20 +129,26 @@ export default function AppShell({ title, titleKey }) {
         <div className="right-[-10%] bottom-[-10%] absolute bg-brand/10 dark:bg-brand/[0.12] opacity-70 blur-[100px] rounded-full w-[40%] h-[40%] animate-blob-float" style={{ animationDelay: '2s' }} />
       </div>
 
-      <header className="top-0 right-0 left-0 z-50 fixed bg-white/60 dark:bg-[#0a0a0a]/80 shadow-glass-sm backdrop-blur-glass border-slate-200/50 dark:border-white/10 border-b w-full will-change-transform">
+      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="flex justify-between items-center gap-3 mx-auto px-4 sm:px-6 py-2 w-full max-w-7xl">
           <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20">
+              <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+            </Link>
+            <ThemeToggle className="shrink-0" />
+          </div>
+
+          <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="md:hidden relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
+              className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
               aria-label={isRtl ? 'القائمة' : 'Menu'}
               title={isRtl ? 'القائمة' : 'Menu'}
             >
               <Menu className="w-5 h-5" />
             </button>
-
-            <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <Link to="/">
                 <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
               </Link>
@@ -145,10 +160,6 @@ export default function AppShell({ title, titleKey }) {
               </div>
             </div>
 
-            <ThemeToggle className="hidden sm:inline-flex" />
-          </div>
-
-          <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             {auth?.role === 'teacher' || auth?.role === 'team' ? (
               <div className="hidden sm:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
                 <span className="bg-brand rounded-full w-1.5 h-1.5" />
