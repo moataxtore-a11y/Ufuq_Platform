@@ -126,17 +126,11 @@ export default function AppShell({ title, titleKey }) {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="md:hidden relative flex justify-center items-center bg-black rounded-full w-8 h-8 text-slate-100"
+              className="md:hidden relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
               aria-label={isRtl ? 'القائمة' : 'Menu'}
               title={isRtl ? 'القائمة' : 'Menu'}
             >
-              <span className="absolute inset-0 rounded-full overflow-hidden">
-                <img
-                  src={avatarUrl || defaultProfileAvatar}
-                  alt={displayName || (isRtl ? 'المستخدم' : 'User')}
-                  className="w-full h-full object-cover"
-                />
-              </span>
+              <Menu className="w-5 h-5" />
             </button>
 
             <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>

@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { BookOpen, CheckCircle, ClipboardCheck, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogOut, MessageSquareQuote, Users } from 'lucide-react'
+import { BookOpen, CheckCircle, ClipboardCheck, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogOut, Menu, MessageSquareQuote, Users } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnimatedBackdrop from '../ui/AnimatedBackdrop.jsx'
@@ -129,17 +129,11 @@ export default function TeacherLandingLayout() {
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex justify-center items-center bg-black rounded-full w-8 h-8 text-slate-100"
+                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
-                    <span className="absolute inset-0 rounded-full overflow-hidden">
-                      <img
-                        src={avatarUrl || defaultProfileAvatar}
-                        alt={displayName || (isRtl ? 'المستخدم' : 'User')}
-                        className="w-full h-full object-cover"
-                      />
-                    </span>
+                    <Menu className="w-5 h-5" />
                     {badgeTotal > 0 ? (
                       <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                         {badgeTotal > 99 ? '99+' : badgeTotal}
