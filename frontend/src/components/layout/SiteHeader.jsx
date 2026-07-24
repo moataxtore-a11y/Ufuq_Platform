@@ -209,17 +209,11 @@ export default function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="relative flex justify-center items-center bg-black rounded-full w-9 h-9 text-slate-100"
+                className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
                 aria-label={t('dashboard.ui.menu')}
                 title={t('dashboard.ui.menu')}
               >
-                <span className="absolute inset-0 rounded-full overflow-hidden">
-                  <img
-                    src={loggedIn ? (avatarUrl || defaultProfileAvatar) : defaultProfileAvatar}
-                    alt={displayName || (isRtl ? 'المستخدم' : 'User')}
-                    className="w-full h-full object-cover"
-                  />
-                </span>
+                <Menu className="w-5 h-5" />
                 {loggedIn && badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
