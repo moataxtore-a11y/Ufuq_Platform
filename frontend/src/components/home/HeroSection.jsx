@@ -59,26 +59,11 @@ export default function HeroSection() {
       {/* Main Container */}
       <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-12 w-full max-w-7xl flex-1 flex flex-col justify-between">
         
-        {/* Content Row: Character Image (Left in RTL) + Title & Desc (Right in RTL) */}
+        {/* Content Row: Title & Desc (Right in RTL) + Character Image (Left in RTL) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center flex-1">
           
-          {/* Left Column in RTL: 3D Character */}
-          <div className="lg:col-span-6 order-2 lg:order-1 flex justify-center lg:justify-start items-end h-full relative pt-4 lg:pt-0">
-            <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px]">
-              {/* Soft background glow for character */}
-              <div className="absolute inset-0 bg-teal-400/25 dark:bg-teal-500/15 rounded-full blur-2xl scale-95 transform translate-y-6" />
-              
-              <img
-                src={heroPic}
-                alt="Character Hero"
-                className="relative z-10 w-full h-auto object-contain drop-shadow-[0_20px_35px_rgba(0,100,90,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-[1.01]"
-                draggable="false"
-              />
-            </div>
-          </div>
-
           {/* Right Column in RTL: Title & Subtitle */}
-          <div className="lg:col-span-6 order-1 lg:order-2 flex flex-col justify-center items-center lg:items-start text-center lg:text-right space-y-6">
+          <div className="lg:col-span-6 order-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-right space-y-6">
             
             {/* Title: منصة أُفُق */}
             <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
@@ -100,6 +85,21 @@ export default function HeroSection() {
               </p>
             </div>
 
+          </div>
+
+          {/* Left Column in RTL: 3D Character */}
+          <div className="lg:col-span-6 order-2 flex justify-center lg:justify-end items-end h-full relative pt-4 lg:pt-0">
+            <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px]">
+              {/* Soft background glow for character */}
+              <div className="absolute inset-0 bg-teal-400/25 dark:bg-teal-500/15 rounded-full blur-2xl scale-95 transform translate-y-6" />
+              
+              <img
+                src={heroPic}
+                alt="Character Hero"
+                className="relative z-10 w-full h-auto object-contain drop-shadow-[0_20px_35px_rgba(0,100,90,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500 hover:scale-[1.01]"
+                draggable="false"
+              />
+            </div>
           </div>
 
         </div>
