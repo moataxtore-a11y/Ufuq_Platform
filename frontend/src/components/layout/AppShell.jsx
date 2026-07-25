@@ -123,7 +123,7 @@ export default function AppShell({ title, titleKey }) {
               className="btn-icon shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 p-0 hover:border-brand/30"
               aria-label={isRtl ? 'القائمة' : 'Menu'}
             >
-              <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+              <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover scale-120 translate-y-1" />
             </button>
             <ThemeToggle className="shrink-0" />
           </div>
