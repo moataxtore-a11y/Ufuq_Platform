@@ -1,5 +1,6 @@
 import { cn } from '../../utils/cn.js'
 import BodyLoading from './BodyLoading.jsx'
+import { Skeleton } from './Skeleton.jsx'
 
 const sizes = {
   xs: 'w-3 h-3 border',
@@ -8,17 +9,47 @@ const sizes = {
   lg: 'w-8 h-8 border-[3px]',
 }
 
+/**
+ * Default Spinner — renders as a skeleton shimmer block (body loading feel)
+ * unless `className` contains button-specific overrides like `border-t-white`
+ * in which case it stays a small inline circular spinner.
+ */
 export default function Spinner({ className, size = 'md' }) {
+  // If className contains button-spinner patterns, render a small circular spinner
+  const isInlineSpinner = className && (
+    className.includes('border-t-white') ||
+    className.includes('w-4') ||
+    className.includes('w-3')
+  )
+
+  if (isInlineSpinner) {
+    return (
+      <div
+        className={cn(
+          'border-brand/20 border-t-brand rounded-full animate-spin',
+          sizes[size] || sizes.md,
+          className
+        )}
+        aria-label="Loading"
+        role="status"
+      />
+    )
+  }
+
+  // Otherwise render as a skeleton shimmer block
   return (
-    <div
-      className={cn(
-        'border-brand/20 border-t-brand rounded-full animate-spin',
-        sizes[size] || sizes.md,
-        className
-      )}
-      aria-label="Loading"
-      role="status"
-    />
+    <div className="w-full space-y-3 py-2" role="status" aria-label="Loading">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+          <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-2/3 rounded-md" />
+            <Skeleton className="h-3 w-1/3 rounded-md" />
+          </div>
+          <Skeleton className="w-16 h-8 rounded-xl" />
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -27,5 +58,15 @@ export function PageSpinner({ text = 'جاري التحميل...', className }) 
 }
 
 export function InlineSpinner({ className }) {
-  return <Spinner size="sm" className={className} />
+  return (
+    <div
+      className={cn(
+        'border-brand/20 border-t-brand rounded-full animate-spin',
+        sizes.sm,
+        className
+      )}
+      aria-label="Loading"
+      role="status"
+    />
+  )
 }

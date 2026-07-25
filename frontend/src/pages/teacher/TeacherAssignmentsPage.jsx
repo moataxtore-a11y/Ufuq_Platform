@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../utils/api.js'
 import { useToast } from '../../components/ui/toast.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
 import { Modal } from '../../components/ui/Modal.jsx'
@@ -58,9 +59,24 @@ export default function TeacherAssignmentsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-slate-700">
-        <Spinner />
-        {t('assignmentsPage.loading')}
+      <div className="gap-4 grid">
+        <div className="flex items-center justify-between gap-3">
+          <div className="space-y-2">
+            <Skeleton className="h-7 w-36 rounded-xl" />
+            <Skeleton className="h-4 w-52 rounded-md" />
+          </div>
+          <Skeleton className="w-28 h-9 rounded-xl" />
+        </div>
+        <Skeleton className="h-10 w-full max-w-xs rounded-xl" />
+        <div className="space-y-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+              <Skeleton className="w-28 h-4 rounded-md flex-1" />
+              <Skeleton className="w-24 h-4 rounded-md" />
+              <Skeleton className="w-32 h-4 rounded-md" />
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

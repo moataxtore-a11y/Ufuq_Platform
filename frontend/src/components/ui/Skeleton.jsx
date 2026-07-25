@@ -4,8 +4,8 @@ export function Skeleton({ className, ...props }) {
   return (
     <div
       className={cn(
-        'animate-pulse rounded-xl bg-slate-200/70 dark:bg-white/[0.07] relative overflow-hidden',
-        'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.8s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/40 dark:before:via-white/10 before:to-transparent',
+        'animate-pulse rounded-xl bg-slate-200/80 dark:bg-white/[0.08] relative overflow-hidden',
+        'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.8s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent',
         className
       )}
       {...props}
@@ -35,7 +35,7 @@ export function SkeletonCard({ className }) {
   return (
     <div
       className={cn(
-        'bg-white/80 dark:bg-[#171717] border border-black/5 dark:border-white/10 rounded-3xl p-6 shadow-sm space-y-4',
+        'bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 shadow-sm space-y-4 transition-colors',
         className
       )}
     >
@@ -53,21 +53,31 @@ export function SkeletonCard({ className }) {
   )
 }
 
+export function SectionSkeleton({ count = 3, className }) {
+  return (
+    <div className={cn('w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5', className)}>
+      {Array.from({ length: count }).map((_, i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </div>
+  )
+}
+
 export function SkeletonTable({ rows = 5, cols = 4, className }) {
   return (
     <div
       className={cn(
-        'w-full bg-white/80 dark:bg-[#171717] border border-black/5 dark:border-white/10 rounded-3xl p-5 space-y-4',
+        'w-full bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors',
         className
       )}
     >
-      <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/10">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
         <Skeleton className="h-7 w-48 rounded-xl" />
         <Skeleton className="h-9 w-28 rounded-xl" />
       </div>
       <div className="space-y-3">
         {Array.from({ length: rows }).map((_, r) => (
-          <div key={r} className="flex items-center justify-between gap-4 py-2 border-b border-black/5 dark:border-white/5 last:border-0">
+          <div key={r} className="flex items-center justify-between gap-4 py-2 border-b border-slate-100 dark:border-white/5 last:border-0">
             {Array.from({ length: cols }).map((_, c) => (
               <Skeleton
                 key={c}

@@ -3,6 +3,7 @@ import { api } from '../../utils/api.js'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import { Modal } from '../../components/ui/Modal.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import { useNavigate } from 'react-router-dom'
@@ -70,9 +71,18 @@ export default function TeamCoursesPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
-          <Spinner />
-          {t('coursesManage.loading')}
+        <div className="app-grid-cards">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+              <Skeleton className="h-36 w-full rounded-2xl" />
+              <Skeleton className="h-5 w-3/4 rounded-lg" />
+              <Skeleton className="h-4 w-1/2 rounded-md" />
+              <div className="flex items-center justify-between pt-2">
+                <Skeleton className="w-20 h-4 rounded-md" />
+                <Skeleton className="w-24 h-9 rounded-xl" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="gap-6 grid">

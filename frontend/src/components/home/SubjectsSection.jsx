@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../utils/api.js'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import Spinner from '../ui/Spinner.jsx'
+import { Skeleton } from '../ui/Skeleton.jsx'
 import labelSvg from '../../cvg/LABLE.svg'
 
 export default function SubjectsSection() {
@@ -76,8 +76,19 @@ export default function SubjectsSection() {
 
         <div className="z-0 relative mt-8">
           {state.status === 'loading' ? (
-            <div className="flex justify-center items-center bg-white/75 dark:bg-[#171717] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-              <Spinner />
+            <div className="gap-6 grid lg:grid-cols-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 space-y-5 transition-colors">
+                  <div className="flex justify-center">
+                    <Skeleton className="w-40 h-10 rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-6 w-3/4 mx-auto rounded-lg" />
+                    <Skeleton className="h-6 w-2/3 mx-auto rounded-lg" />
+                    <Skeleton className="h-6 w-1/2 mx-auto rounded-lg" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : null}
 

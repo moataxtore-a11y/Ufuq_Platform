@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../utils/api.js'
 import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
 import Select from '../../components/ui/Select.jsx'
@@ -81,9 +82,17 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
   return (
     <Modal open={open} onOpenChange={onOpenChange} title={isRtl ? 'ملف الطالب' : 'Student Profile'}>
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
-          <Spinner />
-          {t('adminUsersPage.loading') === 'adminUsersPage.loading' ? (isRtl ? 'جاري التحميل' : 'Loading') : t('adminUsersPage.loading')}
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+              <Skeleton className="w-12 h-12 rounded-full shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-1/3 rounded-md" />
+                <Skeleton className="h-3 w-1/2 rounded-md" />
+              </div>
+              <Skeleton className="w-20 h-8 rounded-xl" />
+            </div>
+          ))}
         </div>
       ) : !user ? (
         <div className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.noData') === 'adminUsersPage.noData' ? (isRtl ? 'لا توجد بيانات' : 'No data') : t('adminUsersPage.noData')}</div>
@@ -310,9 +319,18 @@ export default function ApprovalsPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
-          <Spinner />
-          {t('approvalsPage.loading')}
+        <div className="space-y-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+              <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-1/4 rounded-md" />
+                <Skeleton className="h-3 w-1/3 rounded-md" />
+              </div>
+              <Skeleton className="w-16 h-8 rounded-xl" />
+              <Skeleton className="w-16 h-8 rounded-xl" />
+            </div>
+          ))}
         </div>
       ) : rows.length === 0 ? (
         <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">

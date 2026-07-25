@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../utils/api.js'
 import { useToast } from '../../components/ui/toast.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import ScorePill from '../../components/ui/ScorePill.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -58,9 +59,22 @@ export default function TeacherGradesPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-slate-700">
-        <Spinner />
-        {t('gradesPage.loading')}
+      <div className="gap-4 grid">
+        <div className="space-y-2">
+          <Skeleton className="h-7 w-40 rounded-xl" />
+          <Skeleton className="h-4 w-60 rounded-md" />
+        </div>
+        <Skeleton className="h-10 w-full max-w-xs rounded-xl" />
+        <div className="space-y-3">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+              <Skeleton className="w-24 h-4 rounded-md" />
+              <Skeleton className="w-32 h-4 rounded-md flex-1" />
+              <Skeleton className="w-16 h-6 rounded-full" />
+              <Skeleton className="w-20 h-4 rounded-md" />
+            </div>
+          ))}
+        </div>
       </div>
     )
   }

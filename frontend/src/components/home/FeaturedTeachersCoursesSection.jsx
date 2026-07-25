@@ -4,7 +4,7 @@ import { api } from '../../utils/api.js'
 import Button from '../ui/Button.jsx'
 import CourseCard from '../courses/CourseCard.jsx'
 import SectionWrapper from '../ui/SectionWrapper.jsx'
-import Spinner from '../ui/Spinner.jsx'
+import { SectionSkeleton } from '../ui/Skeleton.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { Inbox } from 'lucide-react'
@@ -122,9 +122,7 @@ export default function FeaturedTeachersCoursesSection() {
       }
     >
       {isLoading ? (
-        <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-          <Spinner />
-        </div>
+        <SectionSkeleton count={3} />
       ) : null}
 
       {!isLoading && error ? (

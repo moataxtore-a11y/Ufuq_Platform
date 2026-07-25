@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BookOpen, ClipboardCheck, GraduationCap, Inbox, KeyRound, LayoutDashboard, ListChecks, LogOut, MessageSquareQuote, Plus, Users } from 'lucide-react'
 import Button from '../../components/ui/Button.jsx'
-import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
 import { api } from '../../utils/api.js'
 import { useAuth } from '../../context/AuthContext.jsx'
@@ -147,8 +147,18 @@ export default function TeacherLandingPage() {
         </div>
 
         {coursesState.status === 'loading' ? (
-          <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] p-8 mt-4 border border-black/5 dark:border-white/10 rounded-3xl">
-            <Spinner />
+          <div className="app-grid-cards mt-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+                <Skeleton className="h-36 w-full rounded-2xl" />
+                <Skeleton className="h-5 w-3/4 rounded-lg" />
+                <Skeleton className="h-4 w-1/2 rounded-md" />
+                <div className="flex items-center justify-between pt-2">
+                  <Skeleton className="w-20 h-4 rounded-md" />
+                  <Skeleton className="w-24 h-9 rounded-xl" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
 

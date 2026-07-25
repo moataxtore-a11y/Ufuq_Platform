@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../utils/api.js'
-import Spinner from '../ui/Spinner.jsx'
+import { Skeleton } from '../ui/Skeleton.jsx'
 import TeacherCard from '../teachers/TeacherCard.jsx'
 import Select from '../ui/Select.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -120,8 +120,20 @@ export default function ChooseTeachersSection() {
 
           <div className="z-0 relative mt-8">
             {state.status === 'loading' ? (
-              <div className="flex justify-center items-center bg-white/75 dark:bg-[#171717] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-                <Spinner />
+              <div className="justify-items-center gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-full bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+                    <div className="flex justify-center">
+                      <Skeleton className="w-24 h-24 rounded-full" />
+                    </div>
+                    <Skeleton className="h-6 w-2/3 mx-auto rounded-lg" />
+                    <Skeleton className="h-4 w-1/2 mx-auto rounded-md" />
+                    <div className="flex justify-center gap-2 pt-2">
+                      <Skeleton className="w-16 h-6 rounded-full" />
+                      <Skeleton className="w-16 h-6 rounded-full" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : null}
 

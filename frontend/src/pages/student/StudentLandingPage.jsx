@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Inbox } from 'lucide-react'
 import { api } from '../../utils/api.js'
 import Button from '../../components/ui/Button.jsx'
-import Spinner from '../../components/ui/Spinner.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -185,8 +185,18 @@ export default function StudentLandingPage() {
         </div>
 
         {myCoursesState.status === 'loading' ? (
-          <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-            <Spinner />
+          <div className="items-start gap-4 grid md:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+                <Skeleton className="h-36 w-full rounded-2xl" />
+                <Skeleton className="h-5 w-3/4 rounded-lg" />
+                <Skeleton className="h-4 w-1/2 rounded-md" />
+                <div className="flex items-center justify-between pt-2">
+                  <Skeleton className="w-20 h-4 rounded-md" />
+                  <Skeleton className="w-24 h-9 rounded-xl" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
 
@@ -242,8 +252,18 @@ export default function StudentLandingPage() {
         </div>
 
         {publicCoursesState.status === 'loading' ? (
-          <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] mt-4 p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-            <Spinner />
+          <div className="items-start gap-4 grid md:grid-cols-3 mt-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+                <Skeleton className="h-36 w-full rounded-2xl" />
+                <Skeleton className="h-5 w-3/4 rounded-lg" />
+                <Skeleton className="h-4 w-1/2 rounded-md" />
+                <div className="flex items-center justify-between pt-2">
+                  <Skeleton className="w-20 h-4 rounded-md" />
+                  <Skeleton className="w-24 h-9 rounded-xl" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
 
@@ -331,8 +351,14 @@ export default function StudentLandingPage() {
         </div>
 
         {teachersState.status === 'loading' ? (
-          <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] mt-4 p-8 border border-black/5 dark:border-white/10 rounded-3xl">
-            <Spinner />
+          <div className="gap-3 grid sm:grid-cols-2 lg:grid-cols-3 mt-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-[rgb(247,244,236)] dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-[22px] sm:rounded-[28px] p-4 sm:p-5 space-y-4 transition-colors">
+                <Skeleton className="w-full aspect-square rounded-2xl sm:rounded-3xl" />
+                <Skeleton className="h-6 w-2/3 mx-auto rounded-lg" />
+                <Skeleton className="h-5 w-1/2 mx-auto rounded-md" />
+              </div>
+            ))}
           </div>
         ) : null}
 
