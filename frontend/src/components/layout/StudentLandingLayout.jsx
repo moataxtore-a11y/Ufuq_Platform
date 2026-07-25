@@ -108,25 +108,18 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'inline-flex relative items-center shadow-[0_10px_22px_rgba(15,23,42,0.10)] rounded-full max-w-[160px] sm:max-w-none h-10 transition',
-          'bg-brand-800 hover:bg-brand-700',
-          isRtl ? 'pr-12 pl-4' : 'pl-12 pr-4',
+          'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-200',
+          'bg-brand-800 hover:bg-brand-700 text-white shadow-[0_2px_6px_rgba(3,76,67,0.25)]',
           className
         )}
         title={isRtl ? 'المحفظة' : 'Wallet'}
       >
-        <span className="flex-1 min-w-0 font-extrabold text-[#ffffff] text-[11px] sm:text-[15px] text-center truncate leading-none tracking-wide whitespace-nowrap">
-          {walletBalance === null ? '-' : formatAmount(walletBalance)} جنيه
+        <span className="font-bold text-[11px] tabular-nums leading-none">
+          {walletBalance === null ? '-' : formatAmount(walletBalance)}
+          <span className="me-0.5 font-semibold text-white/80">{isRtl ? 'جنيه' : 'EGP'}</span>
         </span>
-
-        <span
-          className={cn(
-            'inline-flex top-1/2 absolute justify-center items-center rounded-full w-10 sm:w-10 h-10 sm:h-10 -translate-y-1/2',
-            'bg-brand',
-            isRtl ? 'right-[-6px]' : 'left-[-6px]'
-          )}
-        >
-          <WalletIcon className="w-6 h-6" />
+        <span className="inline-flex items-center justify-center bg-brand rounded-full w-6 h-6">
+          <WalletIcon className="w-3.5 h-3.5" />
         </span>
       </button>
     )
