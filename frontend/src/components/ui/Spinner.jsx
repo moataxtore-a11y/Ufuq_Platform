@@ -1,4 +1,5 @@
 import { cn } from '../../utils/cn.js'
+import BodyLoading from './BodyLoading.jsx'
 
 const sizes = {
   xs: 'w-3 h-3 border',
@@ -21,13 +22,8 @@ export default function Spinner({ className, size = 'md' }) {
   )
 }
 
-export function PageSpinner({ text, className }) {
-  return (
-    <div className={cn('flex flex-col items-center justify-center gap-3 py-16', className)}>
-      <Spinner size="lg" />
-      {text && <p className="text-body-sm text-slate-400 dark:text-slate-500">{text}</p>}
-    </div>
-  )
+export function PageSpinner({ text = 'جاري التحميل...', className }) {
+  return <BodyLoading message={text} className={className} />
 }
 
 export function InlineSpinner({ className }) {

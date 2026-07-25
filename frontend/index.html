@@ -16,7 +16,73 @@
 </head>
 
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <!-- Initial Body Loading Skeleton -->
+        <style>
+            .app-loading-body {
+                min-height: 100vh;
+                background-color: #0a0a0a;
+                color: #f1f5f9;
+                font-family: Cairo, Tajawal, sans-serif;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+                overflow: hidden;
+            }
+            .app-loading-bar {
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                height: 4px;
+                background: rgba(6, 148, 132, 0.15);
+                z-index: 9999;
+                overflow: hidden;
+            }
+            .app-loading-bar-inner {
+                height: 100%;
+                width: 40%;
+                background: linear-gradient(90deg, #069484, #38bdf8, #069484);
+                animation: initialLoadingBar 1.4s infinite ease-in-out;
+            }
+            @keyframes initialLoadingBar {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(300%); }
+            }
+            .skeleton-box {
+                background: rgba(255, 255, 255, 0.07);
+                border-radius: 16px;
+                animation: initialPulse 1.5s infinite ease-in-out;
+            }
+            @keyframes initialPulse {
+                0%, 100% { opacity: 0.6; }
+                50% { opacity: 0.25; }
+            }
+        </style>
+        <div class="app-loading-body" dir="rtl">
+            <div class="app-loading-bar">
+                <div class="app-loading-bar-inner"></div>
+            </div>
+            <div style="padding: 16px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="skeleton-box" style="width: 40px; height: 40px; border-radius: 14px;"></div>
+                    <div class="skeleton-box" style="width: 120px; height: 24px; border-radius: 8px;"></div>
+                </div>
+                <div class="skeleton-box" style="width: 100px; height: 36px; border-radius: 12px;"></div>
+            </div>
+            <div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 28px;">
+                <div class="skeleton-box" style="height: 180px; width: 100%; border-radius: 24px;"></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
+                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
+                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
+                </div>
+            </div>
+            <div style="position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(30,30,30,0.9); border: 1px solid rgba(6,148,132,0.4); padding: 10px 22px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="width: 16px; height: 16px; border: 2px solid rgba(6,148,132,0.3); border-top-color: #069484; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                <span style="font-size: 13px; font-weight: 600; color: #e2e8f0;">جاري تحميل المنصة...</span>
+            </div>
+        </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
 </body>
 

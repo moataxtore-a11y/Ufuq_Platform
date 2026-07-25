@@ -442,3 +442,25 @@ video {
 .toast-animate[data-swipe='end'] {
     animation: toastSwipeOut 0.2s ease-out forwards;
 }
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes loadingBar {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(300%);
+    }
+}
+
