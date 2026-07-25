@@ -146,22 +146,10 @@ export default function TeamLandingLayout() {
           </div>
 
           <div className="hidden sm:flex justify-between items-center gap-3">
-            <div className="flex items-center gap-2.5">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
-                aria-label={isRtl ? 'القائمة' : 'Menu'}
-                title={isRtl ? 'القائمة' : 'Menu'}
-              >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
-                {badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
-              <ThemeToggle className="shrink-0 h-9" />
+            <div className="flex items-center gap-2">
+              <Link to="/" className="flex items-center gap-2">
+                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+              </Link>
             </div>
 
             <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
@@ -206,10 +194,22 @@ export default function TeamLandingLayout() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-2">
-              <Link to="/" className="flex items-center gap-2">
-                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
-              </Link>
+            <div className="flex items-center gap-2.5">
+              <ThemeToggle className="shrink-0 h-9" />
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+                aria-label={isRtl ? 'القائمة' : 'Menu'}
+                title={isRtl ? 'القائمة' : 'Menu'}
+              >
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
+              </button>
             </div>
           </div>
         </div>

@@ -155,23 +155,12 @@ export default function StudentLandingLayout() {
 
           {/* Desktop view */}
           <div className="hidden sm:flex items-center justify-between gap-4 h-10">
-            {/* Profile & Dark Mode Toggle side by side */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors shadow-sm"
-                aria-label={isRtl ? 'القائمة' : 'Menu'}
-                title={isRtl ? 'القائمة' : 'Menu'}
-              >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
-                {badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
-              <ThemeToggle className="shrink-0 h-9" />
+            {/* Logo & Wallet (Far Right in RTL) */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link to="/" className="flex items-center shrink-0">
+                <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
+              </Link>
+              <WalletBadge />
             </div>
 
             {/* Center: Nav links */}
@@ -216,12 +205,23 @@ export default function StudentLandingLayout() {
               ))}
             </nav>
 
-            {/* Logo & Wallet */}
-            <div className="flex items-center gap-3 shrink-0">
-              <WalletBadge />
-              <Link to="/" className="flex items-center shrink-0">
-                <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
-              </Link>
+            {/* ThemeToggle & Profile (Far Left in RTL) */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <ThemeToggle className="shrink-0 h-9" />
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors shadow-sm"
+                aria-label={isRtl ? 'القائمة' : 'Menu'}
+                title={isRtl ? 'القائمة' : 'Menu'}
+              >
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
+              </button>
             </div>
           </div>
         </div>
