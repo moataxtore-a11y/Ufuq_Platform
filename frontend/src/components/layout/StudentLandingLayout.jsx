@@ -129,7 +129,7 @@ export default function StudentLandingLayout() {
               <div className="items-center grid grid-cols-3">
                 <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
                   <Link to="/student/profile" className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
                   </Link>
                   <ThemeToggle className="shrink-0" />
                 </div>
@@ -218,7 +218,7 @@ export default function StudentLandingLayout() {
                 aria-label={isRtl ? 'القائمة' : 'Menu'}
                 title={isRtl ? 'القائمة' : 'Menu'}
               >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
                 {badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
