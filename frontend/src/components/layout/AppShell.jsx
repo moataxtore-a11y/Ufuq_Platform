@@ -10,7 +10,8 @@ import {
   LogOut,
   Menu,
   Search,
-  Users
+  Users,
+  Wallet
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Button from '../ui/Button.jsx'
@@ -19,7 +20,6 @@ import { cn } from '../../utils/cn.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
 import logo from '../../cvg/logo (2)_3.webp'
-import walletBadgeIcon from '../../cvg/WALLET.svg'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { api } from '../../utils/api.js'
 import defaultProfileAvatar from '../../cvg/profile.svg'
@@ -149,18 +149,24 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200',
-                  'bg-brand-800 hover:bg-brand-700 text-white shadow-[0_2px_8px_rgba(3,76,67,0.3)]',
-                  isRtl ? 'flex-row-reverse' : 'flex-row'
+                  'group hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300',
+                  'bg-gradient-to-r from-[#033c36] via-[#054d44] to-[#095950] hover:from-[#044c45] hover:to-[#0b665c]',
+                  'border border-teal-400/35 shadow-[0_4px_14px_rgba(3,76,67,0.3)] hover:shadow-[0_6px_20px_rgba(3,76,67,0.45)]',
+                  'hover:scale-[1.03] active:scale-[0.98]'
                 )}
+                title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
               >
-                <span className="font-bold text-[13px] tabular-nums leading-none">
-                  {walletBalance === null ? '-' : `${Number(walletBalance || 0).toFixed(2)}`}
-                  <span className="me-0.5 font-semibold text-white/80">{isRtl ? 'جنيه' : 'EGP'}</span>
+                <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 rounded-full w-6 sm:w-7 h-6 sm:h-7 shadow-sm text-white shrink-0 group-hover:rotate-12 transition-transform duration-300">
+                  <Wallet className="w-3.5 h-3.5" />
                 </span>
-                <span className="inline-flex items-center justify-center bg-brand rounded-full w-7 h-7">
-                  <img src={walletBadgeIcon} alt="" className="w-4 h-4" />
-                </span>
+                <div className="flex items-baseline gap-1 text-white leading-none">
+                  <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
+                    {walletBalance === null ? '...' : `${Number(walletBalance || 0).toFixed(2)}`}
+                  </span>
+                  <span className="text-[10px] sm:text-[11px] font-bold text-teal-200/90">
+                    {isRtl ? 'ج.م' : 'EGP'}
+                  </span>
+                </div>
               </button>
             ) : null}
 

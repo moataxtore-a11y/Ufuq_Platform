@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { BarChart3, BookOpen, ClipboardCheck, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogOut, Menu } from 'lucide-react'
+import { BarChart3, BookOpen, ClipboardCheck, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogOut, Menu, Wallet } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import AnimatedBackdrop from '../ui/AnimatedBackdrop.jsx'
 import Button from '../ui/Button.jsx'
@@ -75,52 +75,31 @@ export default function StudentLandingLayout() {
     return s.replace(/\.00$/, '').replace(/(\.[0-9]*?)0+$/, '$1').replace(/\.$/, '')
   }
 
-  function WalletIcon({ className }) {
-    return (
-      <svg
-        className={className}
-        viewBox="0 0 226.1 235.35"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <g stroke="#ffffff" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round">
-          <path
-            strokeWidth="19.63"
-            d="M149.88,141.14c0,6.69,2.72,12.75,7.1,17.13,4.38,4.38,10.44,7.1,17.13,7.1h42.17v23.76c0,20.11-16.31,36.41-36.42,36.41H46.23c-20.12,0-36.42-16.29-36.42-36.41v-92.13c0-19.56,15.4-35.51,34.73-36.37.56-.04,1.13-.05,1.69-.05h133.63c2.02,0,4.01.17,5.94.48,17.28,2.83,30.48,17.84,30.48,35.94v19.91h-42.17c-13.38,0-24.23,10.84-24.23,24.23Z"
-          />
-          <path
-            strokeWidth="19.63"
-            d="M216.28,116.91v48.46h-42.17c-6.69,0-12.75-2.72-17.13-7.1-4.38-4.38-7.1-10.44-7.1-17.13,0-13.38,10.84-24.23,24.23-24.23h42.17Z"
-          />
-          <path
-            strokeWidth="22.28"
-            d="M185.81,61.06c-1.93-.32-3.92-.48-5.94-.48H46.23c-.56,0,37.16-16.64,36.6-16.6L153.89,11.95c4.7-2.1,10.2.01,12.28,4.71l19.12,42.96c.2.47.38.95.51,1.43Z"
-          />
-        </g>
-      </svg>
-    )
-  }
-
   function WalletBadge({ className }) {
     return (
       <button
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200',
-          'bg-brand-800 hover:bg-brand-700 text-white shadow-[0_2px_8px_rgba(3,76,67,0.3)]',
+          'group inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300',
+          'bg-gradient-to-r from-[#033c36] via-[#054d44] to-[#095950] hover:from-[#044c45] hover:to-[#0b665c]',
+          'border border-teal-400/35 shadow-[0_4px_14px_rgba(3,76,67,0.3)] hover:shadow-[0_6px_20px_rgba(3,76,67,0.45)]',
+          'hover:scale-[1.03] active:scale-[0.98]',
           className
         )}
-        title={isRtl ? 'المحفظة' : 'Wallet'}
+        title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
       >
-        <span className="font-bold text-[13px] tabular-nums leading-none">
-          {walletBalance === null ? '-' : formatAmount(walletBalance)}
-          <span className="me-0.5 font-semibold text-white/80">{isRtl ? 'جنيه' : 'EGP'}</span>
+        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 rounded-full w-6 sm:w-7 h-6 sm:h-7 shadow-sm text-white shrink-0 group-hover:rotate-12 transition-transform duration-300">
+          <Wallet className="w-3.5 h-3.5" />
         </span>
-        <span className="inline-flex items-center justify-center bg-brand rounded-full w-7 h-7">
-          <WalletIcon className="w-4 h-4" />
-        </span>
+        <div className="flex items-baseline gap-1 text-white leading-none">
+          <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
+            {walletBalance === null ? '...' : formatAmount(walletBalance)}
+          </span>
+          <span className="text-[10px] sm:text-[11px] font-bold text-teal-200/90">
+            {isRtl ? 'ج.م' : 'EGP'}
+          </span>
+        </div>
       </button>
     )
   }
@@ -159,7 +138,8 @@ export default function StudentLandingLayout() {
                 <Link to="/" className="flex justify-center items-center">
                   <img src={logo} alt="Education Platform" className="w-auto h-11" />
                 </Link>
-                <div className={cn('flex items-center gap-2', isRtl ? 'justify-start flex-row-reverse' : 'justify-end flex-row')}>
+                <div className={cn('flex items-center gap-1.5', isRtl ? 'justify-start flex-row-reverse' : 'justify-end flex-row')}>
+                  <WalletBadge className="!px-2 !py-1" />
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
