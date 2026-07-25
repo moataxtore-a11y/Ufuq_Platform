@@ -146,7 +146,8 @@ export default function TeamLandingLayout() {
           </div>
 
           <div className={'hidden sm:flex justify-between items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-            <div className={'flex items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
+            <div className={'flex items-center gap-2.5 ' + (isRtl ? 'flex-row-reverse' : '')}>
+              <ThemeToggle className="shrink-0 h-9" />
               <button
                 type="button"
                 onClick={() => setOpen(true)}

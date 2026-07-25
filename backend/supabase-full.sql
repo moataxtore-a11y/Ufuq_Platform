@@ -283,6 +283,7 @@ CREATE TABLE IF NOT EXISTS "WalletTransaction" (
     "balanceBefore" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "balanceAfter" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "status" TEXT NOT NULL DEFAULT 'completed',
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "WalletTransaction_pkey" PRIMARY KEY ("id")
 );
 

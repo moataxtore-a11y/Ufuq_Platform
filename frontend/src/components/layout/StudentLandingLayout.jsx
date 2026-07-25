@@ -153,15 +153,18 @@ export default function StudentLandingLayout() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center justify-between gap-4 h-10">
-            <div className="flex items-center gap-3 shrink-0">
-              <WalletBadge />
+          {/* Desktop view */}
+          <div className={cn('hidden sm:flex items-center justify-between gap-4 h-10', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            {/* Logo & Wallet */}
+            <div className={cn('flex items-center gap-3 shrink-0', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <Link to="/" className="flex items-center shrink-0">
                 <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
               </Link>
+              <WalletBadge />
             </div>
 
-            <nav className="flex items-center justify-center gap-1 flex-1">
+            {/* Center: Nav links */}
+            <nav className={cn('flex items-center justify-center gap-1 flex-1', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               {quickLinks.map((it) => (
                 <NavLink
                   key={it.to}
@@ -202,7 +205,9 @@ export default function StudentLandingLayout() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-2.5 shrink-0">
+            {/* Profile & Dark Mode Toggle side by side */}
+            <div className={cn('flex items-center gap-2.5 shrink-0', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+              <ThemeToggle className="shrink-0 h-9" />
               <button
                 type="button"
                 onClick={() => setOpen(true)}
