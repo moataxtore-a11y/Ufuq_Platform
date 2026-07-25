@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 import { useId } from 'react'
 import { cn } from '../../utils/cn.js'
 
-export function Modal({ open, onOpenChange, title, description, children, contentClassName, bodyClassName, showClose = true }) {
+export function Modal({ open, onOpenChange, title, description, children, contentClassName, bodyClassName, showClose = true, size = 'md' }) {
   const descriptionId = useId()
   const describedBy = description ? descriptionId : undefined
   return (
@@ -13,18 +13,28 @@ export function Modal({ open, onOpenChange, title, description, children, conten
         <Dialog.Content
           aria-describedby={describedBy}
           className={cn(
-            'top-1/2 left-1/2 z-[60] fixed flex flex-col bg-white/95 dark:bg-[#0a0a0a]/90 backdrop-blur-glass shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-slate-200/50 dark:border-white/10 rounded-2xl w-[95vw] max-w-2xl max-h-[90vh] overflow-hidden -translate-x-1/2 -translate-y-1/2 animate-scale-in',
+            'top-1/2 left-1/2 z-[60] fixed flex flex-col',
+            'bg-white dark:bg-[#141414]',
+            'border border-slate-200/60 dark:border-white/10',
+            'rounded-2xl shadow-elevated',
+            'w-[95vw] max-h-[90vh] overflow-hidden',
+            '-translate-x-1/2 -translate-y-1/2 animate-scale-in',
+            'dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]',
+            size === 'sm' && 'max-w-md',
+            size === 'md' && 'max-w-2xl',
+            size === 'lg' && 'max-w-4xl',
+            size === 'xl' && 'max-w-6xl',
             contentClassName
           )}
         >
-          <div className="flex justify-between items-center p-4 border-black/5 dark:border-white/10 border-b">
-            <Dialog.Title className="font-semibold text-slate-900 dark:text-white text-base">{title}</Dialog.Title>
+          <div className="flex items-center justify-between px-5 py-4 border-slate-100 dark:border-white/[0.06] border-b">
+            <Dialog.Title className="font-semibold text-h3 text-slate-900 dark:text-white">{title}</Dialog.Title>
             {showClose ? (
-              <Dialog.Close className="hover:bg-slate-50 dark:hover:bg-white/[0.06] p-2 rounded-xl transition-colors">
-                <X className="w-4 h-4 text-slate-700 dark:text-slate-200" />
+              <Dialog.Close className="btn-icon" aria-label="Close">
+                <X className="w-4 h-4" />
               </Dialog.Close>
             ) : (
-              <div className="w-8 h-8" />
+              <div className="w-9 h-9" />
             )}
           </div>
           {description ? (
@@ -32,7 +42,7 @@ export function Modal({ open, onOpenChange, title, description, children, conten
               {description}
             </Dialog.Description>
           ) : null}
-          <div className={cn('flex-1 p-4 overflow-y-auto', bodyClassName)}>{children}</div>
+          <div className={cn('flex-1 overflow-y-auto', bodyClassName || 'p-5')}>{children}</div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

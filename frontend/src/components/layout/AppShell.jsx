@@ -59,11 +59,8 @@ export default function AppShell({ title, titleKey }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [open, setOpen] = useState(false)
-
   const [me, setMe] = useState(null)
-
   const [walletBalance, setWalletBalance] = useState(null)
-
   const { isRtl, t } = useLanguage()
 
   const computedTitle = titleKey ? t(`dashboard.titles.${titleKey}`) : title
@@ -104,64 +101,46 @@ export default function AppShell({ title, titleKey }) {
     }
     loadMe()
     loadWallet()
-    return () => {
-      alive = false
-    }
+    return () => { alive = false }
   }, [auth?.role, auth?.token, location.pathname])
 
   const displayName = String(me?.name || me?.email || auth?.email || '').trim()
   const avatarUrl = me?.profile?.avatarUrl || ''
 
-  const profileLink = (() => {
-    const role = auth?.role
-    if (role === 'admin') return '/admin/profile'
-    if (role === 'teacher') return '/teacher/profile'
-    if (role === 'team') return '/team/profile'
-    if (role === 'student') return '/student/profile'
-    return '/profile'
-  })()
-
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="relative bg-[#E0F3E9] dark:bg-[#0a0a0a] min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
-      {/* Modern floating background aesthetic */}
       <div className="z-0 fixed inset-0 overflow-hidden pointer-events-none">
         <div className="top-[-10%] left-[-10%] absolute bg-brand/10 dark:bg-brand/[0.15] blur-[120px] rounded-full w-[50%] h-[50%] animate-blob-float" />
         <div className="right-[-10%] bottom-[-10%] absolute bg-brand/10 dark:bg-brand/[0.12] opacity-70 blur-[100px] rounded-full w-[40%] h-[40%] animate-blob-float" style={{ animationDelay: '2s' }} />
       </div>
 
       <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
-        <div className="flex justify-between items-center gap-3 mx-auto px-4 sm:px-6 py-2 w-full max-w-7xl">
+        <div className="flex items-center justify-between gap-3 mx-auto px-4 sm:px-6 py-2.5 w-full max-w-7xl">
           <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+              className="btn-icon shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 p-0 hover:border-brand/30"
               aria-label={isRtl ? 'القائمة' : 'Menu'}
-              title={isRtl ? 'القائمة' : 'Menu'}
             >
-              <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+              <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
             </button>
             <ThemeToggle className="shrink-0" />
           </div>
 
-            <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              <Link to="/">
-                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
-              </Link>
-              <div className={cn('grid leading-tight', isRtl ? 'text-right' : 'text-left')}>
-                <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm tracking-tight">{computedTitle}</div>
-                <div className="hidden sm:block text-slate-600 dark:text-slate-300 text-xs">
-                  {auth?.email}
-                </div>
-              </div>
+          <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11" />
+            </Link>
+            <div className={cn('hidden sm:grid leading-tight', isRtl ? 'text-right' : 'text-left')}>
+              <div className="font-semibold text-body-sm text-slate-900 dark:text-slate-100">{computedTitle}</div>
+              <div className="text-caption text-slate-500 dark:text-slate-400">{auth?.email}</div>
             </div>
 
             {auth?.role === 'teacher' || auth?.role === 'team' ? (
-              <div className="hidden sm:flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
+              <div className="hidden sm:flex items-center gap-1.5 badge-neutral">
                 <span className="bg-brand rounded-full w-1.5 h-1.5" />
-                <span>{t('dashboard.ui.scope')}</span>
-                <span className="text-slate-500 dark:text-slate-400">{auth?.teamId || '-'}</span>
+                <span>{auth?.teamId || '-'}</span>
               </div>
             ) : null}
 
@@ -170,79 +149,73 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'hidden sm:flex items-center gap-3 shadow-[0_10px_22px_rgba(15,23,42,0.10)] px-3 py-1.5 rounded-full transition',
-                  'bg-brand hover:bg-brand-600',
+                  'hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200',
+                  'bg-brand hover:bg-brand-600 text-white shadow-[0_2px_8px_rgba(6,148,132,0.25)]',
                   isRtl ? 'flex-row-reverse' : 'flex-row'
                 )}
               >
-                <span className="font-extrabold text-white text-xs tracking-wide">
-                  {walletBalance === null
-                    ? '-'
-                    : `${Number(walletBalance || 0).toFixed(2)} ${isRtl ? 'جنيه' : 'EGP'}`}
+                <span className="font-bold text-body-sm tabular-nums">
+                  {walletBalance === null ? '-' : `${Number(walletBalance || 0).toFixed(2)}`}
                 </span>
-                <span className="inline-flex justify-center items-center bg-black rounded-full w-9 h-9">
-                  <img src={walletBadgeIcon} alt="Wallet" className="w-5 h-5" />
+                <span className="inline-flex items-center justify-center bg-black/20 rounded-full w-7 h-7">
+                  <img src={walletBadgeIcon} alt="" className="w-4 h-4" />
                 </span>
               </button>
             ) : null}
 
             <Button variant="secondary" size="sm" onClick={onLogout}>
               <LogOut className="w-4 h-4" />
-              {t('dashboard.ui.logout')}
+              <span className="hidden sm:inline">{t('dashboard.ui.logout')}</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="h-[72px] sm:h-[76px] md:h-[80px]" />
+      <div className="h-[60px] sm:h-[64px] md:h-[68px]" />
 
       {open ? (
         <div className="z-[110] fixed inset-0">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setOpen(false)}
-            aria-label="Close menu"
-          />
+          <button type="button" className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setOpen(false)} aria-label="Close menu" />
           <div
             className={cn(
-              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
-              isRtl ? 'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl' : 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl'
+              'top-0 bottom-0 absolute bg-white dark:bg-[#141414] shadow-elevated p-4 w-[85%] max-w-xs overflow-y-auto transition-transform duration-300',
+              isRtl ? 'right-0 rounded-l-2xl' : 'left-0 rounded-r-2xl'
             )}
           >
-            <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-              <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{t('dashboard.ui.menu')}</div>
-              <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
-                {t('dashboard.ui.close')}
-              </Button>
+            <div className={cn('flex items-center justify-between mb-4 px-1', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+              <span className="font-semibold text-body-sm text-slate-900 dark:text-white">{isRtl ? 'القائمة' : 'Menu'}</span>
+              <button type="button" onClick={() => setOpen(false)} className="btn-icon" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
             </div>
             <SidebarNav items={items} isRtl={isRtl} onNavigate={() => setOpen(false)} auth={auth} />
           </div>
         </div>
       ) : null}
 
-      <div className="z-10 relative mx-auto px-4 sm:px-6 pt-2.5 pb-4 w-full max-w-7xl">
-        <div className="gap-4 grid grid-cols-1 md:grid-cols-[280px_1fr]">
+      <div className="z-10 relative mx-auto px-4 sm:px-6 pt-4 pb-6 w-full max-w-7xl">
+        <div className="gap-5 grid grid-cols-1 md:grid-cols-[260px_1fr]">
           <aside className="hidden md:block">
-            <div className="bg-white/80 dark:bg-white/[0.04] shadow-glass-sm backdrop-blur-glass p-4 border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl">
-              <SidebarNav items={items} isRtl={isRtl} onNavigate={() => {}} auth={auth} />
+            <div className="sticky top-[84px]">
+              <div className="card-surface p-3">
+                <SidebarNav items={items} isRtl={isRtl} onNavigate={() => {}} auth={auth} />
+              </div>
+              <div className="mt-3 px-1">
+                <p className={cn('text-caption text-slate-400 dark:text-slate-500', isRtl ? 'text-right' : 'text-left')}>
+                  {auth?.role === 'teacher' || auth?.role === 'team'
+                    ? `${t('dashboard.ui.visible_within_scope')}: ${auth?.teamId || '-'}`
+                    : t('dashboard.ui.platform_dashboard')}
+                </p>
+              </div>
             </div>
           </aside>
 
           <main className="min-w-0">
-            <div className="bg-white/80 dark:bg-white/[0.04] shadow-glass-sm backdrop-blur-glass p-5 md:p-8 border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl">
+            <div className="card-surface p-5 md:p-6">
               <div key={location.pathname} className="animate-fade-in">
                 <Outlet />
               </div>
             </div>
-
-            <footer className={cn('mt-3 px-1 text-slate-500 dark:text-slate-400 text-xs', isRtl ? 'text-right' : 'text-left')}>
-              {auth?.role === 'teacher' || auth?.role === 'team'
-                ? isRtl
-                  ? `${t('dashboard.ui.visible_within_scope')}: ${auth?.teamId || '-'}`
-                  : `${t('dashboard.ui.visible_within_scope')}: ${auth?.teamId || '-'}`
-                : t('dashboard.ui.platform_dashboard')}
-            </footer>
           </main>
         </div>
       </div>
@@ -252,44 +225,38 @@ export default function AppShell({ title, titleKey }) {
 
 function SidebarNav({ items, isRtl, onNavigate, auth }) {
   return (
-    <div className="gap-3 grid">
-      <nav className="gap-1 grid">
-        {items.map((it) => (
-          <NavLink
-            key={it.to}
-            to={it.to}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-2 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
-                isRtl ? 'flex-row-reverse text-right' : 'text-left',
-                'hover:-translate-y-0.5',
-                isActive
-                  ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
-                  : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
-              )
-            }
-            onClick={onNavigate}
-            end
-          >
-            {it.icon ? <it.icon className="w-4 h-4" /> : null}
-            <span className="truncate">{it.label || it.to}</span>
-          </NavLink>
-        ))}
-      </nav>
+    <div className="flex flex-col gap-1">
+      {items.map((it) => (
+        <NavLink
+          key={it.to}
+          to={it.to}
+          className={({ isActive }) =>
+            cn(
+              'flex items-center gap-3 px-3 py-2.5 rounded-xl text-body-sm font-medium transition-all duration-150',
+              isRtl ? 'flex-row-reverse text-right' : 'text-left',
+              isActive
+                ? 'bg-brand/10 text-brand dark:bg-brand/15 dark:text-brand-300 font-semibold'
+                : 'text-slate-600 hover:bg-slate-100/60 dark:text-slate-300 dark:hover:bg-white/[0.04]'
+            )
+          }
+          onClick={onNavigate}
+          end
+        >
+          {it.icon && <it.icon className="w-[18px] h-[18px] shrink-0" />}
+          <span className="truncate">{it.label || it.to}</span>
+        </NavLink>
+      ))}
 
-      <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] px-3 py-2 border border-black/5 dark:border-white/10 rounded-2xl text-slate-700 dark:text-slate-200 text-sm">
-        <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-          <Search className="w-4 h-4" />
-          <Input className="bg-transparent p-0 border-0 focus-visible:ring-0 h-7" placeholder={isRtl ? 'بحث' : 'Search'} />
+      <div className="my-2 border-slate-100 dark:border-white/[0.06] border-t" />
+
+      <div className={cn('px-3 py-3 rounded-xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.06]', isRtl ? 'text-right' : 'text-left')}>
+        <div className="text-overline font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">
+          {isRtl ? 'الحساب' : 'Account'}
         </div>
-      </div>
-
-      <div className={cn('bg-white dark:bg-white/[0.04] px-3 py-2 border border-black/5 dark:border-white/10 rounded-2xl text-slate-600 dark:text-slate-300 text-xs', isRtl ? 'text-right' : 'text-left')}>
-        <div className="font-semibold text-slate-700 dark:text-slate-200">{isRtl ? 'الحساب' : 'Account'}</div>
-        <div className="mt-1 truncate">{auth?.email || '-'}</div>
-        {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-          <div className="mt-1 text-slate-500 dark:text-slate-400">{isRtl ? 'Team ID' : 'Team ID'}: {auth?.teamId || '-'}</div>
-        ) : null}
+        <div className="text-caption text-slate-600 dark:text-slate-300 truncate">{auth?.email || '-'}</div>
+        {(auth?.role === 'teacher' || auth?.role === 'team') && (
+          <div className="text-caption text-slate-400 dark:text-slate-500 mt-1">Team: {auth?.teamId || '-'}</div>
+        )}
       </div>
     </div>
   )

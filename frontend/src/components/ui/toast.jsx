@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as Toast from '@radix-ui/react-toast'
-import { CheckCircle2, X, XCircle } from 'lucide-react'
+import { CheckCircle2, X, XCircle, AlertTriangle, Info } from 'lucide-react'
 import { cn } from '../../utils/cn.js'
 import { motion } from 'framer-motion'
 
@@ -15,6 +15,34 @@ function safeId() {
     // ignore
   }
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+const variantStyles = {
+  default: {
+    border: 'border-slate-200 dark:border-white/10',
+    icon: CheckCircle2,
+    iconClass: 'text-brand',
+  },
+  success: {
+    border: 'border-emerald-200 dark:border-emerald-500/30',
+    icon: CheckCircle2,
+    iconClass: 'text-emerald-500',
+  },
+  destructive: {
+    border: 'border-red-200 dark:border-red-500/30',
+    icon: XCircle,
+    iconClass: 'text-red-500',
+  },
+  warning: {
+    border: 'border-amber-200 dark:border-amber-500/30',
+    icon: AlertTriangle,
+    iconClass: 'text-amber-500',
+  },
+  info: {
+    border: 'border-blue-200 dark:border-blue-500/30',
+    icon: Info,
+    iconClass: 'text-blue-500',
+  },
 }
 
 export function ToastProvider({ children }) {
@@ -42,58 +70,54 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={{ notify, dismiss }}>
       <Toast.Provider swipeDirection="right">
         {children}
-        <Toast.Viewport className="top-6 left-1/2 z-[120] fixed flex flex-col gap-2 outline-none w-[420px] max-w-[92vw] -translate-x-1/2" />
-        {toasts.map((t) => (
-          <Toast.Root
-            key={t.id}
-            duration={t.duration ?? 3500}
-            onOpenChange={(open) => {
-              if (!open) dismiss(t.id)
-            }}
-            className={cn(
-              'shadow-lg p-4 border rounded-xl toast-animate',
-              'bg-white text-slate-900 border-black/5',
-              'dark:bg-[#0f0f10] dark:text-slate-100 dark:border-white/10',
-              t.variant === 'destructive' && 'border-red-200 dark:border-red-500/30'
-            )}
-          >
-            <div className="flex justify-between items-start gap-3">
-              <div className="flex items-start gap-2">
-                <div
-                  className={cn(
-                    'mt-0.5 shrink-0',
-                    t.variant === 'destructive' ? 'text-rose-600' : 'text-brand'
-                  )}
-                >
+        <Toast.Viewport className="top-6 left-1/2 z-[120] fixed flex flex-col gap-2.5 outline-none w-[420px] max-w-[92vw] -translate-x-1/2" />
+        {toasts.map((t) => {
+          const v = variantStyles[t.variant] || variantStyles.default
+          const IconComp = v.icon
+          return (
+            <Toast.Root
+              key={t.id}
+              duration={t.duration ?? 3500}
+              onOpenChange={(open) => {
+                if (!open) dismiss(t.id)
+              }}
+              className={cn(
+                'shadow-elevated p-4 rounded-xl toast-animate',
+                'bg-white dark:bg-[#1a1a1a]',
+                'border',
+                v.border,
+                'backdrop-blur-sm'
+              )}
+            >
+              <div className="flex items-start gap-3">
+                <div className={cn('mt-0.5 shrink-0', v.iconClass)}>
                   <motion.div
-                    initial={{ scale: 0, opacity: 0, rotate: -45 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: 'spring', stiffness: 350, damping: 20, delay: 0.1 }}
                   >
                     {t.iconSrc ? (
                       <img src={t.iconSrc} alt="" aria-hidden="true" className="w-5 h-5" />
-                    ) : t.variant === 'destructive' ? (
-                      <XCircle className="w-5 h-5" />
                     ) : (
-                      <CheckCircle2 className="stroke-[2.5px] w-5 h-5" />
+                      <IconComp className="w-5 h-5" />
                     )}
                   </motion.div>
                 </div>
-                <div>
-                  <Toast.Title className="font-semibold text-sm">{t.title}</Toast.Title>
-                  {t.description ? (
-                    <Toast.Description className="mt-1 text-slate-600 dark:text-slate-300 text-sm">
+                <div className="flex-1 min-w-0">
+                  <Toast.Title className="font-semibold text-body-sm text-slate-900 dark:text-white">{t.title}</Toast.Title>
+                  {t.description && (
+                    <Toast.Description className="mt-1 text-caption text-slate-500 dark:text-slate-400 leading-relaxed">
                       {t.description}
                     </Toast.Description>
-                  ) : null}
+                  )}
                 </div>
+                <Toast.Close className="btn-icon shrink-0" aria-label="Close">
+                  <X className="w-3.5 h-3.5" />
+                </Toast.Close>
               </div>
-              <Toast.Close className="hover:bg-slate-100 dark:hover:bg-white/[0.06] p-1 rounded-md">
-                <X className="w-4 h-4 text-slate-700 dark:text-slate-200" />
-              </Toast.Close>
-            </div>
-          </Toast.Root>
-        ))}
+            </Toast.Root>
+          )
+        })}
       </Toast.Provider>
     </ToastContext.Provider>
   )
