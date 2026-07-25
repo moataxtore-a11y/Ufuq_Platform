@@ -148,9 +148,8 @@ export default function TeacherLandingLayout() {
             </div>
           </div>
 
-          <div className={'hidden sm:flex justify-between items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-            <div className={'flex items-center gap-2.5 ' + (isRtl ? 'flex-row-reverse' : '')}>
-              <ThemeToggle className="shrink-0 h-9" />
+          <div className="hidden sm:flex justify-between items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
@@ -165,6 +164,7 @@ export default function TeacherLandingLayout() {
                   </span>
                 ) : null}
               </button>
+              <ThemeToggle className="shrink-0 h-9" />
             </div>
 
             <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
