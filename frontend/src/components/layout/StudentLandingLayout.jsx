@@ -81,22 +81,22 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'group inline-flex items-center justify-center gap-2 p-1 ps-3.5 pe-1 h-9 rounded-full transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
+          'group inline-flex items-center justify-between gap-1.5 px-2.5 py-1 h-8 sm:h-9 rounded-full transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
           'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
           className
         )}
         title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
       >
-        <div className="inline-flex items-center justify-center gap-1 text-white my-auto leading-none">
-          <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight my-auto">
+        <div className="inline-flex items-center gap-1 text-white leading-none" dir={isRtl ? 'rtl' : 'ltr'}>
+          <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
             {walletBalance === null ? '...' : formatAmount(walletBalance)}
           </span>
-          <span className="text-[11px] font-bold text-teal-200 my-auto">
+          <span className="text-[10px] sm:text-[11px] font-bold text-teal-200">
             {isRtl ? 'ج.م' : 'EGP'}
           </span>
         </div>
-        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-7 h-7 shadow-sm text-slate-950 shrink-0 my-auto group-hover:rotate-12 transition-transform duration-300">
-          <Wallet className="w-4 h-4 stroke-[2.5]" />
+        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-6 h-6 sm:w-7 sm:h-7 shadow-sm text-slate-950 shrink-0 group-hover:rotate-12 transition-transform duration-300">
+          <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
         </span>
       </button>
     )
@@ -128,7 +128,7 @@ export default function StudentLandingLayout() {
             <div className="px-1 py-1" dir="ltr">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center justify-start shrink-0">
-                  <WalletBadge className="!px-2.5 !h-8" />
+                  <WalletBadge />
                 </div>
                 <Link to="/" className="flex justify-center items-center shrink-0">
                   <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
