@@ -81,22 +81,22 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'group inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300',
-          'bg-gradient-to-r from-[#033c36] via-[#054d44] to-[#095950] hover:from-[#044c45] hover:to-[#0b665c]',
-          'border border-teal-400/35 shadow-[0_4px_14px_rgba(3,76,67,0.3)] hover:shadow-[0_6px_20px_rgba(3,76,67,0.45)]',
-          'hover:scale-[1.03] active:scale-[0.98]',
+          'group inline-flex items-center gap-2 px-3 sm:px-3.5 h-9 rounded-full transition-all duration-300 shrink-0',
+          'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
+          'border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40',
+          'hover:scale-[1.02] active:scale-[0.98]',
           className
         )}
         title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
       >
-        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 rounded-full w-6 sm:w-7 h-6 sm:h-7 shadow-sm text-white shrink-0 group-hover:rotate-12 transition-transform duration-300">
-          <Wallet className="w-3.5 h-3.5" />
+        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-6 h-6 shadow-sm text-slate-950 shrink-0 group-hover:rotate-12 transition-transform duration-300">
+          <Wallet className="w-3.5 h-3.5 stroke-[2.5]" />
         </span>
-        <div className="flex items-baseline gap-1 text-white leading-none">
+        <div className="flex items-center gap-1 text-white leading-none">
           <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
             {walletBalance === null ? '...' : formatAmount(walletBalance)}
           </span>
-          <span className="text-[10px] sm:text-[11px] font-bold text-teal-200/90">
+          <span className="text-[10.5px] font-bold text-teal-200">
             {isRtl ? 'ج.م' : 'EGP'}
           </span>
         </div>
@@ -125,9 +125,9 @@ export default function StudentLandingLayout() {
       <AnimatedBackdrop />
 
       <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
-        <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
+        <div className="mx-auto px-3 sm:px-4 py-2.5 min-w-0 max-w-7xl">
           <div className="sm:hidden">
-            <div className="px-3 py-2">
+            <div className="px-1 py-1">
               <div className="items-center grid grid-cols-3">
                 <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
                   <Link to="/student/profile" className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
@@ -136,14 +136,14 @@ export default function StudentLandingLayout() {
                   <ThemeToggle className="shrink-0" />
                 </div>
                 <Link to="/" className="flex justify-center items-center">
-                  <img src={logo} alt="Education Platform" className="w-auto h-11" />
+                  <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
                 </Link>
                 <div className={cn('flex items-center gap-1.5', isRtl ? 'justify-start flex-row-reverse' : 'justify-end flex-row')}>
-                  <WalletBadge className="!px-2 !py-1" />
+                  <WalletBadge className="!px-2 !h-8" />
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
+                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
@@ -159,26 +159,17 @@ export default function StudentLandingLayout() {
             </div>
           </div>
 
-          <div className={'hidden sm:flex justify-between items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-            <div className={'flex items-center gap-3 ' + (isRtl ? 'flex-row-reverse' : '')}>
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
-                aria-label={isRtl ? 'القائمة' : 'Menu'}
-                title={isRtl ? 'القائمة' : 'Menu'}
-              >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
-                {badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
-              <ThemeToggle className="shrink-0" />
+          <div className="hidden sm:flex items-center justify-between gap-4 h-10">
+            {/* Right Group in RTL: Logo & Wallet */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link to="/" className="flex items-center shrink-0">
+                <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
+              </Link>
+              <WalletBadge />
             </div>
 
-            <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            {/* Center: Nav links */}
+            <nav className="flex items-center justify-center gap-1 flex-1">
               {quickLinks.map((it) => (
                 <NavLink
                   key={it.to}
@@ -186,12 +177,11 @@ export default function StudentLandingLayout() {
                   end={it.to === '/student'}
                   className={({ isActive }) =>
                     cn(
-                      'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
-                      isRtl ? 'flex-row-reverse' : 'flex-row',
+                      'group inline-flex items-center justify-center h-9 rounded-xl transition-all duration-300 ease-out',
                       isActive
                         ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
                         : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
-                      isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
+                      isActive ? 'px-3 gap-2' : 'px-2.5 gap-0 hover:px-3 hover:gap-2'
                     )
                   }
                   aria-label={it.label}
@@ -220,11 +210,23 @@ export default function StudentLandingLayout() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-2">
-              <Link to="/" className="flex items-center gap-2">
-                <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
-              </Link>
-              <WalletBadge />
+            {/* Left Group in RTL: Avatar & Theme toggle */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <ThemeToggle className="shrink-0 h-9" />
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors"
+                aria-label={isRtl ? 'القائمة' : 'Menu'}
+                title={isRtl ? 'القائمة' : 'Menu'}
+              >
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                {badgeTotal > 0 ? (
+                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                    {badgeTotal > 99 ? '99+' : badgeTotal}
+                  </span>
+                ) : null}
+              </button>
             </div>
           </div>
         </div>
