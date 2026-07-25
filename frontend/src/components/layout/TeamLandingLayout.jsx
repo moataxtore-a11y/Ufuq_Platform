@@ -119,26 +119,21 @@ export default function TeamLandingLayout() {
       <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
           <div className="sm:hidden">
-            <div className="px-3 py-2">
-              <div className="items-center grid grid-cols-3">
-                <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
-                  <Link to="/team/profile" className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
-                  </Link>
-                  <ThemeToggle className="shrink-0" />
-                </div>
-                <Link to="/" className="flex justify-center items-center">
-                  <img src={logo} alt="Education Platform" className="w-auto h-11" />
+            <div className="px-1 py-1" dir="ltr">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-start shrink-0 w-8" />
+                <Link to="/" className="flex justify-center items-center shrink-0">
+                  <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
                 </Link>
-                <div className={cn('flex items-center gap-2', isRtl ? 'justify-start flex-row-reverse' : 'justify-end flex-row')}>
+                <div className="flex items-center justify-end shrink-0">
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
+                    className="relative flex items-center justify-center rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors shadow-sm"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
-                    <Menu className="w-5 h-5" />
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
                     {badgeTotal > 0 ? (
                       <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                         {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -166,7 +161,6 @@ export default function TeamLandingLayout() {
                   </span>
                 ) : null}
               </button>
-              <ThemeToggle className="shrink-0" />
             </div>
 
             <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
@@ -239,7 +233,8 @@ export default function TeamLandingLayout() {
           >
             <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{t('dashboard.ui.menu')}</div>
-              <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+              <div className="flex items-center gap-2">
+                <ThemeToggle className="shrink-0" />
                 <LanguageToggle />
                 <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
                   {t('dashboard.ui.close')}

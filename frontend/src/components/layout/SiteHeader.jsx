@@ -359,7 +359,8 @@ export default function SiteHeader() {
           >
             <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
               <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{isRtl ? 'القائمة' : 'Menu'}</div>
-              <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+              <div className="flex items-center gap-2">
+                <ThemeToggle className="shrink-0" />
                 <LanguageToggle />
                 <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>
                   {isRtl ? 'إغلاق' : 'Close'}
