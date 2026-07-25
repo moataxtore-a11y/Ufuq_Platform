@@ -81,15 +81,12 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'group inline-flex items-center justify-center gap-2.5 px-3.5 h-9 rounded-full transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
+          'group inline-flex items-center justify-center gap-2 p-1 ps-3.5 pe-1 h-9 rounded-full transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
           'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
           className
         )}
         title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
       >
-        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-6 h-6 shadow-sm text-slate-950 shrink-0 my-auto group-hover:rotate-12 transition-transform duration-300">
-          <Wallet className="w-3.5 h-3.5 stroke-[2.5]" />
-        </span>
         <div className="inline-flex items-center justify-center gap-1 text-white my-auto leading-none">
           <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight my-auto">
             {walletBalance === null ? '...' : formatAmount(walletBalance)}
@@ -98,6 +95,9 @@ export default function StudentLandingLayout() {
             {isRtl ? 'ج.م' : 'EGP'}
           </span>
         </div>
+        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-7 h-7 shadow-sm text-slate-950 shrink-0 my-auto group-hover:rotate-12 transition-transform duration-300">
+          <Wallet className="w-4 h-4 stroke-[2.5]" />
+        </span>
       </button>
     )
   }
