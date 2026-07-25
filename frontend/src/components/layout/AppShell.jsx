@@ -149,16 +149,17 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200',
-                  'bg-brand hover:bg-brand-600 text-white shadow-[0_2px_8px_rgba(6,148,132,0.25)]',
+                  'hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-200',
+                  'bg-brand-800 hover:bg-brand-700 text-white shadow-[0_2px_6px_rgba(3,76,67,0.25)]',
                   isRtl ? 'flex-row-reverse' : 'flex-row'
                 )}
               >
-                <span className="font-bold text-body-sm tabular-nums">
+                <span className="font-bold text-[11px] tabular-nums leading-none">
                   {walletBalance === null ? '-' : `${Number(walletBalance || 0).toFixed(2)}`}
+                  <span className="me-0.5 font-semibold text-white/80">{isRtl ? 'جنيه' : 'EGP'}</span>
                 </span>
-                <span className="inline-flex items-center justify-center bg-black/20 rounded-full w-7 h-7">
-                  <img src={walletBadgeIcon} alt="" className="w-4 h-4" />
+                <span className="inline-flex items-center justify-center bg-brand rounded-full w-6 h-6">
+                  <img src={walletBadgeIcon} alt="" className="w-3.5 h-3.5" />
                 </span>
               </button>
             ) : null}
