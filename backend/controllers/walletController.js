@@ -4,7 +4,12 @@ const { asyncHandler } = require('../utils/asyncHandler')
 const getWallet = asyncHandler(async (req, res) => {
     const user = await prisma.user.findUnique({ where: { id: req.user.id }, select: { walletBalance: true } })
     if (!user) return res.status(404).json({ message: 'User not found' })
-    res.json({ balance: typeof user.walletBalance === 'number' ? user.walletBalance : 0 })
+    const transactions = await prisma.walletTransaction.findMany({
+        where: { userId: req.user.id },
+        orderBy: { createdAt: 'desc' },
+        take: 50
+    })
+    res.json({ balance: typeof user.walletBalance === 'number' ? user.walletBalance : 0, transactions })
 })
 
 const createTopup = asyncHandler(async (req, res) => {
@@ -14,19 +19,101 @@ const createTopup = asyncHandler(async (req, res) => {
     const user = await prisma.user.findUnique({ where: { id: req.user.id }, select: { walletBalance: true } })
     if (!user) return res.status(404).json({ message: 'User not found' })
     const balanceBefore = typeof user.walletBalance === 'number' ? user.walletBalance : 0
-    const balanceAfter = balanceBefore + amount
-    const [tx] = await Promise.all([
-        prisma.walletTransaction.create({ data: { userId: req.user.id, type: 'deposit', amount, description: 'Topup', balanceBefore, balanceAfter, status: 'completed' } }),
-        prisma.user.update({ where: { id: req.user.id }, data: { walletBalance: balanceAfter } })
-    ])
-    res.status(201).json({ transaction: tx, balance: balanceAfter })
+    const tx = await prisma.walletTransaction.create({
+        data: {
+            userId: req.user.id,
+            type: 'deposit',
+            amount,
+            description: 'Topup request',
+            referenceType: 'wallet_topup',
+            referenceId: req.user.id,
+            balanceBefore,
+            balanceAfter: balanceBefore,
+            status: 'pending'
+        }
+    })
+    res.status(201).json({ transaction: tx, balance: balanceBefore })
+})
+
+const listTopups = asyncHandler(async (req, res) => {
+    const status = typeof req.query.status === 'string' && req.query.status.trim()
+        ? req.query.status.trim()
+        : 'pending'
+    const where = { type: 'deposit', referenceType: 'wallet_topup' }
+    if (status !== 'all') where.status = status
+
+    const transactions = await prisma.walletTransaction.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: 100
+    })
+
+    const userIds = [...new Set(transactions.map((tx) => tx.userId).filter(Boolean))]
+    const users = userIds.length
+        ? await prisma.user.findMany({
+            where: { id: { in: userIds } },
+            select: { id: true, name: true, email: true, studentId: true, walletBalance: true }
+        })
+        : []
+    const userMap = new Map(users.map((u) => [u.id, u]))
+
+    res.json(transactions.map((tx) => ({ ...tx, user: userMap.get(tx.userId) || null })))
 })
 
 const confirmTopup = asyncHandler(async (req, res) => {
     const { txId } = req.params
     const tx = await prisma.walletTransaction.findUnique({ where: { id: txId } })
     if (!tx) return res.status(404).json({ message: 'Transaction not found' })
-    res.json({ message: 'Already confirmed', transaction: tx })
+    if (tx.type !== 'deposit' || tx.referenceType !== 'wallet_topup') {
+        return res.status(400).json({ message: 'Transaction is not a topup request' })
+    }
+    if (tx.status === 'completed') return res.json({ message: 'Already confirmed', transaction: tx })
+    if (tx.status !== 'pending') return res.status(400).json({ message: 'Only pending topups can be confirmed' })
+
+    const user = await prisma.user.findUnique({ where: { id: tx.userId }, select: { walletBalance: true } })
+    if (!user) return res.status(404).json({ message: 'Student not found' })
+
+    const amount = Math.round(Number(tx.amount || 0) * 100) / 100
+    if (!Number.isFinite(amount) || amount <= 0) return res.status(400).json({ message: 'Invalid topup amount' })
+
+    const balanceBefore = typeof user.walletBalance === 'number' ? user.walletBalance : 0
+    const balanceAfter = Math.round((balanceBefore + amount) * 100) / 100
+    const updated = await prisma.walletTransaction.update({
+        where: { id: txId },
+        data: {
+            status: 'completed',
+            description: `Topup confirmed by ${req.user.name || req.user.id}`,
+            referenceId: req.user.id,
+            balanceBefore,
+            balanceAfter,
+            updatedAt: new Date()
+        }
+    })
+    await prisma.user.update({ where: { id: tx.userId }, data: { walletBalance: balanceAfter } })
+
+    res.json({ message: 'Confirmed', transaction: updated, balance: balanceAfter })
+})
+
+const rejectTopup = asyncHandler(async (req, res) => {
+    const { txId } = req.params
+    const tx = await prisma.walletTransaction.findUnique({ where: { id: txId } })
+    if (!tx) return res.status(404).json({ message: 'Transaction not found' })
+    if (tx.type !== 'deposit' || tx.referenceType !== 'wallet_topup') {
+        return res.status(400).json({ message: 'Transaction is not a topup request' })
+    }
+    if (tx.status !== 'pending') return res.status(400).json({ message: 'Only pending topups can be rejected' })
+
+    const updated = await prisma.walletTransaction.update({
+        where: { id: txId },
+        data: {
+            status: 'rejected',
+            description: `Topup rejected by ${req.user.name || req.user.id}`,
+            referenceId: req.user.id,
+            updatedAt: new Date()
+        }
+    })
+
+    res.json({ message: 'Rejected', transaction: updated })
 })
 
 const grantWallet = asyncHandler(async (req, res) => {
@@ -77,4 +164,4 @@ const payForCourse = asyncHandler(async (req, res) => {
     res.status(201).json({ message: 'Enrolled', courseId, amountPaid: price })
 })
 
-module.exports = { getWallet, createTopup, confirmTopup, grantWallet, listGrantTeachers, payForCourse }
+module.exports = { getWallet, createTopup, listTopups, confirmTopup, rejectTopup, grantWallet, listGrantTeachers, payForCourse }

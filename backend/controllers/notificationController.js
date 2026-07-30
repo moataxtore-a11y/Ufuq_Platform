@@ -26,12 +26,18 @@ const getBadges = asyncHandler(async (req, res) => {
         prisma.user.count({ where: studentWhere }),
         prisma.joinTeacherApplication.count({ where: appWhere })
     ])
+    const pendingTopups = role === 'admin'
+        ? await prisma.walletTransaction.count({
+            where: { type: 'deposit', referenceType: 'wallet_topup', status: 'pending' }
+        })
+        : 0
 
     res.set('Cache-Control', 'no-store')
     return res.json({
         pendingStudents,
         joinTeamApplications,
-        total: pendingStudents + joinTeamApplications
+        pendingTopups,
+        total: pendingStudents + joinTeamApplications + pendingTopups
     })
 })
 

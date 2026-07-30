@@ -3,7 +3,9 @@ const { auth, requireRole, requirePasswordChanged } = require('../middleware/aut
 const {
     getWallet,
     createTopup,
+    listTopups,
     confirmTopup,
+    rejectTopup,
     grantWallet,
     listGrantTeachers,
     payForCourse
@@ -20,6 +22,8 @@ router.post('/pay-course', requireRole('student'), payForCourse)
 router.post('/grants', requireRole('teacher', 'team'), grantWallet)
 router.get('/grant-teachers', requireRole('team'), listGrantTeachers)
 
+router.get('/topups', requireRole('admin'), listTopups)
 router.post('/topups/:txId/confirm', requireRole('admin'), confirmTopup)
+router.post('/topups/:txId/reject', requireRole('admin'), rejectTopup)
 
 module.exports = { walletRoutes: router }

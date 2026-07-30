@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage.jsx'
 import AdminOverviewPage from './pages/admin/AdminOverviewPage.jsx'
 import AdminUsersPage from './pages/admin/AdminUsersPage.jsx'
 import AdminCoursesPage from './pages/admin/AdminCoursesPage.jsx'
+import AdminWalletTopupsPage from './pages/admin/AdminWalletTopupsPage.jsx'
 import AdminLandingPage from './pages/admin/AdminLandingPage.jsx'
 import AdminLandingLayout from './components/layout/AdminLandingLayout.jsx'
 import AdminJoinTeachersApplicationsPage from './pages/admin/AdminJoinTeachersApplicationsPage.jsx'
@@ -105,6 +106,7 @@ export default function App() {
         <Route path="overview" element={<AdminOverviewPage />} />
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="courses" element={<AdminCoursesPage />} />
+        <Route path="wallet-topups" element={<AdminWalletTopupsPage />} />
         <Route path="motivational-message" element={<MotivationalMessageAdminPage />} />
         <Route path="approvals" element={<ApprovalsPage />} />
         <Route path="applications" element={<AdminJoinTeachersApplicationsPage />} />

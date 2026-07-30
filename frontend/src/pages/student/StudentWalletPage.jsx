@@ -64,7 +64,7 @@ export default function StudentWalletPage() {
 
   function translateType(type) {
     if (!isRtl) return type || '-'
-    const map = { topup: 'شحن رصيد', purchase: 'شراء', adjustment: 'تعديل', refund: 'استرداد', withdrawal: 'سحب' }
+    const map = { topup: 'شحن رصيد', deposit: 'شحن رصيد', payment: 'دفع', purchase: 'شراء', adjustment: 'تعديل', refund: 'استرداد', withdrawal: 'سحب' }
     return map[String(type || '').toLowerCase()] || type || '-'
   }
 

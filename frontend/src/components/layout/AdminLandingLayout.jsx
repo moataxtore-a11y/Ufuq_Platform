@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { BookOpen, CheckCircle, ClipboardList, GraduationCap, LayoutDashboard, LogOut, Menu, MessageSquareQuote, Users } from 'lucide-react'
+import { BookOpen, CheckCircle, ClipboardList, GraduationCap, LayoutDashboard, LogOut, Menu, MessageSquareQuote, Users, Wallet } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnimatedBackdrop from '../ui/AnimatedBackdrop.jsx'
@@ -25,23 +25,25 @@ export default function AdminLandingLayout() {
   const [me, setMe] = useState(null)
 
   const [badgeTotal, setBadgeTotal] = useState(0)
-  const [badgeCounts, setBadgeCounts] = useState({ pendingStudents: 0, joinTeamApplications: 0, total: 0 })
+  const [badgeCounts, setBadgeCounts] = useState({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
 
-  const [rawBadgeCounts, setRawBadgeCounts] = useState({ pendingStudents: 0, joinTeamApplications: 0, total: 0 })
+  const [rawBadgeCounts, setRawBadgeCounts] = useState({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
 
-  const [seen, setSeen] = useState({ pendingStudents: 0, joinTeamApplications: 0 })
+  const [seen, setSeen] = useState({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0 })
 
   useEffect(() => {
     function readSeen() {
       try {
         const pending = Number(sessionStorage.getItem('seen_count_pendingStudents') || 0)
         const apps = Number(sessionStorage.getItem('seen_count_joinTeamApplications') || 0)
+        const topups = Number(sessionStorage.getItem('seen_count_pendingTopups') || 0)
         return {
           pendingStudents: Number.isFinite(pending) ? pending : 0,
-          joinTeamApplications: Number.isFinite(apps) ? apps : 0
+          joinTeamApplications: Number.isFinite(apps) ? apps : 0,
+          pendingTopups: Number.isFinite(topups) ? topups : 0
         }
       } catch {
-        return { pendingStudents: 0, joinTeamApplications: 0 }
+        return { pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0 }
       }
     }
 
@@ -61,10 +63,14 @@ export default function AdminLandingLayout() {
         sessionStorage.setItem('seen_count_joinTeamApplications', String(rawBadgeCounts.joinTeamApplications || 0))
         setSeen((s) => ({ ...s, joinTeamApplications: rawBadgeCounts.joinTeamApplications || 0 }))
       }
+      if (path.startsWith('/admin/wallet-topups')) {
+        sessionStorage.setItem('seen_count_pendingTopups', String(rawBadgeCounts.pendingTopups || 0))
+        setSeen((s) => ({ ...s, pendingTopups: rawBadgeCounts.pendingTopups || 0 }))
+      }
     } catch {
       // ignore
     }
-  }, [location?.pathname, rawBadgeCounts.joinTeamApplications, rawBadgeCounts.pendingStudents])
+  }, [location?.pathname, rawBadgeCounts.joinTeamApplications, rawBadgeCounts.pendingStudents, rawBadgeCounts.pendingTopups])
 
   useEffect(() => {
     let alive = true
@@ -94,24 +100,27 @@ export default function AdminLandingLayout() {
         const res = await api.get('/notifications/badges')
         const pendingStudents = Number(res?.data?.pendingStudents || 0)
         const joinTeamApplications = Number(res?.data?.joinTeamApplications || 0)
+        const pendingTopups = Number(res?.data?.pendingTopups || 0)
         const total = Number(res?.data?.total || 0)
         if (!alive) return
         const safePending = Number.isFinite(pendingStudents) ? pendingStudents : 0
         const safeApps = Number.isFinite(joinTeamApplications) ? joinTeamApplications : 0
-        const safeTotal = Number.isFinite(total) ? total : safePending + safeApps
+        const safeTopups = Number.isFinite(pendingTopups) ? pendingTopups : 0
+        const safeTotal = Number.isFinite(total) ? total : safePending + safeApps + safeTopups
 
-        setRawBadgeCounts({ pendingStudents: safePending, joinTeamApplications: safeApps, total: safeTotal })
+        setRawBadgeCounts({ pendingStudents: safePending, joinTeamApplications: safeApps, pendingTopups: safeTopups, total: safeTotal })
 
         const unreadPending = Math.max(0, safePending - (seen.pendingStudents || 0))
         const unreadApps = Math.max(0, safeApps - (seen.joinTeamApplications || 0))
-        const unreadTotal = unreadPending + unreadApps
+        const unreadTopups = Math.max(0, safeTopups - (seen.pendingTopups || 0))
+        const unreadTotal = unreadPending + unreadApps + unreadTopups
 
-        setBadgeCounts({ pendingStudents: unreadPending, joinTeamApplications: unreadApps, total: unreadTotal })
+        setBadgeCounts({ pendingStudents: unreadPending, joinTeamApplications: unreadApps, pendingTopups: unreadTopups, total: unreadTotal })
         setBadgeTotal(unreadTotal)
       } catch {
         if (!alive) return
         setBadgeTotal(0)
-        setBadgeCounts({ pendingStudents: 0, joinTeamApplications: 0, total: 0 })
+        setBadgeCounts({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
       }
     }
 
@@ -122,7 +131,7 @@ export default function AdminLandingLayout() {
       alive = false
       if (intervalId) clearInterval(intervalId)
     }
-  }, [auth?.token])
+  }, [auth?.token, seen.joinTeamApplications, seen.pendingStudents, seen.pendingTopups])
 
   const displayName = useMemo(() => {
     return String(me?.name || me?.email || '').trim()
@@ -134,6 +143,7 @@ export default function AdminLandingLayout() {
     { to: '/admin', icon: LayoutDashboard, label: t('dashboard.nav.overview') },
     { to: '/admin/users', icon: Users, label: t('dashboard.nav.users') },
     { to: '/admin/courses', icon: BookOpen, label: isRtl ? 'إدارة الكورسات' : 'Courses' },
+    { to: '/admin/wallet-topups', icon: Wallet, label: isRtl ? 'طلبات الشحن' : 'Topups' },
     { to: '/admin/approvals', icon: CheckCircle, label: t('dashboard.nav.approvals') },
     { to: '/admin/applications', icon: ClipboardList, label: t('dashboard.nav.applications') },
     { to: '/admin/motivational-message', icon: MessageSquareQuote, label: isRtl ? 'رسالة للطلاب' : 'Student message' },
@@ -341,6 +351,16 @@ export default function AdminLandingLayout() {
                         )}
                       >
                         {badgeCounts.joinTeamApplications > 99 ? '99+' : badgeCounts.joinTeamApplications}
+                      </span>
+                    ) : null}
+                    {it.to === '/admin/wallet-topups' && badgeCounts.pendingTopups > 0 ? (
+                      <span
+                        className={cn(
+                          'inline-flex justify-center items-center bg-rose-600 px-1 rounded-full min-w-5 h-5 text-[11px] text-white',
+                          isRtl ? 'mr-auto' : 'ml-auto'
+                        )}
+                      >
+                        {badgeCounts.pendingTopups > 99 ? '99+' : badgeCounts.pendingTopups}
                       </span>
                     ) : null}
                   </NavLink>
