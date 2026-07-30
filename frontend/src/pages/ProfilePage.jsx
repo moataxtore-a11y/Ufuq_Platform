@@ -374,7 +374,7 @@ export default function ProfilePage() {
             {isStaff && (
               <div className="gap-3 grid pt-4 border-black/5 dark:border-white/10 border-t">
                 <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
-                  {isRtl ? '💼 بيانات الوظيفة' : '💼 Job Info'}
+                  {isRtl ? ' بيانات الوظيفة' : ' Job Info'}
                 </div>
                 <div className="gap-3 grid sm:grid-cols-2">
                   <div className="gap-1 grid">
