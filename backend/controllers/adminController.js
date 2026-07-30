@@ -34,6 +34,38 @@ function isValidStudentId(studentId) {
     return typeof studentId === 'string' && /^\d{4}\d{5}$/.test(studentId)
 }
 
+async function detachUserReferences(userId) {
+    await prisma.user.updateMany({ where: { suspendedBy: userId }, data: { suspendedBy: null } })
+    await prisma.user.updateMany({ where: { approvedBy: userId }, data: { approvedBy: null } })
+    await prisma.assignment.updateMany({ where: { createdBy: userId }, data: { createdBy: null } })
+    await prisma.joinTeacherApplication.updateMany({ where: { assignedById: userId }, data: { assignedById: null } })
+}
+
+async function deleteStudentOwnedData(userId) {
+    await prisma.assessmentAttempt.deleteMany({ where: { studentId: userId } })
+    await prisma.grade.deleteMany({ where: { studentId: userId } })
+    await prisma.submission.deleteMany({ where: { studentId: userId } })
+    await prisma.studentVideoProgress.deleteMany({ where: { studentId: userId } })
+    await prisma.studentLessonProgress.deleteMany({ where: { studentId: userId } })
+    await prisma.studentMessageDismissal.deleteMany({ where: { userId } })
+    await prisma.courseEnrollment.deleteMany({ where: { studentId: userId } })
+    await prisma.walletTransaction.deleteMany({ where: { userId } })
+}
+
+async function getBlockingUserDeleteDependencies(userId) {
+    const [courses, assessmentsCreated, gradesCorrected] = await Promise.all([
+        prisma.course.count({ where: { teacherId: userId } }),
+        prisma.assessment.count({ where: { createdById: userId } }),
+        prisma.grade.count({ where: { correctedBy: userId } })
+    ])
+
+    const blockers = []
+    if (courses > 0) blockers.push(`${courses} course${courses === 1 ? '' : 's'}`)
+    if (assessmentsCreated > 0) blockers.push(`${assessmentsCreated} assessment${assessmentsCreated === 1 ? '' : 's'}`)
+    if (gradesCorrected > 0) blockers.push(`${gradesCorrected} corrected grade${gradesCorrected === 1 ? '' : 's'}`)
+    return blockers
+}
+
 const listUsers = asyncHandler(async (req, res) => {
     const { role, q } = req.query
     const where = {}
@@ -199,9 +231,24 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const deleteUserAdmin = asyncHandler(async (req, res) => {
     const { userId } = req.params
-    const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } })
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, role: true } })
     if (!user) return res.status(404).json({ message: 'User not found' })
     if (user.id === req.user.id) return res.status(400).json({ message: 'Cannot delete current user' })
+
+    await detachUserReferences(userId)
+
+    if (user.role === 'student') {
+        await deleteStudentOwnedData(userId)
+    } else {
+        const blockers = await getBlockingUserDeleteDependencies(userId)
+        if (blockers.length > 0) {
+            return res.status(409).json({
+                message: `Cannot delete this user because they are linked to ${blockers.join(', ')}. Reassign or delete those records first.`
+            })
+        }
+        await prisma.walletTransaction.deleteMany({ where: { userId } })
+    }
+
     await prisma.user.delete({ where: { id: userId } })
     res.json({ message: 'Deleted' })
 })

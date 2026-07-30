@@ -30,6 +30,11 @@ const TABLE_MAP = {
     walletTransaction: 'WalletTransaction'
 }
 
+const TABLES_WITHOUT_UPDATED_AT = new Set([
+    'CourseEnrollment',
+    'StudentMessageDismissal'
+])
+
 function buildSelect(selectObj, includeObj) {
     if (!selectObj && !includeObj) return '*'
     const cols = []
@@ -203,7 +208,7 @@ class TableProxy {
         }
         const now = new Date().toISOString()
         if (!row.createdAt) row.createdAt = now
-        if (!row.updatedAt) row.updatedAt = now
+        if (!TABLES_WITHOUT_UPDATED_AT.has(this.tableName) && !row.updatedAt) row.updatedAt = now
         const { error } = await supabase.from(this.tableName)
             .insert(row)
         if (error) throw error
