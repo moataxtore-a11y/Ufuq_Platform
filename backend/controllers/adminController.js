@@ -52,18 +52,51 @@ async function deleteStudentOwnedData(userId) {
     await prisma.walletTransaction.deleteMany({ where: { userId } })
 }
 
-async function getBlockingUserDeleteDependencies(userId) {
-    const [courses, assessmentsCreated, gradesCorrected] = await Promise.all([
-        prisma.course.count({ where: { teacherId: userId } }),
-        prisma.assessment.count({ where: { createdById: userId } }),
-        prisma.grade.count({ where: { correctedBy: userId } })
-    ])
+async function deleteAssessmentsByIds(assessmentIds) {
+    if (!assessmentIds.length) return
+    await prisma.assessmentAttempt.deleteMany({ where: { assessmentId: { in: assessmentIds } } })
+    await prisma.assessment.deleteMany({ where: { id: { in: assessmentIds } } })
+}
 
-    const blockers = []
-    if (courses > 0) blockers.push(`${courses} course${courses === 1 ? '' : 's'}`)
-    if (assessmentsCreated > 0) blockers.push(`${assessmentsCreated} assessment${assessmentsCreated === 1 ? '' : 's'}`)
-    if (gradesCorrected > 0) blockers.push(`${gradesCorrected} corrected grade${gradesCorrected === 1 ? '' : 's'}`)
-    return blockers
+async function deleteCoursesOwnedByUser(userId) {
+    const courses = await prisma.course.findMany({ where: { teacherId: userId }, select: { id: true } })
+    const courseIds = courses.map((course) => course.id).filter(Boolean)
+    if (!courseIds.length) return
+
+    const assessments = await prisma.assessment.findMany({
+        where: { courseId: { in: courseIds } },
+        select: { id: true }
+    })
+    await deleteAssessmentsByIds(assessments.map((assessment) => assessment.id).filter(Boolean))
+
+    const assignments = await prisma.assignment.findMany({
+        where: { courseId: { in: courseIds } },
+        select: { id: true }
+    })
+    const assignmentIds = assignments.map((assignment) => assignment.id).filter(Boolean)
+
+    await prisma.grade.deleteMany({ where: { courseId: { in: courseIds } } })
+    if (assignmentIds.length) {
+        await prisma.submission.deleteMany({ where: { assignmentId: { in: assignmentIds } } })
+        await prisma.assignment.deleteMany({ where: { id: { in: assignmentIds } } })
+    }
+
+    await prisma.courseEnrollment.deleteMany({ where: { courseId: { in: courseIds } } })
+    await prisma.studentVideoProgress.deleteMany({ where: { courseId: { in: courseIds } } })
+    await prisma.studentLessonProgress.deleteMany({ where: { courseId: { in: courseIds } } })
+    await prisma.courseAccessCode.deleteMany({ where: { courseId: { in: courseIds } } })
+    await prisma.courseDiscountCode.deleteMany({ where: { courseId: { in: courseIds } } })
+
+    const units = await prisma.unit.findMany({ where: { courseId: { in: courseIds } }, select: { id: true } })
+    const unitIds = units.map((unit) => unit.id).filter(Boolean)
+    if (unitIds.length) await prisma.lesson.deleteMany({ where: { unitId: { in: unitIds } } })
+    await prisma.unit.deleteMany({ where: { courseId: { in: courseIds } } })
+    await prisma.course.deleteMany({ where: { id: { in: courseIds } } })
+}
+
+async function reassignStaffRecords(userId, replacementUserId) {
+    await prisma.grade.updateMany({ where: { correctedBy: userId }, data: { correctedBy: replacementUserId } })
+    await prisma.assessment.updateMany({ where: { createdById: userId }, data: { createdById: replacementUserId } })
 }
 
 const listUsers = asyncHandler(async (req, res) => {
@@ -240,12 +273,8 @@ const deleteUserAdmin = asyncHandler(async (req, res) => {
     if (user.role === 'student') {
         await deleteStudentOwnedData(userId)
     } else {
-        const blockers = await getBlockingUserDeleteDependencies(userId)
-        if (blockers.length > 0) {
-            return res.status(409).json({
-                message: `Cannot delete this user because they are linked to ${blockers.join(', ')}. Reassign or delete those records first.`
-            })
-        }
+        await deleteCoursesOwnedByUser(userId)
+        await reassignStaffRecords(userId, req.user.id)
         await prisma.walletTransaction.deleteMany({ where: { userId } })
     }
 
