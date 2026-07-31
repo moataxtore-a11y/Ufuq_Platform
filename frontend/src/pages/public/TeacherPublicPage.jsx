@@ -4,11 +4,11 @@ import { api } from '../../utils/api.js'
 import Spinner from '../../components/ui/Spinner.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
 import SiteLayout from '../../components/layout/SiteLayout.jsx'
+import { TeacherPortraitCard } from '../../components/teachers/TeacherCard.jsx'
 import Button from '../../components/ui/Button.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import xIcon from '../../cvg/X.svg'
-import defaultProfileAvatar from '../../cvg/profile.svg'
 
 export default function TeacherPublicPage() {
   const { teacherId } = useParams()
@@ -86,10 +86,6 @@ export default function TeacherPublicPage() {
   }
 
   const teacherName = teacherState.item?.name || (isRtl ? 'المدرس' : 'Teacher')
-  const teacherUpdatedAt = teacherState.item?.updatedAt ? new Date(teacherState.item.updatedAt).getTime() : 0
-  const teacherAvatarRaw = teacherState.item?.avatarUrl || ''
-  const teacherAvatar = teacherAvatarRaw && teacherUpdatedAt ? `${teacherAvatarRaw}${teacherAvatarRaw.includes('?') ? '&' : '?'}v=${teacherUpdatedAt}` : teacherAvatarRaw
-
   const header = useMemo(() => {
     if (teacherState.status === 'loading') {
       return (
@@ -115,32 +111,13 @@ export default function TeacherPublicPage() {
             <Button variant="secondary" onClick={() => navigate('/')}>{isRtl ? 'العودة' : 'Back'}</Button>
           </div>
 
-          <div className="text-center">
-            <div className="flex justify-center">
-              <div className="relative bg-[rgb(247,244,236)] dark:bg-[#202020] border border-black/5 dark:border-white/10 rounded-[16px] w-64 h-64 overflow-hidden">
-                {teacherAvatar ? (
-                  <img src={teacherAvatar} alt={teacherName} className="w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
-                    <img src={defaultProfileAvatar} alt={teacherName} className="z-10 relative opacity-80 w-full h-full object-contain" />
-                  </>
-                )}
-              </div>
-            </div>
-
-            <h2 className="mt-3 font-extrabold text-slate-900 dark:text-white text-3xl sm:text-4xl md:text-5xl tracking-tight">
-              {teacherName}
-            </h2>
-
-            <div className="flex justify-center mt-2">
-              <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
-              </svg>
-            </div>
-
+          <div className="mx-auto w-full max-w-[520px] text-center">
+            <TeacherPortraitCard
+              teacher={teacherState.item}
+              className="max-w-[520px] min-h-[430px] sm:min-h-[500px]"
+            />
             {teacherState.item?.bio ? (
-              <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-7">
+              <div className="mx-auto mt-5 max-w-2xl text-slate-600 dark:text-slate-300 text-sm leading-7">
                 {teacherState.item.bio}
               </div>
             ) : null}
@@ -158,7 +135,7 @@ export default function TeacherPublicPage() {
         {teacherState.item?.bio ? <div className="text-slate-600 dark:text-slate-300 text-sm">{teacherState.item.bio}</div> : null}
       </div>
     )
-  }, [isRtl, navigate, teacherName, teacherState.error, teacherState.item?.bio, teacherState.status])
+  }, [isRtl, navigate, teacherName, teacherState.error, teacherState.item, teacherState.item?.bio, teacherState.status])
 
   return (
     <SiteLayout>
