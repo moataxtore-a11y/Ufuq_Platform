@@ -136,7 +136,7 @@ export default function TeacherLandingLayout() {
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover translate-y-0.5" />
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                     {badgeTotal > 0 ? (
                       <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                         {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -206,7 +206,7 @@ export default function TeacherLandingLayout() {
                 aria-label={isRtl ? 'القائمة' : 'Menu'}
                 title={isRtl ? 'القائمة' : 'Menu'}
               >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className="w-full h-full object-cover" />
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                 {badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -254,7 +254,7 @@ export default function TeacherLandingLayout() {
                 )}
               >
                 <span className="flex justify-center items-center bg-black rounded-full w-11 h-11 overflow-hidden shrink-0">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                 </span>
                 <div className="min-w-0">
                   <div className="text-slate-600 dark:text-slate-300 text-xs">{isRtl ? 'أهلا،' : 'Hi,'}</div>

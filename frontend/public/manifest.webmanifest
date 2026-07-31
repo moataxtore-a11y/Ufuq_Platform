@@ -1,0 +1,17 @@
+{
+  "name": "منصة أُفُق التعليمية",
+  "short_name": "أُفُق",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#009688",
+  "icons": [
+    {
+      "src": "/favicon.webp",
+      "sizes": "192x192 512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}

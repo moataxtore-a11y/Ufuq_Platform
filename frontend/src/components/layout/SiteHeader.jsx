@@ -199,7 +199,7 @@ export default function SiteHeader() {
             <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
               {loggedIn ? (
                 <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                 </Link>
               ) : (
                 <>
@@ -250,7 +250,7 @@ export default function SiteHeader() {
                 aria-label={t('dashboard.ui.menu')}
                 title={t('dashboard.ui.menu')}
               >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                 {badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -398,7 +398,7 @@ export default function SiteHeader() {
                     )}
                   >
                     <span className="flex justify-center items-center bg-black rounded-full w-11 h-11 overflow-hidden shrink-0">
-                      <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className="w-full h-full object-cover" />
+                      <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                     </span>
                     <div className="min-w-0">
                       <div className="text-slate-600 dark:text-slate-300 text-xs">{isRtl ? 'أهلا،' : 'Hi,'}</div>

@@ -5,7 +5,7 @@ function PhotoPlaceholder({ name }) {
   return (
     <div className="relative bg-[rgb(247,244,236)] dark:bg-[#202020] shadow-[0_18px_44px_rgba(15,23,42,0.10)] dark:shadow-none border border-black/10 dark:border-white/10 rounded-3xl w-32 sm:w-44 h-32 sm:h-44 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
-      <img src={defaultProfileAvatar} alt={name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-cover" />
+      <img src={defaultProfileAvatar} alt={name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-contain" />
     </div>
   )
 }

@@ -284,7 +284,7 @@ export default function ProfilePage() {
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="avatar" className="border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-cover" />
                 ) : (
-                  <img src={defaultProfileAvatar} alt="avatar" className="opacity-80 border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-cover" />
+                  <img src={defaultProfileAvatar} alt="avatar" className="opacity-80 border border-black/5 dark:border-white/10 rounded-full w-20 h-20 object-contain" />
                 )}
                 <div className="flex flex-wrap items-center gap-2">
                   <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => setAvatarFile(e.target.files?.[0] || null)} />

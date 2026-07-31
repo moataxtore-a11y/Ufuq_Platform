@@ -395,7 +395,7 @@ export default function StudentLandingPage() {
                     ) : (
                       <div className="relative flex justify-center items-center w-full h-full">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
-                        <img src={defaultProfileAvatar} alt={t?.name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-cover" />
+                        <img src={defaultProfileAvatar} alt={t?.name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-contain" />
                       </div>
                     )}
                   </div>
