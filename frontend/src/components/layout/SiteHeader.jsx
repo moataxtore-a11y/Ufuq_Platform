@@ -198,8 +198,15 @@ export default function SiteHeader() {
           <div className="md:hidden items-center grid grid-cols-3">
             <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
               {loggedIn ? (
-                <Link to={profileLink} className="flex items-center justify-center shrink-0 rounded-full w-8 h-8 overflow-hidden border-2 border-slate-200 dark:border-white/20">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                <Link to={profileLink} className="relative flex items-center justify-center shrink-0 rounded-full w-8 h-8 border-2 border-slate-200 dark:border-white/20">
+                  <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                  </span>
+                  {badgeTotal > 0 ? (
+                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                      {badgeTotal > 99 ? '99+' : badgeTotal}
+                    </span>
+                  ) : null}
                 </Link>
               ) : (
                 <>
@@ -246,11 +253,13 @@ export default function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+                className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20"
                 aria-label={t('dashboard.ui.menu')}
                 title={t('dashboard.ui.menu')}
               >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                </span>
                 {badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -398,7 +407,9 @@ export default function SiteHeader() {
                     )}
                   >
                     <span className="flex justify-center items-center bg-black rounded-full w-11 h-11 overflow-hidden shrink-0">
-                      <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                      <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                        <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                      </span>
                     </span>
                     <div className="min-w-0">
                       <div className="text-slate-600 dark:text-slate-300 text-xs">{isRtl ? 'أهلا،' : 'Hi,'}</div>

@@ -129,11 +129,13 @@ export default function TeamLandingLayout() {
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex items-center justify-center rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors shadow-sm"
+                    className="relative flex items-center justify-center rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20 hover:border-teal-500/50 transition-colors shadow-sm"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                    <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                      <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                    </span>
                     {badgeTotal > 0 ? (
                       <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                         {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -199,11 +201,13 @@ export default function TeamLandingLayout() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex items-center justify-center shrink-0 rounded-full w-9 h-9 overflow-hidden border-2 border-slate-200 dark:border-white/20"
+                className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20"
                 aria-label={isRtl ? 'القائمة' : 'Menu'}
                 title={isRtl ? 'القائمة' : 'Menu'}
               >
-                <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || (isRtl ? 'المستخدم' : 'User')} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                </span>
                 {badgeTotal > 0 ? (
                   <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
                     {badgeTotal > 99 ? '99+' : badgeTotal}
@@ -251,7 +255,9 @@ export default function TeamLandingLayout() {
                 )}
               >
                 <span className="flex justify-center items-center bg-black rounded-full w-11 h-11 overflow-hidden shrink-0">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                  <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                  </span>
                 </span>
                 <div className="min-w-0">
                   <div className="text-slate-600 dark:text-slate-300 text-xs">{isRtl ? 'أهلا،' : 'Hi,'}</div>

@@ -87,7 +87,7 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
   return (
     <div
       className={
-        'group/teacher-card relative mx-auto aspect-[0.86] min-h-[390px] w-full max-w-[420px] overflow-hidden rounded-[34px] border border-brand/15 bg-brand shadow-[0_24px_65px_rgba(6,78,70,0.18)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_82px_rgba(6,78,70,0.24)] dark:border-white/10 dark:shadow-none ' +
+        'relative mx-auto aspect-[0.86] min-h-[390px] w-full max-w-[420px] overflow-hidden rounded-[34px] border border-brand/15 bg-brand shadow-[0_24px_65px_rgba(6,78,70,0.18)] dark:border-white/10 dark:shadow-none ' +
         className
       }
       dir={isRtl ? 'rtl' : 'ltr'}
@@ -96,7 +96,7 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
         <img
           src={avatar}
           alt={name}
-          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover/teacher-card:scale-[1.03]"
+          className="absolute inset-0 h-full w-full object-cover object-top"
           loading="lazy"
         />
       ) : (
