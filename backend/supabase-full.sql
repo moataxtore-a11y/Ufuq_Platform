@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS "User" (
     "emailChange" JSONB,
     "passwordReset" JSONB,
     "mustChangePassword" BOOLEAN NOT NULL DEFAULT false,
+    "walletBalance" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "status" TEXT NOT NULL DEFAULT 'approved',
     "approvedAt" TIMESTAMP(3),
     "approvedBy" TEXT,
@@ -293,6 +294,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS "User_studentId_key" ON "User"("studentId");
 CREATE INDEX IF NOT EXISTS "User_teamId_idx" ON "User"("teamId");
 CREATE INDEX IF NOT EXISTS "User_role_idx" ON "User"("role");
 CREATE INDEX IF NOT EXISTS "User_status_idx" ON "User"("status");
+CREATE INDEX IF NOT EXISTS "User_suspendedBy_idx" ON "User"("suspendedBy");
+CREATE INDEX IF NOT EXISTS "User_approvedBy_idx" ON "User"("approvedBy");
 
 CREATE INDEX IF NOT EXISTS "Course_teacherId_idx" ON "Course"("teacherId");
 CREATE INDEX IF NOT EXISTS "CourseEnrollment_studentId_idx" ON "CourseEnrollment"("studentId");
@@ -304,6 +307,7 @@ CREATE INDEX IF NOT EXISTS "Lesson_unitId_idx" ON "Lesson"("unitId");
 CREATE INDEX IF NOT EXISTS "Lesson_kind_idx" ON "Lesson"("kind");
 
 CREATE INDEX IF NOT EXISTS "Assignment_courseId_idx" ON "Assignment"("courseId");
+CREATE INDEX IF NOT EXISTS "Assignment_createdBy_idx" ON "Assignment"("createdBy");
 
 CREATE INDEX IF NOT EXISTS "Submission_assignmentId_idx" ON "Submission"("assignmentId");
 CREATE INDEX IF NOT EXISTS "Submission_studentId_idx" ON "Submission"("studentId");
@@ -334,6 +338,7 @@ CREATE INDEX IF NOT EXISTS "CourseDiscountCode_courseId_idx" ON "CourseDiscountC
 
 CREATE INDEX IF NOT EXISTS "JoinTeacherApplication_email_idx" ON "JoinTeacherApplication"("email");
 CREATE INDEX IF NOT EXISTS "JoinTeacherApplication_assignedTeamId_idx" ON "JoinTeacherApplication"("assignedTeamId");
+CREATE INDEX IF NOT EXISTS "JoinTeacherApplication_assignedById_idx" ON "JoinTeacherApplication"("assignedById");
 
 CREATE INDEX IF NOT EXISTS "MotivationalMessage_isActive_idx" ON "MotivationalMessage"("isActive");
 

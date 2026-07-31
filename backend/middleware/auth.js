@@ -17,6 +17,12 @@ async function auth(req, res, next) {
             return res.status(403).json({ message: 'Account suspended' })
         }
 
+        if (user.status && user.status !== 'approved') {
+            return res.status(403).json({
+                message: user.status === 'pending' ? 'Account pending approval' : 'Account rejected'
+            })
+        }
+
         const rawTeamPerms = Array.isArray(user.teamPermissions) ? user.teamPermissions : []
         const teamPermissions = user.role === 'team' && rawTeamPerms.length === 0 ? ['courses', 'students', 'grading'] : rawTeamPerms
 

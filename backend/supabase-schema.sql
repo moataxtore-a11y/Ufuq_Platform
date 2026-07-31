@@ -1,6 +1,4 @@
-﻿Loaded Prisma config from prisma.config.ts.
-System.Management.Automation.RemoteException
--- CreateSchema
+﻿-- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateTable
@@ -24,6 +22,7 @@ CREATE TABLE "User" (
     "emailChange" JSONB,
     "passwordReset" JSONB,
     "mustChangePassword" BOOLEAN NOT NULL DEFAULT false,
+    "walletBalance" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "status" TEXT NOT NULL DEFAULT 'approved',
     "approvedAt" TIMESTAMP(3),
     "approvedBy" TEXT,
@@ -336,6 +335,12 @@ CREATE INDEX "User_role_idx" ON "User"("role");
 CREATE INDEX "User_status_idx" ON "User"("status");
 
 -- CreateIndex
+CREATE INDEX "User_suspendedBy_idx" ON "User"("suspendedBy");
+
+-- CreateIndex
+CREATE INDEX "User_approvedBy_idx" ON "User"("approvedBy");
+
+-- CreateIndex
 CREATE INDEX "Course_teacherId_idx" ON "Course"("teacherId");
 
 -- CreateIndex
@@ -355,6 +360,9 @@ CREATE INDEX "Lesson_kind_idx" ON "Lesson"("kind");
 
 -- CreateIndex
 CREATE INDEX "Assignment_courseId_idx" ON "Assignment"("courseId");
+
+-- CreateIndex
+CREATE INDEX "Assignment_createdBy_idx" ON "Assignment"("createdBy");
 
 -- CreateIndex
 CREATE INDEX "Submission_assignmentId_idx" ON "Submission"("assignmentId");
@@ -421,6 +429,12 @@ CREATE INDEX "CourseDiscountCode_courseId_idx" ON "CourseDiscountCode"("courseId
 
 -- CreateIndex
 CREATE INDEX "JoinTeacherApplication_email_idx" ON "JoinTeacherApplication"("email");
+
+-- CreateIndex
+CREATE INDEX "JoinTeacherApplication_assignedTeamId_idx" ON "JoinTeacherApplication"("assignedTeamId");
+
+-- CreateIndex
+CREATE INDEX "JoinTeacherApplication_assignedById_idx" ON "JoinTeacherApplication"("assignedById");
 
 -- CreateIndex
 CREATE INDEX "JoinTeacherApplication_assignedTeamId_idx" ON "JoinTeacherApplication"("assignedTeamId");

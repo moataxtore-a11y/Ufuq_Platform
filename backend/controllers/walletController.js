@@ -122,10 +122,20 @@ const grantWallet = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'studentId and amount are required' })
     }
     const amt = Math.round(Number(amount) * 100) / 100
-    const student = await prisma.user.findUnique({ where: { id: studentId }, select: { walletBalance: true } })
+    if (amt > 5000) return res.status(400).json({ message: 'Single grant amount cannot exceed 5000' })
+
+    const student = await prisma.user.findUnique({ where: { id: studentId }, select: { walletBalance: true, role: true, teamId: true } })
     if (!student) return res.status(404).json({ message: 'Student not found' })
+    if (student.role !== 'student') return res.status(400).json({ message: 'Target is not a student' })
+
+    if (req.user.role !== 'admin') {
+        if (!req.user.teamId || String(student.teamId || '') !== String(req.user.teamId)) {
+            return res.status(403).json({ message: 'Forbidden' })
+        }
+    }
+
     const balanceBefore = typeof student.walletBalance === 'number' ? student.walletBalance : 0
-    const balanceAfter = balanceBefore + amt
+    const balanceAfter = Math.round((balanceBefore + amt) * 100) / 100
     await Promise.all([
         prisma.walletTransaction.create({ data: { userId: studentId, type: 'deposit', amount: amt, description: `Granted by ${req.user.name || req.user.id}`, referenceType: 'grant', referenceId: req.user.id, balanceBefore, balanceAfter, status: 'completed' } }),
         prisma.user.update({ where: { id: studentId }, data: { walletBalance: balanceAfter } })

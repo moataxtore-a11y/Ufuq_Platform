@@ -29,8 +29,14 @@ const getPublicTeacherById = asyncHandler(async (req, res) => {
     })
     if (!teacher || teacher.role !== 'teacher') return res.status(404).json({ message: 'Teacher not found' })
     const courseCount = await prisma.course.count({ where: { teacherId } })
-    const studentCount = await prisma.courseEnrollment.groupBy({ by: ['studentId'], where: { course: { teacherId } }, _count: { studentId: true } })
-    res.json({ id: teacher.id, name: teacher.name, email: teacher.email, profile: teacher.profile || {}, createdAt: teacher.createdAt, stats: { courses: courseCount, students: studentCount.length } })
+    const courses = await prisma.course.findMany({ where: { teacherId }, select: { id: true } })
+    const courseIds = courses.map((c) => c.id)
+    let studentCount = 0
+    if (courseIds.length) {
+        const enrollments = await prisma.courseEnrollment.findMany({ where: { courseId: { in: courseIds } }, select: { studentId: true } })
+        studentCount = new Set(enrollments.map((e) => e.studentId)).size
+    }
+    res.json({ id: teacher.id, name: teacher.name, profile: teacher.profile || {}, createdAt: teacher.createdAt, stats: { courses: courseCount, students: studentCount } })
 })
 
 const listMyTeam = asyncHandler(async (req, res) => {
@@ -47,19 +53,35 @@ const createMyTeamMember = asyncHandler(async (req, res) => {
     if (!teamId) return res.status(400).json({ message: 'No team ID. Generate one first.' })
     const existing = await prisma.user.findUnique({ where: { email: String(email).toLowerCase().trim() }, select: { id: true } })
     if (existing) return res.status(409).json({ message: 'Email already exists' })
+
+    const allowedPerms = ['courses', 'students', 'grading']
+    const safePerms = Array.isArray(teamPermissions)
+        ? teamPermissions.filter((p) => allowedPerms.includes(String(p)))
+        : ['courses', 'students', 'grading']
+
     const hashed = await bcrypt.hash(password, 12)
-    const user = await prisma.user.create({ data: { name, email: String(email).toLowerCase().trim(), password: hashed, role: 'team', teamId, teamTask: typeof teamTask === 'string' ? teamTask.trim() : '', teamPermissions: Array.isArray(teamPermissions) ? teamPermissions : ['courses', 'students', 'grading'], mustChangePassword: true } })
+    const user = await prisma.user.create({ data: { name, email: String(email).toLowerCase().trim(), password: hashed, role: 'team', teamId, teamTask: typeof teamTask === 'string' ? teamTask.trim() : '', teamPermissions: safePerms, mustChangePassword: true } })
     res.status(201).json({ id: user.id, name: user.name, email: user.email, role: user.role, teamId: user.teamId, teamTask: user.teamTask, teamPermissions: user.teamPermissions, createdAt: user.createdAt })
 })
 
 const updateMyTeamMember = asyncHandler(async (req, res) => {
     const { memberId } = req.params
     const { name, email, teamTask, teamPermissions } = req.body || {}
+
+    const member = await prisma.user.findUnique({ where: { id: memberId }, select: { id: true, role: true, teamId: true } })
+    if (!member || member.role !== 'team') return res.status(404).json({ message: 'Member not found' })
+    if (!req.user.teamId || String(member.teamId || '') !== String(req.user.teamId)) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+
     const data = {}
     if (typeof name === 'string' && name.trim()) data.name = name.trim()
     if (typeof email === 'string' && email.trim()) data.email = email.toLowerCase().trim()
     if (typeof teamTask === 'string') data.teamTask = teamTask.trim()
-    if (Array.isArray(teamPermissions)) data.teamPermissions = teamPermissions
+    if (Array.isArray(teamPermissions)) {
+        const allowedPerms = ['courses', 'students', 'grading']
+        data.teamPermissions = teamPermissions.filter((p) => allowedPerms.includes(String(p)))
+    }
     const updated = await prisma.user.update({ where: { id: memberId }, data })
     res.json({ id: updated.id, name: updated.name, email: updated.email, role: updated.role, teamTask: updated.teamTask, teamPermissions: updated.teamPermissions })
 })

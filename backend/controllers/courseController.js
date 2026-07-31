@@ -456,6 +456,11 @@ const getCourseStats = asyncHandler(async (req, res) => {
     const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
+    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+    if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
+
     const units = await prisma.unit.findMany({
         where: { courseId },
         orderBy: { order: 'asc' },
@@ -578,9 +583,12 @@ const deleteCourse = asyncHandler(async (req, res) => {
 
 const listUnits = asyncHandler(async (req, res) => {
     const { courseId } = req.params
-    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true } })
+    const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    if (!['teacher', 'student', 'admin', 'team'].includes(req.user.role)) {
+    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+    if (req.user.role !== 'admin' && !(await canAccessCourse(course, req.user))) {
         return res.status(403).json({ message: 'Forbidden' })
     }
     const units = await prisma.unit.findMany({ where: { courseId }, orderBy: { order: 'asc' } })
@@ -591,9 +599,12 @@ const listLessonsForUnit = asyncHandler(async (req, res) => {
     const { unitId } = req.params
     const unit = await prisma.unit.findUnique({ where: { id: unitId } })
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
-    const course = await prisma.course.findUnique({ where: { id: unit.courseId }, select: { id: true } })
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    if (!['teacher', 'student', 'admin', 'team'].includes(req.user.role)) {
+    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+    if (req.user.role !== 'admin' && !(await canAccessCourse(course, req.user))) {
         return res.status(403).json({ message: 'Forbidden' })
     }
     const lessons = await prisma.lesson.findMany({ where: { unitId }, orderBy: { order: 'asc' } })
@@ -631,8 +642,12 @@ const listMyCourseStudents = asyncHandler(async (req, res) => {
 
     if (!teacherIds.length) return res.json([])
 
+    const courses = await prisma.course.findMany({ where: { teacherId: { in: teacherIds } }, select: { id: true } })
+    const courseIds = courses.map((c) => c.id)
+    if (!courseIds.length) return res.json([])
+
     const enrollments = await prisma.courseEnrollment.findMany({
-        where: { course: { teacherId: { in: teacherIds } } },
+        where: { courseId: { in: courseIds } },
         select: { studentId: true }
     })
     const studentIds = [...new Set(enrollments.map((e) => e.studentId))]

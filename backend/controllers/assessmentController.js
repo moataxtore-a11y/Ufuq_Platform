@@ -23,6 +23,40 @@ async function canAccessAssessmentAsStudent(assessmentId, userId) {
     return !!enrollment
 }
 
+async function canManageAssessment(assessment, user) {
+    if (!assessment || !user) return false
+    if (user.role === 'admin') return true
+    const courseId = await resolveCourseIdFromAssessment(assessment)
+    if (!courseId) return false
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { teacherId: true } })
+    if (!course) return false
+    if (user.role === 'teacher') return String(course.teacherId) === String(user.id)
+    if (user.role === 'team') {
+        if (!user.teamId || !course.teacherId) return false
+        const teacher = await prisma.user.findUnique({ where: { id: course.teacherId }, select: { teamId: true, role: true } })
+        if (!teacher || teacher.role !== 'teacher') return false
+        return String(teacher.teamId || '') === String(user.teamId)
+    }
+    return false
+}
+
+async function canAccessAssessmentCourse(course, user) {
+    if (!course || !user) return false
+    if (user.role === 'admin') return true
+    if (user.role === 'teacher') return String(course.teacherId) === String(user.id)
+    if (user.role === 'team') {
+        if (!user.teamId || !course.teacherId) return false
+        const teacher = await prisma.user.findUnique({ where: { id: course.teacherId }, select: { teamId: true, role: true } })
+        if (!teacher || teacher.role !== 'teacher') return false
+        return String(teacher.teamId || '') === String(user.teamId)
+    }
+    if (user.role === 'student') {
+        const enrollment = await prisma.courseEnrollment.findFirst({ where: { courseId: course.id, studentId: user.id }, select: { id: true } })
+        return !!enrollment
+    }
+    return false
+}
+
 function nowInWindow(assessment) {
     const now = new Date()
     if (assessment.startAt && now < assessment.startAt) return { ok: false, message: 'Assessment not started' }
@@ -263,7 +297,17 @@ const deleteAssessment = asyncHandler(async (req, res) => {
 
 const listAssessmentsForCourse = asyncHandler(async (req, res) => {
     const { courseId } = req.params
+    const course = await prisma.course.findUnique({ where: { id: courseId }, select: { id: true, teacherId: true } })
+    if (!course) return res.status(404).json({ message: 'Course not found' })
+
+    if (!(await canAccessAssessmentCourse(course, req.user))) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+
     const items = await prisma.assessment.findMany({ where: { courseId }, orderBy: { createdAt: 'desc' } })
+    if (req.user.role === 'student') {
+        return res.json(items.map((it) => sanitizeAssessmentForStudent(it)))
+    }
     res.json(items)
 })
 
@@ -277,13 +321,34 @@ const listMyAssessments = asyncHandler(async (req, res) => {
 
 const listAssessmentsForLesson = asyncHandler(async (req, res) => {
     const { lessonId } = req.params
+    const lesson = await prisma.lesson.findUnique({ where: { id: lessonId }, select: { unitId: true } })
+    if (!lesson) return res.status(404).json({ message: 'Lesson not found' })
+    const unit = await prisma.unit.findUnique({ where: { id: lesson.unitId }, select: { courseId: true } })
+    if (!unit) return res.status(404).json({ message: 'Unit not found' })
+    const course = await prisma.course.findUnique({ where: { id: unit.courseId }, select: { id: true, teacherId: true } })
+    if (!course) return res.status(404).json({ message: 'Course not found' })
+
+    if (!(await canAccessAssessmentCourse(course, req.user))) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+
     const items = await prisma.assessment.findMany({ where: { lessonId }, orderBy: { createdAt: 'desc' } })
+    if (req.user.role === 'student') {
+        return res.json(items.map((it) => sanitizeAssessmentForStudent(it)))
+    }
     res.json(items)
 })
 
 const listManualGradingQueue = asyncHandler(async (req, res) => {
+    const ownedCourseIds = await getAccessibleCourseIds(req.user)
+    if (!ownedCourseIds || !ownedCourseIds.length) return res.json([])
+
+    const assessments = await prisma.assessment.findMany({ where: { courseId: { in: ownedCourseIds } }, select: { id: true } })
+    const assessmentIds = assessments.map((a) => a.id)
+    if (!assessmentIds.length) return res.json([])
+
     const submitted = await prisma.assessmentAttempt.findMany({
-        where: { status: 'submitted' },
+        where: { status: 'submitted', assessmentId: { in: assessmentIds } },
         orderBy: { createdAt: 'asc' },
         include: {
             assessment: { select: { id: true, title: true, type: true, courseId: true, unitId: true, lessonId: true, createdById: true } },
@@ -292,7 +357,7 @@ const listManualGradingQueue = asyncHandler(async (req, res) => {
     })
 
     const graded = await prisma.assessmentAttempt.findMany({
-        where: { status: 'graded' },
+        where: { status: 'graded', assessmentId: { in: assessmentIds } },
         orderBy: [{ gradedAt: 'desc' }, { createdAt: 'desc' }],
         take: 50,
         include: {
@@ -304,12 +369,35 @@ const listManualGradingQueue = asyncHandler(async (req, res) => {
     res.json([...submitted, ...graded])
 })
 
+async function getAccessibleCourseIds(user) {
+    if (user.role === 'admin') return null
+    let teacherIds = []
+    if (user.role === 'teacher') {
+        teacherIds = [user.id]
+    } else if (user.role === 'team') {
+        if (!user.teamId) return []
+        const teachers = await prisma.user.findMany({ where: { role: 'teacher', teamId: user.teamId }, select: { id: true } })
+        teacherIds = teachers.map((t) => t.id)
+    } else {
+        return []
+    }
+    if (!teacherIds.length) return []
+    const courses = await prisma.course.findMany({ where: { teacherId: { in: teacherIds } }, select: { id: true } })
+    return courses.map((c) => c.id)
+}
+
 const gradeAttemptManual = asyncHandler(async (req, res) => {
     const { attemptId } = req.params
     const { manualScore, feedback } = req.body || {}
 
     const attempt = await prisma.assessmentAttempt.findUnique({ where: { id: attemptId } })
     if (!attempt) return res.status(404).json({ message: 'Not found' })
+
+    const assessment = await prisma.assessment.findUnique({ where: { id: attempt.assessmentId } })
+    if (!assessment) return res.status(404).json({ message: 'Assessment not found' })
+    if (!(await canManageAssessment(assessment, req.user))) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
 
     const ms = Number(manualScore)
     if (!Number.isFinite(ms) || ms < 0) return res.status(400).json({ message: 'manualScore must be a non-negative number' })

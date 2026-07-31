@@ -9,6 +9,9 @@ require('dotenv').config({
 })
 
 if (!process.env.JWT_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('JWT_SECRET is required in production. Set it in the environment before starting the server.')
+    }
     process.env.JWT_SECRET = 'dev_secret_change_me'
     console.warn('JWT_SECRET not set. Using default dev_secret_change_me (change for production)')
 }

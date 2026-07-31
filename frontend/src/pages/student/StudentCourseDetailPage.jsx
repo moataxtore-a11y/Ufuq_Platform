@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../../utils/api.js'
 import { useToast } from '../../components/ui/toast.jsx'
@@ -379,7 +379,7 @@ export default function StudentCourseDetailPage() {
     } catch (e) {
       const msg = e?.response?.data?.message || 'Error'
       if (String(msg).toLowerCase().includes('locked') || String(msg).toLowerCase().includes('forbidden')) {
-        if (auth?.user?.role === 'admin') {
+        if (auth?.role === 'admin') {
           // Admin shouldn't be locked out, but if they are, they should still see full content
           setLockedCourseInfo(null)
         }
@@ -495,7 +495,7 @@ export default function StudentCourseDetailPage() {
   const activeUnit = useMemo(() => units.find((u) => u._id === activeUnitId) || null, [units, activeUnitId])
 
   const lockedUnits = useMemo(() => {
-    if (auth?.user?.role === 'admin') return [] // Admins don't see locked view
+    if (auth?.role === 'admin') return [] // Admins don't see locked view
     const list = Array.isArray(lockedCourseInfo?.units) ? lockedCourseInfo.units : []
     return list.filter((u) => {
       const t = String(u?.title || '').trim()
@@ -508,7 +508,7 @@ export default function StudentCourseDetailPage() {
   }, [lockedCourseInfo])
 
   const lockedHasContent = useMemo(() => {
-    if (auth?.user?.role === 'admin') return true
+    if (auth?.role === 'admin') return true
     if (!lockedCourseInfo || Boolean(lockedCourseInfo?.isFree) || Number(lockedCourseInfo?.price || 0) <= 0) return true
     if (!lockedUnits.length) return false
     for (const u of lockedUnits) {
@@ -980,3 +980,4 @@ export default function StudentCourseDetailPage() {
     </div>
   )
 }
+

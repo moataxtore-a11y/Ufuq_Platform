@@ -23,7 +23,7 @@ export default function CoursePreviewPage() {
   const { notify } = useToast()
 
   const loggedIn = Boolean(auth?.token)
-  const isAdmin = auth?.user?.role === 'admin'
+  const isAdmin = auth?.role === 'admin'
 
   const [enrolled, setEnrolled] = useState(false)
 

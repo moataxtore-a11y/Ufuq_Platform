@@ -29,7 +29,7 @@ export default function CoursesSection() {
     async function run() {
       if (alive) setState({ status: 'loading', items: [], error: '' })
       try {
-        const endpoint = auth?.user?.role === 'admin' ? '/courses' : '/courses/mine'
+        const endpoint = auth?.role === 'admin' ? '/courses' : '/courses/mine'
         const res = await api.get(endpoint)
         const items = Array.isArray(res.data) ? res.data : []
         if (alive) setState({ status: 'success', items, error: '' })
@@ -45,7 +45,7 @@ export default function CoursesSection() {
     }
   }, [auth?.token])
 
-  const role = auth?.user?.role
+  const role = auth?.role
 
   const subtitle = useMemo(() => {
     if (!auth?.token) return t('landing.courses.subtitle_signed_out')

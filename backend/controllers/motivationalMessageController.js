@@ -1,4 +1,5 @@
 const { prisma } = require('../config/prisma')
+const { asyncHandler } = require('../utils/asyncHandler')
 
 function canManage(req) {
     return Boolean(req?.user && ['admin', 'teacher', 'team'].includes(req.user.role))
@@ -8,10 +9,12 @@ function normalizeUrl(url) {
     if (!url) return ''
     const s = String(url).trim()
     if (!s) return ''
+    const lower = s.toLowerCase()
+    if (lower.startsWith('javascript:') || lower.startsWith('data:')) return ''
     return s
 }
 
-async function getActiveForStudent(req, res) {
+const getActiveForStudent = asyncHandler(async (req, res) => {
     const userId = req.user?.id
     if (!userId) return res.status(401).json({ message: 'Unauthorized' })
 
@@ -38,9 +41,9 @@ async function getActiveForStudent(req, res) {
             updatedAt: message.updatedAt
         }
     })
-}
+})
 
-async function upsertMessage(req, res) {
+const upsertMessage = asyncHandler(async (req, res) => {
     if (!canManage(req)) return res.status(403).json({ message: 'Forbidden' })
 
     const title = String(req.body?.title || '').trim()
@@ -82,9 +85,9 @@ async function upsertMessage(req, res) {
             updatedAt: message.updatedAt
         }
     })
-}
+})
 
-async function deleteMessage(req, res) {
+const deleteMessage = asyncHandler(async (req, res) => {
     if (!canManage(req)) return res.status(403).json({ message: 'Forbidden' })
 
     const messages = await prisma.motivationalMessage.findMany({
@@ -99,9 +102,9 @@ async function deleteMessage(req, res) {
     await prisma.motivationalMessage.delete({ where: { id: message.id } })
 
     return res.json({ ok: true })
-}
+})
 
-async function dismissForMe(req, res) {
+const dismissForMe = asyncHandler(async (req, res) => {
     const userId = req.user?.id
     if (!userId) return res.status(401).json({ message: 'Unauthorized' })
     if (req.user.role !== 'student') return res.status(403).json({ message: 'Forbidden' })
@@ -116,9 +119,9 @@ async function dismissForMe(req, res) {
     })
 
     return res.json({ ok: true })
-}
+})
 
-async function getActiveForManager(req, res) {
+const getActiveForManager = asyncHandler(async (req, res) => {
     if (!canManage(req)) return res.status(403).json({ message: 'Forbidden' })
 
     const messages = await prisma.motivationalMessage.findMany({
@@ -139,7 +142,7 @@ async function getActiveForManager(req, res) {
             updatedAt: message.updatedAt
         }
     })
-}
+})
 
 module.exports = {
     getActiveForStudent, upsertMessage, deleteMessage,

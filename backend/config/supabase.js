@@ -8,7 +8,7 @@ const supabase = createClient(supabaseUrl || '', supabaseKey || '')
 // Keep Supabase alive — ping every 5 minutes to prevent idle sleep
 setInterval(async () => {
   try {
-    await supabase.from('users').select('id').limit(1)
+    await supabase.from('User').select('id').limit(1)
   } catch (_) {}
 }, 5 * 60 * 1000)
 

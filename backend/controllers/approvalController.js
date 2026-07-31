@@ -1,6 +1,19 @@
 const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
+async function assertCanManageUser(userId, req) {
+    if (!req.user) return false
+    if (req.user.role === 'admin') return true
+    if (req.user.role === 'teacher' || req.user.role === 'team') {
+        if (!req.user.teamId) return false
+        const target = await prisma.user.findUnique({ where: { id: userId }, select: { teamId: true, role: true } })
+        if (!target || target.role !== 'student') return false
+        if (String(target.teamId || '') !== String(req.user.teamId)) return false
+        return true
+    }
+    return false
+}
+
 const listPendingStudents = asyncHandler(async (req, res) => {
     const role = req.user && req.user.role ? String(req.user.role) : ''
     const teamId = req.user && req.user.teamId ? String(req.user.teamId) : ''
@@ -22,6 +35,7 @@ const listPendingStudents = asyncHandler(async (req, res) => {
 
 const approveUser = asyncHandler(async (req, res) => {
     const { userId } = req.params
+    if (!(await assertCanManageUser(userId, req))) return res.status(403).json({ message: 'Forbidden' })
     const user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) return res.status(404).json({ message: 'User not found' })
 
@@ -49,6 +63,7 @@ const rejectUser = asyncHandler(async (req, res) => {
     const { userId } = req.params
     const { reason } = req.body || {}
 
+    if (!(await assertCanManageUser(userId, req))) return res.status(403).json({ message: 'Forbidden' })
     const user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) return res.status(404).json({ message: 'User not found' })
 

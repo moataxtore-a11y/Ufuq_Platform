@@ -47,6 +47,7 @@ export const translations = {
             passwordLabel: 'Password',
             loginButton: 'Login',
             loggingIn: 'Logging in...',
+            loginFailed: 'Login failed',
             newStudent: 'New student?',
             createAccount: 'Create account',
 
@@ -238,6 +239,7 @@ export const translations = {
                 edit: 'Edit',
                 delete: 'Delete'
             },
+            delete: 'Delete',
             modal: {
                 createTitle: 'Create user',
                 editTitle: 'Edit user'
@@ -414,6 +416,7 @@ export const translations = {
             failedToLoad: 'Failed to load students',
             failedToLoadProfile: 'Failed to load profile',
             noData: 'No data.',
+            confirmDeleteTitle: 'Delete this student?',
             profile: 'Profile',
             edit: 'Edit',
             delete: 'Delete',
@@ -685,7 +688,8 @@ export const translations = {
                 items: {
                     i1: { title: 'Clear lessons', desc: 'Short, focused lessons that respect your attention and time.' },
                     i2: { title: 'Friendly support', desc: 'A learning experience that feels safe, calm, and approachable.' },
-                    i3: { title: 'Practice that sticks', desc: 'Light practice and review to help knowledge stay with you.' }
+                    i3: { title: 'Practice that sticks', desc: 'Light practice and review to help knowledge stay with you.' },
+                    i4: { title: 'You will achieve success', desc: 'Learn from anywhere, anytime.' }
                 }
             },
             stats: {
@@ -726,6 +730,7 @@ export const translations = {
                 login: 'Login',
                 quickPreview: 'Quick preview',
                 loginToView: 'Login to view',
+                viewMore: 'View more',
                 loading: 'Loading...',
                 loadCoursesFailed: 'Failed to load courses'
             },
@@ -744,6 +749,7 @@ export const translations = {
             courses: {
                 title: 'Courses',
                 subtitle_signed_out: 'Sign in to see courses available in your account.',
+                subtitle_admin: 'Manage Courses',
                 subtitle_teacher: 'Your teaching space, organized in calm cards.',
                 subtitle_team: 'Browse and support courses with a steady overview.',
                 subtitle_student: 'Pick up where you left off—no clutter.',
@@ -833,6 +839,7 @@ export const translations = {
                     edit: 'تعديل',
                     delete: 'حذف'
                 },
+                delete: 'حذف',
                 modal: {
                     createTitle: 'إنشاء مستخدم',
                     editTitle: 'تعديل مستخدم'
@@ -944,9 +951,10 @@ export const translations = {
                 loginSubtitle: 'استخدم حسابك للوصول إلى المنصة.',
                 emailLabel: 'البريد الإلكتروني',
                 passwordLabel: 'كلمة المرور',
-                loginButton: 'دخول',
-                loggingIn: 'جاري تسجيل الدخول...',
-                newStudent: 'طالب جديد؟',
+            loginButton: 'دخول',
+            loggingIn: 'جاري تسجيل الدخول...',
+            loginFailed: 'فشل تسجيل الدخول',
+            newStudent: 'طالب جديد؟',
                 createAccount: 'اعمل حساب',
 
                 registerTitle: 'إنشاء حساب',
@@ -1183,6 +1191,7 @@ export const translations = {
                 failedToLoad: 'فشل تحميل الطلاب',
                 failedToLoadProfile: 'فشل تحميل الملف',
                 noData: 'لا توجد بيانات.',
+                confirmDeleteTitle: 'حذف هذا الطالب؟',
                 profile: 'الملف',
                 edit: 'تعديل',
                 delete: 'حذف',
@@ -1498,6 +1507,7 @@ export const translations = {
                     login: 'تسجيل دخول',
                     quickPreview: 'معاينة سريعة',
                     loginToView: 'سجل دخولك للمشاهدة',
+                    viewMore: 'عرض المزيد',
                     loading: 'جاري التحميل...',
                     loadCoursesFailed: 'فشل تحميل الكورسات'
                 },
@@ -1516,6 +1526,7 @@ export const translations = {
                 courses: {
                     title: 'الكورسات',
                     subtitle_signed_out: 'سجل دخولك لعرض الكورسات المتاحة في حسابك.',
+                    subtitle_admin: 'إدارة الكورسات',
                     subtitle_teacher: 'مساحة التدريس الخاصة بك بشكل منظم.',
                     subtitle_team: 'تصفح وساعد في إدارة الكورسات بنظرة عامة هادئة.',
                     subtitle_student: 'كمّل من آخر نقطة وقفت عندها—بدون تشتيت.',

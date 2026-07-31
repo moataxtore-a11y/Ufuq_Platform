@@ -1,6 +1,18 @@
 const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
+async function assertStudentAccess(studentUserId, req) {
+    if (!req.user) return false
+    if (req.user.role === 'admin') return true
+    const student = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true, role: true, teamId: true } })
+    if (!student || student.role !== 'student') return false
+    if (req.user.role === 'teacher' || req.user.role === 'team') {
+        if (!req.user.teamId) return false
+        return String(student.teamId || '') === String(req.user.teamId)
+    }
+    return false
+}
+
 const listStudents = asyncHandler(async (req, res) => {
     const role = req.user && req.user.role ? String(req.user.role) : ''
     const teamId = req.user && req.user.teamId ? String(req.user.teamId) : ''
@@ -30,6 +42,7 @@ const createStudent = asyncHandler(async (req, res) => {
 
 const updateStudent = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
+    if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
     const { name, email, status } = req.body || {}
     const data = {}
     if (typeof name === 'string' && name.trim()) data.name = name.trim()
@@ -41,26 +54,35 @@ const updateStudent = asyncHandler(async (req, res) => {
 
 const deleteStudent = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
+    if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
     const user = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true } })
     if (!user) return res.status(404).json({ message: 'Student not found' })
+    await prisma.courseEnrollment.deleteMany({ where: { studentId: studentUserId } })
+    await prisma.assessmentAttempt.deleteMany({ where: { studentId: studentUserId } })
+    await prisma.studentLessonProgress.deleteMany({ where: { studentId: studentUserId } })
+    await prisma.studentVideoProgress.deleteMany({ where: { studentId: studentUserId } })
+    await prisma.walletTransaction.deleteMany({ where: { userId: studentUserId } })
     await prisma.user.delete({ where: { id: studentUserId } })
     res.json({ message: 'Deleted' })
 })
 
 const suspendStudent = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
+    if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
     const updated = await prisma.user.update({ where: { id: studentUserId }, data: { isSuspended: true, suspendedAt: new Date(), suspendedBy: req.user.id, suspendedReason: '' } })
     res.json({ id: updated.id, isSuspended: true, suspendedAt: updated.suspendedAt })
 })
 
 const activateStudent = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
+    if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
     const updated = await prisma.user.update({ where: { id: studentUserId }, data: { isSuspended: false, suspendedAt: null, suspendedBy: null, suspendedReason: '' } })
     res.json({ id: updated.id, isSuspended: false })
 })
 
 const getStudentProfile = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
+    if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
     const user = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true, name: true, email: true, role: true, status: true, teamId: true, phone: true, profile: true, walletBalance: true, createdAt: true, updatedAt: true } })
     if (!user) return res.status(404).json({ message: 'Student not found' })
     res.json(user)
@@ -68,9 +90,14 @@ const getStudentProfile = asyncHandler(async (req, res) => {
 
 const getStudentStats = asyncHandler(async (req, res) => {
     const studentId = req.params.studentUserId || req.user.id
+    if (req.params.studentUserId && !(await assertStudentAccess(studentId, req))) return res.status(403).json({ message: 'Forbidden' })
     const enrollmentCount = await prisma.courseEnrollment.count({ where: { studentId } })
     const completedLessons = await prisma.studentLessonProgress.count({ where: { studentId, completedAt: { not: null } } })
-    const allLessons = await prisma.lesson.findMany({ where: { course: { enrollments: { some: { studentId } } } }, select: { id: true } })
+    const enrolledCourses = await prisma.courseEnrollment.findMany({ where: { studentId }, select: { courseId: true } })
+    const courseIds = enrolledCourses.map((e) => e.courseId)
+    const allLessons = courseIds.length
+        ? await prisma.lesson.findMany({ where: { unit: { courseId: { in: courseIds } } }, select: { id: true } })
+        : []
     res.json({ enrolledCourses: enrollmentCount, completedLessons, totalLessons: allLessons.length })
 })
 

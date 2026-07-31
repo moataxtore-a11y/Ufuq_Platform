@@ -17,10 +17,35 @@ router.use(auth, requirePasswordChanged)
 
 const memory = multer.memoryStorage()
 
+const ALLOWED_TEACHER_MIMES = [
+    'video/', 'image/', 'audio/', 'application/pdf',
+    'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'text/plain', 'application/zip', 'application/x-zip-compressed', 'application/octet-stream'
+]
+
+const ALLOWED_ASSIGNMENT_MIMES = [
+    'image/', 'application/pdf', 'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'text/plain', 'video/', 'audio/', 'application/zip', 'application/x-zip-compressed'
+]
+
+function mimeAllowed(mimetype, allowedList) {
+    const m = String(mimetype || '')
+    return allowedList.some((p) => (p.endsWith('/') ? m.startsWith(p) : m === p))
+}
+
 const upload = multer({
     storage: memory,
     limits: {
-        fileSize: 1024 * 1024 * 1024
+        fileSize: 500 * 1024 * 1024
+    },
+    fileFilter: (req, file, cb) => {
+        const ok = mimeAllowed(file.mimetype, ALLOWED_TEACHER_MIMES)
+        cb(ok ? null : new Error('Unsupported file type'), ok)
     }
 })
 
@@ -189,10 +214,14 @@ const assignmentUpload = multer({
     storage: memory,
     limits: {
         fileSize: 100 * 1024 * 1024
+    },
+    fileFilter: (req, file, cb) => {
+        const ok = mimeAllowed(file.mimetype, ALLOWED_ASSIGNMENT_MIMES)
+        cb(ok ? null : new Error('Unsupported file type'), ok)
     }
 })
 
-router.post('/assignment', assignmentUpload.single('file'), async (req, res) => {
+router.post('/assignment', requireRole('student', 'teacher', 'team'), assignmentUpload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'file is required' })
     try {
         const mimetype = String(req.file.mimetype || '')
@@ -223,7 +252,7 @@ router.post('/assignment', assignmentUpload.single('file'), async (req, res) => 
 })
 
 // Student presign for images/PDFs
-router.post('/presign/assignment', async (req, res) => {
+router.post('/presign/assignment', requireRole('student', 'teacher', 'team'), async (req, res) => {
     try {
         const body = req && req.body ? req.body : {}
         const mimetype = String(body.mimetype || '')

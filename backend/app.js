@@ -54,15 +54,16 @@ function createApp(_prisma) {
 
     app.get('/health', (req, res) => res.json({ ok: true }))
 
-    app.get('/api/debug-env', (req, res) => {
-        res.json({
-            hasSupabaseUrl: !!process.env.SUPABASE_URL,
-            hasSupabaseKey: !!process.env.SUPABASE_KEY,
-            hasSupabaseServiceKey: !!process.env.SUPABASE_SERVICE_KEY,
-            hasJwtSecret: !!process.env.JWT_SECRET,
-            supabaseUrl: (process.env.SUPABASE_URL || '').substring(0, 30)
+    if (process.env.NODE_ENV !== 'production') {
+        app.get('/api/debug-env', (req, res) => {
+            res.json({
+                hasSupabaseUrl: !!process.env.SUPABASE_URL,
+                hasSupabaseKey: !!process.env.SUPABASE_KEY,
+                hasSupabaseServiceKey: !!process.env.SUPABASE_SERVICE_KEY,
+                hasJwtSecret: !!process.env.JWT_SECRET
+            })
         })
-    })
+    }
 
     app.use('/api/account', authRoutes)
     app.use('/api/admin', adminRoutes)
@@ -82,6 +83,10 @@ function createApp(_prisma) {
     app.use('/api/wallet', walletRoutes)
     app.use('/api/progress', progressRoutes)
     app.use('/api/notifications', notificationRoutes)
+
+    app.use((req, res) => {
+        res.status(404).json({ message: 'Not found' })
+    })
 
     app.use(errorHandler)
 

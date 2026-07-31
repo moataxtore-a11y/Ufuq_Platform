@@ -11,7 +11,7 @@ import { useLanguage } from '../../context/LanguageContext.jsx'
 export default function TeachersSection() {
   const { auth } = useAuth()
   const { isRtl, t } = useLanguage()
-  const role = auth?.user?.role
+  const role = auth?.role
   const [state, setState] = useState({ status: 'idle', items: [], error: '' })
 
   useEffect(() => {

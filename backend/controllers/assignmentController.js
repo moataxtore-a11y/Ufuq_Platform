@@ -92,7 +92,28 @@ const getAssignment = asyncHandler(async (req, res) => {
 })
 
 const listSubmissionsForCorrection = asyncHandler(async (req, res) => {
+    let teacherIds = []
+    if (req.user.role === 'teacher') {
+        teacherIds = [req.user.id]
+    } else if (req.user.role === 'team') {
+        if (!req.user.teamId) return res.json([])
+        const teachers = await prisma.user.findMany({ where: { role: 'teacher', teamId: req.user.teamId }, select: { id: true } })
+        teacherIds = teachers.map((t) => t.id)
+    } else {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+    if (!teacherIds.length) return res.json([])
+
+    const courses = await prisma.course.findMany({ where: { teacherId: { in: teacherIds } }, select: { id: true } })
+    const courseIds = courses.map((c) => c.id)
+    if (!courseIds.length) return res.json([])
+
+    const assignments = await prisma.assignment.findMany({ where: { courseId: { in: courseIds } }, select: { id: true } })
+    const assignmentIds = assignments.map((a) => a.id)
+    if (!assignmentIds.length) return res.json([])
+
     const submissions = await prisma.submission.findMany({
+        where: { assignmentId: { in: assignmentIds } },
         orderBy: { createdAt: 'desc' },
         include: {
             assignment: true,
@@ -131,8 +152,19 @@ const gradeSubmission = asyncHandler(async (req, res) => {
     })
     if (!submission) return res.status(404).json({ message: 'Submission not found' })
 
-    const course = await prisma.course.findUnique({ where: { id: submission.assignment.courseId }, select: { id: true } })
+    const course = await prisma.course.findUnique({ where: { id: submission.assignment.courseId }, select: { id: true, teacherId: true } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
+
+    if (req.user.role === 'teacher' && String(course.teacherId) !== String(req.user.id)) {
+        return res.status(403).json({ message: 'Forbidden' })
+    }
+    if (req.user.role === 'team') {
+        if (!req.user.teamId || !course.teacherId) return res.status(403).json({ message: 'Forbidden' })
+        const teacher = await prisma.user.findUnique({ where: { id: course.teacherId }, select: { teamId: true, role: true } })
+        if (!teacher || teacher.role !== 'teacher' || String(teacher.teamId || '') !== String(req.user.teamId)) {
+            return res.status(403).json({ message: 'Forbidden' })
+        }
+    }
 
     const grade = await prisma.grade.upsert({
         where: { submissionId },

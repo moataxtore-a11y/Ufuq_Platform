@@ -189,10 +189,12 @@ const login = asyncHandler(async (req, res) => {
         ].filter(Boolean)
 
         for (const p of phoneCandidates) {
+            const safe = String(p).replace(/[^0-9+]/g, '')
+            if (!safe) continue
             const { data: found } = await supabase
                 .from('User')
                 .select('*')
-                .or(`profile->>studentPhone.eq.${p},profile->>phone.eq.${p}`)
+                .or(`profile->>studentPhone.eq.${safe},profile->>phone.eq.${safe}`)
                 .limit(1)
                 .maybeSingle()
             if (found) { user = found; break }
