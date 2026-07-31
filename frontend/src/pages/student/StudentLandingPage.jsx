@@ -5,9 +5,9 @@ import { api } from '../../utils/api.js'
 import Button from '../../components/ui/Button.jsx'
 import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
+import TeacherCard from '../../components/teachers/TeacherCard.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import defaultProfileAvatar from '../../cvg/profile.svg'
 
 export default function StudentLandingPage() {
   const navigate = useNavigate()
@@ -353,10 +353,16 @@ export default function StudentLandingPage() {
         {teachersState.status === 'loading' ? (
           <div className="gap-3 grid sm:grid-cols-2 lg:grid-cols-3 mt-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-[rgb(247,244,236)] dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-[22px] sm:rounded-[28px] p-4 sm:p-5 space-y-4 transition-colors">
-                <Skeleton className="w-full aspect-square rounded-2xl sm:rounded-3xl" />
-                <Skeleton className="h-6 w-2/3 mx-auto rounded-lg" />
-                <Skeleton className="h-5 w-1/2 mx-auto rounded-md" />
+              <div key={i} className="min-h-[390px] overflow-hidden rounded-[34px] bg-brand/10 p-5 transition-colors dark:bg-white/[0.04]">
+                <Skeleton className="mx-auto mt-8 h-28 w-28 rounded-full" />
+                <div className="mt-28 space-y-3">
+                  <Skeleton className="mx-auto h-8 w-2/3 rounded-lg" />
+                  <Skeleton className="mx-auto h-6 w-1/2 rounded-md" />
+                  <div className="flex justify-center gap-2 pt-3">
+                    <Skeleton className="h-8 w-24 rounded-full" />
+                    <Skeleton className="h-8 w-24 rounded-full" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -381,32 +387,9 @@ export default function StudentLandingPage() {
                 key={t?.id}
                 type="button"
                 onClick={() => navigate(`/student/teachers/${t?.id}`)}
-                className="group bg-[rgb(247,244,236)] hover:bg-[rgb(243,238,227)] dark:bg-[#1a1a1a] dark:hover:bg-[#202020] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)] p-4 sm:p-5 border border-black/5 dark:border-white/10 rounded-[22px] sm:rounded-[28px] transition-all hover:-translate-y-0.5 duration-200"
+                className="w-full"
               >
-                <div className="gap-3 sm:gap-4 grid" dir={isRtl ? 'rtl' : 'ltr'}>
-                  <div className="flex justify-center items-center bg-white/70 dark:bg-white/[0.06] border border-black/5 dark:border-white/10 rounded-2xl sm:rounded-3xl w-full aspect-square overflow-hidden">
-                    {t?.avatarUrl ? (
-                      <img
-                        src={t.avatarUrl}
-                        alt={t?.name || 'Teacher'}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="relative flex justify-center items-center w-full h-full">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
-                        <img src={defaultProfileAvatar} alt={t?.name || 'Teacher'} className="z-10 relative opacity-80 w-full h-full object-contain" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="text-center">
-                    <div className="font-extrabold text-slate-900 dark:text-white text-xl sm:text-2xl truncate">{t?.name}</div>
-                    <div className="mt-1 sm:mt-2 font-semibold text-slate-700 dark:text-white/90 text-base sm:text-lg truncate">
-                      {t?.teachingSubject || t?.title || (isRtl ? 'أستاذ على المنصة' : 'Teacher on the platform')}
-                    </div>
-                  </div>
-                </div>
+                <TeacherCard teacher={t} />
               </button>
             ))}
           </div>
