@@ -349,18 +349,25 @@ class TableProxy {
     }
 
     async create(args = {}) {
+        const { randomUUID } = require('crypto')
         const row = { ...args.data }
-        if (!row.id) {
-            const { randomUUID } = require('crypto')
-            row.id = randomUUID()
-        }
+        if (!row.id) row.id = randomUUID()
         const now = new Date().toISOString()
         if (!row.createdAt) row.createdAt = now
         if (!row.updatedAt) row.updatedAt = now
-        const { error } = await supabase.from(this.tableName)
-            .insert(row)
-        if (error) throw error
-        return row
+
+        let fields = Object.keys(row)
+        while (true) {
+            const payload = {}
+            for (const f of fields) payload[f] = row[f]
+            const { error } = await supabase.from(this.tableName).insert(payload)
+            if (!error) return row
+            const missing = error && /Could not find the '([^']+)' column/i.test(String(error.message || ''))
+                ? String(error.message).match(/Could not find the '([^']+)' column/i)[1]
+                : null
+            if (!missing || !fields.includes(missing)) throw error
+            fields = fields.filter((f) => f !== missing)
+        }
     }
 
     async createMany(args = {}) {
