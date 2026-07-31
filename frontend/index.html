@@ -19,71 +19,217 @@
 
 <body>
     <div id="root">
-        <!-- Initial Body Loading Skeleton -->
         <style>
-            .app-loading-body {
+            :root {
+                --splash-brand: #069484;
+                --splash-brand-dark: #034c43;
+                --splash-mint: #e0f3e9;
+                --splash-gold: #d4af37;
+                --splash-text: #10221f;
+            }
+
+            html,
+            body {
+                background: var(--splash-mint);
+            }
+
+            .app-splash {
                 min-height: 100vh;
-                background-color: #0a0a0a;
-                color: #f1f5f9;
-                font-family: Cairo, Tajawal, sans-serif;
+                min-height: 100dvh;
+                display: grid;
+                place-items: center;
+                padding: 32px 18px;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.34)),
+                    linear-gradient(135deg, #e0f3e9 0%, #f7fbf8 48%, #cdebe4 100%);
+                color: var(--splash-text);
+                font-family: Cairo, Tajawal, Inter, ui-sans-serif, system-ui, sans-serif;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .app-splash::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(6, 148, 132, 0.07) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(6, 148, 132, 0.07) 1px, transparent 1px);
+                background-size: 44px 44px;
+                mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent);
+                pointer-events: none;
+            }
+
+            .app-splash__content {
+                width: min(420px, 100%);
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                align-items: center;
+                text-align: center;
+                gap: 18px;
                 position: relative;
-                overflow: hidden;
+                z-index: 1;
+                animation: splashEnter 520ms ease-out both;
             }
-            .app-loading-bar {
-                position: fixed;
-                top: 0; left: 0; right: 0;
-                height: 4px;
-                background: rgba(6, 148, 132, 0.15);
-                z-index: 9999;
-                overflow: hidden;
+
+            .app-splash__logo-ring {
+                width: 138px;
+                height: 138px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                background:
+                    linear-gradient(#ffffff, #ffffff) padding-box,
+                    linear-gradient(145deg, rgba(6, 148, 132, 0.92), rgba(212, 175, 55, 0.9)) border-box;
+                border: 3px solid transparent;
+                box-shadow: 0 22px 55px rgba(6, 78, 70, 0.18);
+                animation: logoBreath 1.9s ease-in-out infinite;
             }
-            .app-loading-bar-inner {
+
+            .app-splash__logo {
+                width: 96px;
+                height: 96px;
+                object-fit: contain;
+                display: block;
+            }
+
+            .app-splash__eyebrow {
+                margin: 2px 0 0;
+                color: var(--splash-brand-dark);
+                font-size: 12px;
+                font-weight: 800;
+            }
+
+            .app-splash__title {
+                margin: 0;
+                color: #071b18;
+                font-size: clamp(28px, 7vw, 42px);
+                font-weight: 900;
+                line-height: 1.18;
+            }
+
+            .app-splash__subtitle {
+                margin: 0;
+                max-width: 300px;
+                color: rgba(16, 34, 31, 0.72);
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 1.7;
+            }
+
+            .app-splash__loader {
+                width: min(280px, 82vw);
+                height: 8px;
+                margin-top: 8px;
+                border-radius: 999px;
+                background: rgba(6, 148, 132, 0.14);
+                overflow: hidden;
+                box-shadow: inset 0 0 0 1px rgba(6, 148, 132, 0.08);
+            }
+
+            .app-splash__loader span {
+                display: block;
+                width: 44%;
                 height: 100%;
-                width: 40%;
-                background: linear-gradient(90deg, #069484, #38bdf8, #069484);
-                animation: initialLoadingBar 1.4s infinite ease-in-out;
+                border-radius: inherit;
+                background: linear-gradient(90deg, var(--splash-brand), var(--splash-gold), var(--splash-brand));
+                animation: splashProgress 1.25s ease-in-out infinite;
             }
-            @keyframes initialLoadingBar {
-                0% { transform: translateX(-100%); }
-                100% { transform: translateX(300%); }
+
+            .app-splash__status {
+                margin: 0;
+                color: rgba(16, 34, 31, 0.62);
+                font-size: 12px;
+                font-weight: 800;
             }
-            .skeleton-box {
-                background: rgba(255, 255, 255, 0.07);
-                border-radius: 16px;
-                animation: initialPulse 1.5s infinite ease-in-out;
+
+            @media (prefers-color-scheme: dark) {
+                html,
+                body {
+                    background: #0a0a0a;
+                }
+
+                .app-splash {
+                    background:
+                        linear-gradient(180deg, rgba(10, 10, 10, 0.42), rgba(10, 10, 10, 0.9)),
+                        linear-gradient(135deg, #06231f 0%, #0a0a0a 48%, #083a34 100%);
+                    color: #f4fffb;
+                }
+
+                .app-splash::before {
+                    background-image:
+                        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+                }
+
+                .app-splash__logo-ring {
+                    background:
+                        linear-gradient(#0f1917, #0f1917) padding-box,
+                        linear-gradient(145deg, rgba(6, 148, 132, 0.96), rgba(212, 175, 55, 0.9)) border-box;
+                    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.36);
+                }
+
+                .app-splash__eyebrow {
+                    color: #8de2d5;
+                }
+
+                .app-splash__title {
+                    color: #f5fffc;
+                }
+
+                .app-splash__subtitle,
+                .app-splash__status {
+                    color: rgba(244, 255, 251, 0.68);
+                }
+
+                .app-splash__loader {
+                    background: rgba(255, 255, 255, 0.11);
+                }
             }
-            @keyframes initialPulse {
-                0%, 100% { opacity: 0.6; }
-                50% { opacity: 0.25; }
+
+            @keyframes splashEnter {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px) scale(0.98);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @keyframes logoBreath {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.025);
+                }
+            }
+
+            @keyframes splashProgress {
+                0% {
+                    transform: translateX(-135%);
+                }
+                100% {
+                    transform: translateX(235%);
+                }
             }
         </style>
-        <div class="app-loading-body" dir="rtl">
-            <div class="app-loading-bar">
-                <div class="app-loading-bar-inner"></div>
-            </div>
-            <div style="padding: 16px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div class="skeleton-box" style="width: 40px; height: 40px; border-radius: 14px;"></div>
-                    <div class="skeleton-box" style="width: 120px; height: 24px; border-radius: 8px;"></div>
+        <main class="app-splash" dir="rtl" aria-label="جاري تحميل المنصة">
+            <section class="app-splash__content">
+                <div class="app-splash__logo-ring" aria-hidden="true">
+                    <img class="app-splash__logo" src="/favicon.webp" alt="" />
                 </div>
-                <div class="skeleton-box" style="width: 100px; height: 36px; border-radius: 12px;"></div>
-            </div>
-            <div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 28px;">
-                <div class="skeleton-box" style="height: 180px; width: 100%; border-radius: 24px;"></div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
+                <p class="app-splash__eyebrow">منصة تعليمية ذكية</p>
+                <h1 class="app-splash__title">أُفُق</h1>
+                <p class="app-splash__subtitle">بنجهزلك تجربة تعليمية هادئة وسريعة</p>
+                <div class="app-splash__loader" aria-hidden="true">
+                    <span></span>
                 </div>
-            </div>
-            <div style="position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(30,30,30,0.9); border: 1px solid rgba(6,148,132,0.4); padding: 10px 22px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                <div style="width: 16px; height: 16px; border: 2px solid rgba(6,148,132,0.3); border-top-color: #069484; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-                <span style="font-size: 13px; font-weight: 600; color: #e2e8f0;">جاري تحميل المنصة...</span>
-            </div>
-        </div>
+                <p class="app-splash__status">جاري تحميل المنصة...</p>
+            </section>
+        </main>
     </div>
     <script type="module" src="/src/main.jsx"></script>
 </body>

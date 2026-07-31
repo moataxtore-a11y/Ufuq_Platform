@@ -9,13 +9,7 @@ const sizes = {
   lg: 'w-8 h-8 border-[3px]',
 }
 
-/**
- * Default Spinner — renders as a skeleton shimmer block (body loading feel)
- * unless `className` contains button-specific overrides like `border-t-white`
- * in which case it stays a small inline circular spinner.
- */
 export default function Spinner({ className, size = 'md' }) {
-  // If className contains button-spinner patterns, render a small circular spinner
   const isInlineSpinner = className && (
     className.includes('border-t-white') ||
     className.includes('w-4') ||
@@ -36,7 +30,6 @@ export default function Spinner({ className, size = 'md' }) {
     )
   }
 
-  // Otherwise render as a skeleton shimmer block
   return (
     <div className="w-full space-y-3 py-2" role="status" aria-label="Loading">
       {[1, 2, 3].map((i) => (
