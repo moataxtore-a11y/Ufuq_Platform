@@ -164,6 +164,7 @@ export default function AdminLandingLayout() {
 
       <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
+          {/* Mobile view */}
           <div className="sm:hidden">
             <div className="px-1 py-1" dir="ltr">
               <div className="flex items-center justify-between gap-2">
@@ -193,6 +194,7 @@ export default function AdminLandingLayout() {
             </div>
           </div>
 
+          {/* Desktop view */}
           <div className="hidden sm:flex justify-between items-center gap-3">
             <div className="flex items-center gap-2">
               <Link to="/" className="flex items-center gap-2">
@@ -213,9 +215,8 @@ export default function AdminLandingLayout() {
                         'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
                         isRtl ? 'flex-row-reverse' : 'flex-row',
                         isActive
-                          ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                          : 'text-slate-700 dark:text-slate-200',
-                        isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0'
+                          ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100 px-3 py-2 gap-2'
+                          : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06] px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
                       )
                     }
                     aria-label={it.label}
@@ -223,7 +224,7 @@ export default function AdminLandingLayout() {
                     {({ isActive }) => (
                       <>
                         <div className="relative inline-flex items-center justify-center shrink-0">
-                          {it.icon ? <it.icon className="w-4 h-4 shrink-0" /> : null}
+                          {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
                           {count > 0 ? (
                             <span
                               className={cn(
@@ -243,8 +244,8 @@ export default function AdminLandingLayout() {
                               ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
                               : cn(
                                   'max-w-0 opacity-0 scale-90',
-                                  isRtl ? 'translate-x-3' : '-translate-x-3',
-                                  ''
+                                  isRtl ? 'translate-x-3 group-hover:translate-x-0' : '-translate-x-3 group-hover:translate-x-0',
+                                  'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100'
                                 )
                           )}
                         >

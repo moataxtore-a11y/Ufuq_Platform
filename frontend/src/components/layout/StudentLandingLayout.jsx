@@ -176,16 +176,15 @@ export default function StudentLandingLayout() {
                     cn(
                       'group inline-flex items-center justify-center h-9 rounded-xl transition-all duration-300 ease-out',
                       isActive
-                        ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                        : 'text-slate-700 dark:text-slate-200',
-                      isActive ? 'px-3 gap-2' : 'px-2.5 gap-0'
+                        ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100 px-3 gap-2'
+                        : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06] px-2.5 gap-0 hover:px-3 hover:gap-2'
                     )
                   }
                   aria-label={it.label}
                 >
                   {({ isActive }) => (
                     <>
-                      {it.icon ? <it.icon className="w-4 h-4 shrink-0" /> : null}
+                      {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
                       <span
                         className={cn(
                           'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
@@ -194,8 +193,8 @@ export default function StudentLandingLayout() {
                             ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
                             : cn(
                                 'max-w-0 opacity-0 scale-90',
-                                isRtl ? 'translate-x-3' : '-translate-x-3',
-                                ''
+                                isRtl ? 'translate-x-3 group-hover:translate-x-0' : '-translate-x-3 group-hover:translate-x-0',
+                                'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100'
                               )
                         )}
                       >
