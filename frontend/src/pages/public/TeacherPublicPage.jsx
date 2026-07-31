@@ -102,22 +102,23 @@ export default function TeacherPublicPage() {
 
     if (teacherState.status === 'success') {
       return (
-        <div className="gap-3 grid">
-          <div className={
-            'flex items-start justify-between gap-3 ' + (isRtl ? 'flex-row-reverse' : 'flex-row')
-          }
-          >
-            <div />
-            <Button variant="secondary" onClick={() => navigate('/')}>{isRtl ? 'العودة' : 'Back'}</Button>
+        <div className="gap-4 sm:gap-6 grid w-full">
+          <div className="flex items-center justify-between gap-3 w-full">
+            <div className="font-bold text-slate-900 dark:text-white text-lg sm:text-xl truncate">
+              {teacherName}
+            </div>
+            <Button variant="secondary" size="sm" onClick={() => navigate('/')} className="shrink-0">
+              {isRtl ? 'العودة' : 'Back'}
+            </Button>
           </div>
 
-          <div className="mx-auto w-full max-w-[520px] text-center">
+          <div className="mx-auto w-full max-w-[480px] text-center px-2">
             <TeacherPortraitCard
               teacher={teacherState.item}
-              className="max-w-[520px] min-h-[430px] sm:min-h-[500px]"
+              className="w-full max-w-full sm:max-w-[460px] min-h-[340px] sm:min-h-[440px]"
             />
             {teacherState.item?.bio ? (
-              <div className="mx-auto mt-5 max-w-2xl text-slate-600 dark:text-slate-300 text-sm leading-7">
+              <div className="mx-auto mt-4 sm:mt-5 max-w-2xl text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-6 sm:leading-7 px-2">
                 {teacherState.item.bio}
               </div>
             ) : null}
@@ -127,84 +128,87 @@ export default function TeacherPublicPage() {
     }
 
     return (
-      <div className="gap-2 grid">
-        <div className="flex justify-between items-center gap-3">
-          <div className="font-extrabold text-slate-900 dark:text-white text-2xl sm:text-3xl">{teacherName}</div>
-          <Button variant="secondary" onClick={() => navigate('/')}>{isRtl ? 'العودة' : 'Back'}</Button>
+      <div className="gap-3 grid w-full">
+        <div className="flex justify-between items-center gap-3 w-full">
+          <div className="font-extrabold text-slate-900 dark:text-white text-xl sm:text-3xl truncate">{teacherName}</div>
+          <Button variant="secondary" size="sm" onClick={() => navigate('/')} className="shrink-0">{isRtl ? 'العودة' : 'Back'}</Button>
         </div>
-        {teacherState.item?.bio ? <div className="text-slate-600 dark:text-slate-300 text-sm">{teacherState.item.bio}</div> : null}
+        {teacherState.item?.bio ? <div className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm">{teacherState.item.bio}</div> : null}
       </div>
     )
   }, [isRtl, navigate, teacherName, teacherState.error, teacherState.item, teacherState.item?.bio, teacherState.status])
 
   return (
     <SiteLayout>
-      <div className="gap-5 grid" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="mx-auto px-3 sm:px-6 py-4 sm:py-6 w-full max-w-7xl gap-6 sm:gap-8 grid" dir={isRtl ? 'rtl' : 'ltr'}>
         {header}
 
         {coursesState.status === 'loading' ? (
-          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
+          <div className="flex justify-center items-center gap-2 py-8 text-slate-700 dark:text-slate-200">
             <Spinner />
             {isRtl ? 'جاري تحميل الكورسات...' : 'Loading courses...'}
           </div>
         ) : null}
 
         {coursesState.status === 'error' ? (
-          <div className="text-slate-700 dark:text-slate-200 text-sm">{coursesState.error}</div>
+          <div className="bg-red-50 dark:bg-red-950/30 p-4 border border-red-200 dark:border-red-800/40 rounded-2xl text-red-600 dark:text-red-400 text-sm text-center">
+            {coursesState.error}
+          </div>
         ) : null}
 
         {coursesState.status === 'success' && coursesState.items.length === 0 ? (
-          <div className="py-10">
-            <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
-              <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-              <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>
-                {isRtl ? 'سيتم اضافة المحتوى قريبًا' : 'Content will be added soon'}
+          <div className="py-12 bg-white/50 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className={'flex flex-col sm:flex-row items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
+              <img src={xIcon} alt="" className="w-10 h-10 shrink-0" />
+              <div className="font-semibold text-lg sm:text-xl text-center text-rose-600 dark:text-rose-400">
+                {isRtl ? 'سيتم إضافة المحتوى قريبًا' : 'Content will be added soon'}
               </div>
             </div>
           </div>
         ) : null}
 
         {coursesState.status === 'success' && coursesState.items.length > 0 ? (
-          <div className="gap-8 grid">
+          <div className="gap-8 sm:gap-10 grid w-full">
             {coursesState.items.filter((c) => !(c?.courseType === 'individual' || c?.isIndividual)).length ? (
-              <div>
-                <div className={"font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white " + (isRtl ? 'text-right' : 'text-left')}>
+              <div className="w-full">
+                <div className={"font-extrabold text-xl sm:text-2xl md:text-3xl tracking-tight text-slate-900 dark:text-white " + (isRtl ? 'text-right' : 'text-left')}>
                   {isRtl ? 'اشتراك شهري للمدرس' : 'Monthly subscription courses'}
                   <div className={"mt-2 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
-                    <div className="bg-brand/40 dark:bg-brand/40 w-28 h-px" />
+                    <div className="bg-brand w-24 sm:w-32 h-1 rounded-full opacity-70" />
                   </div>
                 </div>
 
-                <div className="items-start gap-4 grid sm:grid-cols-2 lg:grid-cols-3 mt-5">
+                <div className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-6 w-full items-stretch">
                   {coursesState.items
                     .filter((c) => !(c?.courseType === 'individual' || c?.isIndividual))
                     .map((c) => (
-                      <CourseCard
-                        key={c?.id || c?.title}
-                        course={c}
-                        isRtl={isRtl}
-                        badge={(Boolean(c?.isFree) || Number(c?.price || 0) <= 0) ? (isRtl ? 'الكورس مجاني!' : 'Free') : (isRtl ? 'مدفوع' : 'Paid')}
-                        ctaLabel={mineIds.has(String(c?.id)) ? (isRtl ? 'الدخول للكورس' : 'Enter course') : (isRtl ? 'عرض المحاضرات' : 'Preview lectures')}
-                        onOpen={() => {
-                          if (mineIds.has(String(c?.id))) {
-                            navigate(enterCourseHref(c.id))
-                            return
-                          }
-                          if (auth?.token && courseIsFree(c)) {
-                            navigate(enterCourseHref(c.id))
-                            return
-                          }
-                          navigate(`/courses/${c.id}/preview`)
-                        }}
-                      />
+                      <div key={c?.id || c?.title} className="w-full flex">
+                        <CourseCard
+                          course={c}
+                          isRtl={isRtl}
+                          badge={(Boolean(c?.isFree) || Number(c?.price || 0) <= 0) ? (isRtl ? 'الكورس مجاني!' : 'Free') : (isRtl ? 'مدفوع' : 'Paid')}
+                          ctaLabel={mineIds.has(String(c?.id)) ? (isRtl ? 'الدخول للكورس' : 'Enter course') : (isRtl ? 'عرض المحاضرات' : 'Preview lectures')}
+                          onOpen={() => {
+                            if (mineIds.has(String(c?.id))) {
+                              navigate(enterCourseHref(c.id))
+                              return
+                            }
+                            if (auth?.token && courseIsFree(c)) {
+                              navigate(enterCourseHref(c.id))
+                              return
+                            }
+                            navigate(`/courses/${c.id}/preview`)
+                          }}
+                        />
+                      </div>
                     ))}
                 </div>
               </div>
             ) : null}
 
             {coursesState.items.filter((c) => c?.courseType === 'individual' || c?.isIndividual).length ? (
-              <div>
-                <div className={"font-extrabold text-2xl sm:text-3xl tracking-tight text-slate-900 dark:text-white " + (isRtl ? 'text-right' : 'text-left')}>
+              <div className="w-full">
+                <div className={"font-extrabold text-xl sm:text-2xl md:text-3xl tracking-tight text-slate-900 dark:text-white " + (isRtl ? 'text-right' : 'text-left')}>
                   {isRtl ? (
                     <>
                       كورسات منفردة <span className="text-brand">للمدرس</span>
@@ -215,32 +219,33 @@ export default function TeacherPublicPage() {
                     </>
                   )}
                   <div className={"mt-2 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
-                    <div className="bg-brand/50 dark:bg-brand/50 w-28 h-px" />
+                    <div className="bg-brand w-24 sm:w-32 h-1 rounded-full opacity-70" />
                   </div>
                 </div>
 
-                <div className="items-start gap-4 grid sm:grid-cols-2 lg:grid-cols-3 mt-5">
+                <div className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-6 w-full items-stretch">
                   {coursesState.items
                     .filter((c) => c?.courseType === 'individual' || c?.isIndividual)
                     .map((c) => (
-                      <CourseCard
-                        key={c?.id || c?.title}
-                        course={c}
-                        isRtl={isRtl}
-                        badge={isRtl ? 'كورس منفرد' : 'Individual'}
-                        ctaLabel={mineIds.has(String(c?.id)) ? (isRtl ? 'الدخول للكورس' : 'Enter course') : (isRtl ? 'عرض المحاضرات' : 'Preview lectures')}
-                        onOpen={() => {
-                          if (mineIds.has(String(c?.id))) {
-                            navigate(enterCourseHref(c.id))
-                            return
-                          }
-                          if (auth?.token && courseIsFree(c)) {
-                            navigate(enterCourseHref(c.id))
-                            return
-                          }
-                          navigate(`/courses/${c.id}/preview`)
-                        }}
-                      />
+                      <div key={c?.id || c?.title} className="w-full flex">
+                        <CourseCard
+                          course={c}
+                          isRtl={isRtl}
+                          badge={isRtl ? 'كورس منفرد' : 'Individual'}
+                          ctaLabel={mineIds.has(String(c?.id)) ? (isRtl ? 'الدخول للكورس' : 'Enter course') : (isRtl ? 'عرض المحاضرات' : 'Preview lectures')}
+                          onOpen={() => {
+                            if (mineIds.has(String(c?.id))) {
+                              navigate(enterCourseHref(c.id))
+                              return
+                            }
+                            if (auth?.token && courseIsFree(c)) {
+                              navigate(enterCourseHref(c.id))
+                              return
+                            }
+                            navigate(`/courses/${c.id}/preview`)
+                          }}
+                        />
+                      </div>
                     ))}
                 </div>
               </div>

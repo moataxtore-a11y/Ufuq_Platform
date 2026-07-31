@@ -87,7 +87,7 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
   return (
     <div
       className={
-        'relative mx-auto aspect-[0.86] min-h-[390px] w-full max-w-[420px] overflow-hidden rounded-[34px] border border-brand/15 bg-brand shadow-[0_24px_65px_rgba(6,78,70,0.18)] dark:border-white/10 dark:shadow-none ' +
+        'relative mx-auto aspect-[0.84] sm:aspect-[0.86] min-h-[320px] sm:min-h-[400px] w-full max-w-full sm:max-w-[420px] overflow-hidden rounded-[24px] sm:rounded-[34px] border border-brand/15 bg-brand shadow-[0_20px_50px_rgba(6,78,70,0.16)] dark:border-white/10 dark:shadow-none ' +
         className
       }
       dir={isRtl ? 'rtl' : 'ltr'}
