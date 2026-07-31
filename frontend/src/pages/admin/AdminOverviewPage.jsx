@@ -47,12 +47,15 @@ export default function AdminOverviewPage() {
         <div className="text-slate-700 dark:text-slate-200 text-sm">{t('adminOverviewPage.subtitle')}</div>
       </div>
 
-      <div className="gap-3 grid md:grid-cols-5">
+      <div className="gap-3 grid md:grid-cols-4">
         <Stat title={t('adminOverviewPage.cards.users')} value={data.users} isRtl={isRtl} />
         <Stat title={t('adminOverviewPage.cards.courses')} value={data.courses} isRtl={isRtl} />
         <Stat title={t('adminOverviewPage.cards.assignments')} value={data.assignments} isRtl={isRtl} />
         <Stat title={t('adminOverviewPage.cards.submissions')} value={data.submissions} isRtl={isRtl} />
         <Stat title={t('adminOverviewPage.cards.grades')} value={data.grades} isRtl={isRtl} />
+        <Stat title={isRtl ? 'الاشتراكات' : 'Enrollments'} value={data.enrollments} isRtl={isRtl} />
+        <Stat title={isRtl ? 'الاختبارات' : 'Assessments'} value={data.assessments} isRtl={isRtl} />
+        <Stat title={isRtl ? 'محاولات الاختبار' : 'Attempts'} value={data.assessmentAttempts} isRtl={isRtl} />
       </div>
 
       <div className="bg-white dark:bg-white/[0.06] shadow-md border border-slate-300/70 dark:border-white/15 rounded-2xl overflow-hidden">

@@ -12,7 +12,10 @@ import {
   Send, 
   Award,
   UserCheck,
-  Briefcase
+  Briefcase,
+  ListChecks,
+  ClipboardCheck,
+  UserPlus
 } from 'lucide-react'
 import Spinner from '../../components/ui/Spinner.jsx'
 import { api } from '../../utils/api.js'
@@ -189,19 +192,22 @@ export default function AdminLandingPage() {
       ) : data ? (
         <div className="gap-6 grid mb-12">
           {/* Main Stats Grid */}
-          <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="gap-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4">
             <Stat title={isRtl ? 'المستخدمين' : 'Users'} value={data.users} icon={Users} delay={0} isRtl={isRtl} color="blue" />
             <Stat title={isRtl ? 'الكورسات' : 'Courses'} value={data.courses} icon={BookOpen} delay={0.1} isRtl={isRtl} color="purple" />
             <Stat title={isRtl ? 'الواجبات' : 'Assignments'} value={data.assignments} icon={FileText} delay={0.2} isRtl={isRtl} color="amber" />
             <Stat title={isRtl ? 'التسليمات' : 'Submissions'} value={data.submissions} icon={Send} delay={0.3} isRtl={isRtl} color="indigo" />
             <Stat title={isRtl ? 'الدرجات' : 'Grades'} value={data.grades} icon={Award} delay={0.4} isRtl={isRtl} color="emerald" />
+            <Stat title={isRtl ? 'الاشتراكات' : 'Enrollments'} value={data.enrollments} icon={UserPlus} delay={0.5} isRtl={isRtl} color="teal" />
+            <Stat title={isRtl ? 'الاختبارات' : 'Assessments'} value={data.assessments} icon={ListChecks} delay={0.6} isRtl={isRtl} color="sky" />
+            <Stat title={isRtl ? 'محاولات الاختبار' : 'Attempts'} value={data.assessmentAttempts} icon={ClipboardCheck} delay={0.7} isRtl={isRtl} color="violet" />
           </div>
 
           {/* Sub Stats Grid */}
           <div className="gap-4 grid md:grid-cols-3">
-            <Stat title={isRtl ? 'مدرس' : 'Teacher'} value={roleCounts.teacher} icon={GraduationCap} delay={0.5} isRtl={isRtl} size="large" color="teal" />
-            <Stat title={isRtl ? 'تيم' : 'Team'} value={roleCounts.team} icon={UserCheck} delay={0.6} isRtl={isRtl} size="large" color="sky" />
-            <Stat title={isRtl ? 'طالب' : 'Student'} value={roleCounts.student} icon={UserRound} delay={0.7} isRtl={isRtl} size="large" color="violet" />
+            <Stat title={isRtl ? 'مدرس' : 'Teacher'} value={roleCounts.teacher} icon={GraduationCap} delay={0.8} isRtl={isRtl} size="large" color="teal" />
+            <Stat title={isRtl ? 'تيم' : 'Team'} value={roleCounts.team} icon={UserCheck} delay={0.9} isRtl={isRtl} size="large" color="sky" />
+            <Stat title={isRtl ? 'طالب' : 'Student'} value={roleCounts.student} icon={UserRound} delay={1.0} isRtl={isRtl} size="large" color="violet" />
           </div>
         </div>
       ) : null}

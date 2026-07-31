@@ -283,10 +283,15 @@ const deleteUserAdmin = asyncHandler(async (req, res) => {
 })
 
 const stats = asyncHandler(async (req, res) => {
-    const [users, courses, assignments] = await Promise.all([
+    const [users, courses, assignments, submissions, grades, enrollments, assessments, assessmentAttempts] = await Promise.all([
         prisma.user.count(),
         prisma.course.count(),
-        prisma.assignment.count()
+        prisma.assignment.count(),
+        prisma.submission.count(),
+        prisma.grade.count(),
+        prisma.courseEnrollment.count(),
+        prisma.assessment.count(),
+        prisma.assessmentAttempt.count()
     ])
 
     const usersByRole = await prisma.user.groupBy({
@@ -298,6 +303,11 @@ const stats = asyncHandler(async (req, res) => {
         users,
         courses,
         assignments,
+        submissions,
+        grades,
+        enrollments,
+        assessments,
+        assessmentAttempts,
         usersByRole: usersByRole.map((r) => ({ role: r.role, count: r._count.role }))
     })
 })
