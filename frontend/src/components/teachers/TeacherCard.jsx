@@ -109,10 +109,10 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
       <div className="absolute inset-x-0 bottom-[28%] h-16 bg-white/18 blur-2xl" />
 
       <div className="absolute inset-x-0 bottom-0 z-10 flex min-h-[40%] flex-col justify-end px-5 pb-6 pt-16 text-center sm:px-7 sm:pb-7">
-        <h3 className="mx-auto m-0 max-w-full text-balance text-[clamp(26px,6.7vw,38px)] font-black leading-tight text-black">
+        <h3 className="mx-auto m-0 max-w-full text-balance text-[clamp(26px,6.7vw,38px)] font-black leading-tight text-slate-950 dark:text-slate-950">
           {name}
         </h3>
-        <p className="mx-auto mt-2 max-w-full truncate text-[clamp(17px,4.5vw,24px)] font-extrabold leading-8 text-black/85">
+        <p className="mx-auto mt-2 max-w-full truncate text-[clamp(17px,4.5vw,24px)] font-extrabold leading-8 text-slate-900/90 dark:text-slate-900/90">
           {subject}
         </p>
 
