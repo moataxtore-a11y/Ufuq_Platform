@@ -366,6 +366,7 @@ const getCourse = asyncHandler(async (req, res) => {
     }
     if (req.user.role === 'team' || req.user.role === 'student') {
         if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
+        if (req.user.role === 'student') delete course.enrollments
         return res.json(course)
     }
     return res.json(course)
@@ -456,7 +457,7 @@ const getCourseStats = asyncHandler(async (req, res) => {
     const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
 
-    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+    if (!['admin', 'teacher', 'team', 'student'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
     if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
@@ -585,12 +586,10 @@ const listUnits = asyncHandler(async (req, res) => {
     const { courseId } = req.params
     const course = await prisma.course.findUnique({ where: { id: courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+    if (!['admin', 'teacher', 'team', 'student'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
-    if (req.user.role !== 'admin' && !(await canAccessCourse(course, req.user))) {
-        return res.status(403).json({ message: 'Forbidden' })
-    }
+    if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
     const units = await prisma.unit.findMany({ where: { courseId }, orderBy: { order: 'asc' } })
     res.json(units)
 })
@@ -601,12 +600,10 @@ const listLessonsForUnit = asyncHandler(async (req, res) => {
     if (!unit) return res.status(404).json({ message: 'Unit not found' })
     const course = await prisma.course.findUnique({ where: { id: unit.courseId } })
     if (!course) return res.status(404).json({ message: 'Course not found' })
-    if (req.user.role !== 'admin' && req.user.role !== 'teacher' && req.user.role !== 'team') {
+    if (!['admin', 'teacher', 'team', 'student'].includes(req.user.role)) {
         return res.status(403).json({ message: 'Forbidden' })
     }
-    if (req.user.role !== 'admin' && !(await canAccessCourse(course, req.user))) {
-        return res.status(403).json({ message: 'Forbidden' })
-    }
+    if (!(await canAccessCourse(course, req.user))) return res.status(403).json({ message: 'Forbidden' })
     const lessons = await prisma.lesson.findMany({ where: { unitId }, orderBy: { order: 'asc' } })
     res.json(lessons)
 })
