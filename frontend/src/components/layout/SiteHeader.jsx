@@ -236,7 +236,7 @@ export default function SiteHeader() {
                     aria-label={isRtl ? 'بحث' : 'Search'}
                     title={isRtl ? 'بحث' : 'Search'}
                     onClick={openSearch}
-                    className="flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-8 h-8 text-slate-800 dark:text-slate-100 transition"
+                    className="flex justify-center items-center rounded-full w-8 h-8 text-slate-800 dark:text-slate-100"
                   >
                     <Search className="w-4 h-4" />
                   </button>
@@ -254,7 +254,7 @@ export default function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="relative flex justify-center items-center hover:bg-black/[0.04] dark:hover:bg-white/[0.08] rounded-full w-9 h-9 text-slate-800 dark:text-slate-100 transition"
+                className="relative flex justify-center items-center rounded-full w-9 h-9 text-slate-800 dark:text-slate-100"
                 aria-label={t('dashboard.ui.menu')}
                 title={t('dashboard.ui.menu')}
               >
@@ -304,8 +304,8 @@ export default function SiteHeader() {
                           isRtl ? 'flex-row-reverse' : 'flex-row',
                           isActive
                             ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                            : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
-                          isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
+                            : 'text-slate-700 dark:text-slate-200',
+                          isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0'
                         )
                       }
                       aria-label={it.label}
@@ -489,7 +489,7 @@ export default function SiteHeader() {
                                 isRtl ? 'flex-row-reverse text-right' : 'text-left',
                                 isActive
                                   ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
-                                  : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
+                                  : 'text-slate-700 dark:text-slate-200'
                               )
                             }
                           >
