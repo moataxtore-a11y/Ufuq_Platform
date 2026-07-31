@@ -9,81 +9,187 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
-    <link rel="icon" type="image/webp" href="./logo (2)_3.webp" />
-    <link rel="apple-touch-icon" href="./logo (2)_3.webp" />
-    <meta name="theme-color" content="#009688" />
+    <link rel="icon" type="image/webp" href="/favicon.webp" />
+    <link rel="shortcut icon" type="image/webp" href="/favicon.webp" />
+    <link rel="apple-touch-icon" href="/favicon.webp" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#010806" />
     <title>منصة أُفُق التعليمية</title>
-  <script type="module" crossorigin src="/assets/index-D-Qs6vFu.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BhoSf8Qa.css">
+  <script type="module" crossorigin src="/assets/index-eB9xcn6X.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-LpQs_kP2.css">
 </head>
 
 <body>
     <div id="root">
-        <!-- Initial Body Loading Skeleton -->
         <style>
-            .app-loading-body {
+            :root {
+                --splash-bg: #010806;
+                --splash-brand: #069c90;
+                --splash-curve: rgba(6, 148, 132, 0.22);
+                --splash-curve-soft: rgba(6, 148, 132, 0.12);
+            }
+
+            html,
+            body {
+                margin: 0;
+                background: var(--splash-bg);
+            }
+
+            .app-splash {
                 min-height: 100vh;
-                background-color: #0a0a0a;
-                color: #f1f5f9;
-                font-family: Cairo, Tajawal, sans-serif;
+                min-height: 100dvh;
+                display: grid;
+                place-items: center;
+                padding: 40px 22px;
+                background:
+                    radial-gradient(ellipse at 66% 45%, rgba(6, 148, 132, 0.13), transparent 32%),
+                    linear-gradient(135deg, #010806 0%, #020e0c 48%, #061f1b 100%);
+                color: #fff;
+                font-family: Cairo, Tajawal, Inter, ui-sans-serif, system-ui, sans-serif;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .app-splash__curve {
+                position: absolute;
+                pointer-events: none;
+                border-style: solid;
+                border-color: var(--splash-curve-soft);
+                border-radius: 50%;
+            }
+
+            .app-splash__curve--left {
+                width: 82vw;
+                height: 154vh;
+                left: -42vw;
+                top: -30vh;
+                border-width: 84px;
+                transform: rotate(39deg);
+            }
+
+            .app-splash__curve--center {
+                width: 64vw;
+                height: 138vh;
+                right: 11vw;
+                top: -34vh;
+                border-width: 72px;
+                border-color: rgba(6, 148, 132, 0.09);
+                transform: rotate(40deg);
+            }
+
+            .app-splash__curve--right {
+                width: 48vw;
+                height: 150vh;
+                right: -24vw;
+                top: -28vh;
+                border-width: 62px;
+                border-color: var(--splash-curve);
+                transform: rotate(16deg);
+            }
+
+            .app-splash__content {
+                position: relative;
+                z-index: 2;
+                width: min(900px, 100%);
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
-                position: relative;
-                overflow: hidden;
+                align-items: center;
+                text-align: center;
+                transform: translateY(-18px);
+                animation: splashEnter 560ms ease-out both;
             }
-            .app-loading-bar {
-                position: fixed;
-                top: 0; left: 0; right: 0;
-                height: 4px;
-                background: rgba(6, 148, 132, 0.15);
-                z-index: 9999;
-                overflow: hidden;
+
+            .app-splash__logo {
+                width: clamp(270px, 39vw, 535px);
+                height: auto;
+                display: block;
+                -o-object-fit: contain;
+                   object-fit: contain;
+                filter: drop-shadow(0 22px 45px rgba(0, 0, 0, 0.22));
             }
-            .app-loading-bar-inner {
-                height: 100%;
-                width: 40%;
-                background: linear-gradient(90deg, #069484, #38bdf8, #069484);
-                animation: initialLoadingBar 1.4s infinite ease-in-out;
+
+            .app-splash__tagline {
+                margin: clamp(34px, 5.2vh, 56px) 0 0;
+                color: rgba(255, 255, 255, 0.96);
+                font-size: clamp(19px, 2.35vw, 34px);
+                font-weight: 700;
+                line-height: 1.65;
+                letter-spacing: 0;
+                text-wrap: balance;
             }
-            @keyframes initialLoadingBar {
-                0% { transform: translateX(-100%); }
-                100% { transform: translateX(300%); }
+
+            @media (max-width: 640px) {
+                .app-splash {
+                    padding: 34px 18px;
+                }
+
+                .app-splash__curve--left {
+                    width: 112vw;
+                    height: 142vh;
+                    left: -74vw;
+                    top: -24vh;
+                    border-width: 48px;
+                }
+
+                .app-splash__curve--center {
+                    width: 96vw;
+                    height: 128vh;
+                    right: -18vw;
+                    top: -32vh;
+                    border-width: 42px;
+                }
+
+                .app-splash__curve--right {
+                    width: 90vw;
+                    height: 128vh;
+                    right: -62vw;
+                    top: -20vh;
+                    border-width: 44px;
+                }
+
+                .app-splash__content {
+                    transform: translateY(-8px);
+                }
+
+                .app-splash__logo {
+                    width: min(78vw, 340px);
+                }
             }
-            .skeleton-box {
-                background: rgba(255, 255, 255, 0.07);
-                border-radius: 16px;
-                animation: initialPulse 1.5s infinite ease-in-out;
+
+            @keyframes splashEnter {
+                from {
+                    opacity: 0;
+                    transform: translateY(-4px) scale(0.985);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(-18px) scale(1);
+                }
             }
-            @keyframes initialPulse {
-                0%, 100% { opacity: 0.6; }
-                50% { opacity: 0.25; }
+
+            @media (max-width: 640px) {
+                @keyframes splashEnter {
+                    from {
+                        opacity: 0;
+                        transform: translateY(6px) scale(0.985);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(-8px) scale(1);
+                    }
+                }
             }
         </style>
-        <div class="app-loading-body" dir="rtl">
-            <div class="app-loading-bar">
-                <div class="app-loading-bar-inner"></div>
-            </div>
-            <div style="padding: 16px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div class="skeleton-box" style="width: 40px; height: 40px; border-radius: 14px;"></div>
-                    <div class="skeleton-box" style="width: 120px; height: 24px; border-radius: 8px;"></div>
-                </div>
-                <div class="skeleton-box" style="width: 100px; height: 36px; border-radius: 12px;"></div>
-            </div>
-            <div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 28px;">
-                <div class="skeleton-box" style="height: 180px; width: 100%; border-radius: 24px;"></div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
-                    <div class="skeleton-box" style="height: 200px; border-radius: 24px;"></div>
-                </div>
-            </div>
-            <div style="position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(30,30,30,0.9); border: 1px solid rgba(6,148,132,0.4); padding: 10px 22px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                <div style="width: 16px; height: 16px; border: 2px solid rgba(6,148,132,0.3); border-top-color: #069484; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-                <span style="font-size: 13px; font-weight: 600; color: #e2e8f0;">جاري تحميل المنصة...</span>
-            </div>
-        </div>
+        <main class="app-splash" dir="rtl" aria-label="جاري تحميل منصة أفق">
+            <div class="app-splash__curve app-splash__curve--left" aria-hidden="true"></div>
+            <div class="app-splash__curve app-splash__curve--center" aria-hidden="true"></div>
+            <div class="app-splash__curve app-splash__curve--right" aria-hidden="true"></div>
+
+            <section class="app-splash__content">
+                <img class="app-splash__logo" src="/favicon.webp" alt="أُفُق" />
+                <p class="app-splash__tagline">منصة تعليمية متكاملة و مصممة لتكون مساعد لجميع الطلاب</p>
+            </section>
+        </main>
     </div>
 </body>
 

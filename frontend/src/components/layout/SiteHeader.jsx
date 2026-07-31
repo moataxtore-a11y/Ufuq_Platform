@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { BarChart3, BookOpen, CheckCircle, ClipboardCheck, ClipboardList, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogIn, LogOut, Menu, MessageSquareQuote, Search, UserPlus, Users } from 'lucide-react'
+import { BarChart3, BookOpen, CheckCircle, ClipboardCheck, ClipboardList, GraduationCap, KeyRound, LayoutDashboard, ListChecks, LogIn, LogOut, Menu, MessageSquareQuote, Search, UserPlus, Users, Wallet } from 'lucide-react'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
 import Button from '../ui/Button.jsx'
 import logo from '../../cvg/logo (2)_3.webp'
@@ -29,6 +29,7 @@ export default function SiteHeader() {
   const [me, setMe] = useState(null)
 
   const [badgeTotal, setBadgeTotal] = useState(0)
+  const [badgeCounts, setBadgeCounts] = useState({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
 
   const loggedIn = Boolean(auth?.token)
 
@@ -87,16 +88,27 @@ export default function SiteHeader() {
       if (role !== 'admin' && role !== 'teacher' && role !== 'team') {
         if (!alive) return
         setBadgeTotal(0)
+        setBadgeCounts({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
         return
       }
       try {
         const res = await api.get('/notifications/badges')
+        const pendingStudents = Number(res?.data?.pendingStudents || 0)
+        const joinTeamApplications = Number(res?.data?.joinTeamApplications || 0)
+        const pendingTopups = Number(res?.data?.pendingTopups || 0)
         const total = Number(res?.data?.total || 0)
         if (!alive) return
-        setBadgeTotal(Number.isFinite(total) ? total : 0)
+        const safePending = Number.isFinite(pendingStudents) ? pendingStudents : 0
+        const safeApps = Number.isFinite(joinTeamApplications) ? joinTeamApplications : 0
+        const safeTopups = Number.isFinite(pendingTopups) ? pendingTopups : 0
+        const safeTotal = Number.isFinite(total) ? total : safePending + safeApps + safeTopups
+
+        setBadgeCounts({ pendingStudents: safePending, joinTeamApplications: safeApps, pendingTopups: safeTopups, total: safeTotal })
+        setBadgeTotal(safeTotal)
       } catch {
         if (!alive) return
         setBadgeTotal(0)
+        setBadgeCounts({ pendingStudents: 0, joinTeamApplications: 0, pendingTopups: 0, total: 0 })
       }
     }
 
@@ -181,6 +193,7 @@ export default function SiteHeader() {
         { to: '/admin', icon: LayoutDashboard, label: t('dashboard.nav.overview') },
         { to: '/admin/users', icon: Users, label: t('dashboard.nav.users') },
         { to: '/admin/courses', icon: BookOpen, label: isRtl ? 'إدارة الكورسات' : 'Courses' },
+        { to: '/admin/wallet-topups', icon: Wallet, label: isRtl ? 'طلبات الشحن' : 'Topups' },
         { to: '/admin/approvals', icon: CheckCircle, label: t('dashboard.nav.approvals') },
         { to: '/admin/applications', icon: ClipboardList, label: t('dashboard.nav.applications') },
         { to: '/admin/motivational-message', icon: MessageSquareQuote, label: isRtl ? 'رسالة للطلاب' : 'Student message' },
@@ -190,6 +203,14 @@ export default function SiteHeader() {
 
     return []
   }, [auth?.role, isRtl, t])
+
+  function getLinkBadgeCount(path) {
+    if (!path) return 0
+    if (path.includes('/approvals')) return badgeCounts.pendingStudents || 0
+    if (path.includes('/applications')) return badgeCounts.joinTeamApplications || 0
+    if (path.includes('/wallet-topups')) return badgeCounts.pendingTopups || 0
+    return 0
+  }
 
   return (
     <>
@@ -270,45 +291,60 @@ export default function SiteHeader() {
             </div>
 
               <nav className={cn('hidden md:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                {quickLinks.map((it) => (
-                  <NavLink
-                    key={it.to}
-                    to={it.to}
-                    end={it.to === '/admin' || it.to === '/teacher' || it.to === '/team' || it.to === '/student'}
-                    className={({ isActive }) =>
-                      cn(
-                        'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
-                        isRtl ? 'flex-row-reverse' : 'flex-row',
-                        isActive
-                          ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
-                          : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
-                        isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
-                      )
-                    }
-                    aria-label={it.label}
-                  >
-                    {({ isActive }) => (
-                      <>
-                        {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
-                        <span
-                          className={cn(
-                            'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
-                            isRtl ? 'origin-right' : 'origin-left',
-                            isActive
-                              ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
-                              : cn(
-                                  'max-w-0 opacity-0 scale-90',
-                                  isRtl ? 'translate-x-3' : '-translate-x-3',
-                                  'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
-                                )
-                          )}
-                        >
-                          {it.label}
-                        </span>
-                      </>
-                    )}
-                  </NavLink>
-                ))}
+                {quickLinks.map((it) => {
+                  const count = getLinkBadgeCount(it.to)
+                  return (
+                    <NavLink
+                      key={it.to}
+                      to={it.to}
+                      end={it.to === '/admin' || it.to === '/teacher' || it.to === '/team' || it.to === '/student'}
+                      className={({ isActive }) =>
+                        cn(
+                          'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
+                          isRtl ? 'flex-row-reverse' : 'flex-row',
+                          isActive
+                            ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
+                            : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]',
+                          isActive ? 'px-3 py-2 gap-2' : 'px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'
+                        )
+                      }
+                      aria-label={it.label}
+                    >
+                      {({ isActive }) => (
+                        <>
+                          <div className="relative inline-flex items-center justify-center shrink-0">
+                            {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
+                            {count > 0 ? (
+                              <span
+                                className={cn(
+                                  '-top-1.5 absolute flex items-center justify-center bg-rose-600 border-2 border-white dark:border-slate-950 rounded-full min-w-[16px] h-4 px-1 text-[9px] font-black text-white leading-none shadow-sm z-10 pointer-events-none',
+                                  isRtl ? '-left-2' : '-right-2'
+                                )}
+                              >
+                                {count > 99 ? '99+' : count}
+                              </span>
+                            ) : null}
+                          </div>
+                          <span
+                            className={cn(
+                              'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
+                              isRtl ? 'origin-right' : 'origin-left',
+                              isActive
+                                ? 'max-w-[120px] opacity-100 scale-100 translate-x-0'
+                                : cn(
+                                    'max-w-0 opacity-0 scale-90',
+                                    isRtl ? 'translate-x-3' : '-translate-x-3',
+                                    'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
+                                  )
+                            )}
+                          >
+                            {it.label}
+                          </span>
+                        </>
+                      )}
+                    </NavLink>
+                  )
+                })}
               </nav>
 
               <div className="flex items-center gap-2">
@@ -439,26 +475,51 @@ export default function SiteHeader() {
 
                   {quickLinks.length ? (
                     <div className="gap-1 grid mt-1">
-                      {quickLinks.map((it) => (
-                        <NavLink
-                          key={it.to}
-                          to={it.to}
-                          end={it.to === dashboardHref()}
-                          onClick={() => setOpen(false)}
-                          className={({ isActive }) =>
-                            cn(
-                              'flex items-center gap-2 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
-                              isRtl ? 'flex-row-reverse text-right' : 'text-left',
-                              isActive
-                                ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
-                                : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
-                            )
-                          }
-                        >
-                          {it.icon ? <it.icon className="w-4 h-4" /> : null}
-                          <span className="truncate">{it.label}</span>
-                        </NavLink>
-                      ))}
+                      {quickLinks.map((it) => {
+                        const count = getLinkBadgeCount(it.to)
+                        return (
+                          <NavLink
+                            key={it.to}
+                            to={it.to}
+                            end={it.to === dashboardHref()}
+                            onClick={() => setOpen(false)}
+                            className={({ isActive }) =>
+                              cn(
+                                'flex items-center gap-2.5 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
+                                isRtl ? 'flex-row-reverse text-right' : 'text-left',
+                                isActive
+                                  ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
+                                  : 'text-slate-700 hover:bg-black/[0.03] dark:text-slate-200 dark:hover:bg-white/[0.06]'
+                              )
+                            }
+                          >
+                            <div className="relative inline-flex items-center justify-center shrink-0">
+                              {it.icon ? <it.icon className="w-4 h-4 shrink-0" /> : null}
+                              {count > 0 ? (
+                                <span
+                                  className={cn(
+                                    '-top-1.5 absolute flex items-center justify-center bg-rose-600 border-2 border-white dark:border-slate-950 rounded-full min-w-[16px] h-4 px-1 text-[9px] font-black text-white leading-none shadow-sm z-10 pointer-events-none',
+                                    isRtl ? '-left-2' : '-right-2'
+                                  )}
+                                >
+                                  {count > 99 ? '99+' : count}
+                                </span>
+                              ) : null}
+                            </div>
+                            <span className="truncate">{it.label}</span>
+                            {count > 0 ? (
+                              <span
+                                className={cn(
+                                  'inline-flex justify-center items-center bg-rose-600 px-1.5 rounded-full min-w-5 h-5 text-[11px] font-bold text-white shadow-sm',
+                                  isRtl ? 'mr-auto' : 'ml-auto'
+                                )}
+                              >
+                                {count > 99 ? '99+' : count}
+                              </span>
+                            ) : null}
+                          </NavLink>
+                        )
+                      })}
                     </div>
                   ) : null}
                 </div>
