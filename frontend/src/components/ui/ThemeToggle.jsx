@@ -38,7 +38,7 @@ export default function ThemeToggle({ className = '' }) {
 
   const knobCls = useMemo(() => {
     return (
-      'absolute top-1/2 left-0 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-[#FCF9F4] dark:bg-slate-800 shadow-md transition-transform duration-200 ease-out ' +
+      'absolute top-1/2 left-0 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-[#DDF8F5] dark:bg-slate-800 shadow-md transition-transform duration-200 ease-out ' +
       (isDark ? 'translate-x-[44px]' : 'translate-x-[4px]')
     )
   }, [isDark])

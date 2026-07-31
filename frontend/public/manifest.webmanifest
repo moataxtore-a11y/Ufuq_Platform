@@ -4,8 +4,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#E0F3E9",
-  "theme_color": "#009688",
+  "background_color": "#010806",
+  "theme_color": "#010806",
   "icons": [
     {
       "src": "/favicon.webp",

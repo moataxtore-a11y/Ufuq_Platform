@@ -1,43 +1,32 @@
 import logo from '../../cvg/logo (2)_3.webp'
 import { cn } from '../../utils/cn.js'
 
-export default function BodyLoading({ message = 'جاري التحميل...', className }) {
+export default function BodyLoading({
+  message = 'منصة تعليمية متكاملة و مصممة لتكون مساعد لجميع الطلاب',
+  className,
+}) {
   return (
     <div
       className={cn(
-        'min-h-screen min-h-dvh w-full overflow-hidden relative grid place-items-center px-5 py-8',
-        'bg-[#E0F3E9] text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100',
+        'relative grid min-h-screen min-h-dvh w-full place-items-center overflow-hidden bg-[#010806] px-5 py-10 text-white',
         className
       )}
       dir="rtl"
       role="status"
       aria-live="polite"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,255,255,0.32)),linear-gradient(135deg,#E0F3E9_0%,#F7FBF8_48%,#CDEBE4_100%)] dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.42),rgba(10,10,10,0.9)),linear-gradient(135deg,#06231F_0%,#0A0A0A_48%,#083A34_100%)]" />
-      <div className="absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(6,148,132,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(6,148,132,0.07)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_78%,transparent)] dark:opacity-45 dark:[background-image:linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_66%_45%,rgba(6,148,132,0.13),transparent_32%),linear-gradient(135deg,#010806_0%,#020E0C_48%,#061F1B_100%)]" />
+      <div className="pointer-events-none absolute -left-[42vw] -top-[30vh] h-[154vh] w-[82vw] rotate-[39deg] rounded-full border-[84px] border-solid border-[rgba(6,148,132,0.12)] max-sm:-left-[74vw] max-sm:-top-[24vh] max-sm:h-[142vh] max-sm:w-[112vw] max-sm:border-[48px]" />
+      <div className="pointer-events-none absolute right-[11vw] -top-[34vh] h-[138vh] w-[64vw] rotate-[40deg] rounded-full border-[72px] border-solid border-[rgba(6,148,132,0.09)] max-sm:-right-[18vw] max-sm:-top-[32vh] max-sm:h-[128vh] max-sm:w-[96vw] max-sm:border-[42px]" />
+      <div className="pointer-events-none absolute -right-[24vw] -top-[28vh] h-[150vh] w-[48vw] rotate-[16deg] rounded-full border-[62px] border-solid border-[rgba(6,148,132,0.22)] max-sm:-right-[62vw] max-sm:-top-[20vh] max-sm:h-[128vh] max-sm:w-[90vw] max-sm:border-[44px]" />
 
-      <section className="relative z-10 flex w-full max-w-[420px] animate-slide-up flex-col items-center gap-4 text-center">
-        <div className="grid h-[138px] w-[138px] place-items-center rounded-full border-[3px] border-transparent bg-[linear-gradient(#fff,#fff)_padding-box,linear-gradient(145deg,rgba(6,148,132,0.92),rgba(212,175,55,0.9))_border-box] shadow-[0_22px_55px_rgba(6,78,70,0.18)] dark:bg-[linear-gradient(#0f1917,#0f1917)_padding-box,linear-gradient(145deg,rgba(6,148,132,0.96),rgba(212,175,55,0.9))_border-box] dark:shadow-[0_26px_70px_rgba(0,0,0,0.36)]">
-          <img src={logo} alt="" className="block h-24 w-24 object-contain" />
-        </div>
-
-        <div className="space-y-2">
-          <p className="m-0 text-xs font-extrabold text-brand-800 dark:text-brand-200">
-            منصة تعليمية ذكية
-          </p>
-          <h1 className="m-0 text-[clamp(28px,7vw,42px)] font-black leading-tight text-[#071B18] dark:text-[#F5FFFC]">
-            أُفُق
-          </h1>
-          <p className="mx-auto m-0 max-w-[300px] text-sm font-bold leading-7 text-slate-700/75 dark:text-slate-100/70">
-            بنجهزلك تجربة تعليمية هادئة وسريعة
-          </p>
-        </div>
-
-        <div className="mt-2 h-2 w-[min(280px,82vw)] overflow-hidden rounded-full bg-brand/15 shadow-[inset_0_0_0_1px_rgba(6,148,132,0.08)] dark:bg-white/10">
-          <div className="h-full w-[44%] rounded-full bg-gradient-to-r from-brand via-[#D4AF37] to-brand animate-[loadingBar_1.35s_ease-in-out_infinite]" />
-        </div>
-
-        <p className="m-0 text-xs font-extrabold text-slate-700/60 dark:text-slate-100/65">
+      <section className="relative z-10 flex w-full max-w-[900px] -translate-y-2 flex-col items-center text-center sm:-translate-y-[18px]">
+        <img
+          src={logo}
+          alt="أُفُق"
+          className="block h-auto w-[min(78vw,340px)] object-contain drop-shadow-[0_22px_45px_rgba(0,0,0,0.22)] sm:w-[clamp(270px,39vw,535px)]"
+        />
+        <p className="m-0 mt-9 max-w-full text-balance text-[clamp(19px,2.35vw,34px)] font-bold leading-[1.65] text-white/95 sm:mt-12">
           {message}
         </p>
       </section>

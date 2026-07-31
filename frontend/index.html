@@ -13,7 +13,7 @@
     <link rel="shortcut icon" type="image/webp" href="/favicon.webp" />
     <link rel="apple-touch-icon" href="/favicon.webp" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#009688" />
+    <meta name="theme-color" content="#010806" />
     <title>منصة أُفُق التعليمية</title>
 </head>
 
@@ -21,16 +21,16 @@
     <div id="root">
         <style>
             :root {
-                --splash-brand: #069484;
-                --splash-brand-dark: #034c43;
-                --splash-mint: #e0f3e9;
-                --splash-gold: #d4af37;
-                --splash-text: #10221f;
+                --splash-bg: #010806;
+                --splash-brand: #069c90;
+                --splash-curve: rgba(6, 148, 132, 0.22);
+                --splash-curve-soft: rgba(6, 148, 132, 0.12);
             }
 
             html,
             body {
-                background: var(--splash-mint);
+                margin: 0;
+                background: var(--splash-bg);
             }
 
             .app-splash {
@@ -38,196 +38,153 @@
                 min-height: 100dvh;
                 display: grid;
                 place-items: center;
-                padding: 32px 18px;
+                padding: 40px 22px;
                 background:
-                    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.34)),
-                    linear-gradient(135deg, #e0f3e9 0%, #f7fbf8 48%, #cdebe4 100%);
-                color: var(--splash-text);
+                    radial-gradient(ellipse at 66% 45%, rgba(6, 148, 132, 0.13), transparent 32%),
+                    linear-gradient(135deg, #010806 0%, #020e0c 48%, #061f1b 100%);
+                color: #fff;
                 font-family: Cairo, Tajawal, Inter, ui-sans-serif, system-ui, sans-serif;
                 overflow: hidden;
                 position: relative;
             }
 
-            .app-splash::before {
-                content: "";
+            .app-splash__curve {
                 position: absolute;
-                inset: 0;
-                background-image:
-                    linear-gradient(rgba(6, 148, 132, 0.07) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(6, 148, 132, 0.07) 1px, transparent 1px);
-                background-size: 44px 44px;
-                mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent);
                 pointer-events: none;
+                border-style: solid;
+                border-color: var(--splash-curve-soft);
+                border-radius: 50%;
+            }
+
+            .app-splash__curve--left {
+                width: 82vw;
+                height: 154vh;
+                left: -42vw;
+                top: -30vh;
+                border-width: 84px;
+                transform: rotate(39deg);
+            }
+
+            .app-splash__curve--center {
+                width: 64vw;
+                height: 138vh;
+                right: 11vw;
+                top: -34vh;
+                border-width: 72px;
+                border-color: rgba(6, 148, 132, 0.09);
+                transform: rotate(40deg);
+            }
+
+            .app-splash__curve--right {
+                width: 48vw;
+                height: 150vh;
+                right: -24vw;
+                top: -28vh;
+                border-width: 62px;
+                border-color: var(--splash-curve);
+                transform: rotate(16deg);
             }
 
             .app-splash__content {
-                width: min(420px, 100%);
+                position: relative;
+                z-index: 2;
+                width: min(900px, 100%);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
-                gap: 18px;
-                position: relative;
-                z-index: 1;
-                animation: splashEnter 520ms ease-out both;
-            }
-
-            .app-splash__logo-ring {
-                width: 138px;
-                height: 138px;
-                border-radius: 50%;
-                display: grid;
-                place-items: center;
-                background:
-                    linear-gradient(#ffffff, #ffffff) padding-box,
-                    linear-gradient(145deg, rgba(6, 148, 132, 0.92), rgba(212, 175, 55, 0.9)) border-box;
-                border: 3px solid transparent;
-                box-shadow: 0 22px 55px rgba(6, 78, 70, 0.18);
-                animation: logoBreath 1.9s ease-in-out infinite;
+                transform: translateY(-18px);
+                animation: splashEnter 560ms ease-out both;
             }
 
             .app-splash__logo {
-                width: 96px;
-                height: 96px;
+                width: clamp(270px, 39vw, 535px);
+                height: auto;
+                display: block;
                 object-fit: contain;
-                display: block;
+                filter: drop-shadow(0 22px 45px rgba(0, 0, 0, 0.22));
             }
 
-            .app-splash__eyebrow {
-                margin: 2px 0 0;
-                color: var(--splash-brand-dark);
-                font-size: 12px;
-                font-weight: 800;
-            }
-
-            .app-splash__title {
-                margin: 0;
-                color: #071b18;
-                font-size: clamp(28px, 7vw, 42px);
-                font-weight: 900;
-                line-height: 1.18;
-            }
-
-            .app-splash__subtitle {
-                margin: 0;
-                max-width: 300px;
-                color: rgba(16, 34, 31, 0.72);
-                font-size: 14px;
+            .app-splash__tagline {
+                margin: clamp(34px, 5.2vh, 56px) 0 0;
+                color: rgba(255, 255, 255, 0.96);
+                font-size: clamp(19px, 2.35vw, 34px);
                 font-weight: 700;
-                line-height: 1.7;
+                line-height: 1.65;
+                letter-spacing: 0;
+                text-wrap: balance;
             }
 
-            .app-splash__loader {
-                width: min(280px, 82vw);
-                height: 8px;
-                margin-top: 8px;
-                border-radius: 999px;
-                background: rgba(6, 148, 132, 0.14);
-                overflow: hidden;
-                box-shadow: inset 0 0 0 1px rgba(6, 148, 132, 0.08);
-            }
-
-            .app-splash__loader span {
-                display: block;
-                width: 44%;
-                height: 100%;
-                border-radius: inherit;
-                background: linear-gradient(90deg, var(--splash-brand), var(--splash-gold), var(--splash-brand));
-                animation: splashProgress 1.25s ease-in-out infinite;
-            }
-
-            .app-splash__status {
-                margin: 0;
-                color: rgba(16, 34, 31, 0.62);
-                font-size: 12px;
-                font-weight: 800;
-            }
-
-            @media (prefers-color-scheme: dark) {
-                html,
-                body {
-                    background: #0a0a0a;
-                }
-
+            @media (max-width: 640px) {
                 .app-splash {
-                    background:
-                        linear-gradient(180deg, rgba(10, 10, 10, 0.42), rgba(10, 10, 10, 0.9)),
-                        linear-gradient(135deg, #06231f 0%, #0a0a0a 48%, #083a34 100%);
-                    color: #f4fffb;
+                    padding: 34px 18px;
                 }
 
-                .app-splash::before {
-                    background-image:
-                        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+                .app-splash__curve--left {
+                    width: 112vw;
+                    height: 142vh;
+                    left: -74vw;
+                    top: -24vh;
+                    border-width: 48px;
                 }
 
-                .app-splash__logo-ring {
-                    background:
-                        linear-gradient(#0f1917, #0f1917) padding-box,
-                        linear-gradient(145deg, rgba(6, 148, 132, 0.96), rgba(212, 175, 55, 0.9)) border-box;
-                    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.36);
+                .app-splash__curve--center {
+                    width: 96vw;
+                    height: 128vh;
+                    right: -18vw;
+                    top: -32vh;
+                    border-width: 42px;
                 }
 
-                .app-splash__eyebrow {
-                    color: #8de2d5;
+                .app-splash__curve--right {
+                    width: 90vw;
+                    height: 128vh;
+                    right: -62vw;
+                    top: -20vh;
+                    border-width: 44px;
                 }
 
-                .app-splash__title {
-                    color: #f5fffc;
+                .app-splash__content {
+                    transform: translateY(-8px);
                 }
 
-                .app-splash__subtitle,
-                .app-splash__status {
-                    color: rgba(244, 255, 251, 0.68);
-                }
-
-                .app-splash__loader {
-                    background: rgba(255, 255, 255, 0.11);
+                .app-splash__logo {
+                    width: min(78vw, 340px);
                 }
             }
 
             @keyframes splashEnter {
                 from {
                     opacity: 0;
-                    transform: translateY(10px) scale(0.98);
+                    transform: translateY(-4px) scale(0.985);
                 }
                 to {
                     opacity: 1;
-                    transform: translateY(0) scale(1);
+                    transform: translateY(-18px) scale(1);
                 }
             }
 
-            @keyframes logoBreath {
-                0%, 100% {
-                    transform: scale(1);
-                }
-                50% {
-                    transform: scale(1.025);
-                }
-            }
-
-            @keyframes splashProgress {
-                0% {
-                    transform: translateX(-135%);
-                }
-                100% {
-                    transform: translateX(235%);
+            @media (max-width: 640px) {
+                @keyframes splashEnter {
+                    from {
+                        opacity: 0;
+                        transform: translateY(6px) scale(0.985);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(-8px) scale(1);
+                    }
                 }
             }
         </style>
-        <main class="app-splash" dir="rtl" aria-label="جاري تحميل المنصة">
+        <main class="app-splash" dir="rtl" aria-label="جاري تحميل منصة أفق">
+            <div class="app-splash__curve app-splash__curve--left" aria-hidden="true"></div>
+            <div class="app-splash__curve app-splash__curve--center" aria-hidden="true"></div>
+            <div class="app-splash__curve app-splash__curve--right" aria-hidden="true"></div>
+
             <section class="app-splash__content">
-                <div class="app-splash__logo-ring" aria-hidden="true">
-                    <img class="app-splash__logo" src="/favicon.webp" alt="" />
-                </div>
-                <p class="app-splash__eyebrow">منصة تعليمية ذكية</p>
-                <h1 class="app-splash__title">أُفُق</h1>
-                <p class="app-splash__subtitle">بنجهزلك تجربة تعليمية هادئة وسريعة</p>
-                <div class="app-splash__loader" aria-hidden="true">
-                    <span></span>
-                </div>
-                <p class="app-splash__status">جاري تحميل المنصة...</p>
+                <img class="app-splash__logo" src="/favicon.webp" alt="أُفُق" />
+                <p class="app-splash__tagline">منصة تعليمية متكاملة و مصممة لتكون مساعد لجميع الطلاب</p>
             </section>
         </main>
     </div>
