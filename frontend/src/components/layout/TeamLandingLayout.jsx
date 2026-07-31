@@ -160,7 +160,7 @@ export default function TeamLandingLayout() {
               </Link>
             </div>
 
-            <nav className={cn('hidden sm:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <nav className="hidden sm:flex items-center gap-0.5">
               {quickLinks.map((it) => {
                 const count = getLinkBadgeCount(it.to)
                 return (
@@ -171,7 +171,6 @@ export default function TeamLandingLayout() {
                     className={({ isActive }) =>
                       cn(
                         'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
-                        isRtl ? 'flex-row-reverse' : 'flex-row',
                         isActive
                           ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100 px-3 py-2 gap-2'
                           : 'text-slate-700 hover:bg-black/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06] px-2.5 py-2 gap-0 hover:px-3 hover:gap-2'

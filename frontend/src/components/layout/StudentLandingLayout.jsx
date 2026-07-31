@@ -300,8 +300,7 @@ export default function StudentLandingLayout() {
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
                       cn(
-                        'flex items-center gap-2 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
-                        isRtl ? 'flex-row-reverse text-right' : 'text-left',
+                        'flex items-center gap-2.5 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
                         isActive
                           ? 'bg-brand/20 text-brand-900 dark:text-brand-100'
                           : 'text-slate-700 dark:text-slate-200'

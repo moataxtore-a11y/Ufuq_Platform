@@ -269,8 +269,8 @@ export default function SiteHeader() {
           </div>
 
           {loggedIn ? (
-            <div className={"hidden md:flex justify-between items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
-              <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
+            <div className="hidden md:flex justify-between items-center gap-3">
+              <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
@@ -290,7 +290,7 @@ export default function SiteHeader() {
               <ThemeToggle className="shrink-0" />
             </div>
 
-              <nav className={cn('hidden md:flex items-center gap-0.5', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+              <nav className="hidden md:flex items-center gap-0.5">
                 {quickLinks.map((it) => {
                   const count = getLinkBadgeCount(it.to)
                   return (
@@ -301,7 +301,6 @@ export default function SiteHeader() {
                       className={({ isActive }) =>
                         cn(
                           'group inline-flex items-center rounded-xl transition-all duration-300 ease-out',
-                          isRtl ? 'flex-row-reverse' : 'flex-row',
                           isActive
                             ? 'bg-black/[0.06] dark:bg-white/[0.08] text-slate-900 dark:text-slate-100'
                             : 'text-slate-700 dark:text-slate-200',
