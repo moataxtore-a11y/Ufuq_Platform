@@ -164,7 +164,7 @@ export default function AppShell({ title, titleKey }) {
                     {isRtl ? 'ج.م' : 'EGP'}
                   </span>
                 </div>
-                <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-7 h-7 shadow-sm text-slate-950 shrink-0 my-auto group-hover:rotate-12 transition-transform duration-300">
+                <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-7 h-7 shadow-sm text-slate-950 shrink-0 my-auto">
                   <Wallet className="w-4 h-4 stroke-[2.5]" />
                 </span>
               </button>

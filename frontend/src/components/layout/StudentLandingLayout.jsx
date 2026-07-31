@@ -95,7 +95,7 @@ export default function StudentLandingLayout() {
             {isRtl ? 'ج.م' : 'EGP'}
           </span>
         </div>
-        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-6 h-6 sm:w-7 sm:h-7 shadow-sm text-slate-950 shrink-0 group-hover:rotate-12 transition-transform duration-300">
+        <span className="inline-flex items-center justify-center bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 rounded-full w-6 h-6 sm:w-7 sm:h-7 shadow-sm text-slate-950 shrink-0">
           <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
         </span>
       </button>
@@ -185,7 +185,7 @@ export default function StudentLandingLayout() {
                 >
                   {({ isActive }) => (
                     <>
-                      {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
+                      {it.icon ? <it.icon className="w-4 h-4 shrink-0" /> : null}
                       <span
                         className={cn(
                           'inline-block text-xs font-bold truncate transition-all duration-300 ease-out overflow-hidden whitespace-nowrap transform',
@@ -195,7 +195,7 @@ export default function StudentLandingLayout() {
                             : cn(
                                 'max-w-0 opacity-0 scale-90',
                                 isRtl ? 'translate-x-3' : '-translate-x-3',
-                                'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
+                                ''
                               )
                         )}
                       >

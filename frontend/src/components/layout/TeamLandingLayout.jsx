@@ -183,7 +183,7 @@ export default function TeamLandingLayout() {
                     {({ isActive }) => (
                       <>
                         <div className="relative inline-flex items-center justify-center shrink-0">
-                          {it.icon ? <it.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> : null}
+                          {it.icon ? <it.icon className="w-4 h-4 shrink-0" /> : null}
                           {count > 0 ? (
                             <span
                               className={cn(
@@ -204,7 +204,7 @@ export default function TeamLandingLayout() {
                               : cn(
                                   'max-w-0 opacity-0 scale-90',
                                   isRtl ? 'translate-x-3' : '-translate-x-3',
-                                  'group-hover:max-w-[120px] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-0'
+                                  ''
                                 )
                           )}
                         >
