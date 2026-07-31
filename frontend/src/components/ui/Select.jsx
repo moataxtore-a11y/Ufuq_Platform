@@ -17,7 +17,8 @@ export default function Select({
   const ref = useRef(null)
 
   const options = optionsProp || parseChildren(children)
-  const selected = options.find((o) => String(o.value) === String(value ?? ''))
+  const rawValue = typeof value === 'object' && value !== null && 'target' in value ? value.target.value : value
+  const selected = options.find((o) => String(o.value) === String(rawValue ?? ''))
   const displayLabel = selected?.label || placeholder || ''
 
   useEffect(() => {

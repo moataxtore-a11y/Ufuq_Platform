@@ -56,22 +56,44 @@ export default function ChooseTeachersSection() {
     }
   }, [t])
 
+
+
   function safeNorm(v) {
+    if (typeof v === 'object' && v !== null) {
+      if ('target' in v) v = v.target?.value
+      else if ('value' in v) v = v.value
+    }
     return String(v ?? '').trim().toLowerCase()
   }
 
   const filteredTeachers = useMemo(() => {
     const list = Array.isArray(state.items) ? state.items : []
 
+    const selSec = safeNorm(section)
+    const selGrade = safeNorm(gradeYear)
+
     const byFilters = list.filter((tt) => {
-      const ttSections = Array.isArray(tt?.teachingSections) && tt.teachingSections.length
-        ? tt.teachingSections
-        : (tt?.teachingSection || tt?.section ? [tt?.teachingSection || tt?.section] : [])
-      const ttGradeYear = safeNorm(tt?.teachingGradeYear || tt?.gradeYear)
-      const okSection = section
-        ? ttSections.some((s) => safeNorm(s) === safeNorm(section))
-        : true
-      const okGradeYear = gradeYear ? ttGradeYear === safeNorm(gradeYear) : true
+      const profile = tt?.profile && typeof tt.profile === 'object' ? tt.profile : {}
+
+      const ttSectionsRaw = tt?.teachingSections || profile?.teachingSections || tt?.teachingSection || profile?.teachingSection || tt?.section || profile?.section || []
+      const ttSections = Array.isArray(ttSectionsRaw)
+        ? ttSectionsRaw
+        : (ttSectionsRaw ? [ttSectionsRaw] : [])
+
+      const ttGradeYear = safeNorm(tt?.teachingGradeYear || profile?.teachingGradeYear || tt?.gradeYear || profile?.gradeYear)
+
+      const okSection = !selSec || ttSections.some((s) => {
+        const normS = safeNorm(s)
+        return normS === selSec || (selSec === 'science' && normS.includes('sci')) || (selSec === 'math' && normS.includes('math')) || (selSec === 'literature' && (normS.includes('lit') || normS.includes('أدب')))
+      })
+
+      const okGradeYear = !selGrade || (
+        ttGradeYear === selGrade ||
+        (selGrade === '1_secondary' && (ttGradeYear.includes('1') || ttGradeYear.includes('first'))) ||
+        (selGrade === '2_secondary' && (ttGradeYear.includes('2') || ttGradeYear.includes('second'))) ||
+        (selGrade === '3_secondary' && (ttGradeYear.includes('3') || ttGradeYear.includes('third')))
+      )
+
       return okSection && okGradeYear
     })
 
@@ -107,11 +129,11 @@ export default function ChooseTeachersSection() {
                 <div className="gap-3 grid grid-cols-1 sm:grid-cols-2">
                   <div className="gap-1 grid">
                     <label className="text-slate-600 dark:text-slate-300 text-sm">{t('landing.chooseTeachers.filters.sectionLabel')}</label>
-                    <Select value={section} onChange={(v) => setSection(v)} options={sectionOptions} />
+                    <Select value={section} onChange={(e) => setSection(typeof e === 'object' && e !== null && 'target' in e ? e.target.value : (e ?? ''))} options={sectionOptions} />
                   </div>
                   <div className="gap-1 grid">
                     <label className="text-slate-600 dark:text-slate-300 text-sm">{t('landing.chooseTeachers.filters.gradeYearLabel')}</label>
-                    <Select value={gradeYear} onChange={(v) => setGradeYear(v)} options={gradeYearOptions} />
+                    <Select value={gradeYear} onChange={(e) => setGradeYear(typeof e === 'object' && e !== null && 'target' in e ? e.target.value : (e ?? ''))} options={gradeYearOptions} />
                   </div>
                 </div>
               </div>
