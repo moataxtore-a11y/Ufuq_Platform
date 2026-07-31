@@ -133,6 +133,23 @@ export default function AdminLandingLayout() {
     }
   }, [auth?.token, seen.joinTeamApplications, seen.pendingStudents, seen.pendingTopups])
 
+  const displayName = useMemo(() => {
+    return String(me?.name || me?.email || '').trim()
+  }, [me?.email, me?.name])
+
+  const avatarUrl = me?.profile?.avatarUrl || ''
+
+  const quickLinks = [
+    { to: '/admin', icon: LayoutDashboard, label: t('dashboard.nav.overview') },
+    { to: '/admin/users', icon: Users, label: t('dashboard.nav.users') },
+    { to: '/admin/courses', icon: BookOpen, label: isRtl ? 'إدارة الكورسات' : 'Courses' },
+    { to: '/admin/wallet-topups', icon: Wallet, label: isRtl ? 'طلبات الشحن' : 'Topups' },
+    { to: '/admin/approvals', icon: CheckCircle, label: t('dashboard.nav.approvals') },
+    { to: '/admin/applications', icon: ClipboardList, label: t('dashboard.nav.applications') },
+    { to: '/admin/motivational-message', icon: MessageSquareQuote, label: isRtl ? 'رسالة للطلاب' : 'Student message' },
+    { to: '/admin/profile', icon: GraduationCap, label: t('dashboard.titles.profile') }
+  ]
+
   function getLinkBadgeCount(path) {
     if (!path) return 0
     if (path.startsWith('/admin/approvals')) return badgeCounts.pendingStudents || 0
