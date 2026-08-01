@@ -47,7 +47,7 @@ export const translations = {
             passwordLabel: 'Password',
             loginButton: 'Login',
             loggingIn: 'Logging in...',
-            loginFailed: 'Login failed',
+            loginFailed: 'Wrong password, email, or phone number',
             newStudent: 'New student?',
             createAccount: 'Create account',
 
@@ -953,7 +953,7 @@ export const translations = {
                 passwordLabel: 'كلمة المرور',
             loginButton: 'دخول',
             loggingIn: 'جاري تسجيل الدخول...',
-            loginFailed: 'فشل تسجيل الدخول',
+            loginFailed: 'الباسورد أو الإيميل أو رقم الموبايل غلط',
             newStudent: 'طالب جديد؟',
                 createAccount: 'اعمل حساب',
 

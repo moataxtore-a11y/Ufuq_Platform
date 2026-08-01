@@ -137,8 +137,15 @@ export default function LoginPage() {
         navigate('/account-rejected', { replace: true, state: { reason } })
         return
       }
-      setError(msg)
-      setLoginErrorMessage(msg)
+      const isInvalidCredentials = err?.response?.status === 401 || String(msg).toLowerCase().includes('invalid credentials') || String(msg).toLowerCase().includes('invalid password')
+      const localized = isInvalidCredentials
+        ? (() => {
+            const raw = t('auth.loginFailed')
+            return raw === 'auth.loginFailed' ? (isRtl ? 'الباسورد أو الإيميل أو رقم الموبايل غلط' : 'Wrong password, email, or phone number') : raw
+          })()
+        : msg
+      setError(localized)
+      setLoginErrorMessage(localized)
       setOpenLoginError(true)
     } finally {
       setLoading(false)
