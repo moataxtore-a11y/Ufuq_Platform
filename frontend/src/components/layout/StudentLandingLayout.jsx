@@ -11,6 +11,7 @@ import { api } from '../../utils/api.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import SiteFooter from './SiteFooter.jsx'
+import CompanyCredit from './CompanyCredit.jsx'
 import { cn } from '../../utils/cn.js'
 import MotivationalBanner from '../student/MotivationalBanner.jsx'
 
@@ -311,6 +312,9 @@ export default function StudentLandingLayout() {
                     <span className="truncate">{it.label}</span>
                   </NavLink>
                 ))}
+              </div>
+              <div className="md:hidden mt-3 pt-4 border-black/10 dark:border-white/10 border-t text-center">
+                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-teal-300 text-xs font-medium" />
               </div>
             </div>
           </div>

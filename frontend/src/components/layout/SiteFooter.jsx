@@ -1,5 +1,6 @@
 import { PhoneCall } from 'lucide-react'
 import logo from '../../cvg/logo (2)_3.webp'
+import CompanyCredit from './CompanyCredit.jsx'
 
 function BrandIcon({ name, className }) {
   if (name === 'youtube') {
@@ -94,6 +95,10 @@ export default function SiteFooter() {
 
             <div className="mt-12 text-[#069484]/85 text-lg sm:text-xl leading-9">
               تم صنع هذه المنصه بهدف تهيئة الطالب بكامل جوانب الثانوية العامة و ما بعدها
+            </div>
+
+            <div className="mt-8 pt-6 border-[#069484]/20 dark:border-white/10 border-t w-full max-w-xl">
+              <CompanyCredit className="text-[#057F72] hover:text-[#034C43] dark:text-teal-300 dark:hover:text-teal-100 text-sm font-semibold" />
             </div>
           </div>
         </div>

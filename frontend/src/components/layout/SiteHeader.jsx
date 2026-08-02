@@ -13,6 +13,7 @@ import { api } from '../../utils/api.js'
 import { Modal } from '../ui/Modal.jsx'
 import Input from '../ui/Input.jsx'
 import Spinner from '../ui/Spinner.jsx'
+import CompanyCredit from './CompanyCredit.jsx'
 
 export default function SiteHeader() {
   const { isRtl, t } = useLanguage()
@@ -529,6 +530,9 @@ export default function SiteHeader() {
                   <Search className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                   <div className="text-slate-600 dark:text-slate-300 text-sm">{isRtl ? 'بحث' : 'Search'}</div>
                 </div>
+              </div>
+              <div className="md:hidden mt-2 pt-4 border-black/10 dark:border-white/10 border-t text-center">
+                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-teal-300 text-xs font-medium" />
               </div>
             </div>
           </div>
