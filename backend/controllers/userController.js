@@ -35,15 +35,20 @@ const updateMyProfile = asyncHandler(async (req, res) => {
     })
 })
 
+const { calculateStudentStats } = require('../utils/studentStats')
+
 const getMyStats = asyncHandler(async (req, res) => {
     const userId = req.user.id
-    const enrollmentCount = await prisma.courseEnrollment.count({ where: { studentId: userId } })
+    const statsData = await calculateStudentStats(userId)
+    if (!statsData) return res.status(404).json({ message: 'User not found' })
+
     const completedLessons = await prisma.studentLessonProgress.count({ where: { studentId: userId, completedAt: { not: null } } })
-    const allLessons = await prisma.lesson.findMany({
-        where: { course: { enrollments: { some: { studentId: userId } } } },
-        select: { id: true }
+
+    res.json({
+        ...statsData,
+        enrolledCourses: statsData.courses?.enrolledTotal || 0,
+        completedLessons
     })
-    res.json({ enrolledCourses: enrollmentCount, completedLessons, totalLessons: allLessons.length })
 })
 
 const listUsers = asyncHandler(async (req, res) => {
