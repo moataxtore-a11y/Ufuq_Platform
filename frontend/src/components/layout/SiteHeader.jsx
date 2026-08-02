@@ -217,19 +217,32 @@ export default function SiteHeader() {
     <>
       <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className={"mx-auto px-3 sm:px-4 py-2 min-w-0 w-full max-w-7xl"}>
-          <div className="md:hidden items-center grid grid-cols-3">
-            <div className={cn('flex items-center gap-2', isRtl ? 'justify-end flex-row-reverse' : 'justify-start flex-row')}>
+          <div className="md:hidden flex items-center justify-between gap-2 px-1 py-1">
+            <Link to="/" className="flex items-center shrink-0">
+              <img src={logo} alt="Education Platform" className="w-auto h-9 sm:h-10" />
+            </Link>
+
+            <div className="flex items-center gap-2 shrink-0">
               {loggedIn ? (
-                <Link to={profileLink} className="relative flex items-center justify-center shrink-0 rounded-full w-8 h-8 border-2 border-slate-200 dark:border-white/20">
-                  <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
-                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
-                  </span>
-                  {badgeTotal > 0 ? (
-                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                      {badgeTotal > 99 ? '99+' : badgeTotal}
+                <>
+                  <ThemeToggle className="shrink-0" />
+                  <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20"
+                    aria-label={t('dashboard.ui.menu')}
+                    title={t('dashboard.ui.menu')}
+                  >
+                    <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                      <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
                     </span>
-                  ) : null}
-                </Link>
+                    {badgeTotal > 0 ? (
+                      <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                        {badgeTotal > 99 ? '99+' : badgeTotal}
+                      </span>
+                    ) : null}
+                  </button>
+                </>
               ) : (
                 <>
                   <button
@@ -242,54 +255,27 @@ export default function SiteHeader() {
                     <Search className="w-4 h-4" />
                   </button>
                   <ThemeToggle className="shrink-0" />
+                  <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    className="relative flex justify-center items-center rounded-full w-9 h-9 text-slate-800 dark:text-slate-100"
+                    aria-label={t('dashboard.ui.menu')}
+                    title={t('dashboard.ui.menu')}
+                  >
+                    <Menu className="w-5 h-5" />
+                  </button>
                 </>
               )}
-              {loggedIn ? <ThemeToggle className="shrink-0" /> : null}
-            </div>
-
-            <Link to="/" className="flex justify-center items-center">
-              <img src={logo} alt="Education Platform" className="w-auto h-11" />
-            </Link>
-
-            <div className="flex justify-end items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="relative flex justify-center items-center rounded-full w-9 h-9 text-slate-800 dark:text-slate-100"
-                aria-label={t('dashboard.ui.menu')}
-                title={t('dashboard.ui.menu')}
-              >
-                <Menu className="w-5 h-5" />
-                {loggedIn && badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
             </div>
           </div>
 
           {loggedIn ? (
             <div className="hidden md:flex justify-between items-center gap-3">
-              <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20"
-                aria-label={t('dashboard.ui.menu')}
-                title={t('dashboard.ui.menu')}
-              >
-                <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
-                  <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
-                </span>
-                {badgeTotal > 0 ? (
-                  <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
-                    {badgeTotal > 99 ? '99+' : badgeTotal}
-                  </span>
-                ) : null}
-              </button>
-              <ThemeToggle className="shrink-0" />
-            </div>
+              <div className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2">
+                  <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
+                </Link>
+              </div>
 
               <nav className="hidden md:flex items-center gap-0.5">
                 {quickLinks.map((it) => {
@@ -347,10 +333,24 @@ export default function SiteHeader() {
                 })}
               </nav>
 
-              <div className="flex items-center gap-2">
-                <Link to="/" className="flex items-center gap-2">
-                  <img src={logo} alt="Education Platform" className="w-auto h-10 sm:h-11 md:h-[48px]" />
-                </Link>
+              <div className="flex items-center gap-3">
+                <ThemeToggle className="shrink-0" />
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20"
+                  aria-label={t('dashboard.ui.menu')}
+                  title={t('dashboard.ui.menu')}
+                >
+                  <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full">
+                    <img src={avatarUrl || defaultProfileAvatar} alt={displayName || 'User'} className={avatarUrl ? 'w-full h-full object-cover' : 'w-full h-full object-contain'} />
+                  </span>
+                  {badgeTotal > 0 ? (
+                    <span className="-top-1 -right-1 absolute flex justify-center items-center bg-rose-600 shadow px-1 border-2 border-black rounded-full min-w-4 h-4 text-[10px] text-white">
+                      {badgeTotal > 99 ? '99+' : badgeTotal}
+                    </span>
+                  ) : null}
+                </button>
               </div>
             </div>
           ) : (

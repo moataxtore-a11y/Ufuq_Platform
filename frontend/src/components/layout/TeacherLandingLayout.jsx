@@ -130,17 +130,17 @@ export default function TeacherLandingLayout() {
         <div className="mx-auto px-3 sm:px-4 py-2 min-w-0 max-w-7xl">
           {/* Mobile view */}
           <div className="sm:hidden">
-            <div className="px-1 py-1" dir="ltr">
+            <div className="px-1 py-1">
               <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center justify-start shrink-0 w-8" />
-                <Link to="/" className="flex justify-center items-center shrink-0">
+                <Link to="/" className="flex items-center shrink-0">
                   <img src={logo} alt="Education Platform" className="w-auto h-9 object-contain" />
                 </Link>
-                <div className="flex items-center justify-end shrink-0">
+                <div className="flex items-center justify-end gap-2 shrink-0">
+                  <ThemeToggle className="shrink-0 h-9" />
                   <button
                     type="button"
                     onClick={() => setOpen(true)}
-                    className="relative flex items-center justify-center rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20 shadow-sm"
+                    className="relative flex items-center justify-center shrink-0 rounded-full w-9 h-9 border-2 border-slate-200 dark:border-white/20 shadow-sm"
                     aria-label={isRtl ? 'القائمة' : 'Menu'}
                     title={isRtl ? 'القائمة' : 'Menu'}
                   >
