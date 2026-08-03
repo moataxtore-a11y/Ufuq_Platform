@@ -760,17 +760,17 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.form.teachingSection')}</label>
-              <div className="bg-slate-50 dark:bg-slate-900/60 p-3 border border-black/5 dark:border-white/10 rounded-2xl">
+              <div className="bg-slate-50 dark:bg-[#071d1b] p-3 border border-black/5 dark:border-[#093530] rounded-2xl">
                 <div className="gap-2 grid">
                   {TEACHING_SECTION_OPTIONS.filter((o) => o.value).map((o) => (
                     <label
                       key={o.value}
-                      className="flex justify-between items-center gap-3 bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-2 border border-slate-200 dark:border-slate-700/60 rounded-xl text-slate-800 dark:text-slate-200 text-sm cursor-pointer transition-colors"
+                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#0b2825] hover:bg-slate-50 dark:hover:bg-[#0e332f] px-3 py-2 border border-slate-200 dark:border-[#13443f] rounded-xl text-slate-800 dark:text-teal-100 text-sm cursor-pointer transition-colors"
                     >
                       <span className="font-medium">{o.label}</span>
                       <input
                         type="checkbox"
-                        className="w-4 h-4 accent-teal-600 cursor-pointer"
+                        className="w-4 h-4 accent-[#049989] cursor-pointer"
                         checked={teachingSections.includes(String(o.value))}
                         onChange={() => toggleTeachingSection(o.value)}
                       />
@@ -781,17 +781,17 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.form.teachingGradeYear')}</label>
-              <div className="bg-slate-50 dark:bg-slate-900/60 p-3 border border-black/5 dark:border-white/10 rounded-2xl">
+              <div className="bg-slate-50 dark:bg-[#071d1b] p-3 border border-black/5 dark:border-[#093530] rounded-2xl">
                 <div className="gap-2 grid">
                   {TEACHING_GRADE_YEAR_OPTIONS.filter((o) => o.value).map((o) => (
                     <label
                       key={o.value}
-                      className="flex justify-between items-center gap-3 bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 px-3 py-2 border border-slate-200 dark:border-slate-700/60 rounded-xl text-slate-800 dark:text-slate-200 text-sm cursor-pointer transition-colors"
+                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#0b2825] hover:bg-slate-50 dark:hover:bg-[#0e332f] px-3 py-2 border border-slate-200 dark:border-[#13443f] rounded-xl text-slate-800 dark:text-teal-100 text-sm cursor-pointer transition-colors"
                     >
                       <span className="font-medium">{o.label}</span>
                       <input
                         type="checkbox"
-                        className="w-4 h-4 accent-teal-600 cursor-pointer"
+                        className="w-4 h-4 accent-[#049989] cursor-pointer"
                         checked={teachingGradeYears.includes(String(o.value))}
                         onChange={() => toggleTeachingGradeYear(o.value)}
                       />
