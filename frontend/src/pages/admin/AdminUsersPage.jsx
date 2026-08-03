@@ -532,10 +532,12 @@ function UserProfileModal({ open, onOpenChange, userId }) {
                     <div className="text-slate-500 text-xs">{t('adminUsersPage.profileModal.teachingGradeYear')}</div>
                     <div className="text-sm">
                       {(() => {
-                        const key = info.teachingGradeYear
-                        if (!key) return '-'
-                        const translated = t(`landing.gradeYears.${String(key)}`)
-                        return translated && translated !== `landing.gradeYears.${String(key)}` ? translated : String(key)
+                        const arr = Array.isArray(info.teachingGradeYears) && info.teachingGradeYears.length ? info.teachingGradeYears : (info.teachingGradeYear ? [info.teachingGradeYear] : [])
+                        if (!arr.length) return '-'
+                        return arr.map((key) => {
+                          const translated = t(`landing.gradeYears.${String(key)}`)
+                          return translated && translated !== `landing.gradeYears.${String(key)}` ? translated : String(key)
+                        }).join('، ')
                       })()}
                     </div>
                   </div>
@@ -600,7 +602,12 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
     const single = editing?.profile?.teachingSection
     return single ? [String(single)] : []
   })
-  const [teachingGradeYear, setTeachingGradeYear] = useState(editing?.profile?.teachingGradeYear || '')
+  const [teachingGradeYears, setTeachingGradeYears] = useState(() => {
+    const fromArr = Array.isArray(editing?.profile?.teachingGradeYears) ? editing.profile.teachingGradeYears : null
+    if (fromArr && fromArr.length) return fromArr.map((x) => String(x))
+    const single = editing?.profile?.teachingGradeYear
+    return single ? [String(single)] : []
+  })
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -617,13 +624,29 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
       const single = editing?.profile?.teachingSection
       setTeachingSections(single ? [String(single)] : [])
     }
-    setTeachingGradeYear(editing?.profile?.teachingGradeYear || '')
+    const fromGradeArr = Array.isArray(editing?.profile?.teachingGradeYears) ? editing.profile.teachingGradeYears : null
+    if (fromGradeArr && fromGradeArr.length) setTeachingGradeYears(fromGradeArr.map((x) => String(x)))
+    else {
+      const singleGrade = editing?.profile?.teachingGradeYear
+      setTeachingGradeYears(singleGrade ? [String(singleGrade)] : [])
+    }
   }, [editing, open])
 
   function toggleTeachingSection(value) {
     const v = String(value || '').trim()
     if (!v) return
     setTeachingSections((prev) => {
+      const set = new Set((Array.isArray(prev) ? prev : []).map((x) => String(x)))
+      if (set.has(v)) set.delete(v)
+      else set.add(v)
+      return Array.from(set)
+    })
+  }
+
+  function toggleTeachingGradeYear(value) {
+    const v = String(value || '').trim()
+    if (!v) return
+    setTeachingGradeYears((prev) => {
       const set = new Set((Array.isArray(prev) ? prev : []).map((x) => String(x)))
       if (set.has(v)) set.delete(v)
       else set.add(v)
@@ -647,7 +670,8 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
               teachingSubject,
               teachingSections,
               teachingSection: Array.isArray(teachingSections) && teachingSections.length ? teachingSections[0] : '',
-              teachingGradeYear
+              teachingGradeYears,
+              teachingGradeYear: Array.isArray(teachingGradeYears) && teachingGradeYears.length ? teachingGradeYears[0] : ''
             } : {}),
             ...(password ? { password } : {})
           }
@@ -663,7 +687,8 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             teachingSubject,
             teachingSections,
             teachingSection: Array.isArray(teachingSections) && teachingSections.length ? teachingSections[0] : '',
-            teachingGradeYear
+            teachingGradeYears,
+            teachingGradeYear: Array.isArray(teachingGradeYears) && teachingGradeYears.length ? teachingGradeYears[0] : ''
           } : {}),
           password
         })
@@ -756,11 +781,24 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.form.teachingGradeYear')}</label>
-              <Select
-                value={teachingGradeYear}
-                onChange={(e) => setTeachingGradeYear(String(e?.target?.value ?? e ?? ''))}
-                options={TEACHING_GRADE_YEAR_OPTIONS}
-              />
+              <div className="bg-white/70 p-3 border border-black/5 rounded-2xl">
+                <div className="gap-2 grid">
+                  {TEACHING_GRADE_YEAR_OPTIONS.filter((o) => o.value).map((o) => (
+                    <label
+                      key={o.value}
+                      className="flex justify-between items-center gap-3 bg-white/60 hover:bg-white px-3 py-2 border border-black/5 rounded-xl text-slate-800 text-sm cursor-pointer"
+                    >
+                      <span className="font-medium">{o.label}</span>
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-[rgb(212,175,55)] cursor-pointer"
+                        checked={teachingGradeYears.includes(String(o.value))}
+                        onChange={() => toggleTeachingGradeYear(o.value)}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
           </>
         ) : null}

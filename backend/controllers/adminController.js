@@ -157,7 +157,18 @@ const createUser = asyncHandler(async (req, res) => {
             profile.teachingSection = v
             if (v) profile.teachingSections = [v]
         }
-        if (typeof teachingGradeYear === 'string') profile.teachingGradeYear = teachingGradeYear.trim()
+        const teachingGradeYearsRaw = req.body && req.body.teachingGradeYears
+        const normalizedGradeYears = Array.isArray(teachingGradeYearsRaw)
+            ? teachingGradeYearsRaw.map((x) => String(x).trim()).filter(Boolean)
+            : []
+        if (normalizedGradeYears.length) {
+            profile.teachingGradeYears = normalizedGradeYears
+            profile.teachingGradeYear = normalizedGradeYears[0]
+        } else if (typeof teachingGradeYear === 'string') {
+            const v = teachingGradeYear.trim()
+            profile.teachingGradeYear = v
+            if (v) profile.teachingGradeYears = [v]
+        }
     }
 
     const perms = role === 'team'
@@ -228,7 +239,20 @@ const updateUser = asyncHandler(async (req, res) => {
         profile.teachingSection = teachingSection.trim()
         profile.teachingSections = teachingSection.trim() ? [teachingSection.trim()] : undefined
     }
-    if (typeof teachingGradeYear === 'string') profile.teachingGradeYear = teachingGradeYear.trim()
+    const teachingGradeYearsRaw = req.body && req.body.teachingGradeYears
+    if (Array.isArray(teachingGradeYearsRaw)) {
+        const normalizedGradeYears = teachingGradeYearsRaw.map((x) => String(x).trim()).filter(Boolean)
+        if (normalizedGradeYears.length) {
+            profile.teachingGradeYears = normalizedGradeYears
+            profile.teachingGradeYear = normalizedGradeYears[0]
+        } else {
+            delete profile.teachingGradeYears
+            profile.teachingGradeYear = ''
+        }
+    } else if (typeof teachingGradeYear === 'string') {
+        profile.teachingGradeYear = teachingGradeYear.trim()
+        profile.teachingGradeYears = teachingGradeYear.trim() ? [teachingGradeYear.trim()] : undefined
+    }
 
     if (Object.keys(profile).length > 0) data.profile = profile
 
