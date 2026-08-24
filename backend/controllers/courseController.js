@@ -27,11 +27,21 @@ async function canAccessCourse(course, user) {
         return String(teacher.teamId || '') === String(user.teamId)
     }
     if (user.role === 'student') {
-        if (courseIsFree) return true
         const enrollment = await prisma.courseEnrollment.findFirst({
             where: { courseId: course.id, studentId: user.id }
         })
-        return !!enrollment
+        if (enrollment) return true
+        if (courseIsFree) {
+            try {
+                await prisma.courseEnrollment.create({
+                    data: { courseId: course.id, studentId: user.id }
+                })
+            } catch {
+                // ignore if already exists concurrently
+            }
+            return true
+        }
+        return false
     }
     return false
 }
