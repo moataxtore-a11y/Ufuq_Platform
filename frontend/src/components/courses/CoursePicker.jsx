@@ -38,17 +38,18 @@ export default function CoursePicker({
                 type="button"
                 onClick={() => onChange?.(id)}
                 className={cn(
-                  'group flex items-center gap-3 rounded-2xl border p-2.5 text-start transition-all duration-200',
+                  'group flex min-h-24 items-center justify-between gap-4 rounded-2xl border p-3 transition-all duration-200',
                   'bg-white/80 dark:bg-white/[0.055] hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
+                  isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left',
                   isSelected
                     ? 'border-brand/55 ring-2 ring-brand/15 dark:bg-brand/10'
                     : 'border-slate-200 dark:border-white/10'
                 )}
                 aria-pressed={isSelected}
               >
-                <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100 dark:bg-white/[0.06]">
+                <div className="relative flex h-20 w-32 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-white/[0.06]">
                   {course?.thumbnailUrl ? (
-                    <img src={course.thumbnailUrl} alt={title} className="h-full w-full object-cover" />
+                    <img src={course.thumbnailUrl} alt={title} className="h-full w-full object-cover object-center" />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-slate-400 dark:text-slate-500">
                       <ImageIcon className="h-6 w-6" />
@@ -57,7 +58,7 @@ export default function CoursePicker({
                   <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 </div>
 
-                <div className="min-w-0 flex-1">
+                <div className={cn('min-w-0 flex-1', isRtl ? 'text-right' : 'text-left')}>
                   <div className="line-clamp-2 font-bold text-slate-800 dark:text-slate-100 text-sm leading-5">
                     {title}
                   </div>
