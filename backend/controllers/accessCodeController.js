@@ -2,15 +2,27 @@ const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
 const generateCourseAccessCodes = asyncHandler(async (req, res) => {
-    const { courseId, count, maxUses } = req.body || {}
-    if (!courseId) return res.status(400).json({ message: 'courseId is required' })
-    const num = Math.min(Math.max(1, Number(count) || 1), 100)
+    const { courseId, count, allowedCourseIds, quantity, maxUses } = req.body || {}
+    
+    // Support array of allowedCourseIds or single courseId
+    const courseIdsList = Array.isArray(allowedCourseIds) && allowedCourseIds.length > 0 
+        ? allowedCourseIds 
+        : (courseId ? [courseId] : [])
+
+    if (courseIdsList.length === 0) {
+        return res.status(400).json({ message: 'At least one courseId (or allowedCourseIds) is required' })
+    }
+
+    const num = Math.min(Math.max(1, Number(quantity || count) || 1), 100)
     const codes = []
+
     for (let i = 0; i < num; i++) {
         const code = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('')
+        // For multi-course or single course, associate with the primary target courseId
+        const primaryCourseId = courseIdsList[0]
         const doc = await prisma.courseAccessCode.create({
             data: {
-                courseId,
+                courseId: primaryCourseId,
                 code,
                 maxUses: typeof maxUses === 'number' && maxUses > 0 ? Math.floor(maxUses) : 1,
                 isActive: true
