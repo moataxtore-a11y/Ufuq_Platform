@@ -538,117 +538,116 @@ export default function StudentsManagementPage() {
           {t('studentsPage.loading')}
         </div>
       ) : (
-        <div className="border border-black/5 rounded-xl overflow-x-auto">
-          <Table>
-            <THead>
-              <TR>
-                {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                  <TH className="w-[56px] text-center">
+        <div className="mt-2">
+          {(auth?.role === 'teacher' || auth?.role === 'team') && filtered.length > 0 && (
+            <div className={"flex items-center gap-2 mb-3 px-2 " + (isRtl ? 'flex-row-reverse justify-end' : 'justify-start')}>
+              <input
+                type="checkbox"
+                id="selectAllStudents"
+                className="w-4 h-4 accent-brand cursor-pointer"
+                checked={filtered.length > 0 && filtered.every((u) => selected.has(String(u?._id || u?.id || '')))}
+                onChange={toggleAllVisible}
+              />
+              <label htmlFor="selectAllStudents" className="text-sm text-slate-600 dark:text-slate-300 cursor-pointer select-none">
+                {isRtl ? 'تحديد الكل' : 'Select all'}
+              </label>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filtered.map((u) => (
+              <div 
+                key={u._id || u.id} 
+                className={"relative flex flex-col p-5 bg-white dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-2xl hover:border-brand/40 dark:hover:border-brand/40 transition-colors shadow-sm " + (isRtl ? 'text-right' : 'text-left')}
+              >
+                {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                  <div className={"absolute top-5 " + (isRtl ? 'left-5' : 'right-5')}>
                     <input
                       type="checkbox"
                       className="w-4 h-4 accent-brand cursor-pointer"
-                      checked={filtered.length > 0 && filtered.every((u) => selected.has(String(u?._id || u?.id || '')))}
-                      onChange={toggleAllVisible}
-                      aria-label={isRtl ? 'تحديد الكل' : 'Select all'}
+                      checked={selected.has(String(u?._id || u?.id || ''))}
+                      onChange={() => toggleSelected(u._id || u.id)}
+                      aria-label={isRtl ? 'تحديد' : 'Select'}
                     />
-                  </TH>
-                ) : null}
-                <TH className="text-center">{t('studentsPage.tableName')}</TH>
-                <TH className="text-center">{t('studentsPage.tableEmail')}</TH>
-                <TH className="text-center">{t('studentsPage.tableStudentId')}</TH>
-                {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                  <TH className="text-center">{isRtl ? 'الكورسات المفتوحة' : 'Unlocked Courses'}</TH>
-                ) : null}
-                {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                  <TH className="text-center">{isRtl ? 'الحساب' : 'Account'}</TH>
-                ) : null}
-                <TH className="text-center">{t('studentsPage.tableActions')}</TH>
-              </TR>
-            </THead>
-            <TBody>
-              {filtered.map((u) => (
-                <TR key={u._id || u.id}>
-                  {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                    <TD className="w-[56px] text-center">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 accent-brand cursor-pointer"
-                        checked={selected.has(String(u?._id || u?.id || ''))}
-                        onChange={() => toggleSelected(u._id || u.id)}
-                        aria-label={isRtl ? 'تحديد' : 'Select'}
-                      />
-                    </TD>
-                  ) : null}
-                  <TD className="text-center">{u.name}</TD>
-                  <TD className="text-slate-700 text-center">{u.email}</TD>
-                  <TD className="text-center">{u.studentId || '-'}</TD>
-                  {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                    <TD className="text-center">
-                      {u.enrolledCourses?.length ? (
-                        <div className="flex flex-col items-center gap-1">
-                          <span className="inline-flex items-center bg-brand/10 dark:bg-brand/20 px-2.5 py-0.5 border border-brand/20 dark:border-brand/30 rounded-full font-bold text-brand dark:text-brand-200 text-xs">
-                            {u.enrolledCourses.length} {isRtl ? 'كورس' : 'course(s)'}
-                          </span>
-                          <span className="text-slate-500 text-[11px] max-w-[160px] truncate" title={u.enrolledCourses.map(c => c.courseTitle).join(', ')}>
-                            {u.enrolledCourses.map(c => c.courseTitle).join(', ')}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-slate-400 text-xs">—</span>
+                  </div>
+                )}
+
+                <div className={"flex items-start gap-3 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                  <div className="bg-brand/10 dark:bg-brand/20 text-brand-600 dark:text-brand-300 rounded-full w-12 h-12 flex items-center justify-center shrink-0">
+                    <User className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1 min-w-0 pt-0.5">
+                    <h3 className="font-bold text-slate-900 dark:text-white truncate text-base leading-tight pr-6">{u.name}</h3>
+                    <div className="text-slate-500 dark:text-slate-400 text-[13px] truncate mt-1">{u.email}</div>
+                    
+                    <div className={"flex flex-wrap gap-2 mt-2.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                      {u.studentId && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 text-[11px] font-mono">
+                          {u.studentId}
+                        </span>
                       )}
-                    </TD>
-                  ) : null}
-                  {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                    <TD className="text-center">
-                      <span
-                        className={
-                          'inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ' +
-                          (u?.isSuspended
-                            ? 'bg-red-100 text-red-700'
-                            : 'bg-emerald-100 text-emerald-700')
-                        }
-                      >
-                        {u?.isSuspended ? (isRtl ? 'موقوف' : 'Suspended') : (isRtl ? 'نشط' : 'Active')}
-                      </span>
-                    </TD>
-                  ) : null}
-                  <TD className="text-center">
-                    <div className="inline-flex justify-center gap-2">
-                      <Button variant="secondary" size="sm" onClick={() => onViewProfile(u)}>
-                        {t('studentsPage.profile')}
-                      </Button>
-                      {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-                        <Button
-                          variant={auth?.role === 'teacher' ? 'outline' : (u?.isSuspended ? 'outline' : 'destructive')}
-                          size="sm"
-                          className={
-                            auth?.role === 'teacher'
-                              ? (u?.isSuspended
-                                ? 'border-emerald-300 text-emerald-700 hover:bg-emerald-50'
-                                : 'border-brand/40 text-brand hover:bg-brand/5')
-                              : undefined
-                          }
-                          onClick={() => onToggleSuspend(u)}
-                        >
-                          {u?.isSuspended ? (isRtl ? 'تفعيل' : 'Activate') : (isRtl ? 'إيقاف' : 'Suspend')}
-                        </Button>
-                      ) : null}
-                      {!isTeacherOrTeam ? (
-                        <>
-                          <Button variant="outline" size="sm" onClick={() => onEdit(u)}>
-                            {t('studentsPage.edit')}
-                          </Button>
-                        </>
-                      ) : null}
-                      <Button variant="destructive" size="sm" onClick={() => onDelete(u._id || u.id)}>
-                        {t('studentsPage.delete')}
-                      </Button>
+                      {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                        <span className={'inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ' + (u?.isSuspended ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300')}>
+                          {u?.isSuspended ? (isRtl ? 'موقوف' : 'Suspended') : (isRtl ? 'نشط' : 'Active')}
+                        </span>
+                      )}
                     </div>
-                  </TD>
-                </TR>
-              ))}
-            </TBody>
-          </Table>
+                  </div>
+                </div>
+
+                {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                  <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/10">
+                    <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-2">{isRtl ? 'الكورسات المفتوحة' : 'Unlocked Courses'}</div>
+                    {u.enrolledCourses?.length > 0 ? (
+                      <div className={"flex flex-wrap gap-1.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                        {u.enrolledCourses.map((c, i) => (
+                          <span key={i} className="inline-flex items-center px-2 py-1 bg-brand/5 dark:bg-brand/10 text-brand-700 dark:text-brand-300 text-[11px] rounded-lg border border-brand/10 truncate max-w-[160px]">
+                            {c.courseTitle}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-xs text-slate-400 dark:text-slate-500">—</div>
+                    )}
+                  </div>
+                )}
+
+                <div className={"mt-auto pt-4 flex flex-wrap items-center gap-2 " + (isRtl ? 'justify-end flex-row-reverse' : 'justify-end')}>
+                  <Button variant="secondary" size="sm" onClick={() => onViewProfile(u)} className="text-xs h-8">
+                    {t('studentsPage.profile')}
+                  </Button>
+                  
+                  {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                    <Button
+                      variant={auth?.role === 'teacher' ? 'outline' : (u?.isSuspended ? 'outline' : 'destructive')}
+                      size="sm"
+                      className={
+                        "text-xs h-8 " + 
+                        (auth?.role === 'teacher'
+                          ? (u?.isSuspended
+                            ? 'border-emerald-300 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-500/30 dark:text-emerald-400 dark:hover:bg-emerald-500/10'
+                            : 'border-brand/40 text-brand hover:bg-brand/5 dark:border-brand/30 dark:text-brand-300 dark:hover:bg-brand/10')
+                          : '')
+                      }
+                      onClick={() => onToggleSuspend(u)}
+                    >
+                      {u?.isSuspended ? (isRtl ? 'تفعيل' : 'Activate') : (isRtl ? 'إيقاف' : 'Suspend')}
+                    </Button>
+                  )}
+                  
+                  {!isTeacherOrTeam && (
+                    <Button variant="outline" size="sm" onClick={() => onEdit(u)} className="text-xs h-8">
+                      {t('studentsPage.edit')}
+                    </Button>
+                  )}
+                  
+                  <Button variant="destructive" size="sm" onClick={() => onDelete(u._id || u.id)} className="text-xs h-8">
+                    {t('studentsPage.delete')}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
