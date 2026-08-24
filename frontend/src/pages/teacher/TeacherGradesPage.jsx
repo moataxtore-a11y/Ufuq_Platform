@@ -6,7 +6,7 @@ import { Skeleton } from '../../components/ui/Skeleton.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import ScorePill from '../../components/ui/ScorePill.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import Select from '../../components/ui/Select.jsx'
+import CoursePicker from '../../components/courses/CoursePicker.jsx'
 
 export default function TeacherGradesPage() {
   const { notify } = useToast()
@@ -64,7 +64,17 @@ export default function TeacherGradesPage() {
           <Skeleton className="h-7 w-40 rounded-xl" />
           <Skeleton className="h-4 w-60 rounded-md" />
         </div>
-        <Skeleton className="h-10 w-full max-w-xs rounded-xl" />
+        <div className="gap-3 grid sm:grid-cols-2 xl:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-3 bg-white/80 dark:bg-white/[0.055] border border-slate-200 dark:border-white/10 rounded-2xl p-2.5">
+              <Skeleton className="h-16 w-24 rounded-xl shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-32 rounded-md" />
+                <Skeleton className="h-3 w-20 rounded-md" />
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
@@ -86,15 +96,15 @@ export default function TeacherGradesPage() {
         <p className="mt-0.5 text-slate-500 dark:text-slate-400 text-xs">{t('gradesPage.subtitle')}</p>
       </div>
 
-      <div className="gap-1 grid">
-        <label className="text-slate-600 dark:text-slate-200 text-sm">{t('gradesPage.course')}</label>
-        <Select
-          value={courseId}
-          onChange={(e) => setCourseId(e?.target?.value ?? e)}
-          options={(courses || []).map((c) => ({ value: c._id, label: c.title }))}
-          placeholder={isRtl ? 'اختر الكورس' : 'Select course'}
-        />
-      </div>
+      <CoursePicker
+        courses={courses}
+        value={courseId}
+        onChange={setCourseId}
+        label={t('gradesPage.course')}
+        placeholder={isRtl ? 'اختر الكورس' : 'Select course'}
+        emptyText={isRtl ? 'لا توجد كورسات لعرض الدرجات.' : 'No courses available for grades.'}
+        isRtl={isRtl}
+      />
 
       <div className="border border-black/5 rounded-xl overflow-x-auto">
         <Table>

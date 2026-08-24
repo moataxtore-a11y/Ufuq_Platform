@@ -554,79 +554,103 @@ export default function StudentsManagementPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-7">
             {filtered.map((u) => (
               <div 
                 key={u._id || u.id} 
-                className={"relative flex flex-col p-5 bg-white dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-2xl hover:border-brand/40 dark:hover:border-brand/40 transition-colors shadow-sm " + (isRtl ? 'text-right' : 'text-left')}
+                className="relative flex flex-col bg-[#0d0f0e] border border-white/5 rounded-[42px] text-right text-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all px-5 py-6 sm:px-8 sm:py-8 lg:px-14 lg:py-12"
+                dir="rtl"
               >
-                <div className={"flex items-start justify-between gap-3 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                  <div className={"flex items-center gap-3 min-w-0 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                    <div className="relative">
-                      <div className="bg-slate-100 dark:bg-white/5 text-slate-400 rounded-full w-10 h-10 flex items-center justify-center shrink-0">
-                        <User className="w-5 h-5" />
-                      </div>
-                      {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                        <div 
-                          className={`absolute bottom-0 ${isRtl ? 'left-0' : 'right-0'} w-3 h-3 rounded-full border-2 border-white dark:border-[#0A1915] ${u?.isSuspended ? 'bg-red-500' : 'bg-emerald-500'}`} 
-                          title={u?.isSuspended ? (isRtl ? 'موقوف' : 'Suspended') : (isRtl ? 'نشط' : 'Active')}
-                        ></div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-slate-800 dark:text-slate-100 truncate text-sm">{u.name}</h3>
-                      <div className="text-slate-500 dark:text-slate-400 text-xs truncate mt-0.5">{u.email}</div>
-                      {u.studentId && (
-                        <div className="text-slate-400 dark:text-slate-500 text-[10px] font-mono mt-0.5">#{u.studentId}</div>
-                      )}
-                    </div>
-                  </div>
-
-                  {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                    <div className="pt-1 shrink-0">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 accent-brand cursor-pointer opacity-50 group-hover:opacity-100 transition-opacity"
-                        checked={selected.has(String(u?._id || u?.id || ''))}
-                        onChange={() => toggleSelected(u._id || u.id)}
-                        aria-label={isRtl ? 'تحديد' : 'Select'}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
-                  <div className={"mt-4 flex flex-wrap gap-1.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                    {u.enrolledCourses.map((c, i) => (
-                      <span key={i} className="inline-flex items-center px-2 py-0.5 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 text-[10px] rounded border border-black/5 dark:border-white/5 truncate max-w-[120px]">
-                        {c.courseTitle}
-                      </span>
-                    ))}
+                {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                  <div className="absolute top-6 left-6 z-10">
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 accent-brand cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+                      checked={selected.has(String(u?._id || u?.id || ''))}
+                      onChange={() => toggleSelected(u._id || u.id)}
+                      aria-label="تحديد"
+                    />
                   </div>
                 )}
 
-                <div className={"mt-auto pt-4 flex flex-wrap items-center gap-1 " + (isRtl ? 'justify-end flex-row-reverse' : 'justify-end')}>
-                  <button onClick={() => onViewProfile(u)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-brand dark:hover:text-brand-300 transition-colors px-2 py-1">
-                    {t('studentsPage.profile')}
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-10 text-center md:text-right">
+                  <div className="relative shrink-0 order-1">
+                    {u?.profile?.avatarUrl ? (
+                      <img
+                        src={u.profile.avatarUrl}
+                        alt={u.name || 'student'}
+                        className="bg-[#1b201e] rounded-full w-32 h-32 sm:w-40 sm:h-40 object-cover shrink-0"
+                      />
+                    ) : (
+                      <div className="bg-[#1b201e] rounded-full w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center shrink-0">
+                        <User className="w-16 h-16 sm:w-20 sm:h-20 text-slate-400" />
+                      </div>
+                    )}
+                    <div 
+                      className={`absolute bottom-4 right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full border-[5px] border-[#0d0f0e] ${u?.isSuspended ? 'bg-[#ff0000]' : 'bg-[#00f018]'}`} 
+                      title={u?.isSuspended ? 'موقوف' : 'نشط'}
+                    />
+                  </div>
+
+                  <div className="order-2 space-y-3 text-2xl sm:text-3xl lg:text-[34px] font-extrabold leading-relaxed">
+                    <div>الاسم : <span>{u.name || '—'}</span></div>
+                    <div className="break-all">البريد الالكتروني : <span dir="ltr">{u.email || '—'}</span></div>
+                    <div>الرقم التعريفي : <span dir="ltr">{u.studentId || '—'}</span></div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-9 text-xl sm:text-2xl lg:text-[30px] font-extrabold leading-relaxed">
+                  <div>رقم الهاتف : <span dir="ltr">{u.profile?.phone || u.profile?.studentPhone || '—'}</span></div>
+                  <div>رقم ولي الامر : <span dir="ltr">{u.profile?.parentPhone || '—'}</span></div>
+                  
+                  <div>الرقم القومي: <span dir="ltr">{u.profile?.nationalId || '—'}</span></div>
+                  <div>الصف : <span>{formatGradeYear(u.profile?.gradeYear, isRtl)}</span></div>
+                  
+                  <div>المدرسة: <span>{u.profile?.school || u.profile?.schoolName || '—'}</span></div>
+                  <div>القسم: <span>{formatSection(u.profile?.section, isRtl)}</span></div>
+                </div>
+
+                {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
+                  <div className="mb-9 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 lg:items-end">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 lg:justify-end">
+                      {u.enrolledCourses.slice(0, 3).map((c, i) => (
+                        <span key={i} className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-[#062e28] px-7 py-3 text-lg sm:text-2xl font-extrabold text-white shadow-inner">
+                          {c.courseTitle || c.title || 'Course'}
+                        </span>
+                      ))}
+                      {u.enrolledCourses.length > 3 ? (
+                        <button
+                          type="button"
+                          onClick={() => onViewProfile(u)}
+                          className="text-white text-lg sm:text-2xl font-extrabold underline underline-offset-4"
+                        >
+                          عرض المزيد
+                        </button>
+                      ) : null}
+                    </div>
+                    <div className="inline-flex w-fit items-center justify-center rounded-2xl bg-[#004b40] px-7 py-3 text-lg sm:text-2xl font-extrabold text-white lg:order-first">
+                      الكورسات المفتوحة
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-auto pt-2">
+                  <button onClick={() => onDelete(u._id || u.id)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#ff0000] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#cc0000]">
+                    حذف
                   </button>
                   
-                  {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                    <button
-                      onClick={() => onToggleSuspend(u)}
-                      className={`text-[11px] font-medium transition-colors px-2 py-1 ${u?.isSuspended ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300' : 'text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400'}`}
-                    >
-                      {u?.isSuspended ? (isRtl ? 'تفعيل' : 'Activate') : (isRtl ? 'إيقاف' : 'Suspend')}
+                  {!isTeacherOrTeam ? (
+                    <button onClick={() => onEdit(u)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#ffb445] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#df9335]">
+                      تعديل
+                    </button>
+                  ) : (
+                    <button onClick={() => onToggleSuspend(u)} className={`flex min-h-16 items-center justify-center rounded-[28px] px-6 py-4 text-2xl font-extrabold text-white transition-colors ${u?.isSuspended ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#ffb445] hover:bg-[#df9335]'}`}>
+                      {u?.isSuspended ? 'تفعيل' : 'إيقاف'}
                     </button>
                   )}
-                  
-                  {!isTeacherOrTeam && (
-                    <button onClick={() => onEdit(u)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-brand transition-colors px-2 py-1">
-                      {t('studentsPage.edit')}
-                    </button>
-                  )}
-                  
-                  <button onClick={() => onDelete(u._id || u.id)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors px-2 py-1">
-                    {t('studentsPage.delete')}
+
+                  <button onClick={() => onViewProfile(u)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#0b9b88] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#087f70]">
+                    ملف الطالب
                   </button>
                 </div>
               </div>
@@ -653,6 +677,24 @@ export default function StudentsManagementPage() {
       />
     </div>
   )
+}
+
+function formatGradeYear(value, isRtl) {
+  const v = String(value || '').trim()
+  if (!v) return '—'
+  if (v === '1_secondary' || v === 'secondary_1') return isRtl ? 'الأول الثانوي' : '1st Secondary'
+  if (v === '2_secondary' || v === 'secondary_2') return isRtl ? 'الثاني الثانوي' : '2nd Secondary'
+  if (v === '3_secondary' || v === 'secondary_3') return isRtl ? 'الثالث الثانوي' : '3rd Secondary'
+  return v
+}
+
+function formatSection(value, isRtl) {
+  const v = String(value || '').trim()
+  if (!v) return '—'
+  if (v === 'math') return isRtl ? 'علمي رياضة' : 'Science (Math)'
+  if (v === 'science') return isRtl ? 'علمي علوم' : 'Science (Biology)'
+  if (v === 'literature') return isRtl ? 'أدبي' : 'Literature'
+  return v
 }
 
 function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }) {

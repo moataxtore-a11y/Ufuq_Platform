@@ -8,7 +8,7 @@ import Input from '../../components/ui/Input.jsx'
 import { Modal } from '../../components/ui/Modal.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import Select from '../../components/ui/Select.jsx'
+import CoursePicker from '../../components/courses/CoursePicker.jsx'
 
 export default function TeacherAssignmentsPage() {
   const { notify } = useToast()
@@ -67,7 +67,17 @@ export default function TeacherAssignmentsPage() {
           </div>
           <Skeleton className="w-28 h-9 rounded-xl" />
         </div>
-        <Skeleton className="h-10 w-full max-w-xs rounded-xl" />
+        <div className="gap-3 grid sm:grid-cols-2 xl:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-3 bg-white/80 dark:bg-white/[0.055] border border-slate-200 dark:border-white/10 rounded-2xl p-2.5">
+              <Skeleton className="h-16 w-24 rounded-xl shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-32 rounded-md" />
+                <Skeleton className="h-3 w-20 rounded-md" />
+              </div>
+            </div>
+          ))}
+        </div>
         <div className="space-y-3">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
@@ -93,15 +103,15 @@ export default function TeacherAssignmentsPage() {
         </Button>
       </div>
 
-      <div className="gap-1 grid">
-        <label className="text-slate-600 dark:text-slate-200 text-sm">{t('assignmentsPage.course')}</label>
-        <Select
-          value={courseId}
-          onChange={(e) => setCourseId(e?.target?.value ?? e)}
-          options={(courses || []).map((c) => ({ value: c._id, label: c.title }))}
-          placeholder={isRtl ? 'اختر الكورس' : 'Select course'}
-        />
-      </div>
+      <CoursePicker
+        courses={courses}
+        value={courseId}
+        onChange={setCourseId}
+        label={t('assignmentsPage.course')}
+        placeholder={isRtl ? 'اختر الكورس' : 'Select course'}
+        emptyText={isRtl ? 'لا توجد كورسات لإنشاء واجبات.' : 'No courses available for assignments.'}
+        isRtl={isRtl}
+      />
 
       <div className="border border-black/5 rounded-xl overflow-x-auto">
         <Table>
