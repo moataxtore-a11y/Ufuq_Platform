@@ -101,4 +101,43 @@ const ensureMyTeamId = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Failed to generate team ID' })
 })
 
-module.exports = { listPublicTeachers, getPublicTeacherById, listMyTeam, createMyTeamMember, updateMyTeamMember, ensureMyTeamId }
+const getTeacherDashboardStats = asyncHandler(async (req, res) => {
+    const teacherId = req.user.id
+    const teamId = req.user.teamId
+
+    const courseWhere = {}
+    if (req.user.role === 'teacher') {
+        courseWhere.teacherId = teacherId
+    } else if (teamId) {
+        courseWhere.teamId = teamId
+    }
+
+    const courseCount = await prisma.course.count({ where: courseWhere })
+    
+    const courses = await prisma.course.findMany({ where: courseWhere, select: { id: true } })
+    const courseIds = courses.map((c) => c.id)
+
+    let assessmentCount = 0
+    let studentCount = 0
+    let submissionCount = 0
+
+    if (courseIds.length) {
+        assessmentCount = await prisma.assessment.count({ where: { courseId: { in: courseIds } } })
+        
+        const enrollments = await prisma.courseEnrollment.findMany({ where: { courseId: { in: courseIds } }, select: { studentId: true } })
+        studentCount = new Set(enrollments.map((e) => e.studentId)).size
+
+        submissionCount = await prisma.assignmentSubmission.count({
+            where: { assignment: { courseId: { in: courseIds } } }
+        })
+    }
+
+    res.json({
+        courses: courseCount || 0,
+        assessments: assessmentCount || 0,
+        students: studentCount || 0,
+        grades: submissionCount || 0
+    })
+})
+
+module.exports = { listPublicTeachers, getPublicTeacherById, listMyTeam, createMyTeamMember, updateMyTeamMember, ensureMyTeamId, getTeacherDashboardStats }

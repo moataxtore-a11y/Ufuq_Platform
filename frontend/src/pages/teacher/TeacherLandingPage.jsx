@@ -53,6 +53,7 @@ export default function TeacherLandingPage() {
   const { isRtl } = useLanguage()
 
   const [coursesState, setCoursesState] = useState({ status: 'loading', items: [], error: '' })
+  const [statsState, setStatsState] = useState({ courses: 0, assessments: 0, students: 0, grades: 0 })
 
   useEffect(() => {
     let alive = true
@@ -70,7 +71,24 @@ export default function TeacherLandingPage() {
       }
     }
 
+    async function loadStats() {
+      try {
+        const res = await api.get('/teachers/me/stats')
+        if (alive && res?.data) {
+          setStatsState({
+            courses: Number(res.data.courses) || 0,
+            assessments: Number(res.data.assessments) || 0,
+            students: Number(res.data.students) || 0,
+            grades: Number(res.data.grades) || 0
+          })
+        }
+      } catch {
+        // Fallback to 0 if endpoint fails
+      }
+    }
+
     loadCourses()
+    loadStats()
     return () => {
       alive = false
     }
@@ -81,7 +99,7 @@ export default function TeacherLandingPage() {
     return list.slice(0, 4)
   }, [coursesState.items])
 
-  const courseCount = Array.isArray(coursesState.items) ? coursesState.items.length : 0
+  const courseCount = Array.isArray(coursesState.items) ? coursesState.items.length : (statsState.courses || 0)
 
   return (
     <div>
@@ -108,17 +126,17 @@ export default function TeacherLandingPage() {
         />
         <StatCard
           label={isRtl ? 'الاختبارات' : 'Assessments'}
-          value="-"
+          value={statsState.assessments}
           Icon={ListChecks}
         />
         <StatCard
           label={isRtl ? 'الطلاب' : 'Students'}
-          value="-"
+          value={statsState.students}
           Icon={Users}
         />
         <StatCard
           label={isRtl ? 'الدرجات' : 'Grades'}
-          value="-"
+          value={statsState.grades}
           Icon={GraduationCap}
         />
       </div>
