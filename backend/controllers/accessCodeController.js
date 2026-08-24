@@ -77,14 +77,9 @@ const validateCourseAccessCode = asyncHandler(async (req, res) => {
         }
     }
     const allowedCourses = course ? [{
+        ...course,
         id: course.id,
-        _id: course.id,
-        title: course.title,
-        description: course.description,
-        price: course.price,
-        imageUrl: course.imageUrl,
-        subjectId: course.subjectId,
-        isPublished: course.isPublished
+        _id: course.id
     }] : []
     res.json({ valid: true, codeId: doc.id, courseId: doc.courseId, allowedCourses, usedCount: doc.usedCount || 0, maxUses: doc.maxUses || 1 })
 })
