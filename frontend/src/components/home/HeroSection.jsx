@@ -134,14 +134,13 @@ export default function HeroSection() {
           </div>
 
           {/* Left Column in RTL: 3D Character standing on left side */}
-          <div className="relative flex col-span-6 justify-start items-end z-10 order-2 px-[clamp(0.25rem,1vw,0.75rem)] pt-2 h-full min-w-0 overflow-visible">
-            <div className="relative flex justify-start items-end w-full max-w-[720px] h-full">
+          <div className="relative flex col-span-6 justify-start items-end z-10 order-2 h-full min-w-0 overflow-visible">
+            <div className="relative flex justify-start items-end w-full max-w-none h-full -ms-[clamp(1.5rem,6vw,6rem)]">
               <img
                 src={heroPic}
                 alt="Character Hero"
-                className="relative z-10 object-contain origin-bottom w-full h-[clamp(300px,min(52vw,calc(90vh_-_280px)),680px)] lg:h-[clamp(300px,min(55vw,calc(100vh_-_280px)),820px)] lg:scale-[1.08] 2xl:scale-[1.12] drop-shadow-[0_20px_35px_rgba(0,90,80,0.16)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)] transition-transform duration-500"
+                className="relative z-10 object-contain origin-bottom h-[clamp(430px,min(72vw,calc(100vh_-_145px)),960px)] lg:h-[clamp(560px,min(78vw,calc(100vh_-_95px)),1120px)] xl:h-[clamp(650px,min(82vw,calc(100vh_-_70px)),1240px)] 2xl:h-[clamp(760px,min(86vw,calc(100vh_-_50px)),1380px)] w-auto max-w-none translate-y-[clamp(2rem,7vh,6rem)] scale-[1.08] lg:scale-[1.18] xl:scale-[1.25] drop-shadow-[0_20px_35px_rgba(0,90,80,0.16)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)] transition-transform duration-500"
                 style={{
-                  width: '100%',
                   objectFit: 'contain',
                   WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
                   maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
