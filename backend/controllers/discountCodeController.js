@@ -2,9 +2,10 @@ const { prisma } = require('../config/prisma')
 const { asyncHandler } = require('../utils/asyncHandler')
 
 const generateDiscountCodes = asyncHandler(async (req, res) => {
-    const { courseId, discountPercent, count, maxUses, expiresAt } = req.body || {}
-    if (!courseId || !discountPercent) return res.status(400).json({ message: 'courseId and discountPercent are required' })
-    const num = Math.min(Math.max(1, Number(count) || 1), 100)
+    const { courseId, allowedCourseIds, discountPercent, count, quantity, maxUses, expiresAt } = req.body || {}
+    const targetCourseId = courseId || (Array.isArray(allowedCourseIds) && allowedCourseIds[0])
+    if (!targetCourseId) return res.status(400).json({ message: 'courseId is required' })
+    const num = Math.min(Math.max(1, Number(quantity || count) || 1), 1000)
     const codes = []
     for (let i = 0; i < num; i++) {
         const code = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('')

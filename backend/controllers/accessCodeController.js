@@ -13,7 +13,7 @@ const generateCourseAccessCodes = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'At least one courseId (or allowedCourseIds) is required' })
     }
 
-    const num = Math.min(Math.max(1, Number(quantity || count) || 1), 100)
+    const num = Math.min(Math.max(1, Number(quantity || count) || 1), 1000)
     const codes = []
 
     for (let i = 0; i < num; i++) {
