@@ -14,23 +14,33 @@ const generateCourseAccessCodes = asyncHandler(async (req, res) => {
     }
 
     const num = Math.min(Math.max(1, Number(quantity || count) || 1), 1000)
-    const codes = []
+    const primaryCourseId = courseIdsList[0]
+    const maxUsesVal = typeof maxUses === 'number' && maxUses > 0 ? Math.floor(maxUses) : 1
 
+    const dataToInsert = []
     for (let i = 0; i < num; i++) {
         const code = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('')
-        // For multi-course or single course, associate with the primary target courseId
-        const primaryCourseId = courseIdsList[0]
-        const doc = await prisma.courseAccessCode.create({
-            data: {
-                courseId: primaryCourseId,
-                code,
-                maxUses: typeof maxUses === 'number' && maxUses > 0 ? Math.floor(maxUses) : 1,
-                isActive: true
-            }
+        dataToInsert.push({
+            courseId: primaryCourseId,
+            code,
+            maxUses: maxUsesVal,
+            isActive: true
         })
-        codes.push({ id: doc.id, code: doc.code })
     }
-    res.status(201).json({ codes, count: codes.length })
+
+    await prisma.courseAccessCode.createMany({
+        data: dataToInsert
+    })
+
+    const generatedCodes = await prisma.courseAccessCode.findMany({
+        where: {
+            courseId: primaryCourseId,
+            code: { in: dataToInsert.map(d => d.code) }
+        },
+        select: { id: true, code: true }
+    })
+
+    res.status(201).json({ codes: generatedCodes, count: generatedCodes.length })
 })
 
 const listMyCourseAccessCodes = asyncHandler(async (req, res) => {

@@ -6,21 +6,35 @@ const generateDiscountCodes = asyncHandler(async (req, res) => {
     const targetCourseId = courseId || (Array.isArray(allowedCourseIds) && allowedCourseIds[0])
     if (!targetCourseId) return res.status(400).json({ message: 'courseId is required' })
     const num = Math.min(Math.max(1, Number(quantity || count) || 1), 1000)
-    const codes = []
+    const discountVal = Math.min(100, Math.max(0, Number(discountPercent) || 0))
+    const maxUsesVal = typeof maxUses === 'number' && maxUses > 0 ? Math.floor(maxUses) : null
+    const expiresAtVal = expiresAt ? new Date(expiresAt) : null
+
+    const dataToInsert = []
     for (let i = 0; i < num; i++) {
         const code = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('')
-        const doc = await prisma.courseDiscountCode.create({
-            data: {
-                code,
-                courseId,
-                discountPercent: Math.min(100, Math.max(0, Number(discountPercent) || 0)),
-                maxUses: typeof maxUses === 'number' && maxUses > 0 ? Math.floor(maxUses) : null,
-                expiresAt: expiresAt ? new Date(expiresAt) : null
-            }
+        dataToInsert.push({
+            code,
+            courseId: targetCourseId,
+            discountPercent: discountVal,
+            maxUses: maxUsesVal,
+            expiresAt: expiresAtVal
         })
-        codes.push({ id: doc.id, code: doc.code, discountPercent: doc.discountPercent })
     }
-    res.status(201).json({ codes, count: codes.length })
+
+    await prisma.courseDiscountCode.createMany({
+        data: dataToInsert
+    })
+
+    const generatedCodes = await prisma.courseDiscountCode.findMany({
+        where: {
+            courseId: targetCourseId,
+            code: { in: dataToInsert.map(d => d.code) }
+        },
+        select: { id: true, code: true, discountPercent: true }
+    })
+
+    res.status(201).json({ codes: generatedCodes, count: generatedCodes.length })
 })
 
 const listMyDiscountCodes = asyncHandler(async (req, res) => {
