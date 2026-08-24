@@ -109,7 +109,13 @@ const getTeacherDashboardStats = asyncHandler(async (req, res) => {
     if (req.user.role === 'teacher') {
         courseWhere.teacherId = teacherId
     } else if (teamId) {
-        courseWhere.teamId = teamId
+        const teamTeacher = await prisma.user.findFirst({ where: { role: 'teacher', teamId } })
+        if (teamTeacher) {
+            courseWhere.teacherId = teamTeacher.id
+        } else {
+            // No teacher found for this team, return 0 for everything
+            return res.json({ courses: 0, assessments: 0, students: 0, grades: 0 })
+        }
     }
 
     const courseCount = await prisma.course.count({ where: courseWhere })
