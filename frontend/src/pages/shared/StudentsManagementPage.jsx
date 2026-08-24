@@ -487,8 +487,9 @@ export default function StudentsManagementPage() {
                 <TH className="text-center">{t('studentsPage.tableName')}</TH>
                 <TH className="text-center">{t('studentsPage.tableEmail')}</TH>
                 <TH className="text-center">{t('studentsPage.tableStudentId')}</TH>
-                <TH className="text-center">{t('studentsPage.tableTeamId')}</TH>
-                <TH className="text-center">{t('studentsPage.tableStatus')}</TH>
+                {(auth?.role === 'teacher' || auth?.role === 'team') ? (
+                  <TH className="text-center">{isRtl ? 'الكورسات المفتوحة' : 'Unlocked Courses'}</TH>
+                ) : null}
                 {(auth?.role === 'teacher' || auth?.role === 'team') ? (
                   <TH className="text-center">{isRtl ? 'الحساب' : 'Account'}</TH>
                 ) : null}
@@ -512,8 +513,22 @@ export default function StudentsManagementPage() {
                   <TD className="text-center">{u.name}</TD>
                   <TD className="text-slate-700 text-center">{u.email}</TD>
                   <TD className="text-center">{u.studentId || '-'}</TD>
-                  <TD className="text-center">{u.teamId || '-'}</TD>
-                  <TD className="text-center">{u.status || '-'}</TD>
+                  {(auth?.role === 'teacher' || auth?.role === 'team') ? (
+                    <TD className="text-center">
+                      {u.enrolledCourses?.length ? (
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="inline-flex items-center bg-brand/10 dark:bg-brand/20 px-2.5 py-0.5 border border-brand/20 dark:border-brand/30 rounded-full font-bold text-brand dark:text-brand-200 text-xs">
+                            {u.enrolledCourses.length} {isRtl ? 'كورس' : 'course(s)'}
+                          </span>
+                          <span className="text-slate-500 text-[11px] max-w-[160px] truncate" title={u.enrolledCourses.map(c => c.courseTitle).join(', ')}>
+                            {u.enrolledCourses.map(c => c.courseTitle).join(', ')}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400 text-xs">—</span>
+                      )}
+                    </TD>
+                  ) : null}
                   {(auth?.role === 'teacher' || auth?.role === 'team') ? (
                     <TD className="text-center">
                       <span
@@ -735,6 +750,21 @@ function StudentProfileModal({ open, onOpenChange, userId }) {
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
               </div>
             </div>
+
+            {user?.enrolledCourses?.length ? (
+              <div className="mt-4">
+                <div className={"font-semibold text-sm mb-2 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'الكورسات المفتوحة' : 'Unlocked Courses'}</div>
+                <div className="gap-2 grid">
+                  {user.enrolledCourses.map((c, idx) => (
+                    <div key={idx} className="flex justify-between items-center bg-white/50 dark:bg-white/[0.03] p-2.5 border border-black/5 dark:border-white/10 rounded-xl text-xs">
+                      <span className="font-medium text-slate-800 dark:text-slate-200">{c.courseTitle}</span>
+                      <span className="text-slate-500">{new Date(c.enrolledAt).toLocaleDateString(isRtl ? 'ar-EG' : 'en-US')}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             <div className={"font-semibold text-sm mt-4 mb-2 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'آخر النتائج' : 'Recent Results'}</div>
             <div className={"text-sm text-slate-500 " + (isRtl ? 'text-right' : 'text-left')}>
               {stats?.assessments?.recentResults?.length ? (

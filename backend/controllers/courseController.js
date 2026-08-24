@@ -655,7 +655,7 @@ const listMyCourseStudents = asyncHandler(async (req, res) => {
 
     const enrollments = await prisma.courseEnrollment.findMany({
         where: { courseId: { in: courseIds } },
-        select: { studentId: true }
+        select: { studentId: true, courseId: true, createdAt: true, course: { select: { id: true, title: true } } }
     })
     const studentIds = [...new Set(enrollments.map((e) => e.studentId))]
     if (!studentIds.length) return res.json([])
@@ -677,7 +677,23 @@ const listMyCourseStudents = asyncHandler(async (req, res) => {
         where,
         select: { id: true, name: true, email: true, role: true, teamId: true, studentId: true, status: true, mustChangePassword: true, profile: true, createdAt: true, isSuspended: true, suspendedAt: true }
     })
-    res.json(users)
+
+    const enrollmentsByStudent = new Map()
+    for (const e of enrollments) {
+        if (!enrollmentsByStudent.has(e.studentId)) enrollmentsByStudent.set(e.studentId, [])
+        enrollmentsByStudent.get(e.studentId).push({
+            courseId: e.courseId,
+            courseTitle: e.course?.title || '',
+            enrolledAt: e.createdAt
+        })
+    }
+
+    const result = users.map((u) => ({
+        ...u,
+        enrolledCourses: enrollmentsByStudent.get(u.id) || []
+    }))
+
+    res.json(result)
 })
 
 const addUnit = asyncHandler(async (req, res) => {
