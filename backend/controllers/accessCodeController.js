@@ -51,7 +51,8 @@ const generateCourseAccessCodes = asyncHandler(async (req, res) => {
 const listMyCourseAccessCodes = asyncHandler(async (req, res) => {
     const where = {}
     if (typeof req.query.courseId === 'string' && req.query.courseId.trim()) where.courseId = req.query.courseId.trim()
-    const codes = await prisma.courseAccessCode.findMany({ where, orderBy: { createdAt: 'desc' } })
+    const limit = Math.min(Number(req.query.limit) || 200, 500)
+    const codes = await prisma.courseAccessCode.findMany({ where, orderBy: { createdAt: 'desc' }, take: limit })
     res.json(codes)
 })
 

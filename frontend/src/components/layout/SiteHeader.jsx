@@ -62,6 +62,10 @@ export default function SiteHeader() {
 
   useEffect(() => {
     let alive = true
+    if (auth?.name || auth?.profile) {
+      setMe({ name: auth.name, email: auth.email, profile: auth.profile })
+      return
+    }
 
     async function loadMe() {
       if (!loggedIn) return
@@ -77,7 +81,7 @@ export default function SiteHeader() {
     return () => {
       alive = false
     }
-  }, [loggedIn])
+  }, [loggedIn, auth?.name, auth?.email, auth?.profile])
 
   useEffect(() => {
     let alive = true

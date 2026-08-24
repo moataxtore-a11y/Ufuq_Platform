@@ -45,7 +45,8 @@ const generateDiscountCodes = asyncHandler(async (req, res) => {
 const listMyDiscountCodes = asyncHandler(async (req, res) => {
     const where = {}
     if (typeof req.query.courseId === 'string' && req.query.courseId.trim()) where.courseId = req.query.courseId.trim()
-    const docs = await prisma.courseDiscountCode.findMany({ where, orderBy: { createdAt: 'desc' } })
+    const limit = Math.min(Number(req.query.limit) || 200, 500)
+    const docs = await prisma.courseDiscountCode.findMany({ where, orderBy: { createdAt: 'desc' }, take: limit })
     res.json(docs)
 })
 

@@ -46,7 +46,8 @@ export function AuthProvider({ children }) {
             teamId: me.teamId ?? prev.teamId,
             teamPermissions: Array.isArray(me.teamPermissions) ? me.teamPermissions : prev.teamPermissions,
             studentId: me.studentId ?? prev.studentId,
-            mustChangePassword: typeof me.mustChangePassword === 'boolean' ? me.mustChangePassword : prev.mustChangePassword
+            mustChangePassword: typeof me.mustChangePassword === 'boolean' ? me.mustChangePassword : prev.mustChangePassword,
+            profile: me.profile || prev.profile || {}
           }
         })
       } catch {

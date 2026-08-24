@@ -77,14 +77,19 @@ export default function AppShell({ title, titleKey }) {
 
   useEffect(() => {
     let alive = true
-    async function loadMe() {
-      if (!auth?.token) return
-      try {
-        const res = await api.get('/users/me')
-        if (alive) setMe(res.data)
-      } catch {
-        if (alive) setMe(null)
+    if (auth?.name || auth?.profile) {
+      setMe({ name: auth.name, email: auth.email, profile: auth.profile })
+    } else {
+      async function loadMe() {
+        if (!auth?.token) return
+        try {
+          const res = await api.get('/users/me')
+          if (alive) setMe(res.data)
+        } catch {
+          if (alive) setMe(null)
+        }
       }
+      loadMe()
     }
     async function loadWallet() {
       if (!auth?.token) return
@@ -99,10 +104,9 @@ export default function AppShell({ title, titleKey }) {
         setWalletBalance(null)
       }
     }
-    loadMe()
     loadWallet()
     return () => { alive = false }
-  }, [auth?.role, auth?.token, location.pathname])
+  }, [auth?.role, auth?.token, auth?.name, auth?.email, auth?.profile])
 
   const displayName = String(me?.name || me?.email || auth?.email || '').trim()
   const avatarUrl = me?.profile?.avatarUrl || ''
