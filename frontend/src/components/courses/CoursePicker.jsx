@@ -38,16 +38,17 @@ export default function CoursePicker({
                 type="button"
                 onClick={() => onChange?.(id)}
                 className={cn(
-                  'group flex min-h-24 items-center justify-between gap-4 rounded-2xl border p-3 transition-all duration-200',
+                  'group flex min-h-28 items-center justify-between gap-4 rounded-2xl border px-4 py-4 transition-all duration-200',
                   'bg-white/80 dark:bg-white/[0.055] hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
-                  isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left',
+                  isRtl ? 'flex-row text-right' : 'flex-row text-left',
                   isSelected
                     ? 'border-brand/55 ring-2 ring-brand/15 dark:bg-brand/10'
                     : 'border-slate-200 dark:border-white/10'
                 )}
                 aria-pressed={isSelected}
+                dir={isRtl ? 'rtl' : 'ltr'}
               >
-                <div className="relative flex h-20 w-32 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-white/[0.06]">
+                <div className="relative flex h-18 w-32 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-white/[0.06] my-1">
                   {course?.thumbnailUrl ? (
                     <img src={course.thumbnailUrl} alt={title} className="h-full w-full object-cover object-center" />
                   ) : (
