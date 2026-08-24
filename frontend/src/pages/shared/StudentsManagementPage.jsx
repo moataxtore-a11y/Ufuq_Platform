@@ -5,7 +5,6 @@ import Input from '../../components/ui/Input.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
 import { Modal } from '../../components/ui/Modal.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
-import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
@@ -554,15 +553,15 @@ export default function StudentsManagementPage() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 gap-7">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {filtered.map((u) => (
               <div 
                 key={u._id || u.id} 
-                className="relative flex flex-col bg-[#0d0f0e] border border-white/5 rounded-[42px] text-right text-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all px-5 py-6 sm:px-8 sm:py-8 lg:px-14 lg:py-12"
+                className="relative flex min-h-[520px] flex-col bg-[#0d0f0e] border border-white/5 rounded-[28px] text-right text-white shadow-[0_18px_52px_rgba(0,0,0,0.24)] transition-all px-4 py-5 hover:border-brand/35"
                 dir="rtl"
               >
                 {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                  <div className="absolute top-6 left-6 z-10">
+                  <div className="absolute top-4 left-4 z-10">
                     <input
                       type="checkbox"
                       className="w-5 h-5 accent-brand cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
@@ -573,48 +572,51 @@ export default function StudentsManagementPage() {
                   </div>
                 )}
 
-                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 mb-10 text-center md:text-right">
-                  <div className="relative shrink-0 order-1">
+                <div className="flex flex-col items-center gap-3 mb-5 text-center">
+                  <div className="relative shrink-0">
                     {u?.profile?.avatarUrl ? (
                       <img
                         src={u.profile.avatarUrl}
                         alt={u.name || 'student'}
-                        className="bg-[#1b201e] rounded-full w-32 h-32 sm:w-40 sm:h-40 object-cover shrink-0"
+                        className="bg-[#1b201e] rounded-full w-24 h-24 object-cover shrink-0"
                       />
                     ) : (
-                      <div className="bg-[#1b201e] rounded-full w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center shrink-0">
-                        <User className="w-16 h-16 sm:w-20 sm:h-20 text-slate-400" />
+                      <div className="bg-[#1b201e] rounded-full w-24 h-24 flex items-center justify-center shrink-0">
+                        <User className="w-11 h-11 text-slate-400" />
                       </div>
                     )}
                     <div 
-                      className={`absolute bottom-4 right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-full border-[5px] border-[#0d0f0e] ${u?.isSuspended ? 'bg-[#ff0000]' : 'bg-[#00f018]'}`} 
+                      className={`absolute bottom-2 right-0 w-5 h-5 rounded-full border-[4px] border-[#0d0f0e] ${u?.isSuspended ? 'bg-[#ff0000]' : 'bg-[#00f018]'}`} 
                       title={u?.isSuspended ? 'موقوف' : 'نشط'}
                     />
                   </div>
 
-                  <div className="order-2 space-y-3 text-2xl sm:text-3xl lg:text-[34px] font-extrabold leading-relaxed">
-                    <div>الاسم : <span>{u.name || '—'}</span></div>
-                    <div className="break-all">البريد الالكتروني : <span dir="ltr">{u.email || '—'}</span></div>
-                    <div>الرقم التعريفي : <span dir="ltr">{u.studentId || '—'}</span></div>
+                  <div className="w-full space-y-1.5 font-extrabold leading-relaxed">
+                    <div className="text-lg leading-7 line-clamp-2">الاسم : <span>{u.name || '—'}</span></div>
+                    <div className="text-sm text-white/90 break-all leading-6">البريد الالكتروني : <span dir="ltr">{u.email || '—'}</span></div>
+                    <div className="text-sm text-white/90">الرقم التعريفي : <span dir="ltr">{u.studentId || '—'}</span></div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 mb-9 text-xl sm:text-2xl lg:text-[30px] font-extrabold leading-relaxed">
-                  <div>رقم الهاتف : <span dir="ltr">{u.profile?.phone || u.profile?.studentPhone || '—'}</span></div>
-                  <div>رقم ولي الامر : <span dir="ltr">{u.profile?.parentPhone || '—'}</span></div>
+                <div className="grid grid-cols-1 gap-2 mb-4 text-sm font-extrabold leading-6">
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">رقم الهاتف : <span dir="ltr">{u.profile?.phone || u.profile?.studentPhone || '—'}</span></div>
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">رقم ولي الامر : <span dir="ltr">{u.profile?.parentPhone || '—'}</span></div>
                   
-                  <div>الرقم القومي: <span dir="ltr">{u.profile?.nationalId || '—'}</span></div>
-                  <div>الصف : <span>{formatGradeYear(u.profile?.gradeYear, isRtl)}</span></div>
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">الرقم القومي: <span dir="ltr">{u.profile?.nationalId || '—'}</span></div>
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">الصف : <span>{formatGradeYear(u.profile?.gradeYear, isRtl)}</span></div>
                   
-                  <div>المدرسة: <span>{u.profile?.school || u.profile?.schoolName || '—'}</span></div>
-                  <div>القسم: <span>{formatSection(u.profile?.section, isRtl)}</span></div>
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">المدرسة: <span>{u.profile?.school || u.profile?.schoolName || '—'}</span></div>
+                  <div className="rounded-2xl bg-white/[0.035] px-3 py-2">القسم: <span>{formatSection(u.profile?.section, isRtl)}</span></div>
                 </div>
 
                 {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
-                  <div className="mb-9 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 lg:items-end">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 lg:justify-end">
+                  <div className="mb-4 rounded-2xl bg-white/[0.025] p-3">
+                    <div className="mb-2 inline-flex items-center justify-center rounded-xl bg-[#004b40] px-4 py-2 text-sm font-extrabold text-white">
+                      الكورسات المفتوحة
+                    </div>
+                    <div className="flex flex-wrap gap-2">
                       {u.enrolledCourses.slice(0, 3).map((c, i) => (
-                        <span key={i} className="inline-flex min-h-14 items-center justify-center rounded-2xl bg-[#062e28] px-7 py-3 text-lg sm:text-2xl font-extrabold text-white shadow-inner">
+                        <span key={i} className="inline-flex min-h-9 max-w-full items-center justify-center rounded-xl bg-[#062e28] px-3 py-2 text-sm font-extrabold text-white shadow-inner">
                           {c.courseTitle || c.title || 'Course'}
                         </span>
                       ))}
@@ -622,34 +624,31 @@ export default function StudentsManagementPage() {
                         <button
                           type="button"
                           onClick={() => onViewProfile(u)}
-                          className="text-white text-lg sm:text-2xl font-extrabold underline underline-offset-4"
+                          className="px-1 text-sm font-extrabold text-white underline underline-offset-4"
                         >
                           عرض المزيد
                         </button>
                       ) : null}
                     </div>
-                    <div className="inline-flex w-fit items-center justify-center rounded-2xl bg-[#004b40] px-7 py-3 text-lg sm:text-2xl font-extrabold text-white lg:order-first">
-                      الكورسات المفتوحة
-                    </div>
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-auto pt-2">
-                  <button onClick={() => onDelete(u._id || u.id)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#ff0000] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#cc0000]">
+                <div className="grid grid-cols-3 gap-2 mt-auto pt-2">
+                  <button onClick={() => onDelete(u._id || u.id)} className="flex min-h-12 items-center justify-center rounded-2xl bg-[#ff0000] px-3 py-3 text-sm font-extrabold text-white transition-colors hover:bg-[#cc0000]">
                     حذف
                   </button>
                   
                   {!isTeacherOrTeam ? (
-                    <button onClick={() => onEdit(u)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#ffb445] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#df9335]">
+                    <button onClick={() => onEdit(u)} className="flex min-h-12 items-center justify-center rounded-2xl bg-[#ffb445] px-3 py-3 text-sm font-extrabold text-white transition-colors hover:bg-[#df9335]">
                       تعديل
                     </button>
                   ) : (
-                    <button onClick={() => onToggleSuspend(u)} className={`flex min-h-16 items-center justify-center rounded-[28px] px-6 py-4 text-2xl font-extrabold text-white transition-colors ${u?.isSuspended ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#ffb445] hover:bg-[#df9335]'}`}>
+                    <button onClick={() => onToggleSuspend(u)} className={`flex min-h-12 items-center justify-center rounded-2xl px-3 py-3 text-sm font-extrabold text-white transition-colors ${u?.isSuspended ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#ffb445] hover:bg-[#df9335]'}`}>
                       {u?.isSuspended ? 'تفعيل' : 'إيقاف'}
                     </button>
                   )}
 
-                  <button onClick={() => onViewProfile(u)} className="flex min-h-16 items-center justify-center rounded-[28px] bg-[#0b9b88] px-6 py-4 text-2xl font-extrabold text-white transition-colors hover:bg-[#087f70]">
+                  <button onClick={() => onViewProfile(u)} className="flex min-h-12 items-center justify-center rounded-2xl bg-[#0b9b88] px-3 py-3 text-sm font-extrabold text-white transition-colors hover:bg-[#087f70]">
                     ملف الطالب
                   </button>
                 </div>
