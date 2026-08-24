@@ -66,12 +66,27 @@ const validateCourseAccessCode = asyncHandler(async (req, res) => {
     if (doc.maxUses > 0 && doc.usedCount >= doc.maxUses) {
         return res.status(400).json({ message: 'Access code has reached its usage limit' })
     }
-    const course = await prisma.course.findUnique({
-        where: { id: doc.courseId },
-        select: { id: true, title: true, description: true, price: true, imageUrl: true, subjectId: true, isPublished: true }
-    })
-    const allowedCourses = course ? [course] : []
-    res.json({ valid: true, codeId: doc.id, courseId: doc.courseId, allowedCourses, usedCount: doc.usedCount, maxUses: doc.maxUses })
+    let course = null
+    if (doc.courseId) {
+        try {
+            course = await prisma.course.findFirst({
+                where: { id: doc.courseId }
+            })
+        } catch {
+            // ignore
+        }
+    }
+    const allowedCourses = course ? [{
+        id: course.id,
+        _id: course.id,
+        title: course.title,
+        description: course.description,
+        price: course.price,
+        imageUrl: course.imageUrl,
+        subjectId: course.subjectId,
+        isPublished: course.isPublished
+    }] : []
+    res.json({ valid: true, codeId: doc.id, courseId: doc.courseId, allowedCourses, usedCount: doc.usedCount || 0, maxUses: doc.maxUses || 1 })
 })
 
 const chooseCourseForAccessCode = asyncHandler(async (req, res) => {
