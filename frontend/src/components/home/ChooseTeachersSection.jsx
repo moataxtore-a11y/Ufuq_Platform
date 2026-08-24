@@ -101,7 +101,7 @@ export default function ChooseTeachersSection() {
   }, [gradeYear, section, state.items])
 
   return (
-    <section id="choose-teachers" className="mt-8 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
+    <section id="choose-teachers" className="relative z-20 mt-8 lg:-mt-4 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
       <div
         className="relative"
         dir={isRtl ? 'rtl' : 'ltr'}
