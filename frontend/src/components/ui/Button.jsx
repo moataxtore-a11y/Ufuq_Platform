@@ -45,11 +45,11 @@ export default function Button({ className, variant = 'default', size = 'md', as
       'focus-visible:ring-slate-300',
       'dark:focus-visible:ring-white/20',
     ],
-    size === 'xs' && 'h-8 px-3 py-1.5 text-caption rounded-lg',
-    size === 'sm' && 'h-9 px-4 py-2 text-body-sm',
-    size === 'md' && 'h-11 px-5 py-2.5 text-body-sm',
-    size === 'lg' && 'h-12 px-6 py-3 text-body',
-    size === 'xl' && 'h-14 px-8 py-3.5 text-body-lg',
+    size === 'xs' && 'h-8 px-3 text-caption rounded-lg',
+    size === 'sm' && 'h-9 px-4 text-body-sm',
+    size === 'md' && 'h-11 px-5 text-body-sm',
+    size === 'lg' && 'h-12 px-6 text-body',
+    size === 'xl' && 'h-14 px-8 text-body-lg',
     loading && 'relative text-transparent pointer-events-none',
     className
   )
