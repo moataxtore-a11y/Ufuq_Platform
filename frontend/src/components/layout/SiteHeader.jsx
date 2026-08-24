@@ -402,11 +402,11 @@ export default function SiteHeader() {
           <div
             className={cn(
               'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
-              'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl'
+              isRtl ? 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl' : 'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl'
             )}
             dir={isRtl ? 'rtl' : 'ltr'}
           >
-            <div className={cn('flex justify-between items-center gap-2 px-2 py-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <div className="flex justify-between items-center gap-2 px-2 py-2">
               <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{isRtl ? 'القائمة' : 'Menu'}</div>
               <div className="flex items-center gap-2">
                 <ThemeToggle className="shrink-0" />
@@ -490,7 +490,7 @@ export default function SiteHeader() {
                             className={({ isActive }) =>
                               cn(
                                 'flex items-center gap-2.5 px-3 py-2 rounded-2xl font-medium text-sm transition-all duration-200 ease-out',
-                                isRtl ? 'flex-row-reverse text-right' : 'text-left',
+                                isRtl ? 'flex-row text-right' : 'text-left',
                                 isActive
                                   ? 'bg-gradient-to-r from-brand/20 to-brand/10 text-slate-900 dark:text-slate-100 border border-brand/20'
                                   : 'text-slate-700 dark:text-slate-200'
