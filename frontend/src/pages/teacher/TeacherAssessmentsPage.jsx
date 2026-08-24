@@ -8,7 +8,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import CreateAssessmentModal from '../../components/assessments/CreateAssessmentModal.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
-import { Trash2 } from 'lucide-react'
+import { Check, Image as ImageIcon, Layers, Trash2 } from 'lucide-react'
 
 export default function TeacherAssessmentsPage() {
   const { notify } = useToast()
@@ -154,40 +154,29 @@ export default function TeacherAssessmentsPage() {
       <div className="gap-2 grid">
         <div className="text-slate-600 dark:text-slate-300 text-sm">{t('assessmentsPage.course')}</div>
         <div className="gap-3 grid sm:grid-cols-2 lg:grid-cols-3">
-          <button
-            type="button"
+          <AssessmentCourseCard
+            active={isAllMode}
+            title={safeT('assessmentsPage.allAssessments', 'كل الاختبارات')}
+            subtitle={safeT('assessmentsPage.allAssessmentsHint', 'عرض كل ما أنشأته من جميع الكورسات.')}
+            isRtl={isRtl}
             onClick={() => navigate(`${basePath}/assessments/all`)}
-            className={
-              'text-center rounded-2xl border p-4 transition ' +
-              (isAllMode
-                ? 'border-brand/60 bg-brand/15'
-                : 'border-black/5 bg-white hover:border-brand/40 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-brand/40')
-            }
-          >
-            <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{safeT('assessmentsPage.allAssessments', 'كل الاختبارات')}</div>
-            <div className="mt-1 text-slate-600 dark:text-slate-300 text-xs">{safeT('assessmentsPage.allAssessmentsHint', 'عرض كل ما أنشأته من جميع الكورسات.')}</div>
-          </button>
+            fallbackIcon={<Layers className="h-12 w-12 text-brand-300" />}
+          />
 
           {courses.map((c) => {
             const active = c._id === courseId
             return (
-              <button
+              <AssessmentCourseCard
                 key={c._id}
-                type="button"
+                active={active && !isAllMode}
+                title={c.title}
+                thumbnailUrl={c.thumbnailUrl}
+                isRtl={isRtl}
                 onClick={() => {
                   setCourseId(c._id)
                   navigate(`${basePath}/assessments/course/${c._id}`)
                 }}
-                className={
-                  'text-center rounded-2xl border p-4 transition ' +
-                  (active
-                    ? 'border-brand/60 bg-brand/15'
-                    : 'border-black/5 bg-white hover:border-brand/40 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-brand/40')
-                }
-              >
-                <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{c.title}</div>
-                <div className="mt-1 text-slate-600 dark:text-slate-300 text-xs">{(c.description || '').slice(0, 80) || ' '}</div>
-              </button>
+              />
             )
           })}
         </div>
@@ -271,4 +260,54 @@ export default function TeacherAssessmentsPage() {
       />
     </div>
   )
+}
+
+function AssessmentCourseCard({ active, title, subtitle, thumbnailUrl, fallbackIcon, onClick, isRtl }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cnAssessmentCard(
+        'group overflow-hidden rounded-[28px] border bg-[#001d18] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
+        active ? 'border-brand ring-2 ring-brand/20 shadow-glow-brand' : 'border-slate-200 dark:border-white/10'
+      )}
+      aria-pressed={active}
+      dir={isRtl ? 'rtl' : 'ltr'}
+    >
+      <div className="relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden bg-slate-100 dark:bg-white/[0.06]">
+        {thumbnailUrl ? (
+          <img src={thumbnailUrl} alt={title || 'Course'} className="h-full w-full object-cover object-center" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-[#18211f] text-slate-400 dark:text-slate-500">
+            {fallbackIcon || <ImageIcon className="h-12 w-12" />}
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001d18]/45 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
+        <span
+          className={cnAssessmentCard(
+            'absolute top-3 flex h-10 w-10 items-center justify-center rounded-full border transition-colors',
+            isRtl ? 'left-3' : 'right-3',
+            active ? 'border-brand bg-brand text-white shadow-lg' : 'border-white/30 bg-black/25 text-white/50 backdrop-blur-sm'
+          )}
+        >
+          {active ? <Check className="h-5 w-5" /> : null}
+        </span>
+      </div>
+
+      <div className="flex min-h-20 flex-col items-center justify-center bg-[#001d18] px-4 py-4">
+        <div className="line-clamp-2 text-center text-2xl font-extrabold leading-tight text-white">
+          {title || '—'}
+        </div>
+        {subtitle ? (
+          <div className="mt-2 line-clamp-2 text-center text-xs font-semibold leading-5 text-white/65">
+            {subtitle}
+          </div>
+        ) : null}
+      </div>
+    </button>
+  )
+}
+
+function cnAssessmentCard(...classes) {
+  return classes.filter(Boolean).join(' ')
 }
