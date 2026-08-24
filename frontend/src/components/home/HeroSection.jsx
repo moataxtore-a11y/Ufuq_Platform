@@ -39,11 +39,11 @@ function useCountUp(target, duration = 2000) {
 function StatItem({ target, label, suffix = '+' }) {
   const { ref, count } = useCountUp(target, 2200)
   return (
-    <div ref={ref} className="px-2 sm:px-6 py-1 flex flex-col items-center justify-center">
-      <span className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-sm">
+    <div ref={ref} className="flex flex-col justify-center items-center px-[clamp(0.25rem,2vw,1.5rem)] py-1">
+      <span className="font-black text-white text-[clamp(1rem,3.5vw,3rem)] tracking-tight drop-shadow-sm">
         {suffix}{count}
       </span>
-      <span className="text-xs sm:text-base lg:text-lg font-bold text-teal-100 dark:text-teal-200 mt-1">
+      <span className="mt-1 font-bold text-teal-100 dark:text-teal-200 text-[clamp(0.6rem,1.5vw,1.125rem)]">
         {label}
       </span>
     </div>
@@ -55,7 +55,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-[68px] sm:-mt-[72px] md:-mt-[76px] pt-20 sm:pt-24 lg:pt-28 min-h-[88vh] lg:min-h-[92vh] flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#4ee3d0] via-[#6cecd9] to-[#c2f6ef] dark:from-[#052622] dark:via-[#083832] dark:to-[#0c443e]"
+      className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen -mt-[68px] sm:-mt-[72px] md:-mt-[76px] pt-20 sm:pt-24 lg:pt-28 min-h-[clamp(520px,70vw,820px)] flex flex-col justify-between overflow-hidden bg-gradient-to-br from-[#4ee3d0] via-[#6cecd9] to-[#c2f6ef] dark:from-[#052622] dark:via-[#083832] dark:to-[#0c443e]"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       {/* Dynamic Background SVG Waves & Swooshes */}
@@ -103,17 +103,17 @@ export default function HeroSection() {
       </div>
 
       {/* Main Container */}
-      <div className="relative z-10 mx-auto px-4 sm:px-8 lg:px-12 w-full max-w-7xl flex-1 flex flex-col justify-between pt-6">
+      <div className="relative z-10 flex flex-col flex-1 justify-between mx-auto px-[clamp(0.75rem,3vw,3rem)] pt-[clamp(1rem,2vw,1.5rem)] w-full max-w-7xl">
         
         {/* Content Row: Title (Right in RTL) + Character Image (Left in RTL) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center flex-1">
+        <div className="items-center gap-[clamp(0.5rem,3vw,2.5rem)] grid grid-cols-12 h-[clamp(300px,55vw,650px)] min-h-0">
           
           {/* Right Column in RTL: Title & Subtitle */}
-          <div className="lg:col-span-6 order-1 flex flex-col justify-center items-center lg:items-start text-center lg:text-right space-y-4 sm:space-y-6 z-20 pb-6 lg:pb-0">
+          <div className="flex flex-col col-span-6 justify-center items-start space-y-[clamp(0.5rem,2vw,1.5rem)] z-20 order-1 min-w-0 text-start">
             
             {/* Main Title: منصة أُفُق */}
-            <h1 className="font-perfect text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-950 dark:text-teal-200 leading-[1.08] drop-shadow-sm">
-              <span className="inline-block ml-2">
+            <h1 className="font-perfect font-black text-slate-950 dark:text-teal-200 text-[clamp(1.6rem,7vw,6rem)] leading-[1.08] tracking-tight whitespace-nowrap drop-shadow-sm">
+              <span className="inline-block ml-[clamp(0.2rem,1vw,0.5rem)]">
                 {t('hero.titlePrefix') || 'منصة'}
               </span>
               <span className="inline-block">
@@ -122,11 +122,11 @@ export default function HeroSection() {
             </h1>
 
             {/* Description Subtitle */}
-            <div className="max-w-xl text-slate-900 dark:text-slate-100 text-lg sm:text-xl lg:text-2xl font-bold leading-relaxed sm:leading-loose space-y-1">
+            <div className="space-y-1 max-w-xl font-bold text-slate-900 dark:text-slate-100 text-[clamp(0.6rem,2vw,1.5rem)] leading-[1.7]">
               <p className="drop-shadow-sm">
                 منصة متكاملة بها كل ما يحتاجه الطالب ليتفوق
               </p>
-              <p className="text-slate-800 dark:text-slate-200 text-base sm:text-lg lg:text-xl font-semibold">
+              <p className="font-semibold text-slate-800 dark:text-slate-200 text-[clamp(0.55rem,1.7vw,1.25rem)]">
                 دروس مرتبة، اختبارات، وملفات مرفقة في مكان واحد.
               </p>
             </div>
@@ -134,15 +134,15 @@ export default function HeroSection() {
           </div>
 
           {/* Left Column in RTL: 3D Character standing on left side */}
-          <div className="lg:col-span-6 order-2 flex justify-center lg:justify-start items-end h-full relative pt-2 lg:pt-0 z-10 overflow-hidden">
-            <div className="relative w-full max-w-[420px] sm:max-w-[540px] lg:max-w-[660px] xl:max-w-[720px] flex items-end justify-center lg:justify-start">
+          <div className="relative flex col-span-6 justify-start items-end z-10 order-2 pt-2 h-full min-w-0 overflow-hidden">
+            <div className="relative flex justify-start items-end w-full max-w-[720px] h-full">
               {/* Glow backdrop behind character */}
               <div className="absolute inset-0 bg-teal-400/25 dark:bg-teal-500/15 rounded-full blur-2xl scale-95 transform translate-y-6 pointer-events-none" />
               
               <img
                 src={heroPic}
                 alt="Character Hero"
-                className="relative z-10 w-full h-auto object-contain max-h-[75vh] lg:max-h-[88vh] scale-105 sm:scale-110 lg:scale-115 origin-bottom translate-y-8 sm:translate-y-12 lg:translate-y-16 drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500"
+                className="relative z-10 object-contain origin-bottom w-full h-full scale-[1.05] lg:scale-110 translate-y-[clamp(1rem,3vw,2.5rem)] drop-shadow-[0_20px_35px_rgba(0,90,80,0.22)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] transform transition-transform duration-500"
                 draggable="false"
               />
             </div>
@@ -151,8 +151,8 @@ export default function HeroSection() {
         </div>
 
         {/* Floating Glassmorphic Stats Bar (Bottom Overlap Pill) */}
-        <div className="relative z-30 -mt-16 sm:-mt-20 lg:-mt-28 mb-4 sm:mb-6 w-full flex justify-center">
-          <div className="w-full max-w-3xl lg:max-w-4xl bg-[#0c6b73]/85 dark:bg-[#07474d]/90 backdrop-blur-md border border-white/30 dark:border-teal-500/30 rounded-[24px] sm:rounded-[32px] px-4 py-4 sm:px-8 sm:py-6 shadow-[0_20px_50px_rgba(12,107,115,0.35)] transition-all duration-300 hover:shadow-[0_25px_60px_rgba(12,107,115,0.45)]">
+        <div className="relative z-30 flex justify-center -mt-[clamp(2rem,6vw,5rem)] mb-[clamp(1rem,2vw,1.5rem)] w-full">
+          <div className="bg-[#0c6b73]/85 dark:bg-[#07474d]/90 shadow-[0_20px_50px_rgba(12,107,115,0.35)] hover:shadow-[0_25px_60px_rgba(12,107,115,0.45)] backdrop-blur-md px-[clamp(0.75rem,3vw,2rem)] py-[clamp(0.75rem,2vw,1.5rem)] border border-white/30 dark:border-teal-500/30 rounded-[clamp(1rem,3vw,2rem)] w-full max-w-4xl transition-all duration-300">
             <div className="grid grid-cols-3 divide-x divide-x-reverse divide-white/30 dark:divide-teal-500/30 items-center text-center">
               <StatItem target={300} label="كورس" />
               <StatItem target={50} label="مدرس" />
