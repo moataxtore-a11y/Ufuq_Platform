@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from '../../utils/api.js'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
@@ -9,7 +9,7 @@ import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import { Trash2, User } from 'lucide-react'
+import { BookOpen, Trash2, User } from 'lucide-react'
 import Select from '../../components/ui/Select.jsx'
 
 export default function StudentsManagementPage() {
@@ -48,12 +48,34 @@ export default function StudentsManagementPage() {
   const [openProfile, setOpenProfile] = useState(false)
   const [profileUserId, setProfileUserId] = useState('')
 
-  const filtered = useMemo(() => {
-    if (!rows) return []
-    return rows
-  }, [rows, auth?.role, auth?.teamId])
+  const [myCourses, setMyCourses] = useState([])
+  const [selectedCourseId, setSelectedCourseId] = useState('')
 
   const isTeacherOrTeam = auth?.role === 'teacher' || auth?.role === 'team'
+
+  const filtered = useMemo(() => {
+    if (!rows) return []
+    if (!selectedCourseId || !isTeacherOrTeam) return rows
+    return rows.filter((u) => {
+      const enrolled = Array.isArray(u.enrolledCourses) ? u.enrolledCourses : []
+      return enrolled.some((e) => e.courseId === selectedCourseId)
+    })
+  }, [rows, selectedCourseId, isTeacherOrTeam])
+
+  useEffect(() => {
+    if (!isTeacherOrTeam) return
+    let alive = true
+    async function loadCourses() {
+      try {
+        const res = await api.get('/courses/mine')
+        if (alive) setMyCourses(Array.isArray(res.data) ? res.data : [])
+      } catch {
+        // ignore
+      }
+    }
+    loadCourses()
+    return () => { alive = false }
+  }, [isTeacherOrTeam])
 
   async function load() {
     try {
@@ -458,6 +480,53 @@ export default function StudentsManagementPage() {
         </div>
       ) : null}
 
+      {isTeacherOrTeam && myCourses.length > 0 ? (
+        <div className="bg-white/70 dark:bg-white/[0.04] p-3 border border-black/10 dark:border-white/10 rounded-3xl">
+          <div className={"font-semibold text-slate-700 dark:text-slate-200 text-xs mb-2 " + (isRtl ? 'text-right' : 'text-left')}>
+            {isRtl ? 'فلترة حسب الكورس' : 'Filter by course'}
+          </div>
+          <div className={"flex flex-wrap gap-2 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+            <button
+              type="button"
+              onClick={() => setSelectedCourseId('')}
+              className={
+                'px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-150 ' +
+                (!selectedCourseId
+                  ? 'bg-brand/20 border-brand/40 text-slate-900 dark:text-slate-100'
+                  : 'bg-white/70 dark:bg-white/[0.04] border-black/10 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-brand/5')
+              }
+            >
+              {isRtl ? 'كل الطلاب' : 'All students'}
+              <span className="mr-1 ml-1 opacity-60">({rows.length})</span>
+            </button>
+            {myCourses.map((c) => {
+              const cId = c._id || c.id
+              const enrolledCount = rows.filter((u) => {
+                const enrolled = Array.isArray(u.enrolledCourses) ? u.enrolledCourses : []
+                return enrolled.some((e) => e.courseId === cId)
+              }).length
+              return (
+                <button
+                  key={cId}
+                  type="button"
+                  onClick={() => setSelectedCourseId(cId)}
+                  className={
+                    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-150 ' +
+                    (selectedCourseId === cId
+                      ? 'bg-brand/20 border-brand/40 text-slate-900 dark:text-slate-100'
+                      : 'bg-white/70 dark:bg-white/[0.04] border-black/10 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-brand/5')
+                  }
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span className="max-w-[140px] truncate">{c.title}</span>
+                  <span className="opacity-60">({enrolledCount})</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      ) : null}
+
       <div className="gap-1 grid">
         <label className="text-slate-600 dark:text-slate-200 text-sm">{t('studentsPage.search')}</label>
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('studentsPage.searchPlaceholder')} />
@@ -593,12 +662,17 @@ export default function StudentsManagementPage() {
         }}
       />
 
-      <StudentProfileModal open={openProfile} onOpenChange={setOpenProfile} userId={profileUserId} />
+      <StudentProfileModal
+        open={openProfile}
+        onOpenChange={setOpenProfile}
+        userId={profileUserId}
+        userEnrolledCourses={rows.find((u) => String(u._id || u.id) === String(profileUserId))?.enrolledCourses || []}
+      />
     </div>
   )
 }
 
-function StudentProfileModal({ open, onOpenChange, userId }) {
+function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }) {
   const { notify } = useToast()
   const { t, isRtl } = useLanguage()
   const [loading, setLoading] = useState(false)
@@ -613,7 +687,9 @@ function StudentProfileModal({ open, onOpenChange, userId }) {
         setLoading(true)
         setStats(null)
         const res = await api.get(`/students/${userId}/profile`)
-        if (mounted) setUser(res.data)
+        if (mounted) {
+          setUser({ ...res.data, enrolledCourses: userEnrolledCourses || [] })
+        }
 
         try {
           const statsRes = await api.get(`/students/${userId}/stats`)

@@ -7,8 +7,28 @@ async function assertStudentAccess(studentUserId, req) {
     const student = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true, role: true, teamId: true } })
     if (!student || student.role !== 'student') return false
     if (req.user.role === 'teacher' || req.user.role === 'team') {
-        if (!req.user.teamId) return false
-        return String(student.teamId || '') === String(req.user.teamId)
+        // Check teamId match first
+        if (req.user.teamId && String(student.teamId || '') === String(req.user.teamId)) return true
+
+        // Also allow access if the student is enrolled in any of this teacher's courses
+        let teacherIds = []
+        if (req.user.role === 'teacher') {
+            teacherIds = [req.user.id]
+        } else if (req.user.teamId) {
+            const teachers = await prisma.user.findMany({ where: { role: 'teacher', teamId: req.user.teamId }, select: { id: true } })
+            teacherIds = teachers.map((t) => t.id)
+        }
+        if (teacherIds.length) {
+            const courses = await prisma.course.findMany({ where: { teacherId: { in: teacherIds } }, select: { id: true } })
+            const courseIds = courses.map((c) => c.id)
+            if (courseIds.length) {
+                const enrollment = await prisma.courseEnrollment.findFirst({
+                    where: { studentId: studentUserId, courseId: { in: courseIds } }
+                })
+                if (enrollment) return true
+            }
+        }
+        return false
     }
     return false
 }
