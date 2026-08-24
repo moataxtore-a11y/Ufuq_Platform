@@ -103,7 +103,7 @@ const activateStudent = asyncHandler(async (req, res) => {
 const getStudentProfile = asyncHandler(async (req, res) => {
     const { studentUserId } = req.params
     if (!(await assertStudentAccess(studentUserId, req))) return res.status(403).json({ message: 'Forbidden' })
-    const user = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true, name: true, email: true, role: true, status: true, teamId: true, phone: true, profile: true, walletBalance: true, createdAt: true, updatedAt: true } })
+    const user = await prisma.user.findUnique({ where: { id: studentUserId }, select: { id: true, name: true, email: true, role: true, status: true, teamId: true, profile: true, walletBalance: true, createdAt: true, updatedAt: true } })
     if (!user) return res.status(404).json({ message: 'Student not found' })
     res.json(user)
 })
