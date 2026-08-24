@@ -560,90 +560,74 @@ export default function StudentsManagementPage() {
                 key={u._id || u.id} 
                 className={"relative flex flex-col p-5 bg-white dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-2xl hover:border-brand/40 dark:hover:border-brand/40 transition-colors shadow-sm " + (isRtl ? 'text-right' : 'text-left')}
               >
-                {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                  <div className={"absolute top-5 " + (isRtl ? 'left-5' : 'right-5')}>
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 accent-brand cursor-pointer"
-                      checked={selected.has(String(u?._id || u?.id || ''))}
-                      onChange={() => toggleSelected(u._id || u.id)}
-                      aria-label={isRtl ? 'تحديد' : 'Select'}
-                    />
-                  </div>
-                )}
-
-                <div className={"flex items-start gap-3 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                  <div className="bg-brand/10 dark:bg-brand/20 text-brand-600 dark:text-brand-300 rounded-full w-12 h-12 flex items-center justify-center shrink-0">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1 min-w-0 pt-0.5">
-                    <h3 className="font-bold text-slate-900 dark:text-white truncate text-base leading-tight pr-6">{u.name}</h3>
-                    <div className="text-slate-500 dark:text-slate-400 text-[13px] truncate mt-1">{u.email}</div>
-                    
-                    <div className={"flex flex-wrap gap-2 mt-2.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                      {u.studentId && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 text-[11px] font-mono">
-                          {u.studentId}
-                        </span>
-                      )}
+                <div className={"flex items-start justify-between gap-3 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                  <div className={"flex items-center gap-3 min-w-0 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                    <div className="relative">
+                      <div className="bg-slate-100 dark:bg-white/5 text-slate-400 rounded-full w-10 h-10 flex items-center justify-center shrink-0">
+                        <User className="w-5 h-5" />
+                      </div>
                       {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                        <span className={'inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ' + (u?.isSuspended ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300')}>
-                          {u?.isSuspended ? (isRtl ? 'موقوف' : 'Suspended') : (isRtl ? 'نشط' : 'Active')}
-                        </span>
+                        <div 
+                          className={`absolute bottom-0 ${isRtl ? 'left-0' : 'right-0'} w-3 h-3 rounded-full border-2 border-white dark:border-[#0A1915] ${u?.isSuspended ? 'bg-red-500' : 'bg-emerald-500'}`} 
+                          title={u?.isSuspended ? (isRtl ? 'موقوف' : 'Suspended') : (isRtl ? 'نشط' : 'Active')}
+                        ></div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-slate-800 dark:text-slate-100 truncate text-sm">{u.name}</h3>
+                      <div className="text-slate-500 dark:text-slate-400 text-xs truncate mt-0.5">{u.email}</div>
+                      {u.studentId && (
+                        <div className="text-slate-400 dark:text-slate-500 text-[10px] font-mono mt-0.5">#{u.studentId}</div>
                       )}
                     </div>
                   </div>
+
+                  {(auth?.role === 'teacher' || auth?.role === 'team') && (
+                    <div className="pt-1 shrink-0">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-brand cursor-pointer opacity-50 group-hover:opacity-100 transition-opacity"
+                        checked={selected.has(String(u?._id || u?.id || ''))}
+                        onChange={() => toggleSelected(u._id || u.id)}
+                        aria-label={isRtl ? 'تحديد' : 'Select'}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                  <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/10">
-                    <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-2">{isRtl ? 'الكورسات المفتوحة' : 'Unlocked Courses'}</div>
-                    {u.enrolledCourses?.length > 0 ? (
-                      <div className={"flex flex-wrap gap-1.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-                        {u.enrolledCourses.map((c, i) => (
-                          <span key={i} className="inline-flex items-center px-2 py-1 bg-brand/5 dark:bg-brand/10 text-brand-700 dark:text-brand-300 text-[11px] rounded-lg border border-brand/10 truncate max-w-[160px]">
-                            {c.courseTitle}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-xs text-slate-400 dark:text-slate-500">—</div>
-                    )}
+                {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
+                  <div className={"mt-4 flex flex-wrap gap-1.5 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+                    {u.enrolledCourses.map((c, i) => (
+                      <span key={i} className="inline-flex items-center px-2 py-0.5 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 text-[10px] rounded border border-black/5 dark:border-white/5 truncate max-w-[120px]">
+                        {c.courseTitle}
+                      </span>
+                    ))}
                   </div>
                 )}
 
-                <div className={"mt-auto pt-4 flex flex-wrap items-center gap-2 " + (isRtl ? 'justify-end flex-row-reverse' : 'justify-end')}>
-                  <Button variant="secondary" size="sm" onClick={() => onViewProfile(u)} className="text-xs h-8">
+                <div className={"mt-auto pt-4 flex flex-wrap items-center gap-1 " + (isRtl ? 'justify-end flex-row-reverse' : 'justify-end')}>
+                  <button onClick={() => onViewProfile(u)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-brand dark:hover:text-brand-300 transition-colors px-2 py-1">
                     {t('studentsPage.profile')}
-                  </Button>
+                  </button>
                   
                   {(auth?.role === 'teacher' || auth?.role === 'team') && (
-                    <Button
-                      variant={auth?.role === 'teacher' ? 'outline' : (u?.isSuspended ? 'outline' : 'destructive')}
-                      size="sm"
-                      className={
-                        "text-xs h-8 " + 
-                        (auth?.role === 'teacher'
-                          ? (u?.isSuspended
-                            ? 'border-emerald-300 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-500/30 dark:text-emerald-400 dark:hover:bg-emerald-500/10'
-                            : 'border-brand/40 text-brand hover:bg-brand/5 dark:border-brand/30 dark:text-brand-300 dark:hover:bg-brand/10')
-                          : '')
-                      }
+                    <button
                       onClick={() => onToggleSuspend(u)}
+                      className={`text-[11px] font-medium transition-colors px-2 py-1 ${u?.isSuspended ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300' : 'text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400'}`}
                     >
                       {u?.isSuspended ? (isRtl ? 'تفعيل' : 'Activate') : (isRtl ? 'إيقاف' : 'Suspend')}
-                    </Button>
+                    </button>
                   )}
                   
                   {!isTeacherOrTeam && (
-                    <Button variant="outline" size="sm" onClick={() => onEdit(u)} className="text-xs h-8">
+                    <button onClick={() => onEdit(u)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-brand transition-colors px-2 py-1">
                       {t('studentsPage.edit')}
-                    </Button>
+                    </button>
                   )}
                   
-                  <Button variant="destructive" size="sm" onClick={() => onDelete(u._id || u.id)} className="text-xs h-8">
+                  <button onClick={() => onDelete(u._id || u.id)} className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors px-2 py-1">
                     {t('studentsPage.delete')}
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}
