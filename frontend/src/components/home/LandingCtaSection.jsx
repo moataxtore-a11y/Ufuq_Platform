@@ -14,41 +14,40 @@ export default function LandingCtaSection() {
     <section className="mt-10">
       <div className="right-1/2 left-1/2 relative -mr-[50vw] -ml-[50vw] w-screen">
         <div className="gap-12 grid">
-          <div className="relative bg-brand-800 rounded-r-[44px] rounded-l-[0px] overflow-hidden">
+          <div className="relative bg-brand-800 rounded-r-[clamp(1.5rem,5vw,2.75rem)] overflow-hidden">
             <div className="absolute inset-0 opacity-15" aria-hidden="true">
               <div className="-top-24 -left-24 absolute bg-white/25 blur-3xl rounded-full w-80 h-80" />
               <div className="-right-28 -bottom-28 absolute bg-white/20 blur-3xl rounded-full w-96 h-96" />
             </div>
 
-            <div className="relative mx-auto px-3 sm:px-5 lg:px-6 w-full max-w-6xl">
-              <div className="items-center gap-20 grid lg:grid-cols-2 py-10 sm:py-12 min-h-[430px]">
-                <div className={(isRtl ? 'order-1 text-right' : 'order-2 text-left')} dir={isRtl ? 'rtl' : 'ltr'}>
-                  <h2 className="font-extrabold text-white text-5xl sm:text-6xl leading-tight">
-                    {t('landing.cta.studyTitleLine1')}
-                    <br />
-                    <span className="text-white">{t('landing.cta.studyTitleLine2')}</span>
+            <div className="relative mx-auto px-[clamp(0.75rem,2vw,2rem)] w-full max-w-6xl">
+              <div className="items-center gap-[clamp(0.5rem,4vw,4rem)] grid grid-cols-2 py-[clamp(1.25rem,4vw,3rem)] min-h-[clamp(220px,42vw,430px)]">
+                <div className={(isRtl ? 'order-1 text-right' : 'order-2 text-left') + ' min-w-0'} dir={isRtl ? 'rtl' : 'ltr'}>
+                  <h2 className="font-extrabold text-white text-[clamp(0.85rem,6vw,3.75rem)] leading-[1.25]">
+                    <span className="block whitespace-nowrap">{t('landing.cta.studyTitleLine1')}</span>
+                    <span className="block text-white whitespace-nowrap">{t('landing.cta.studyTitleLine2')}</span>
                   </h2>
 
-                  <p className="mt-4 text-white/90 text-base sm:text-2xl leading-7">
+                  <p className="mt-[clamp(0.4rem,1.5vw,1rem)] max-w-prose text-white/90 text-[clamp(0.55rem,2.2vw,1.5rem)] leading-[1.6]">
                     {t('landing.cta.studyDescription')}
                   </p>
 
-                  <div className={"mt-7 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
+                  <div className={"mt-[clamp(0.65rem,2.5vw,1.75rem)] flex " + (isRtl ? 'justify-end' : 'justify-start')}>
                     <button
                       type="button"
                       onClick={() => setOpenStudentMsg(true)}
-                      className="bg-brand hover:bg-brand-600 px-10 py-3.5 rounded-2xl font-semibold text-white text-base sm:text-xl transition-colors"
+                      className="bg-brand hover:bg-brand-600 px-[clamp(0.8rem,3vw,2.5rem)] py-[clamp(0.45rem,1.2vw,0.875rem)] rounded-[clamp(0.65rem,1.5vw,1rem)] font-semibold text-white text-[clamp(0.6rem,1.8vw,1.25rem)] whitespace-nowrap transition-colors"
                     >
                       {t('landing.cta.studyButton')}
                     </button>
                   </div>
                 </div>
 
-                <div className={(isRtl ? 'order-2' : 'order-1') + ' flex justify-center lg:justify-end'}>
+                <div className={(isRtl ? 'order-2' : 'order-1') + ' flex justify-center lg:justify-end min-w-0'}>
                   <img
                     src={ctaBottomImg}
                     alt=""
-                    className="w-[300px] sm:w-[380px] lg:w-[460px] max-w-full h-auto select-none"
+                    className="w-full max-w-[460px] h-auto select-none"
                     draggable={false}
                   />
                 </div>
@@ -56,7 +55,7 @@ export default function LandingCtaSection() {
             </div>
           </div>
 
-          <div className="relative bg-brand-800 mx-auto rounded-r-[70px] rounded-l-[70px] w-full max-w-5xl overflow-hidden">
+          <div className="relative bg-brand-800 mx-auto rounded-[clamp(1.5rem,7vw,4.375rem)] w-[calc(100%-1rem)] lg:w-full max-w-5xl overflow-hidden">
             <div
               className={
                 "top-0 bottom-0 absolute bg-[#F0E6C8] opacity-95 " +
@@ -71,31 +70,31 @@ export default function LandingCtaSection() {
               aria-hidden="true"
             />
 
-            <div className="relative px-4 sm:px-6">
-              <div className="items-center gap-10 grid lg:grid-cols-2 py-10 sm:py-12 min-h-[300px]">
-                <div className={(isRtl ? 'text-right order-1' : 'text-left order-1') + ' relative z-10'} dir={isRtl ? 'rtl' : 'ltr'}>
-                  <h2 className="font-extrabold text-white text-3xl sm:text-4xl leading-tight">
+            <div className="relative px-[clamp(0.75rem,2vw,1.5rem)]">
+              <div className="items-center gap-[clamp(0.5rem,3vw,2.5rem)] grid grid-cols-2 py-[clamp(1.25rem,4vw,3rem)] min-h-[clamp(180px,30vw,300px)]">
+                <div className={(isRtl ? 'text-right order-1' : 'text-left order-1') + ' relative z-10 min-w-0'} dir={isRtl ? 'rtl' : 'ltr'}>
+                  <h2 className="font-extrabold text-white text-[clamp(0.7rem,3.5vw,2.25rem)] leading-[1.25] whitespace-nowrap">
                     {t('landing.cta.joinTitle')}
                   </h2>
-                  <p className="mt-4 text-white text-sm sm:text-base leading-7">
+                  <p className="mt-[clamp(0.4rem,1.5vw,1rem)] text-white text-[clamp(0.55rem,1.5vw,1rem)] leading-[1.7]">
                     {t('landing.cta.joinDescription')}
                   </p>
 
-                  <div className={"mt-7 flex " + (isRtl ? 'justify-end' : 'justify-start')}>
+                  <div className={"mt-[clamp(0.65rem,2.5vw,1.75rem)] flex " + (isRtl ? 'justify-end' : 'justify-start')}>
                     <Link
                       to="/join-teachers"
-                      className="bg-brand hover:bg-brand-600 px-10 py-3.5 rounded-2xl font-extrabold text-white transition-colors"
+                      className="bg-brand hover:bg-brand-600 px-[clamp(0.8rem,3vw,2.5rem)] py-[clamp(0.45rem,1.2vw,0.875rem)] rounded-[clamp(0.65rem,1.5vw,1rem)] font-extrabold text-white text-[clamp(0.6rem,1.5vw,1rem)] whitespace-nowrap transition-colors"
                     >
                       {t('landing.cta.joinButton')}
                     </Link>
                   </div>
                 </div>
 
-                <div className="flex justify-center lg:justify-end order-2">
+                <div className="flex justify-center lg:justify-end order-2 min-w-0">
                   <img
                     src={joinus2}
                     alt=""
-                    className="w-[300px] sm:w-[380px] lg:w-[460px] max-w-full h-auto select-none"
+                    className="w-full max-w-[460px] h-auto select-none"
                     draggable={false}
                   />
                 </div>
