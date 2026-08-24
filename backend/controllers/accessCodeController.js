@@ -28,9 +28,14 @@ const generateCourseAccessCodes = asyncHandler(async (req, res) => {
         })
     }
 
-    await prisma.courseAccessCode.createMany({
-        data: dataToInsert
-    })
+    // Process insertion in chunks of 100 for reliability
+    const chunkSize = 100
+    for (let i = 0; i < dataToInsert.length; i += chunkSize) {
+        const chunk = dataToInsert.slice(i, i + chunkSize)
+        await prisma.courseAccessCode.createMany({
+            data: chunk
+        })
+    }
 
     const generatedCodes = await prisma.courseAccessCode.findMany({
         where: {

@@ -371,7 +371,14 @@ class TableProxy {
     }
 
     async createMany(args = {}) {
-        const rows = args.data || []
+        const { randomUUID } = require('crypto')
+        const now = new Date().toISOString()
+        const rows = (args.data || []).map((r) => ({
+            id: r.id || randomUUID(),
+            createdAt: r.createdAt || now,
+            updatedAt: r.updatedAt || now,
+            ...r
+        }))
         if (!rows.length) return { count: 0 }
         const { data, error } = await supabase.from(this.tableName).insert(rows).select()
         if (error) throw error
