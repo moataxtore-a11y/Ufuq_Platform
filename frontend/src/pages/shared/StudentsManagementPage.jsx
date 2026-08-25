@@ -557,7 +557,7 @@ export default function StudentsManagementPage() {
             {filtered.map((u) => (
               <div 
                 key={u._id || u.id} 
-                className="relative flex min-h-[295px] flex-col bg-[#0d0f0e] border border-white/5 rounded-[18px] text-right text-white shadow-[0_18px_52px_rgba(0,0,0,0.24)] transition-all px-4 py-4 hover:border-brand/35"
+                className="relative flex min-h-[295px] flex-col rounded-[18px] border border-slate-200 bg-white px-4 py-4 text-right text-slate-900 shadow-[0_18px_52px_rgba(15,23,42,0.10)] transition-all hover:border-brand/35 dark:border-white/5 dark:bg-[#0d0f0e] dark:text-white dark:shadow-[0_18px_52px_rgba(0,0,0,0.24)]"
                 dir="rtl"
               >
                 {(auth?.role === 'teacher' || auth?.role === 'team') && (
@@ -578,27 +578,27 @@ export default function StudentsManagementPage() {
                       <img
                         src={u.profile.avatarUrl}
                         alt={u.name || 'student'}
-                        className="bg-[#1b201e] rounded-full w-16 h-16 object-cover shrink-0"
+                        className="h-16 w-16 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-[#1b201e]"
                       />
                     ) : (
-                      <div className="bg-[#1b201e] rounded-full w-16 h-16 flex items-center justify-center shrink-0">
-                        <User className="w-8 h-8 text-slate-400" />
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-[#1b201e]">
+                        <User className="h-8 w-8 text-slate-500 dark:text-slate-400" />
                       </div>
                     )}
                     <div 
-                      className={`absolute bottom-1 right-0 w-4 h-4 rounded-full border-[3px] border-[#0d0f0e] ${u?.isSuspended ? 'bg-[#ff0000]' : 'bg-[#00f018]'}`} 
+                      className={`absolute bottom-1 right-0 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#0d0f0e] ${u?.isSuspended ? 'bg-red-500' : 'bg-emerald-500'}`} 
                       title={u?.isSuspended ? 'موقوف' : 'نشط'}
                     />
                   </div>
 
                   <div className="min-w-0 flex-1 space-y-1 pt-1 font-extrabold leading-5">
                     <div className="line-clamp-1 text-[13px]">الاسم : <span>{u.name || '—'}</span></div>
-                    <div className="truncate text-[11px] text-white/90">البريد الالكتروني : <span dir="ltr">{u.email || '—'}</span></div>
-                    <div className="text-[11px] text-white/90">الرقم التعريفي : <span dir="ltr">{u.studentId || '—'}</span></div>
+                    <div className="truncate text-[11px] text-slate-700 dark:text-white/90">البريد الالكتروني : <span dir="ltr">{u.email || '—'}</span></div>
+                    <div className="text-[11px] text-slate-700 dark:text-white/90">الرقم التعريفي : <span dir="ltr">{u.studentId || '—'}</span></div>
                   </div>
                 </div>
 
-                <div className="mb-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] font-extrabold leading-5">
+                <div className="mb-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] font-extrabold leading-5 text-slate-800 dark:text-white">
                   <div>رقم الهاتف : <span dir="ltr">{u.profile?.phone || u.profile?.studentPhone || '—'}</span></div>
                   <div>رقم ولي الامر : <span dir="ltr">{u.profile?.parentPhone || '—'}</span></div>
                   
@@ -611,12 +611,12 @@ export default function StudentsManagementPage() {
 
                 {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
                   <div className="mb-4">
-                    <div className="mb-2 mr-auto flex w-fit items-center justify-center rounded-lg bg-[#004b40] px-3 py-1.5 text-[11px] font-extrabold text-white">
+                    <div className="mb-2 mr-auto flex w-fit items-center justify-center rounded-lg bg-brand/15 px-3 py-1.5 text-[11px] font-extrabold text-brand-700 dark:bg-[#004b40] dark:text-white">
                       الكورسات المفتوحة
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       {u.enrolledCourses.slice(0, 3).map((c, i) => (
-                        <span key={i} className="inline-flex min-h-8 max-w-[92px] items-center justify-center rounded-lg bg-[#062e28] px-3 py-1.5 text-[11px] font-extrabold text-white shadow-inner truncate">
+                        <span key={i} className="inline-flex min-h-8 max-w-[92px] items-center justify-center truncate rounded-lg bg-slate-100 px-3 py-1.5 text-[11px] font-extrabold text-slate-800 shadow-inner dark:bg-[#062e28] dark:text-white">
                           {c.courseTitle || c.title || 'Course'}
                         </span>
                       ))}
@@ -624,7 +624,7 @@ export default function StudentsManagementPage() {
                         <button
                           type="button"
                           onClick={() => onViewProfile(u)}
-                          className="px-1 text-[11px] font-extrabold text-white underline underline-offset-4"
+                          className="px-1 text-[11px] font-extrabold text-brand-700 underline underline-offset-4 dark:text-white"
                         >
                           عرض المزيد
                         </button>
