@@ -133,21 +133,19 @@ export default function HeroSection() {
 
           </div>
 
-          {/* Left Column in RTL: 3D Character standing on left side */}
-          <div className="relative flex col-span-6 justify-start items-end z-10 order-2 h-full min-w-0 overflow-visible">
-            <div className="relative flex justify-start items-end w-full max-w-none h-full -ms-[clamp(1.5rem,6vw,6rem)]">
-              <img
-                src={heroPic}
-                alt="Character Hero"
-                className="relative z-10 object-contain origin-bottom h-[clamp(430px,min(72vw,calc(100vh_-_145px)),960px)] lg:h-[clamp(560px,min(78vw,calc(100vh_-_95px)),1120px)] xl:h-[clamp(650px,min(82vw,calc(100vh_-_70px)),1240px)] 2xl:h-[clamp(760px,min(86vw,calc(100vh_-_50px)),1380px)] w-auto max-w-none translate-y-[clamp(2rem,7vh,6rem)] scale-[1.08] lg:scale-[1.18] xl:scale-[1.25] drop-shadow-[0_20px_35px_rgba(0,90,80,0.16)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)] transition-transform duration-500"
-                style={{
-                  objectFit: 'contain',
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
-                  maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
-                }}
-                draggable="false"
-              />
-            </div>
+          {/* Left Column in RTL: 3D Character anchored to the left edge */}
+          <div className="pointer-events-none absolute bottom-0 left-[clamp(-3rem,-2.5vw,0rem)] z-10 flex h-full items-end">
+            <img
+              src={heroPic}
+              alt="Character Hero"
+              className="object-contain origin-bottom h-[clamp(500px,min(72vw,calc(100vh_-_60px)),1050px)] lg:h-[clamp(625px,min(76vw,calc(100vh_-_35px)),1180px)] xl:h-[clamp(690px,min(78vw,calc(100vh_-_15px)),1280px)] 2xl:h-[clamp(790px,min(80vw,calc(100vh_+_10px)),1380px)] w-auto max-w-none translate-y-[clamp(11rem,22vh,18rem)] drop-shadow-[0_20px_35px_rgba(0,90,80,0.16)] dark:drop-shadow-[0_20px_35px_rgba(0,0,0,0.35)] transition-transform duration-500"
+              style={{
+                objectFit: 'contain',
+                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+                maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
+              }}
+              draggable="false"
+            />
           </div>
 
         </div>
