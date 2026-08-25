@@ -129,7 +129,7 @@ export default function StudentWalletPage() {
 
       {state.status === 'success' ? (
         <div className="gap-4 grid">
-          <div className="relative overflow-hidden border border-black/5 bg-white px-5 py-5 shadow-[0_18px_44px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none sm:rounded-full sm:px-8 sm:py-6">
+          <div className="relative overflow-hidden rounded-[44px] border border-black/5 bg-white px-5 py-5 shadow-[0_18px_44px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none sm:rounded-full sm:px-8 sm:py-6">
             <div
               className={
                 'flex min-h-[170px] items-center gap-6 sm:min-h-[210px] sm:gap-10 ' +
