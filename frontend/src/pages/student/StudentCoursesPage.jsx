@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../../utils/api.js'
-import Spinner from '../../components/ui/Spinner.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import CourseCard from '../../components/courses/CourseCard.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
+import { CardGridSkeleton, Skeleton } from '../../components/ui/Skeleton.jsx'
 
 export default function StudentCoursesPage() {
   const { notify } = useToast()
@@ -34,9 +34,12 @@ export default function StudentCoursesPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200" dir={isRtl ? 'rtl' : 'ltr'}>
-        <Spinner />
-        {t('studentCourses.loading')}
+      <div dir={isRtl ? 'rtl' : 'ltr'} className="gap-4 grid">
+        <div className={isRtl ? 'text-right' : 'text-left'}>
+          <Skeleton className="h-7 w-40 rounded-lg" />
+          <Skeleton className="mt-2 h-4 w-72 max-w-full rounded-md" />
+        </div>
+        <CardGridSkeleton count={6} />
       </div>
     )
   }

@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../utils/api.js'
 import Button from '../../components/ui/Button.jsx'
 import Input from '../../components/ui/Input.jsx'
-import Spinner from '../../components/ui/Spinner.jsx'
 import { Table, TBody, TD, TH, THead, TR } from '../../components/ui/Table.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
+import { PageHeaderSkeleton, Skeleton, SkeletonTable } from '../../components/ui/Skeleton.jsx'
 import { Trash2 } from 'lucide-react'
 
 function toStr(v) {
@@ -81,9 +81,12 @@ export default function AdminCoursesPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
-        <Spinner />
-        {isRtl ? 'جاري التحميل...' : 'Loading...'}
+      <div className="mx-auto w-full max-w-6xl space-y-6">
+        <PageHeaderSkeleton />
+        <div className="flex justify-end">
+          <Skeleton className="h-10 w-64 rounded-xl" />
+        </div>
+        <SkeletonTable rows={7} cols={7} />
       </div>
     )
   }

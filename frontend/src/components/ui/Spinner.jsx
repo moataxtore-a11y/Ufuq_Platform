@@ -1,6 +1,5 @@
 import { cn } from '../../utils/cn.js'
-import BodyLoading from './BodyLoading.jsx'
-import { Skeleton } from './Skeleton.jsx'
+import { CardGridSkeleton, PageHeaderSkeleton, Skeleton } from './Skeleton.jsx'
 
 const sizes = {
   xs: 'w-3 h-3 border',
@@ -47,7 +46,12 @@ export default function Spinner({ className, size = 'md' }) {
 }
 
 export function PageSpinner({ text = 'جاري التحميل...', className }) {
-  return <BodyLoading message={text} className={className} />
+  return (
+    <div className={cn('w-full space-y-6 py-2', className)} role="status" aria-label={text}>
+      <PageHeaderSkeleton />
+      <CardGridSkeleton count={6} />
+    </div>
+  )
 }
 
 export function InlineSpinner({ className }) {

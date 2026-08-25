@@ -10,6 +10,7 @@ import { useToast } from '../../components/ui/toast.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
 import { Trash2, User } from 'lucide-react'
+import { SkeletonTable } from '../../components/ui/Skeleton.jsx'
 
 const ROLES = ['admin', 'teacher', 'team', 'student']
 const TEACHING_SECTION_OPTIONS = [
@@ -208,10 +209,7 @@ export default function AdminUsersPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
-          <Spinner />
-          {t('adminUsersPage.loading')}
-        </div>
+        <SkeletonTable rows={6} cols={8} />
       ) : (
         <div className="border border-black/5 rounded-xl overflow-x-auto">
           <Table>

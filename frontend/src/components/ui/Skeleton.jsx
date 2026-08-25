@@ -5,7 +5,7 @@ export function Skeleton({ className, ...props }) {
     <div
       className={cn(
         'animate-pulse rounded-xl bg-slate-200/80 dark:bg-white/[0.08] relative overflow-hidden',
-        'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.8s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent',
+        'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_0.9s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/70 dark:before:via-white/10 before:to-transparent',
         className
       )}
       {...props}
@@ -63,27 +63,53 @@ export function SectionSkeleton({ count = 3, className }) {
   )
 }
 
+export function PageHeaderSkeleton({ className }) {
+  return (
+    <div className={cn('space-y-3 text-center', className)}>
+      <Skeleton className="mx-auto h-7 w-28 rounded-full" />
+      <Skeleton className="mx-auto h-10 w-[min(420px,82vw)] rounded-xl" />
+      <Skeleton className="mx-auto h-4 w-[min(320px,70vw)] rounded-md" />
+    </div>
+  )
+}
+
+export function CardGridSkeleton({ count = 6, className }) {
+  return (
+    <div className={cn('app-grid-cards', className)}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="min-w-0 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#171717] p-4 shadow-sm">
+          <Skeleton className="h-36 w-full rounded-2xl" />
+          <div className="mt-4 space-y-3">
+            <Skeleton className="h-5 w-3/4 rounded-lg" />
+            <Skeleton className="h-4 w-1/2 rounded-md" />
+            <div className="flex items-center justify-between gap-3 pt-2">
+              <Skeleton className="h-5 w-20 rounded-full" />
+              <Skeleton className="h-10 w-28 rounded-xl" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function SkeletonTable({ rows = 5, cols = 4, className }) {
   return (
     <div
       className={cn(
-        'w-full bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors',
+        'w-full overflow-hidden bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-xl p-4 space-y-3 transition-colors',
         className
       )}
     >
-      <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/10">
-        <Skeleton className="h-7 w-48 rounded-xl" />
-        <Skeleton className="h-9 w-28 rounded-xl" />
-      </div>
       <div className="space-y-3">
         {Array.from({ length: rows }).map((_, r) => (
-          <div key={r} className="flex items-center justify-between gap-4 py-2 border-b border-slate-100 dark:border-white/5 last:border-0">
+          <div key={r} className="flex min-w-[720px] items-center justify-between gap-4 border-b border-slate-100 py-3 last:border-0 dark:border-white/5">
             {Array.from({ length: cols }).map((_, c) => (
               <Skeleton
                 key={c}
                 className={cn(
                   'h-4 rounded-md',
-                  c === 0 ? 'w-1/3' : 'w-1/6'
+                  c === 0 ? 'w-1/5' : c === cols - 1 ? 'w-28 h-9 rounded-xl' : 'w-1/6'
                 )}
               />
             ))}
