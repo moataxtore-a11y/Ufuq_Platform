@@ -161,23 +161,22 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'group hidden h-11 w-[116px] items-center justify-between gap-2 rounded-full p-1 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98] sm:inline-flex',
-                  'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
-                  isRtl ? 'flex-row-reverse pe-1 ps-3' : 'flex-row pe-1 ps-3'
+                  'group hidden h-11 w-[128px] flex-row-reverse items-center justify-start gap-3 rounded-full border border-white/80 bg-white p-1 pe-1 ps-3 shadow-[0_10px_28px_rgba(15,23,42,0.10)] transition-all duration-300 shrink-0 select-none hover:scale-[1.02] hover:shadow-[0_14px_34px_rgba(15,23,42,0.14)] active:scale-[0.98] sm:inline-flex',
+                  'dark:border-white/10 dark:bg-white/[0.08] dark:shadow-none'
                 )}
                 title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
               >
-                <div className="inline-flex min-w-0 flex-1 items-baseline justify-start gap-1 text-left text-white leading-none" dir={isRtl ? 'rtl' : 'ltr'}>
-                  <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
-                    {walletBalance === null ? '...' : formatAmount(walletBalance)}
-                  </span>
-                  <span className="text-[11px] font-bold text-teal-200">
-                    {isRtl ? 'ج.م' : 'EGP'}
-                  </span>
-                </div>
-                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 text-slate-950 shadow-sm">
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-900 dark:bg-white/15 dark:text-white">
                   <Wallet className="h-[18px] w-[18px] stroke-[2.5]" />
                 </span>
+                <div className="inline-flex min-w-0 items-baseline gap-1 leading-none text-slate-950 dark:text-white" dir="rtl">
+                  <span className="text-[10px] font-extrabold text-slate-500 dark:text-slate-300">
+                    {isRtl ? 'جنيه' : 'EGP'}
+                  </span>
+                  <span className="font-black text-xl tabular-nums tracking-tight">
+                    {walletBalance === null ? '...' : formatAmount(walletBalance)}
+                  </span>
+                </div>
               </button>
             ) : null}
 

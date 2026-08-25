@@ -129,7 +129,7 @@ export default function StudentWalletPage() {
 
       {state.status === 'success' ? (
         <div className="gap-4 grid">
-          <div className="relative overflow-hidden rounded-[44px] border border-black/5 bg-white px-5 py-5 shadow-[0_18px_44px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none sm:rounded-full sm:px-8 sm:py-6">
+          <div className="relative overflow-hidden rounded-2xl border border-black/5 bg-white px-5 py-5 shadow-[0_18px_44px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none sm:px-8 sm:py-6">
             <div
               className={
                 'flex min-h-[170px] items-center gap-6 sm:min-h-[210px] sm:gap-10 ' +
@@ -159,7 +159,7 @@ export default function StudentWalletPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+          <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className="font-extrabold text-slate-900 dark:text-white text-lg">
               {isRtl ? 'شحن رصيد' : 'Top up'}
             </div>
@@ -204,7 +204,7 @@ export default function StudentWalletPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+          <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className="font-extrabold text-slate-900 dark:text-white text-lg">
               {isRtl ? 'سجل المعاملات' : 'Transactions'}
             </div>
