@@ -10,6 +10,7 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { BookOpen, Trash2, User } from 'lucide-react'
 import Select from '../../components/ui/Select.jsx'
+import { CardGridSkeleton } from '../../components/ui/Skeleton.jsx'
 
 export default function StudentsManagementPage() {
   const { notify } = useToast()
@@ -53,13 +54,39 @@ export default function StudentsManagementPage() {
   const isTeacherOrTeam = auth?.role === 'teacher' || auth?.role === 'team'
 
   const filtered = useMemo(() => {
-    if (!rows) return []
-    if (!selectedCourseId || !isTeacherOrTeam) return rows
-    return rows.filter((u) => {
+    const source = Array.isArray(rows) ? rows : []
+    const query = String(q || '').trim().toLowerCase()
+    const bySearch = query
+      ? source.filter((u) => {
+          const profile = u?.profile || {}
+          const enrolled = Array.isArray(u?.enrolledCourses) ? u.enrolledCourses : []
+          const values = [
+            u?.name,
+            u?.email,
+            u?.studentId,
+            u?.teamId,
+            profile?.phone,
+            profile?.studentPhone,
+            profile?.parentPhone,
+            profile?.nationalId,
+            profile?.school,
+            profile?.schoolName,
+            profile?.section,
+            formatSection(profile?.section, isRtl),
+            profile?.gradeYear,
+            formatGradeYear(profile?.gradeYear, isRtl),
+            ...enrolled.flatMap((c) => [c?.courseTitle, c?.title])
+          ]
+          return values.some((value) => String(value || '').toLowerCase().includes(query))
+        })
+      : source
+
+    if (!selectedCourseId || !isTeacherOrTeam) return bySearch
+    return bySearch.filter((u) => {
       const enrolled = Array.isArray(u.enrolledCourses) ? u.enrolledCourses : []
       return enrolled.some((e) => e.courseId === selectedCourseId)
     })
-  }, [rows, selectedCourseId, isTeacherOrTeam])
+  }, [rows, q, selectedCourseId, isTeacherOrTeam, isRtl])
 
   useEffect(() => {
     if (!isTeacherOrTeam) return
@@ -80,7 +107,6 @@ export default function StudentsManagementPage() {
     try {
       setLoading(true)
       const params = {}
-      if (q && q.trim()) params.q = q.trim()
       const res = await api.get(isTeacherOrTeam ? '/courses/my/students' : '/students', { params })
       setRows(res.data)
       setSelected(new Set())
@@ -462,9 +488,9 @@ export default function StudentsManagementPage() {
       {(auth?.role === 'teacher' || auth?.role === 'team') ? (
         <div
           dir={isRtl ? 'rtl' : 'ltr'}
-          className={"bg-white/70 dark:bg-white/[0.04] p-4 border border-black/10 dark:border-white/10 rounded-3xl " + (isRtl ? 'text-right' : 'text-left')}
+          className={(isRtl ? 'text-right' : 'text-left')}
         >
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 px-1 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <div className="font-extrabold text-slate-900 dark:text-white">
                 {isRtl ? 'إرسال رصيد للمحفظة' : 'Grant wallet balance'}
@@ -483,23 +509,23 @@ export default function StudentsManagementPage() {
       ) : null}
 
       {isTeacherOrTeam && myCourses.length > 0 ? (
-        <div className="bg-white/70 dark:bg-white/[0.04] p-3 border border-black/10 dark:border-white/10 rounded-3xl">
-          <div className={"font-semibold text-slate-700 dark:text-slate-200 text-xs mb-2 " + (isRtl ? 'text-right' : 'text-left')}>
+        <div dir={isRtl ? 'rtl' : 'ltr'} className="px-1">
+          <div className={"mb-3 text-xs font-extrabold tracking-tight text-slate-700 dark:text-slate-200 " + (isRtl ? 'text-right' : 'text-left')}>
             {isRtl ? 'فلترة حسب الكورس' : 'Filter by course'}
           </div>
-          <div className={"flex flex-wrap gap-2 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setSelectedCourseId('')}
               className={
-                'px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-150 ' +
+                'inline-flex min-h-9 items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-extrabold shadow-sm transition-all duration-150 ' +
                 (!selectedCourseId
-                  ? 'bg-brand/20 border-brand/40 text-slate-900 dark:text-slate-100'
-                  : 'bg-white/70 dark:bg-white/[0.04] border-black/10 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-brand/5')
+                  ? 'border-brand/45 bg-brand/15 text-brand-700 shadow-brand/10 dark:bg-brand/20 dark:text-slate-100'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-brand/30 hover:bg-brand/5 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300')
               }
             >
               {isRtl ? 'كل الطلاب' : 'All students'}
-              <span className="mr-1 ml-1 opacity-60">({rows.length})</span>
+              <span className="opacity-60">({rows.length})</span>
             </button>
             {myCourses.map((c) => {
               const cId = c._id || c.id
@@ -513,13 +539,13 @@ export default function StudentsManagementPage() {
                   type="button"
                   onClick={() => setSelectedCourseId(cId)}
                   className={
-                    'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-150 ' +
+                    'inline-flex min-h-9 max-w-full items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-extrabold shadow-sm transition-all duration-150 ' +
                     (selectedCourseId === cId
-                      ? 'bg-brand/20 border-brand/40 text-slate-900 dark:text-slate-100'
-                      : 'bg-white/70 dark:bg-white/[0.04] border-black/10 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-brand/5')
+                      ? 'border-brand/45 bg-brand/15 text-brand-700 shadow-brand/10 dark:bg-brand/20 dark:text-slate-100'
+                      : 'border-slate-200 bg-white text-slate-600 hover:border-brand/30 hover:bg-brand/5 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300')
                   }
                 >
-                  <BookOpen className="w-3.5 h-3.5" />
+                  <BookOpen className="h-3.5 w-3.5 shrink-0" />
                   <span className="max-w-[140px] truncate">{c.title}</span>
                   <span className="opacity-60">({enrolledCount})</span>
                 </button>
@@ -535,10 +561,7 @@ export default function StudentsManagementPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
-          <Spinner />
-          {t('studentsPage.loading')}
-        </div>
+        <CardGridSkeleton count={8} />
       ) : (
         <div className="mt-2">
           {(auth?.role === 'teacher' || auth?.role === 'team') && filtered.length > 0 && (
@@ -749,9 +772,8 @@ function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }
   return (
     <Modal open={open} onOpenChange={onOpenChange} title={isRtl ? 'ملف الطالب' : 'Student Profile'}>
       {loading ? (
-        <div className="flex items-center gap-2 text-slate-700">
+        <div className="text-slate-700">
           <Spinner />
-          {t('studentsPage.loading')}
         </div>
       ) : !user ? (
         <div className="text-slate-600 dark:text-slate-300 text-sm">{t('studentsPage.noData')}</div>
