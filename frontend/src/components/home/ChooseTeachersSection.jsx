@@ -66,6 +66,31 @@ export default function ChooseTeachersSection() {
     return String(v ?? '').trim().toLowerCase()
   }
 
+  function listify(value) {
+    if (Array.isArray(value)) return value
+    if (value === null || value === undefined || value === '') return []
+    if (typeof value === 'string' && value.includes(',')) {
+      return value.split(',').map((item) => item.trim()).filter(Boolean)
+    }
+    return [value]
+  }
+
+  function matchesAll(value) {
+    const v = safeNorm(value)
+    return !v ||
+      v === 'all' ||
+      v === 'all_years' ||
+      v === 'all-years' ||
+      v === 'all years' ||
+      v === 'all_year' ||
+      v === 'all_grades' ||
+      v === 'all-grades' ||
+      v === 'all grades' ||
+      v === 'كل السنوات' ||
+      v === 'كل السنين' ||
+      v === 'كل الصفوف'
+  }
+
   const filteredTeachers = useMemo(() => {
     const list = Array.isArray(state.items) ? state.items : []
 
@@ -76,23 +101,24 @@ export default function ChooseTeachersSection() {
       const profile = tt?.profile && typeof tt.profile === 'object' ? tt.profile : {}
 
       const ttSectionsRaw = tt?.teachingSections || profile?.teachingSections || tt?.teachingSection || profile?.teachingSection || tt?.section || profile?.section || []
-      const ttSections = Array.isArray(ttSectionsRaw)
-        ? ttSectionsRaw
-        : (ttSectionsRaw ? [ttSectionsRaw] : [])
+      const ttSections = listify(ttSectionsRaw)
 
-      const ttGradeYear = safeNorm(tt?.teachingGradeYear || profile?.teachingGradeYear || tt?.gradeYear || profile?.gradeYear)
+      const ttGradeYearsRaw = tt?.teachingGradeYears || profile?.teachingGradeYears || tt?.teachingGradeYear || profile?.teachingGradeYear || tt?.gradeYear || profile?.gradeYear || []
+      const ttGradeYears = listify(ttGradeYearsRaw)
 
       const okSection = !selSec || ttSections.some((s) => {
         const normS = safeNorm(s)
-        return normS === selSec || (selSec === 'science' && normS.includes('sci')) || (selSec === 'math' && normS.includes('math')) || (selSec === 'literature' && (normS.includes('lit') || normS.includes('أدب')))
+        return matchesAll(s) || normS === selSec || (selSec === 'science' && normS.includes('sci')) || (selSec === 'math' && normS.includes('math')) || (selSec === 'literature' && (normS.includes('lit') || normS.includes('أدب')))
       })
 
-      const okGradeYear = !selGrade || (
-        ttGradeYear === selGrade ||
-        (selGrade === '1_secondary' && (ttGradeYear.includes('1') || ttGradeYear.includes('first'))) ||
-        (selGrade === '2_secondary' && (ttGradeYear.includes('2') || ttGradeYear.includes('second'))) ||
-        (selGrade === '3_secondary' && (ttGradeYear.includes('3') || ttGradeYear.includes('third')))
-      )
+      const okGradeYear = !selGrade || ttGradeYears.length === 0 || ttGradeYears.some((year) => {
+        const ttGradeYear = safeNorm(year)
+        return matchesAll(year) ||
+          ttGradeYear === selGrade ||
+          (selGrade === '1_secondary' && (ttGradeYear.includes('1') || ttGradeYear.includes('first'))) ||
+          (selGrade === '2_secondary' && (ttGradeYear.includes('2') || ttGradeYear.includes('second'))) ||
+          (selGrade === '3_secondary' && (ttGradeYear.includes('3') || ttGradeYear.includes('third')))
+      })
 
       return okSection && okGradeYear
     })
