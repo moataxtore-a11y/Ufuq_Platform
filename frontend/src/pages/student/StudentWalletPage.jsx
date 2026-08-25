@@ -5,6 +5,7 @@ import Spinner from '../../components/ui/Spinner.jsx'
 import { api } from '../../utils/api.js'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
+import { Wallet } from 'lucide-react'
 
 function formatMoney(n) {
   const x = Number(n || 0)
@@ -128,16 +129,32 @@ export default function StudentWalletPage() {
 
       {state.status === 'success' ? (
         <div className="gap-4 grid">
-          <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-3xl">
-            <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
-              {isRtl ? 'الرصيد الحالي' : 'Current balance'}
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <div className="font-extrabold text-slate-900 dark:text-white text-3xl">
-                {formatMoney(state.balance)}
+          <div className="relative overflow-hidden rounded-[44px] border border-black/5 bg-white px-5 py-5 shadow-[0_18px_44px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-none sm:rounded-full sm:px-8 sm:py-6">
+            <div
+              className={
+                'flex min-h-[170px] items-center gap-6 sm:min-h-[210px] sm:gap-10 ' +
+                (isRtl ? 'flex-row justify-between' : 'flex-row-reverse justify-between')
+              }
+            >
+              <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-800 dark:bg-white/10 dark:text-white sm:h-44 sm:w-44 lg:h-52 lg:w-52">
+                <Wallet className="h-16 w-16 stroke-[2.3] sm:h-24 sm:w-24 lg:h-28 lg:w-28" />
               </div>
-              <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
-                {isRtl ? 'جنيه' : 'جنيه'}
+
+              <div className={'min-w-0 flex-1 ' + (isRtl ? 'text-left' : 'text-right')}>
+                <div className="font-semibold text-slate-600 text-sm dark:text-slate-300 sm:text-base">
+                  {isRtl ? 'الرصيد الحالي' : 'Current balance'}
+                </div>
+                <div className={'mt-3 flex items-baseline gap-2 ' + (isRtl ? 'justify-start' : 'justify-end')}>
+                  <div className="font-black text-slate-950 text-4xl tracking-tight dark:text-white sm:text-6xl">
+                    {formatMoney(state.balance)}
+                  </div>
+                  <div className="font-extrabold text-slate-600 text-sm dark:text-slate-300 sm:text-lg">
+                    {isRtl ? 'جنيه' : 'EGP'}
+                  </div>
+                </div>
+                <div className="mt-3 text-slate-500 text-xs dark:text-slate-400 sm:text-sm">
+                  {isRtl ? 'استخدم الرصيد لفتح الكورسات مباشرة.' : 'Use your balance to unlock courses.'}
+                </div>
               </div>
             </div>
           </div>
