@@ -460,8 +460,11 @@ export default function StudentsManagementPage() {
       </div>
 
       {(auth?.role === 'teacher' || auth?.role === 'team') ? (
-        <div className={"bg-white/70 dark:bg-white/[0.04] p-4 border border-black/10 dark:border-white/10 rounded-3xl " + (isRtl ? 'text-right' : 'text-left')}>
-          <div className={"flex items-center justify-between gap-3 " + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
+        <div
+          dir={isRtl ? 'rtl' : 'ltr'}
+          className={"bg-white/70 dark:bg-white/[0.04] p-4 border border-black/10 dark:border-white/10 rounded-3xl " + (isRtl ? 'text-right' : 'text-left')}
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <div className="font-extrabold text-slate-900 dark:text-white">
                 {isRtl ? 'إرسال رصيد للمحفظة' : 'Grant wallet balance'}
