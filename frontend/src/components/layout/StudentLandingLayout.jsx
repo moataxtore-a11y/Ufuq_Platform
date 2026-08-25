@@ -82,7 +82,7 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'group inline-flex h-11 w-[128px] flex-row-reverse items-center justify-start gap-3 rounded-full border border-white/80 bg-white p-1 pe-1 ps-3 shadow-[0_10px_28px_rgba(15,23,42,0.10)] transition-all duration-300 shrink-0 select-none hover:scale-[1.02] hover:shadow-[0_14px_34px_rgba(15,23,42,0.14)] active:scale-[0.98]',
+          'group inline-flex h-11 w-[128px] flex-row items-center justify-start gap-3 rounded-full border border-white/80 bg-white p-1 pe-3 ps-1 shadow-[0_10px_28px_rgba(15,23,42,0.10)] transition-all duration-300 shrink-0 select-none hover:scale-[1.02] hover:shadow-[0_14px_34px_rgba(15,23,42,0.14)] active:scale-[0.98]',
           'dark:border-white/10 dark:bg-white/[0.08] dark:shadow-none',
           className
         )}
