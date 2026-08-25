@@ -39,43 +39,45 @@ export default function MotivationalBanner() {
 
   return (
     <div className="w-full">
-      <div className="relative bg-white/70 dark:bg-white/[0.06] shadow-[0_10px_26px_rgba(15,23,42,0.08)] dark:shadow-none backdrop-blur px-3 py-3 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_60%)]" />
+      <div
+        className="relative overflow-hidden rounded-2xl border border-black/5 bg-white/80 px-4 py-4 shadow-[0_12px_34px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:px-6"
+        dir={isRtl ? 'rtl' : 'ltr'}
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(6,148,132,0.14),transparent_34%),radial-gradient(circle_at_85%_50%,rgba(6,148,132,0.12),transparent_34%)]" />
 
-        <div className="relative flex sm:flex-row flex-col items-start sm:items-center gap-2 sm:gap-4">
-          <button
-            type="button"
-            onClick={dismiss}
-            className="inline-flex justify-center items-center bg-white/70 hover:bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/10 rounded-xl w-9 h-9 text-slate-700 dark:text-slate-200 transition shrink-0"
-            aria-label={isRtl ? 'إغلاق' : 'Close'}
-          >
-            <X className="w-4 h-4" />
-          </button>
-
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className={"min-w-0 flex-1 " + (isRtl ? 'text-right' : 'text-left')}>
             {msg.title ? (
-              <div className="font-extrabold text-slate-900 dark:text-slate-100 text-sm sm:text-base break-words">
+              <div className="break-words text-base font-extrabold text-slate-900 dark:text-slate-100 sm:text-lg">
                 {msg.title}
               </div>
             ) : null}
             {msg.body ? (
-              <div className="mt-1 text-slate-700 dark:text-slate-200 text-sm break-words leading-6 whitespace-pre-line">
+              <div className="mt-1 max-w-4xl whitespace-pre-line break-words text-sm leading-6 text-slate-600 dark:text-slate-200">
                 {msg.body}
               </div>
             ) : null}
-          
+          </div>
+
+          <div className={"flex shrink-0 items-center gap-2 " + (isRtl ? 'justify-start sm:flex-row-reverse' : 'justify-end')}>
             {hasCta ? (
-              <div className={"mt-3 flex sm:mt-0 " + (isRtl ? 'justify-start sm:justify-end' : 'justify-end')}>
-                <a
-                  href={msg.ctaUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex justify-center items-center bg-brand hover:bg-brand-600 shadow-sm px-4 py-2 rounded-xl font-extrabold text-white text-xs transition"
-                >
-                  {ctaLabel}
-                </a>
-              </div>
+              <a
+                href={msg.ctaUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-10 items-center justify-center rounded-xl bg-brand px-4 py-2 text-xs font-extrabold text-white shadow-sm transition hover:bg-brand-600"
+              >
+                {ctaLabel}
+              </a>
             ) : null}
+            <button
+              type="button"
+              onClick={dismiss}
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/5 bg-white/75 text-slate-700 transition hover:bg-white dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-200"
+              aria-label={isRtl ? 'إغلاق' : 'Close'}
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
