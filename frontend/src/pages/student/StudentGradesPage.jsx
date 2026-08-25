@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../../utils/api.js'
 import Spinner from '../../components/ui/Spinner.jsx'
-import ScorePill from '../../components/ui/ScorePill.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
-import { ClipboardList, FileText } from 'lucide-react'
+import { BarChart3, ClipboardList, FileText } from 'lucide-react'
 
 function fmt(dt) {
   if (!dt) return '-'
@@ -20,6 +19,11 @@ function StatCard({ label, value, sub }) {
       {sub && <div className="text-slate-500 text-xs">{sub}</div>}
     </div>
   )
+}
+
+function toNumber(value) {
+  const n = Number(value)
+  return Number.isFinite(n) ? n : null
 }
 
 function TabBtn({ active, onClick, children }) {
@@ -71,14 +75,20 @@ export default function StudentGradesPage() {
 
   // Stats
   const avgAssignments = useMemo(() => {
-    const nums = assignmentGrades.filter(g => typeof g.score === 'number').map(g => g.score)
-    if (!nums.length) return null
+    const nums = assignmentGrades.map(g => toNumber(g.score)).filter(n => n !== null)
+    if (!nums.length) return 0
     return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length)
   }, [assignmentGrades])
 
   const avgAssessments = useMemo(() => {
-    const nums = assessmentGrades.filter(g => typeof g.score === 'number').map(g => g.score)
-    if (!nums.length) return null
+    const nums = assessmentGrades.map((g) => {
+      const score = toNumber(g.score)
+      const maxScore = toNumber(g.maxScore)
+      if (score === null) return null
+      if (maxScore && maxScore > 0) return (score / maxScore) * 100
+      return score
+    }).filter(n => n !== null)
+    if (!nums.length) return 0
     return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length)
   }, [assessmentGrades])
 
@@ -98,7 +108,6 @@ export default function StudentGradesPage() {
       <div className="flex justify-center items-center min-h-[200px]">
         <div className="flex items-center gap-3 text-slate-400">
           <Spinner />
-          <span>{isRtl ? 'جاري تحميل الدرجات...' : 'Loading grades...'}</span>
         </div>
       </div>
     )
@@ -134,13 +143,13 @@ export default function StudentGradesPage() {
         />
         <StatCard
           label={isRtl ? 'متوسط الواجبات' : 'Avg. Assignments'}
-          value={avgAssignments != null ? `${avgAssignments}` : '-'}
+          value={`${avgAssignments}`}
           sub={isRtl ? 'درجة' : 'pts'}
         />
         <StatCard
           label={isRtl ? 'متوسط الاختبارات' : 'Avg. Assessments'}
-          value={avgAssessments != null ? `${avgAssessments}` : '-'}
-          sub={isRtl ? 'درجة' : 'pts'}
+          value={`${avgAssessments}`}
+          sub={isRtl ? '٪' : '%'}
         />
       </div>
 
@@ -160,7 +169,9 @@ export default function StudentGradesPage() {
       {/* Grades list */}
       {displayed.length === 0 ? (
         <div className="flex flex-col justify-center items-center gap-3 py-16 text-center">
-          <div className="text-5xl">📊</div>
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand">
+            <BarChart3 className="h-8 w-8" />
+          </div>
           <div className="text-slate-500 dark:text-slate-400 text-sm">
             {isRtl ? 'لا توجد درجات في هذا القسم بعد.' : 'No grades in this section yet.'}
           </div>
@@ -172,8 +183,8 @@ export default function StudentGradesPage() {
             const title = isAssignment
               ? (g.assignment?.title || (isRtl ? 'واجب' : 'Assignment'))
               : (g.assessment?.title || (isRtl ? 'اختبار' : 'Assessment'))
-            const score = typeof g.score === 'number' ? g.score : null
-            const maxScore = typeof g.maxScore === 'number' ? g.maxScore : null
+            const score = toNumber(g.score)
+            const maxScore = toNumber(g.maxScore)
             const date = fmt(g.createdAt || g.gradedAt)
 
             return (
