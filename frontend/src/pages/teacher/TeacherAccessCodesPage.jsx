@@ -8,9 +8,12 @@ import { api } from '../../utils/api.js'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import cairoSemiBold from '../../assets/Cairo-SemiBold.ttf'
 
-function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPercent, customDesignUrl, codeColor }) {
+function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPercent, customDesignUrl, codeColor, codeSize = 100, codeOffsetX = 0, codeOffsetY = 0 }) {
   const customOn = Boolean(customDesignUrl)
   const finalCodeColor = codeColor || '#ffffff'
+  const sizeScale = Math.max(60, Math.min(180, Number(codeSize) || 100)) / 100
+  const offsetX = Math.max(-50, Math.min(50, Number(codeOffsetX) || 0))
+  const offsetY = Math.max(-50, Math.min(50, Number(codeOffsetY) || 0))
   return (
     <div className="relative bg-white dark:bg-[#0b0b0f] border border-black/10 dark:border-white/10 rounded-3xl overflow-hidden text-slate-900 dark:text-slate-100 [break-inside:avoid]">
       {customOn ? (
@@ -21,16 +24,19 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
             className="block w-full h-auto"
             crossOrigin="anonymous"
           />
-          <div className="absolute inset-0 flex flex-col justify-center items-center">
+          <div
+            className="absolute inset-0 flex flex-col justify-center items-center"
+            style={{ transform: `translate(${offsetX}%, ${offsetY}%)` }}
+          >
             <div
               className="font-semibold text-[11px] text-center"
-              style={{ color: finalCodeColor, textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
+              style={{ color: finalCodeColor, textShadow: '0 1px 4px rgba(0,0,0,0.5)', fontSize: `${11 * sizeScale}px` }}
             >
               {kind === 'discount' ? (isRtl ? 'كود خصم' : 'Discount code') : (isRtl ? 'كود فتح الكورس' : 'Course access code')}
             </div>
             <div
-              className="mt-1 font-extrabold text-2xl text-center tracking-[0.18em]"
-              style={{ color: finalCodeColor, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
+              className="mt-1 font-extrabold text-center tracking-[0.18em]"
+              style={{ color: finalCodeColor, textShadow: '0 2px 8px rgba(0,0,0,0.5)', fontSize: `${24 * sizeScale}px`, lineHeight: 1.1 }}
             >{code}</div>
           </div>
         </div>
@@ -76,7 +82,7 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
   )
 }
 
-function MasonryCodes({ items, customDesignUrl, codeColor }) {
+function MasonryCodes({ items, customDesignUrl, codeColor, codeSize, codeOffsetX, codeOffsetY }) {
   return (
     <div className="app-grid-cards">
       {items.map((it) => (
@@ -90,6 +96,9 @@ function MasonryCodes({ items, customDesignUrl, codeColor }) {
             discountPercent={it.discountPercent}
             customDesignUrl={customDesignUrl}
             codeColor={codeColor}
+            codeSize={codeSize}
+            codeOffsetX={codeOffsetX}
+            codeOffsetY={codeOffsetY}
           />
         </div>
       ))}
@@ -161,6 +170,9 @@ function PrintableSheet({ items, isRtl, title }) {
                       discountPercent={it.discountPercent}
                       customDesignUrl={it.customDesignUrl}
                       codeColor={it.codeColor}
+                      codeSize={it.codeSize}
+                      codeOffsetX={it.codeOffsetX}
+                      codeOffsetY={it.codeOffsetY}
                     />
                   </div>
                 ))}
@@ -179,6 +191,9 @@ export default function TeacherAccessCodesPage() {
   const [customDesignUrl, setCustomDesignUrl] = useState('')
   const [customDesignName, setCustomDesignName] = useState('')
   const [codeColor, setCodeColor] = useState('#ffffff')
+  const [codeSize, setCodeSize] = useState(100)
+  const [codeOffsetX, setCodeOffsetX] = useState(0)
+  const [codeOffsetY, setCodeOffsetY] = useState(0)
 
   const [coursesState, setCoursesState] = useState({ status: 'loading', items: [], error: '' })
   const [selectedCourseIds, setSelectedCourseIds] = useState([])
@@ -239,9 +254,15 @@ export default function TeacherAccessCodesPage() {
       const url = localStorage.getItem('codes.customDesignUrl') || ''
       const name = localStorage.getItem('codes.customDesignName') || ''
       const color = localStorage.getItem('codes.codeColor') || '#ffffff'
+      const size = Number(localStorage.getItem('codes.codeSize') || 100)
+      const offsetX = Number(localStorage.getItem('codes.codeOffsetX') || 0)
+      const offsetY = Number(localStorage.getItem('codes.codeOffsetY') || 0)
       if (url) setCustomDesignUrl(url)
       if (name) setCustomDesignName(name)
       setCodeColor(color)
+      if (Number.isFinite(size)) setCodeSize(size)
+      if (Number.isFinite(offsetX)) setCodeOffsetX(offsetX)
+      if (Number.isFinite(offsetY)) setCodeOffsetY(offsetY)
     } catch (e) {
       // ignore
     }
@@ -254,10 +275,13 @@ export default function TeacherAccessCodesPage() {
       if (customDesignName) localStorage.setItem('codes.customDesignName', customDesignName)
       else localStorage.removeItem('codes.customDesignName')
       localStorage.setItem('codes.codeColor', codeColor)
+      localStorage.setItem('codes.codeSize', String(codeSize))
+      localStorage.setItem('codes.codeOffsetX', String(codeOffsetX))
+      localStorage.setItem('codes.codeOffsetY', String(codeOffsetY))
     } catch (e) {
       // ignore
     }
-  }, [customDesignUrl, customDesignName, codeColor])
+  }, [customDesignUrl, customDesignName, codeColor, codeSize, codeOffsetX, codeOffsetY])
 
   useEffect(() => {
     setCodesState({ status: 'idle', items: [], error: '' })
@@ -657,6 +681,76 @@ export default function TeacherAccessCodesPage() {
                       })}
                     </div>
                   </div>
+
+                  <div className="bg-slate-50/80 dark:bg-white/[0.03] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-2xl">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm">
+                        {isRtl ? 'مكان وحجم الكود' : 'Code size and position'}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => {
+                          setCodeSize(100)
+                          setCodeOffsetX(0)
+                          setCodeOffsetY(0)
+                        }}
+                      >
+                        {isRtl ? 'إعادة ضبط' : 'Reset'}
+                      </Button>
+                    </div>
+
+                    <div className="mt-4 grid gap-4">
+                      <div>
+                        <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
+                          <span>{isRtl ? 'حجم الكود' : 'Code size'}</span>
+                          <span dir="ltr">{codeSize}%</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={60}
+                          max={180}
+                          step={5}
+                          value={codeSize}
+                          onChange={(e) => setCodeSize(Number(e.target.value))}
+                          className="mt-2 w-full accent-brand"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
+                          <span>{isRtl ? 'يمين / شمال' : 'Left / right'}</span>
+                          <span dir="ltr">{codeOffsetX}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={-50}
+                          max={50}
+                          step={1}
+                          value={codeOffsetX}
+                          onChange={(e) => setCodeOffsetX(Number(e.target.value))}
+                          className="mt-2 w-full accent-brand"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
+                          <span>{isRtl ? 'فوق / تحت' : 'Up / down'}</span>
+                          <span dir="ltr">{codeOffsetY}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min={-50}
+                          max={50}
+                          step={1}
+                          value={codeOffsetY}
+                          onChange={(e) => setCodeOffsetY(Number(e.target.value))}
+                          className="mt-2 w-full accent-brand"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {customDesignUrl ? (
@@ -672,6 +766,9 @@ export default function TeacherAccessCodesPage() {
                         discountPercent={0}
                         customDesignUrl={customDesignUrl}
                         codeColor={codeColor}
+                        codeSize={codeSize}
+                        codeOffsetX={codeOffsetX}
+                        codeOffsetY={codeOffsetY}
                       />
                     </div>
                   </div>
@@ -732,7 +829,14 @@ export default function TeacherAccessCodesPage() {
           </div>
 
           <div className="mt-4">
-            <MasonryCodes items={printItems} customDesignUrl={customDesignUrl} codeColor={codeColor} />
+            <MasonryCodes
+              items={printItems}
+              customDesignUrl={customDesignUrl}
+              codeColor={codeColor}
+              codeSize={codeSize}
+              codeOffsetX={codeOffsetX}
+              codeOffsetY={codeOffsetY}
+            />
           </div>
 
           <div
@@ -756,7 +860,7 @@ export default function TeacherAccessCodesPage() {
               title={mode === 'discount'
                 ? (isRtl ? `أكواد خصم: ${allowedCoursesLabel}` : `Discount codes: ${allowedCoursesLabel}`)
                 : (isRtl ? `أكواد فتح كورسات: ${allowedCoursesLabel}` : `Course codes: ${allowedCoursesLabel}`)}
-              items={printItems.map((it) => ({ ...it, customDesignUrl, codeColor }))}
+              items={printItems.map((it) => ({ ...it, customDesignUrl, codeColor, codeSize, codeOffsetX, codeOffsetY }))}
               isRtl={isRtl}
             />
           </div>
