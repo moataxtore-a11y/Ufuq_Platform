@@ -121,7 +121,11 @@ const listUsers = asyncHandler(async (req, res) => {
             profile: true, isSuspended: true, suspendedAt: true
         }
     })
-    res.json(users)
+    res.json(users.map((user) => ({
+        ...user,
+        teamId: ['teacher', 'team'].includes(user.role) ? user.teamId : null,
+        studentId: user.role === 'student' ? user.studentId : null
+    })))
 })
 
 const createUser = asyncHandler(async (req, res) => {
@@ -265,6 +269,12 @@ const updateUser = asyncHandler(async (req, res) => {
     if (typeof role === 'string' && role === 'student' && !isValidStudentId(user.studentId)) {
         data.studentId = await generateUniqueStudentId()
     }
+    if (typeof role === 'string' && role !== 'student') {
+        data.studentId = null
+    }
+    if (typeof role === 'string' && !['teacher', 'team'].includes(role)) {
+        data.teamId = null
+    }
 
     if (typeof password === 'string' && password.length > 0) {
         data.password = await bcrypt.hash(password, SALT_ROUNDS)
@@ -359,7 +369,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
         })
     }
 
-    res.json({ ...user, approvedBy: approvedByUser })
+    res.json({
+        ...user,
+        teamId: ['teacher', 'team'].includes(user.role) ? user.teamId : null,
+        studentId: user.role === 'student' ? user.studentId : null,
+        approvedBy: approvedByUser
+    })
 })
 
 const getUserByEmail = asyncHandler(async (req, res) => {

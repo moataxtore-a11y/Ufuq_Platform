@@ -233,8 +233,8 @@ export default function AdminUsersPage() {
                   <TD>{u.name}</TD>
                   <TD className="text-slate-700">{u.email}</TD>
                   <TD>{roleLabel(t, u.role)}</TD>
-                  <TD>{u.teamId || '-'}</TD>
-                  <TD>{u.studentId || '-'}</TD>
+                  <TD>{['teacher', 'team'].includes(u.role) ? (u.teamId || '-') : '-'}</TD>
+                  <TD>{u.role === 'student' ? (u.studentId || '-') : '-'}</TD>
                   <TD>{u.mustChangePassword ? t('common.yes') : t('common.no')}</TD>
                   <TD>
                     {u.isSuspended ? (
