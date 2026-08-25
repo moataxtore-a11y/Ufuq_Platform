@@ -82,9 +82,9 @@ export default function StudentLandingLayout() {
         type="button"
         onClick={() => navigate('/student/wallet')}
         className={cn(
-          'group inline-flex min-w-[128px] items-center justify-between gap-3 rounded-full p-1 ps-4 h-10 sm:h-11 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
+          'group inline-flex h-11 w-[128px] items-center justify-between gap-3 rounded-full p-1 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98]',
           'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
-          isRtl ? 'flex-row-reverse pe-1 ps-4' : 'flex-row pe-1 ps-4',
+          isRtl ? 'flex-row-reverse pe-3 ps-1' : 'flex-row pe-1 ps-3',
           className
         )}
         title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
@@ -97,7 +97,7 @@ export default function StudentLandingLayout() {
             {isRtl ? 'ج.م' : 'EGP'}
           </span>
         </div>
-        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 text-slate-950 shadow-sm sm:h-9 sm:w-9">
+        <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 text-slate-950 shadow-sm">
           <Wallet className="h-4 w-4 stroke-[2.5] sm:h-[18px] sm:w-[18px]" />
         </span>
       </button>

@@ -110,6 +110,12 @@ export default function AppShell({ title, titleKey }) {
 
   const displayName = String(me?.name || me?.email || auth?.email || '').trim()
   const avatarUrl = me?.profile?.avatarUrl || ''
+  function formatAmount(n) {
+    const x = Number(n || 0)
+    if (!Number.isFinite(x)) return '0'
+    const s = x.toFixed(2)
+    return s.replace(/\.00$/, '').replace(/(\.[0-9]*?)0+$/, '$1').replace(/\.$/, '')
+  }
 
   return (
     <div dir={isRtl ? 'rtl' : 'ltr'} className="relative bg-[#E0F3E9] dark:bg-[#0a0a0a] min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
@@ -155,22 +161,22 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'group hidden min-w-[132px] items-center justify-between gap-3 rounded-full p-1 ps-4 h-10 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98] sm:inline-flex',
+                  'group hidden h-11 w-[128px] items-center justify-between gap-3 rounded-full p-1 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98] sm:inline-flex',
                   'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
-                  isRtl ? 'flex-row-reverse pe-1 ps-4' : 'flex-row pe-1 ps-4'
+                  isRtl ? 'flex-row-reverse pe-3 ps-1' : 'flex-row pe-1 ps-3'
                 )}
                 title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
               >
                 <div className="inline-flex min-w-0 flex-1 items-baseline justify-start gap-1 text-left text-white leading-none" dir="ltr">
                   <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
-                    {walletBalance === null ? '...' : `${Number(walletBalance || 0).toFixed(2)}`}
+                    {walletBalance === null ? '...' : formatAmount(walletBalance)}
                   </span>
                   <span className="text-[11px] font-bold text-teal-200">
                     {isRtl ? 'ج.م' : 'EGP'}
                   </span>
                 </div>
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 text-slate-950 shadow-sm">
-                  <Wallet className="h-4 w-4 stroke-[2.5]" />
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-emerald-400 via-teal-400 to-cyan-300 text-slate-950 shadow-sm">
+                  <Wallet className="h-[18px] w-[18px] stroke-[2.5]" />
                 </span>
               </button>
             ) : null}
