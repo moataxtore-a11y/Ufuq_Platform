@@ -161,13 +161,13 @@ export default function AppShell({ title, titleKey }) {
                 type="button"
                 onClick={() => navigate('/student/wallet')}
                 className={cn(
-                  'group hidden h-11 w-[128px] items-center justify-between gap-3 rounded-full p-1 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98] sm:inline-flex',
+                  'group hidden h-11 w-[116px] items-center justify-between gap-2 rounded-full p-1 transition-all duration-300 shrink-0 select-none border border-teal-400/40 shadow-sm hover:shadow-md hover:shadow-teal-950/40 hover:scale-[1.02] active:scale-[0.98] sm:inline-flex',
                   'bg-gradient-to-r from-[#023a34] via-[#044c44] to-[#075d53] hover:from-[#034942] hover:to-[#096e62]',
-                  isRtl ? 'flex-row-reverse pe-3 ps-1' : 'flex-row pe-1 ps-3'
+                  isRtl ? 'flex-row-reverse pe-1 ps-3' : 'flex-row pe-1 ps-3'
                 )}
                 title={isRtl ? 'محفظتي - انقر لإدارة المحفظة' : 'My Wallet - Click to manage'}
               >
-                <div className="inline-flex min-w-0 flex-1 items-baseline justify-start gap-1 text-left text-white leading-none" dir="ltr">
+                <div className="inline-flex min-w-0 flex-1 items-baseline justify-start gap-1 text-left text-white leading-none" dir={isRtl ? 'rtl' : 'ltr'}>
                   <span className="font-extrabold text-xs sm:text-sm tabular-nums tracking-tight">
                     {walletBalance === null ? '...' : formatAmount(walletBalance)}
                   </span>
