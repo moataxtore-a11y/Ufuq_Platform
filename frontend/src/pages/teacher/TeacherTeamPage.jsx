@@ -122,7 +122,6 @@ export default function TeacherTeamPage() {
       {loading ? (
         <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
           <Spinner />
-          {isRtl ? 'جاري التحميل...' : 'Loading...'}
         </div>
       ) : filteredRows.length === 0 ? (
         <div className="text-slate-600 dark:text-slate-300 text-sm">

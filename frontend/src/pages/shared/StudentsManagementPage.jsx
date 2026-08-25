@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { BookOpen, Trash2, User } from 'lucide-react'
 import Select from '../../components/ui/Select.jsx'
-import { CardGridSkeleton } from '../../components/ui/Skeleton.jsx'
+import { CardGridSkeleton, Skeleton } from '../../components/ui/Skeleton.jsx'
 
 export default function StudentsManagementPage() {
   const { notify } = useToast()
@@ -772,8 +772,20 @@ function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }
   return (
     <Modal open={open} onOpenChange={onOpenChange} title={isRtl ? 'ملف الطالب' : 'Student Profile'}>
       {loading ? (
-        <div className="text-slate-700">
-          <Spinner />
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-20 w-20 shrink-0 rounded-2xl" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-5 w-2/3 rounded-lg" />
+              <Skeleton className="h-4 w-1/2 rounded-md" />
+              <Skeleton className="h-4 w-1/3 rounded-md" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-16 rounded-2xl" />
+            ))}
+          </div>
         </div>
       ) : !user ? (
         <div className="text-slate-600 dark:text-slate-300 text-sm">{t('studentsPage.noData')}</div>

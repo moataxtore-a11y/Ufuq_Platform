@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../../utils/api.js'
 import { useToast } from '../../components/ui/toast.jsx'
@@ -521,7 +521,6 @@ export default function StudentCourseDetailPage() {
     return (
       <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
         <Spinner />
-        Loading...
       </div>
     )
   }

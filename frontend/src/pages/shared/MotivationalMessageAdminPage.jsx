@@ -4,6 +4,7 @@ import Input from '../../components/ui/Input.jsx'
 import { api } from '../../utils/api.js'
 import { useLanguage } from '../../context/LanguageContext.jsx'
 import { useToast } from '../../components/ui/toast.jsx'
+import { Skeleton } from '../../components/ui/Skeleton.jsx'
 
 export default function MotivationalMessageAdminPage() {
   const { isRtl } = useLanguage()
@@ -91,7 +92,14 @@ export default function MotivationalMessageAdminPage() {
 
       <div className="bg-white dark:bg-white/[0.06] p-4 border border-black/5 dark:border-white/10 rounded-2xl">
         {loading ? (
-          <div className="text-slate-600 dark:text-slate-300 text-sm">{isRtl ? 'جاري التحميل...' : 'Loading...'}</div>
+          <div className="space-y-3">
+            <Skeleton className="h-11 rounded-2xl" />
+            <Skeleton className="h-32 rounded-2xl" />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Skeleton className="h-11 rounded-2xl" />
+              <Skeleton className="h-11 rounded-2xl" />
+            </div>
+          </div>
         ) : (
           <div className="gap-3 grid">
             <div className="gap-1 grid">

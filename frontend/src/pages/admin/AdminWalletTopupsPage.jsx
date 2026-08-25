@@ -132,7 +132,6 @@ export default function AdminWalletTopupsPage() {
       {loading ? (
         <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
           <Spinner />
-          {isRtl ? 'جاري التحميل...' : 'Loading...'}
         </div>
       ) : rows.length === 0 ? (
         <div className="bg-white/80 dark:bg-white/[0.06] p-5 border border-black/5 dark:border-white/10 rounded-xl text-slate-600 dark:text-slate-300 text-sm">

@@ -98,7 +98,6 @@ export default function StudentAssignmentsPage() {
     return (
       <div className="flex items-center gap-2 text-slate-700 dark:text-slate-200" dir={isRtl ? 'rtl' : 'ltr'}>
         <Spinner />
-        {isRtl ? 'جاري التحميل...' : 'Loading...'}
       </div>
     )
   }

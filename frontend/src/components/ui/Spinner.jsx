@@ -45,9 +45,9 @@ export default function Spinner({ className, size = 'md' }) {
   )
 }
 
-export function PageSpinner({ text = 'جاري التحميل...', className }) {
+export function PageSpinner({ text = '', className }) {
   return (
-    <div className={cn('w-full space-y-6 py-2', className)} role="status" aria-label={text}>
+    <div className={cn('w-full space-y-6 py-2', className)} role="status" aria-label={text || 'loading'}>
       <PageHeaderSkeleton />
       <CardGridSkeleton count={6} />
     </div>
