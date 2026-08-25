@@ -91,7 +91,7 @@ export default function StudentLandingLayout() {
         <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-900 dark:bg-white/15 dark:text-white">
           <Wallet className="h-[18px] w-[18px] stroke-[2.5]" />
         </span>
-        <div className="inline-flex min-w-0 items-baseline gap-1 leading-none text-slate-950 dark:text-white" dir="ltr">
+        <div className="inline-flex min-w-0 items-baseline gap-1 leading-none text-slate-950 dark:text-white" dir="rtl">
           <span className="font-black text-xl tabular-nums tracking-tight">
             {walletBalance === null ? '...' : formatAmount(walletBalance)}
           </span>
