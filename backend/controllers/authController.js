@@ -169,7 +169,12 @@ const login = asyncHandler(async (req, res) => {
     const { email, password, identifier, phone } = req.body || {}
     const rawIdentifier = (identifier !== undefined && identifier !== null) ? identifier : ((email !== undefined && email !== null) ? email : phone)
     const normalizedIdentifier = String(rawIdentifier || '').trim()
-    if (!normalizedIdentifier || !password) return res.status(400).json({ message: 'Email and password are required' })
+    if (!normalizedIdentifier) {
+        return res.status(400).json({ message: 'Phone number or email is required', code: 'IDENTIFIER_REQUIRED' })
+    }
+    if (!password) {
+        return res.status(400).json({ message: 'Password is required', code: 'PASSWORD_REQUIRED' })
+    }
 
     const looksLikeEmail = normalizedIdentifier.includes('@')
 
@@ -201,7 +206,12 @@ const login = asyncHandler(async (req, res) => {
         }
     }
 
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' })
+    if (!user) {
+        return res.status(401).json({
+            message: looksLikeEmail ? 'Email is not registered' : 'Phone number is not registered',
+            code: looksLikeEmail ? 'EMAIL_NOT_FOUND' : 'PHONE_NOT_FOUND'
+        })
+    }
 
     if (user.isSuspended) {
         return res.status(403).json({ message: 'Account suspended' })
@@ -218,7 +228,9 @@ const login = asyncHandler(async (req, res) => {
     }
 
     const ok = await bcrypt.compare(password, user.password)
-    if (!ok) return res.status(401).json({ message: 'Invalid credentials' })
+    if (!ok) {
+        return res.status(401).json({ message: 'Password is incorrect', code: 'INVALID_PASSWORD' })
+    }
 
     const token = signToken(user.id)
     res.json({

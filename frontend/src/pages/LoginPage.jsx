@@ -44,6 +44,17 @@ export default function LoginPage() {
   const [showFpNew, setShowFpNew] = useState(false)
   const [showFpConfirm, setShowFpConfirm] = useState(false)
 
+  function loginErrorText(code, fallbackMessage = '') {
+    const messages = {
+      IDENTIFIER_REQUIRED: isRtl ? 'من فضلك أدخل رقم الموبايل أو البريد الإلكتروني' : 'Please enter your phone number or email',
+      PASSWORD_REQUIRED: isRtl ? 'من فضلك أدخل كلمة المرور' : 'Please enter your password',
+      EMAIL_NOT_FOUND: isRtl ? 'البريد الإلكتروني غير مسجل' : 'This email is not registered',
+      PHONE_NOT_FOUND: isRtl ? 'رقم الموبايل غير مسجل' : 'This phone number is not registered',
+      INVALID_PASSWORD: isRtl ? 'كلمة المرور غير صحيحة' : 'Password is incorrect'
+    }
+    return messages[code] || fallbackMessage || (isRtl ? 'فشل تسجيل الدخول' : 'Login failed')
+  }
+
   async function sendResetCode() {
     setFpError('')
     try {
@@ -106,6 +117,13 @@ export default function LoginPage() {
         setOpenLoginError(true)
         return
       }
+      if (!String(password || '').trim()) {
+        const msg = loginErrorText('PASSWORD_REQUIRED')
+        setError(msg)
+        setLoginErrorMessage(msg)
+        setOpenLoginError(true)
+        return
+      }
       const finalIdentifier = normalizedIdentifier.includes('@') ? normalizedIdentifier.toLowerCase() : normalizedIdentifier
       const { data } = await api.post('/account/login', { identifier: finalIdentifier, password })
       setAuth(data)
@@ -118,6 +136,7 @@ export default function LoginPage() {
       else if (data.role === 'team') navigate('/team', { replace: true })
       else navigate('/student/select', { replace: true })
     } catch (err) {
+      const code = err?.response?.data?.code || ''
       const msg = err?.response?.data?.message || 'Login failed'
       if (String(msg).toLowerCase().includes('account suspended')) {
         const description = isRtl
@@ -137,13 +156,16 @@ export default function LoginPage() {
         navigate('/account-rejected', { replace: true, state: { reason } })
         return
       }
+      const isKnownLoginError = ['IDENTIFIER_REQUIRED', 'PASSWORD_REQUIRED', 'EMAIL_NOT_FOUND', 'PHONE_NOT_FOUND', 'INVALID_PASSWORD'].includes(code)
       const isInvalidCredentials = err?.response?.status === 401 || String(msg).toLowerCase().includes('invalid credentials') || String(msg).toLowerCase().includes('invalid password')
-      const localized = isInvalidCredentials
-        ? (() => {
-            const raw = t('auth.loginFailed')
-            return raw === 'auth.loginFailed' ? (isRtl ? 'الباسورد أو الإيميل أو رقم الموبايل غلط' : 'Wrong password, email, or phone number') : raw
-          })()
-        : msg
+      const localized = isKnownLoginError
+        ? loginErrorText(code, msg)
+        : (isInvalidCredentials
+          ? (() => {
+              const raw = t('auth.loginFailed')
+              return raw === 'auth.loginFailed' ? (isRtl ? 'الباسورد أو الإيميل أو رقم الموبايل غلط' : 'Wrong password, email, or phone number') : raw
+            })()
+          : msg)
       setError(localized)
       setLoginErrorMessage(localized)
       setOpenLoginError(true)
