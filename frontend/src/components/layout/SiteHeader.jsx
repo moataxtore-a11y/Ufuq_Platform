@@ -219,7 +219,7 @@ export default function SiteHeader() {
 
   return (
     <>
-      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
+      <header className="site-header top-0 z-[100] fixed backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className={"mx-auto px-3 sm:px-4 py-2 min-w-0 w-full max-w-7xl"}>
           <div className="md:hidden flex items-center justify-between gap-2 px-1 py-1">
             <Link to="/" className="flex items-center shrink-0">
@@ -375,14 +375,14 @@ export default function SiteHeader() {
               <div className={"flex items-center gap-3 " + (isRtl ? 'flex-row-reverse' : '')}>
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#d4f5f0] text-[#00897b] dark:bg-teal-950/70 dark:text-teal-300 hover:bg-[#c2f0e8] dark:hover:bg-teal-900/80 border border-teal-200/50 dark:border-teal-800/50 shadow-sm transition"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#EEE4D2] text-[#563F32] dark:bg-brand-950/70 dark:text-brand-300 hover:bg-[#E8D8C3] dark:hover:bg-brand-900/80 border border-brand-200/50 dark:border-brand-800/50 shadow-sm transition"
                 >
                   <LogIn className="w-4 h-4" />
                   {isRtl ? 'تسجيل الدخول' : t('auth.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#009688] hover:bg-[#00887b] text-white shadow-sm transition"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm bg-[#3A2920] hover:bg-[#563F32] text-white shadow-sm transition"
                 >
                   <UserPlus className="w-4 h-4" />
                   {isRtl ? 'إنشاء حساب جديد!' : 'Create account'}
@@ -401,7 +401,7 @@ export default function SiteHeader() {
           <button type="button" className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} aria-label={isRtl ? 'إغلاق القائمة' : 'Close menu'} />
           <div
             className={cn(
-              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
+              'top-0 absolute bg-white/90 dark:bg-[#211713]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
               isRtl ? 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl' : 'right-0 rounded-l-[1.25rem] sm:rounded-l-3xl'
             )}
             dir={isRtl ? 'rtl' : 'ltr'}
@@ -529,14 +529,14 @@ export default function SiteHeader() {
                 </div>
               )}
 
-              <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] px-3 py-3 border border-black/5 dark:border-white/10 rounded-2xl">
+              <div className="bg-[rgb(247,240,229)] dark:bg-[#3A2920] px-3 py-3 border border-black/5 dark:border-white/10 rounded-2xl">
                 <div className={cn('flex items-center gap-2', isRtl ? 'flex-row-reverse' : 'flex-row')}>
                   <Search className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                   <div className="text-slate-600 dark:text-slate-300 text-sm">{isRtl ? 'بحث' : 'Search'}</div>
                 </div>
               </div>
               <div className="md:hidden mt-2 pt-4 border-black/10 dark:border-white/10 border-t text-center">
-                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-teal-300 text-xs font-medium" />
+                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-brand-300 text-xs font-medium" />
               </div>
             </div>
           </div>
@@ -554,8 +554,8 @@ export default function SiteHeader() {
           }
         }}
         title={isRtl ? 'ابحث في كورسات الموقع..' : 'Search courses'}
-        contentClassName="bg-[#0b1220] border-white/10 rounded-3xl"
-        bodyClassName="bg-[#0b1220]"
+        contentClassName="bg-[#291C16] border-white/10 rounded-3xl"
+        bodyClassName="bg-[#291C16]"
       >
         <div className={cn('gap-5 grid', isRtl ? 'text-right' : 'text-left')}>
           <div className={cn('flex items-center gap-2', isRtl ? 'flex-row' : 'flex-row-reverse')}>

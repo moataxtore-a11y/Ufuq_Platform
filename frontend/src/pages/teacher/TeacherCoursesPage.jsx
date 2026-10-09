@@ -56,7 +56,7 @@ export default function TeacherCoursesPage() {
       {loading ? (
         <div className="app-grid-cards">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+            <div key={i} className="bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
               <Skeleton className="h-36 w-full rounded-2xl" />
               <Skeleton className="h-5 w-3/4 rounded-lg" />
               <Skeleton className="h-4 w-1/2 rounded-md" />
@@ -217,7 +217,7 @@ function CreateCourseModal({ open, onOpenChange, onCreated }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={5}
-            className="bg-white dark:bg-[#171717] px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/40 w-full text-slate-900 dark:placeholder:text-slate-500 dark:text-white placeholder:text-slate-400 text-sm"
+            className="bg-white dark:bg-[#30221B] px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/40 w-full text-slate-900 dark:placeholder:text-slate-500 dark:text-white placeholder:text-slate-400 text-sm"
           />
         </div>
         <div className="gap-2 grid">

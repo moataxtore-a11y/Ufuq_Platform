@@ -232,7 +232,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
             <Button
               type="button"
               variant="secondary"
-              className={(assessment?.type === 'homework' ? 'bg-brand dark:bg-brand hover:bg-brand-600 dark:hover:bg-brand-600 ' : 'bg-[#F43F5E] dark:bg-[#F43F5E] hover:bg-[#F43F5E]/90 dark:hover:bg-[#F43F5E]/90 ') + 'px-2 sm:px-3 h-7 sm:h-8 text-white text-[10px] sm:text-xs w-full sm:w-auto'}
+              className={(assessment?.type === 'homework' ? 'bg-brand dark:bg-brand hover:bg-brand-600 dark:hover:bg-brand-600 ' : 'bg-[#A65F4B] dark:bg-[#A65F4B] hover:bg-[#A65F4B]/90 dark:hover:bg-[#A65F4B]/90 ') + 'px-2 sm:px-3 h-7 sm:h-8 text-white text-[10px] sm:text-xs w-full sm:w-auto'}
               onClick={() => onOpenAssessment?.(assessment)}
             >
               {isRtl ? 'فتح' : 'Open'}
@@ -631,7 +631,7 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
                   <textarea
                     value={it?.description || ''}
                     onChange={(e) => updateAttachment(kind, idx, { description: e.target.value })}
-                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#8A8273] focus:ring-2 dark:focus:ring-[#8A8273] w-full min-h-[80px] text-sm transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -663,11 +663,11 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
             <div className="gap-1.5 grid">
               <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
                 <span>رابط الفيديو (قديم)</span>
-                <button type="button" onClick={() => setShowVideoDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+                <button type="button" onClick={() => setShowVideoDetails((v) => !v)} className="text-[#8A8273] hover:underline">التفاصيل</button>
               </label>
               <Input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
               {showVideoDetails && (
-                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                <div className="bg-[#EEE4D2] dark:bg-[#EEE4D2]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
                   <div className="mb-1 font-semibold">تفاصيل الفيديو</div>
                   <div><span className="font-medium">المصدر:</span> {detectVideoProvider(videoUrl) || '—'}</div>
                   <div className="mt-1 break-all"><span className="font-medium">الرابط:</span> {String(videoUrl || '').trim() || '—'}</div>
@@ -679,11 +679,11 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
             <div className="gap-1.5 grid">
               <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
                 <span>رابط PDF (قديم)</span>
-                <button type="button" onClick={() => setShowPdfDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+                <button type="button" onClick={() => setShowPdfDetails((v) => !v)} className="text-[#8A8273] hover:underline">التفاصيل</button>
               </label>
               <Input value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)} placeholder="https://..." />
               {showPdfDetails && (
-                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                <div className="bg-[#EEE4D2] dark:bg-[#EEE4D2]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
                   <div className="mb-1 font-semibold">تفاصيل PDF</div>
                   <div className="break-all"><span className="font-medium">الرابط:</span> {String(pdfUrl || '').trim() || '—'}</div>
                 </div>
@@ -698,15 +698,15 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
             <div className="gap-1.5 grid">
               <label className="flex justify-between font-semibold text-[13px] text-slate-600 dark:text-slate-400">
                 <span>روابط الصور (كل رابط في سطر)</span>
-                <button type="button" onClick={() => setShowImagesDetails((v) => !v)} className="text-[#14B8A6] hover:underline">التفاصيل</button>
+                <button type="button" onClick={() => setShowImagesDetails((v) => !v)} className="text-[#8A8273] hover:underline">التفاصيل</button>
               </label>
               <textarea
                 value={imageUrlsRaw}
                 onChange={(e) => setImageUrlsRaw(e.target.value)}
-                className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full h-[38px] min-h-[38px] text-sm transition-all"
+                className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#8A8273] focus:ring-2 dark:focus:ring-[#8A8273] w-full h-[38px] min-h-[38px] text-sm transition-all"
               />
               {showImagesDetails && (
-                <div className="bg-[#D2EBE1] dark:bg-[#D2EBE1]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
+                <div className="bg-[#EEE4D2] dark:bg-[#EEE4D2]/20 p-3 rounded-xl text-slate-700 dark:text-slate-300 text-xs">
                   <div className="mb-1 font-semibold">تفاصيل الصور</div>
                   <div><span className="font-medium">العدد:</span> {String(imageUrlsRaw || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean).length}</div>
                 </div>
@@ -776,7 +776,7 @@ function EditLessonModal({ open, onOpenChange, lesson, onUpdated }) {
           <div className="gap-2 grid mt-4">
             <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">{uploadingLabel}</div>
             <div className="bg-slate-200 dark:bg-white/10 rounded-full h-2 overflow-hidden">
-              <div className="bg-[#14B8A6] h-full transition-all duration-300" style={{ width: `${uploadPct}%` }} />
+              <div className="bg-[#8A8273] h-full transition-all duration-300" style={{ width: `${uploadPct}%` }} />
             </div>
             <div className="pr-1 font-medium text-slate-500 dark:text-slate-400 text-xs text-center">{uploadPct}%</div>
           </div>
@@ -1440,7 +1440,7 @@ export default function TeacherCourseDetailPage() {
             {updatingThumb ? (
               <div className="px-4 pb-4">
                 <div className="bg-slate-200 dark:bg-neutral-800 rounded-full h-2 overflow-hidden">
-                  <div className="bg-[#14B8A6] h-2" style={{ width: `${thumbPct}%` }} />
+                  <div className="bg-[#8A8273] h-2" style={{ width: `${thumbPct}%` }} />
                 </div>
                 <div className="mt-1 text-slate-500 dark:text-slate-300 text-xs">{thumbPct}%</div>
               </div>
@@ -1553,7 +1553,7 @@ export default function TeacherCourseDetailPage() {
               <div className="py-8">
                 <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                   <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                  <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
+                  <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>سيتم اضافة المحتوى قريبًا</div>
                 </div>
               </div>
             ) : (
@@ -1630,7 +1630,7 @@ export default function TeacherCourseDetailPage() {
                           return (
                             <div key={l._id} className="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/[0.06] rounded-xl overflow-hidden">
                               <div
-                                className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isActive ? 'bg-[#14B8A6] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
+                                className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isActive ? 'bg-[#8A8273] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                                   } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                                 onClick={() => {
                                   setActiveLessonId((cur) => (cur === l._id ? '' : l._id))
@@ -1722,7 +1722,7 @@ export default function TeacherCourseDetailPage() {
                       <div
                         role="button"
                         tabIndex={0}
-                        className={`w-full flex items-center justify-between gap-3 px-4 py-3 transition-colors ${isUnitOpen ? 'bg-[#14B8A6] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
+                        className={`w-full flex items-center justify-between gap-3 px-4 py-3 transition-colors ${isUnitOpen ? 'bg-[#8A8273] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                           } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                         onClick={() => {
                           toggleUnitExpanded(unitId)
@@ -1783,12 +1783,12 @@ export default function TeacherCourseDetailPage() {
                       </div>
 
                       {isUnitOpen ? (
-                        <div className="bg-[#D2EBE1] dark:bg-neutral-800 p-3">
+                        <div className="bg-[#EEE4D2] dark:bg-neutral-800 p-3">
                           {unitLessons.length === 0 ? (
                             <div className="py-8">
                               <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                                 <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                                <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
+                                <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>سيتم اضافة المحتوى قريبًا</div>
                               </div>
                             </div>
                           ) : (
@@ -1808,7 +1808,7 @@ export default function TeacherCourseDetailPage() {
                                 return (
                                   <div key={l._id} className="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/[0.06] rounded-xl overflow-hidden">
                                     <div
-                                      className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isActive ? 'bg-[#14B8A6] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
+                                      className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isActive ? 'bg-[#8A8273] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                                         } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                                       onClick={() => {
                                         setActiveLessonId((cur) => (cur === l._id ? '' : l._id))
@@ -2553,7 +2553,7 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
                   <textarea
                     value={v.description}
                     onChange={(e) => setVideos((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#8A8273] focus:ring-2 dark:focus:ring-[#8A8273] w-full min-h-[80px] text-sm transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -2635,7 +2635,7 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
                   <textarea
                     value={p.description}
                     onChange={(e) => setPdfs((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                    className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#8A8273] focus:ring-2 dark:focus:ring-[#8A8273] w-full min-h-[80px] text-sm transition-all"
                     disabled={loading}
                   />
                 </div>
@@ -2704,7 +2704,7 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
                     <textarea
                       value={img.description}
                       onChange={(e) => setImages((cur) => (cur || []).map((x, i) => (i === idx ? { ...x, description: e.target.value } : x)))}
-                      className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#14B8A6] focus:ring-2 dark:focus:ring-[#14B8A6] w-full min-h-[80px] text-sm transition-all"
+                      className="bg-white dark:bg-neutral-900 px-3 py-2 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-[#8A8273] focus:ring-2 dark:focus:ring-[#8A8273] w-full min-h-[80px] text-sm transition-all"
                       disabled={loading}
                     />
                   </div>
@@ -2720,7 +2720,7 @@ function CreateLessonModal({ open, onOpenChange, unitId, units, courseId, onCrea
           <div className="gap-2 grid">
             <div className="text-slate-700 dark:text-slate-200 text-sm">{uploadingLabel}</div>
             <div className="bg-slate-200 rounded-full h-2 overflow-hidden">
-              <div className="bg-[#14B8A6] h-2" style={{ width: `${uploadPct}%` }} />
+              <div className="bg-[#8A8273] h-2" style={{ width: `${uploadPct}%` }} />
             </div>
             <div className="text-slate-500 text-xs">{uploadPct}%</div>
           </div>

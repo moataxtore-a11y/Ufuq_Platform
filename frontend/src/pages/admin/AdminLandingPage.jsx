@@ -25,16 +25,16 @@ import { motion } from 'framer-motion'
 
 const colors = {
   blue: {
-    bg: 'bg-blue-500/10 dark:bg-blue-500/15',
-    text: 'text-blue-600 dark:text-blue-400',
-    border: 'border-blue-500/10 dark:border-blue-500/20',
-    bar: 'bg-blue-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   },
   purple: {
-    bg: 'bg-purple-500/10 dark:bg-purple-500/15',
-    text: 'text-purple-600 dark:text-purple-400',
-    border: 'border-purple-500/10 dark:border-purple-500/20',
-    bar: 'bg-purple-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   },
   amber: {
     bg: 'bg-amber-500/10 dark:bg-amber-500/15',
@@ -43,22 +43,22 @@ const colors = {
     bar: 'bg-amber-500'
   },
   indigo: {
-    bg: 'bg-indigo-500/10 dark:bg-indigo-500/15',
-    text: 'text-indigo-600 dark:text-indigo-400',
-    border: 'border-indigo-500/10 dark:border-indigo-500/20',
-    bar: 'bg-indigo-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   },
   emerald: {
-    bg: 'bg-emerald-500/10 dark:bg-emerald-500/15',
-    text: 'text-emerald-600 dark:text-emerald-400',
-    border: 'border-emerald-500/10 dark:border-emerald-500/20',
-    bar: 'bg-emerald-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   },
   teal: {
-    bg: 'bg-teal-500/10 dark:bg-teal-500/15',
-    text: 'text-teal-600 dark:text-teal-400',
-    border: 'border-teal-500/10 dark:border-teal-500/20',
-    bar: 'bg-teal-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   },
   sky: {
     bg: 'bg-sky-500/10 dark:bg-sky-500/15',
@@ -67,10 +67,10 @@ const colors = {
     bar: 'bg-sky-500'
   },
   violet: {
-    bg: 'bg-violet-500/10 dark:bg-violet-500/15',
-    text: 'text-violet-600 dark:text-violet-400',
-    border: 'border-violet-500/10 dark:border-violet-500/20',
-    bar: 'bg-violet-500'
+    bg: 'bg-brand-500/10 dark:bg-brand-500/15',
+    text: 'text-brand-600 dark:text-brand-400',
+    border: 'border-brand-500/10 dark:border-brand-500/20',
+    bar: 'bg-brand-500'
   }
 }
 
@@ -87,7 +87,7 @@ function ActionCard({ title, desc, Icon, to, index, isFeatured }) {
       <Link
         to={to}
         className={
-          'group flex items-center gap-5 bg-white dark:bg-[#1a1a1a] hover:bg-slate-50 dark:hover:bg-[#202020] p-6 border border-slate-100 dark:border-white/5 hover:border-brand/35 dark:hover:border-brand/35 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none ' +
+          'group flex items-center gap-5 bg-white dark:bg-[#35261E] hover:bg-slate-50 dark:hover:bg-[#3A2920] p-6 border border-slate-100 dark:border-white/5 hover:border-brand/35 dark:hover:border-brand/35 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none ' +
           (isRtl ? 'flex-row-reverse text-right' : 'flex-row text-left')
         }
       >
@@ -153,7 +153,7 @@ export default function AdminLandingPage() {
           animate={{ opacity: 1, scale: 1 }}
           className="inline-flex items-center gap-2 bg-slate-100 dark:bg-white/5 mb-4 px-4 py-1.5 border border-slate-200 dark:border-white/10 rounded-full font-bold text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wide"
         >
-          <span className="bg-emerald-500 shadow-[0_0_10px_#10b981] rounded-full w-2 h-2 animate-pulse" />
+          <span className="bg-brand-500 shadow-[0_0_10px_#776B5C] rounded-full w-2 h-2 animate-pulse" />
           {isRtl ? 'مساحة الأدمن' : 'Admin workspace'}
         </motion.div>
         
@@ -167,7 +167,7 @@ export default function AdminLandingPage() {
           </motion.h1>
           <div className="flex justify-center mt-4">
             <svg width="400" height="20" viewBox="0 0 400 20" className="opacity-60 max-w-full" aria-hidden="true">
-              <path d="M10 15 Q 200 0, 390 15" stroke="#069484" strokeWidth="4" fill="none" strokeLinecap="round" />
+              <path d="M10 15 Q 200 0, 390 15" stroke="#3A2920" strokeWidth="4" fill="none" strokeLinecap="round" />
             </svg>
           </div>
         </div>
@@ -265,7 +265,7 @@ function Stat({ title, value, icon: Icon, delay, isRtl, size = 'normal', color =
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay, type: 'spring', stiffness: 100 }}
-      className={`bg-white dark:bg-[#1a1a1a] border border-slate-100 dark:border-white/5 rounded-3xl p-5 hover:border-brand/30 dark:hover:border-brand/30 transition-all duration-300 group shadow-sm hover:shadow-md dark:shadow-none relative overflow-hidden ${size === 'large' ? 'md:p-7' : ''}`}
+      className={`bg-white dark:bg-[#35261E] border border-slate-100 dark:border-white/5 rounded-3xl p-5 hover:border-brand/30 dark:hover:border-brand/30 transition-all duration-300 group shadow-sm hover:shadow-md dark:shadow-none relative overflow-hidden ${size === 'large' ? 'md:p-7' : ''}`}
     >
       <div className={`flex items-start justify-between mb-4 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
         <div className={`flex flex-col ${isRtl ? 'items-end text-right' : 'items-start text-left'}`}>

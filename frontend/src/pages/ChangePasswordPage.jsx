@@ -59,7 +59,7 @@ export default function ChangePasswordPage() {
     <div className="relative flex flex-col min-h-screen overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
       <SiteHeader />
       <div className="relative flex-1 mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-14 w-full max-w-6xl">
-        <div className="bg-white dark:bg-[#1a1a1a] shadow-sm dark:shadow-none p-6 border border-black/5 dark:border-white/10 rounded-xl w-full max-w-md">
+        <div className="bg-white dark:bg-[#35261E] shadow-sm dark:shadow-none p-6 border border-black/5 dark:border-white/10 rounded-xl w-full max-w-md">
           <div className="mb-6">
             <div className="flex justify-center items-center gap-3 mb-4">
               <img src={logo} alt="Education Platform" className="w-auto h-16 md:h-[72px]" />

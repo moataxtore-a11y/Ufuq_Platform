@@ -64,19 +64,19 @@ export default function TeachersSection() {
       }
     >
       {state.status === 'loading' ? (
-        <div className="flex justify-center items-center bg-white dark:bg-[#1a1a1a] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
+        <div className="flex justify-center items-center bg-white dark:bg-[#35261E] p-8 border border-black/5 dark:border-white/10 rounded-3xl">
           <Spinner />
         </div>
       ) : null}
 
       {state.status === 'error' ? (
-        <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+        <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
           {state.error}
         </div>
       ) : null}
 
       {state.status === 'success' && state.items.length === 0 ? (
-        <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+        <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
           {t('landing.teachers.empty')}
         </div>
       ) : null}

@@ -293,11 +293,11 @@ export default function RegisterPage() {
           transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
           className="hidden relative md:flex flex-1 justify-center items-center overflow-hidden"
         >
-          <div className="top-1/2 left-1/2 absolute bg-[radial-gradient(circle,rgba(6,148,132,0.30)_0%,transparent_70%)] opacity-40 blur-3xl rounded-full w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+          <div className="top-1/2 left-1/2 absolute bg-[radial-gradient(circle,rgba(58,41,32,0.30)_0%,transparent_70%)] opacity-40 blur-3xl rounded-full w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
           <motion.img
             src={registerImage}
             alt="اعمل حساب"
-            className="z-10 relative drop-shadow-2xl object-contain"
+            className="auth-art z-10 relative drop-shadow-2xl object-contain"
             style={{ maxHeight: '100vh', maxWidth: '100%' }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}

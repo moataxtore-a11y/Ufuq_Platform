@@ -214,7 +214,7 @@ export default function StudentAssessmentAttemptPage() {
                         onChange={() => setAnswer(q._id, { selectedOptionId: o._id })}
                         disabled={submitting || isTimeUp}
                       />
-                      <span className="flex justify-center items-center peer-checked:bg-[#14B8A6] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#14B8A6] rounded-full w-5 h-5 shrink-0">
+                      <span className="flex justify-center items-center peer-checked:bg-[#8A8273] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#8A8273] rounded-full w-5 h-5 shrink-0">
                         <span className="bg-white opacity-0 peer-checked:opacity-100 rounded-full w-2 h-2" />
                       </span>
                       <span className="min-w-0 break-words">{o.text}</span>
@@ -234,7 +234,7 @@ export default function StudentAssessmentAttemptPage() {
                       onChange={() => setAnswer(q._id, { booleanAnswer: true })}
                       disabled={submitting || isTimeUp}
                     />
-                    <span className="flex justify-center items-center peer-checked:bg-[#14B8A6] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#14B8A6] rounded-full w-5 h-5 shrink-0">
+                    <span className="flex justify-center items-center peer-checked:bg-[#8A8273] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#8A8273] rounded-full w-5 h-5 shrink-0">
                       <span className="bg-white opacity-0 peer-checked:opacity-100 rounded-full w-2 h-2" />
                     </span>
                     {isRtl ? 'صح' : 'True'}
@@ -248,7 +248,7 @@ export default function StudentAssessmentAttemptPage() {
                       onChange={() => setAnswer(q._id, { booleanAnswer: false })}
                       disabled={submitting || isTimeUp}
                     />
-                    <span className="flex justify-center items-center peer-checked:bg-[#14B8A6] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#14B8A6] rounded-full w-5 h-5 shrink-0">
+                    <span className="flex justify-center items-center peer-checked:bg-[#8A8273] border-2 border-slate-300 dark:border-neutral-500 peer-checked:border-[#8A8273] rounded-full w-5 h-5 shrink-0">
                       <span className="bg-white opacity-0 peer-checked:opacity-100 rounded-full w-2 h-2" />
                     </span>
                     {isRtl ? 'خطأ' : 'False'}
@@ -327,7 +327,7 @@ function FileUploadQuestion({ questionId, isRtl, disabled, uploadState, fileUrl,
             'relative flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl py-8 px-4 cursor-pointer transition-all ' +
             (disabled
               ? 'border-slate-200 dark:border-neutral-700 opacity-50 cursor-not-allowed'
-              : 'border-slate-300 dark:border-neutral-600 hover:border-[#14B8A6] dark:hover:border-[#14B8A6] hover:bg-teal-50/30 dark:hover:bg-teal-900/10')
+              : 'border-slate-300 dark:border-neutral-600 hover:border-[#8A8273] dark:hover:border-[#8A8273] hover:bg-brand-50/30 dark:hover:bg-brand-900/10')
           }
         >
           <input
@@ -367,13 +367,13 @@ function FileUploadQuestion({ questionId, isRtl, disabled, uploadState, fileUrl,
       ) : null}
 
       {hasFile && !uploading ? (
-        <div className="flex items-center gap-3 bg-teal-50 dark:bg-teal-900/20 p-4 border border-teal-200 dark:border-teal-800/50 rounded-2xl">
+        <div className="flex items-center gap-3 bg-brand-50 dark:bg-brand-900/20 p-4 border border-brand-200 dark:border-brand-800/50 rounded-2xl">
           <span className="text-2xl shrink-0">{getFileIcon(fileName)}</span>
           <div className="flex-1 min-w-0">
             <div className="font-semibold text-slate-800 dark:text-slate-100 text-sm truncate">
               {fileName || (isRtl ? 'تم رفع الملف' : 'File uploaded')}
             </div>
-            <div className="flex items-center gap-1 mt-0.5 text-teal-600 dark:text-teal-400 text-xs">
+            <div className="flex items-center gap-1 mt-0.5 text-brand-600 dark:text-brand-400 text-xs">
               <span>✓</span>
               <span>{isRtl ? 'تم الرفع بنجاح' : 'Uploaded successfully'}</span>
             </div>

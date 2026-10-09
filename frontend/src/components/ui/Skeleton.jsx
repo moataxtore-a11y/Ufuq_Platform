@@ -35,7 +35,7 @@ export function SkeletonCard({ className }) {
   return (
     <div
       className={cn(
-        'bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 shadow-sm space-y-4 transition-colors',
+        'bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 shadow-sm space-y-4 transition-colors',
         className
       )}
     >
@@ -77,7 +77,7 @@ export function CardGridSkeleton({ count = 6, className }) {
   return (
     <div className={cn('app-grid-cards', className)}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="min-w-0 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#171717] p-4 shadow-sm">
+        <div key={i} className="min-w-0 rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-[#30221B] p-4 shadow-sm">
           <Skeleton className="h-36 w-full rounded-2xl" />
           <div className="mt-4 space-y-3">
             <Skeleton className="h-5 w-3/4 rounded-lg" />
@@ -97,7 +97,7 @@ export function SkeletonTable({ rows = 5, cols = 4, className }) {
   return (
     <div
       className={cn(
-        'w-full overflow-hidden bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-xl p-4 space-y-3 transition-colors',
+        'w-full overflow-hidden bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-xl p-4 space-y-3 transition-colors',
         className
       )}
     >

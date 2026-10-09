@@ -28,7 +28,7 @@ export default function ServicesSection() {
 
         <div className="flex justify-center mt-3">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
       </div>
@@ -37,9 +37,9 @@ export default function ServicesSection() {
         {items.map(({ title, desc, Icon }) => (
           <div
             key={title}
-            className="group bg-white dark:bg-[#171717] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-7 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200">
+            className="group bg-white dark:bg-[#30221B] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-7 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200">
             <div className="flex flex-col items-center text-center">
-              <div className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] rounded-2xl w-14 h-14 text-slate-700 dark:text-slate-200 group-hover:rotate-3 group-hover:scale-110 transition-transform duration-300">
+              <div className="flex justify-center items-center bg-[rgb(247,240,229)] dark:bg-[#3A2920] rounded-2xl w-14 h-14 text-slate-700 dark:text-slate-200 group-hover:rotate-3 group-hover:scale-110 transition-transform duration-300">
                 <Icon className="w-7 h-10" />
               </div>
 

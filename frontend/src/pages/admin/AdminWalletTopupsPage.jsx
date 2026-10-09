@@ -28,7 +28,7 @@ function statusLabel(isRtl, status) {
 
 function statusClass(status) {
   const key = String(status || '').toLowerCase()
-  if (key === 'completed') return 'bg-emerald-50 border-emerald-200 text-emerald-700'
+  if (key === 'completed') return 'bg-brand-50 border-brand-200 text-brand-700'
   if (key === 'rejected') return 'bg-red-50 border-red-200 text-red-700'
   return 'bg-amber-50 border-amber-200 text-amber-700'
 }

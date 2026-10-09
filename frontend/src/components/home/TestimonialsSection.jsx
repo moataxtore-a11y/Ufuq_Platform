@@ -45,11 +45,11 @@ export default function TestimonialsSection() {
         {testimonials.map((tt, idx) => (
           <figure
             key={(tt && typeof tt === 'object' && tt.name ? tt.name : 't') + '-' + idx}
-            className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-5 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200"
+            className="bg-white dark:bg-[#35261E] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-5 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200"
           >
             <div className="flex justify-between items-center gap-3">
               <Stars />
-              <span className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] rounded-2xl w-8 h-8 text-slate-700 dark:text-slate-200" aria-hidden="true">
+              <span className="flex justify-center items-center bg-[rgb(247,240,229)] dark:bg-[#3A2920] rounded-2xl w-8 h-8 text-slate-700 dark:text-slate-200" aria-hidden="true">
                 “
               </span>
             </div>

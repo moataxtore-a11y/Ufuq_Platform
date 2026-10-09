@@ -119,7 +119,7 @@ export default function AdminCoursesPage() {
               (isRtl ? 'flex-row-reverse' : 'flex-row')
             }
           >
-            <span className="inline-block bg-emerald-400 rounded-full w-2 h-2" />
+            <span className="inline-block bg-brand-400 rounded-full w-2 h-2" />
             <span>{isRtl ? 'مساحة الأدمن' : 'Admin area'}</span>
           </div>
         </div>

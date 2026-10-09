@@ -101,7 +101,7 @@ export default function StudentAssessmentResultPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
 
@@ -123,7 +123,7 @@ export default function StudentAssessmentResultPage() {
                       ? 'bg-rose-500'
                       : ratio < 0.75
                         ? 'bg-brand'
-                        : 'bg-emerald-500'
+                        : 'bg-brand-500'
 
                   const scoreTextCls = ratio === null
                     ? 'text-slate-900 dark:text-slate-100'
@@ -131,7 +131,7 @@ export default function StudentAssessmentResultPage() {
                       ? 'text-rose-700 dark:text-rose-200'
                       : ratio < 0.75
                         ? 'text-brand'
-                        : 'text-emerald-700 dark:text-emerald-200'
+                        : 'text-brand-700 dark:text-brand-200'
 
                   const scoreText = score !== null && maxScore !== null
                     ? `${score}/${maxScore}`
@@ -180,11 +180,11 @@ export default function StudentAssessmentResultPage() {
 
             const yourAnswerCls = canJudge
               ? (isCorrect
-                ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900 text-emerald-900 dark:text-emerald-200'
+                ? 'bg-brand-50 dark:bg-brand-950/20 border-brand-200 dark:border-brand-900 text-brand-900 dark:text-brand-200'
                 : 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-200')
               : 'bg-slate-50 dark:bg-neutral-900 border-black/5 dark:border-white/[0.06] text-slate-800 dark:text-slate-100'
 
-            const correctAnswerCls = 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900 text-emerald-900 dark:text-emerald-200'
+            const correctAnswerCls = 'bg-brand-50 dark:bg-brand-950/20 border-brand-200 dark:border-brand-900 text-brand-900 dark:text-brand-200'
 
             return (
               <div key={q._id} className="bg-white dark:bg-neutral-900 p-4 border border-black/5 dark:border-white/[0.06] rounded-2xl">
@@ -203,7 +203,7 @@ export default function StudentAssessmentResultPage() {
                           ? boolLabel(a.booleanAnswer)
                           : q.type === 'file_upload'
                             ? (a.fileUrl
-                              ? <a href={a.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-teal-100 dark:bg-teal-900/30 px-3 py-1.5 rounded-lg font-semibold text-teal-700 dark:text-teal-300 text-xs hover:underline">
+                              ? <a href={a.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-brand-100 dark:bg-brand-900/30 px-3 py-1.5 rounded-lg font-semibold text-brand-700 dark:text-brand-300 text-xs hover:underline">
                                 <span>📎</span>
                                 <span>{isRtl ? 'عرض الملف' : 'View File'}</span>
                               </a>

@@ -133,7 +133,7 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
               >
                 <div
                   className={
-                    'absolute top-3 w-[160px] bg-[#E11D48] text-white font-extrabold text-[12px] sm:text-sm py-2 shadow-lg tracking-wide text-center ' +
+                    'absolute top-3 w-[160px] bg-[#8D493A] text-white font-extrabold text-[12px] sm:text-sm py-2 shadow-lg tracking-wide text-center ' +
                     (isRtl ? '-left-12 -rotate-45' : '-right-12 rotate-45')
                   }
                 >
@@ -142,14 +142,14 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
               </div>
             ) : null}
 
-            <div className="z-0 absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.12),transparent_55%)] pointer-events-none" />
+            <div className="z-0 absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(58,41,32,0.12),transparent_55%)] pointer-events-none" />
           </div>
         ) : null}
 
         <div className={cn('z-10 relative gap-4 grid p-5', isRtl ? 'text-right' : 'text-left')}>
           {!course?.thumbnailUrl && isPinned ? (
             <div className={isRtl ? 'flex justify-start' : 'flex justify-end'}>
-              <div className="bg-[#E11D48] shadow px-3 py-1 rounded-full font-extrabold text-[11px] text-white">
+              <div className="bg-[#8D493A] shadow px-3 py-1 rounded-full font-extrabold text-[11px] text-white">
                 {isRtl ? 'كورس مثبت' : 'Pinned course'}
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
             <div className="font-extrabold text-slate-800 dark:text-slate-100 text-lg text-center leading-snug">
               {course?.title || (isRtl ? 'بدون عنوان' : 'Untitled')}
             </div>
-            <div className="bg-emerald-500/70 mx-auto w-24 h-px" />
+            <div className="bg-brand-500/70 mx-auto w-24 h-px" />
           </div>
 
           <div className="text-slate-600 dark:text-slate-300 text-sm text-center leading-6 whitespace-pre-line">
@@ -175,7 +175,7 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
           <div className={'flex flex-wrap items-center gap-2 ' + (isRtl ? 'justify-start' : 'justify-end')}>
             {priceMeta?.kind === 'paid' && typeof onSubscribe === 'function' && !hideSubscribe ? (
               <Button
-                className="bg-[rgb(20,184,166)] hover:bg-[rgb(13,148,136)] px-6 rounded-full h-10 text-white"
+                className="bg-[rgb(138,130,115)] hover:bg-[rgb(58,41,32)] px-6 rounded-full h-10 text-white"
                 onClick={(e) => {
                   e.preventDefault()
                   e.stopPropagation()
@@ -188,7 +188,7 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
 
             <Button
               variant="outline"
-              className="hover:bg-[rgba(20,184,166,0.08)] px-5 border-[rgba(20,184,166,0.45)] dark:border-[rgba(20,184,166,0.55)] rounded-full h-10 text-[rgb(20,184,166)] dark:text-[rgb(94,234,212)]"
+              className="hover:bg-[rgba(138,130,115,0.08)] px-5 border-[rgba(138,130,115,0.45)] dark:border-[rgba(138,130,115,0.55)] rounded-full h-10 text-[rgb(138,130,115)] dark:text-[rgb(94,234,212)]"
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -257,8 +257,8 @@ export default function CourseCard({ course, isRtl, badge, ctaLabel, onOpen, foo
                   </div>
                 </div>
               ) : (
-                <span className={'inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold shadow-sm bg-[rgba(20,184,166,0.16)] text-slate-900 dark:text-slate-100 border border-[rgba(20,184,166,0.35)] ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
-                  <span className="bg-[rgb(20,184,166)] px-3 py-0.5 rounded-full text-white">{priceMeta.amount.toFixed(2)}</span>
+                <span className={'inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold shadow-sm bg-[rgba(138,130,115,0.16)] text-slate-900 dark:text-slate-100 border border-[rgba(138,130,115,0.35)] ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
+                  <span className="bg-[rgb(138,130,115)] px-3 py-0.5 rounded-full text-white">{priceMeta.amount.toFixed(2)}</span>
                   <span className="text-slate-700 dark:text-slate-200">{isRtl ? 'جنيهًا' : 'EGP'}</span>
                 </span>
               )

@@ -65,7 +65,7 @@ export default function SubjectsSection() {
 
           <div className="flex justify-center mt-3">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
 
@@ -76,9 +76,9 @@ export default function SubjectsSection() {
 
         <div className="z-0 relative mt-8">
           {state.status === 'loading' ? (
-            <div className="gap-6 grid lg:grid-cols-3">
+            <div className="home-subjects-grid">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 space-y-5 transition-colors">
+                <div key={i} className="bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 space-y-5 transition-colors">
                   <div className="flex justify-center">
                     <Skeleton className="w-40 h-10 rounded-xl" />
                   </div>
@@ -93,28 +93,28 @@ export default function SubjectsSection() {
           ) : null}
 
           {state.status === 'error' ? (
-            <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+            <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
               {state.error}
             </div>
           ) : null}
 
           {state.status === 'success' && Object.values(state.byYear || {}).every((arr) => !Array.isArray(arr) || arr.length === 0) ? (
-            <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+            <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
               {t('landing.subjects.emptyAll')}
             </div>
           ) : null}
 
           {state.status === 'success' ? (
-            <div className="gap-6 grid lg:grid-cols-3">
+            <div className="home-subjects-grid">
               {years.map((y) => {
                 const items = Array.isArray(state.byYear?.[y.key]) ? state.byYear[y.key] : []
                 const expanded = Boolean(expandedYears?.[y.key])
-                const visible = expanded ? items : items.slice(0, 3)
+                const visible = expanded ? items : items.slice(0, 5)
 
                 return (
-                  <div key={y.key} className="gap-3 grid">
+                  <div key={y.key} className="home-subject-year">
                     <div className="flex justify-center">
-                      <div className="inline-flex relative justify-center items-center px-6 py-2 font-extrabold text-slate-900 dark:text-slate-100 text-2xl">
+                      <div className="home-subject-year-title">
                         <img
                           src={labelSvg}
                           alt=""
@@ -125,7 +125,7 @@ export default function SubjectsSection() {
                       </div>
                     </div>
 
-                    <div className="bg-white dark:bg-[#171717] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden transition-all">
+                    <div className="bg-white dark:bg-[#30221B] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden transition-all">
                       <div className="p-6">
                         {visible.length === 0 ? (
                           <div className="text-slate-600 dark:text-slate-300 text-sm">
@@ -146,7 +146,7 @@ export default function SubjectsSection() {
                                   navigate(`/subjects/${encodeURIComponent(subj)}?${q}`)
                                 }}
                                 className={
-                                  'w-full font-semibold text-lg sm:text-xl text-center ' +
+                                  'home-subject-button w-full font-semibold text-lg sm:text-xl text-center ' +
                                   'text-slate-800 dark:text-slate-100 hover:text-brand ' +
                                   'transition-colors ' +
                                   (isRtl ? 'text-center' : 'text-center')
@@ -159,7 +159,7 @@ export default function SubjectsSection() {
                         )}
                       </div>
 
-                      {items.length > 3 ? (
+                      {items.length > 5 ? (
                         <div className="px-6 pb-6">
                           <button
                             type="button"

@@ -473,7 +473,7 @@ export default function StudentsManagementPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('studentsPage.subtitle')}</div>
@@ -581,9 +581,9 @@ export default function StudentsManagementPage() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {filtered.map((u) => (
-              <div 
-                key={u._id || u.id} 
-                className="relative flex min-h-[295px] flex-col rounded-[18px] border border-slate-200 bg-white px-4 py-4 text-right text-slate-900 shadow-[0_18px_52px_rgba(15,23,42,0.10)] transition-all hover:border-brand/35 dark:border-white/5 dark:bg-[#0d0f0e] dark:text-white dark:shadow-[0_18px_52px_rgba(0,0,0,0.24)]"
+              <div
+                key={u._id || u.id}
+                className="relative flex min-h-[295px] flex-col rounded-[18px] border border-slate-200 bg-white px-4 py-4 text-right text-slate-900 shadow-[0_18px_52px_rgba(15,23,42,0.10)] transition-all hover:border-brand/35 dark:border-white/5 dark:bg-[#211713] dark:text-white dark:shadow-[0_18px_52px_rgba(0,0,0,0.24)]"
                 dir="rtl"
               >
                 {(auth?.role === 'teacher' || auth?.role === 'team') && (
@@ -604,15 +604,15 @@ export default function StudentsManagementPage() {
                       <img
                         src={u.profile.avatarUrl}
                         alt={u.name || 'student'}
-                        className="h-16 w-16 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-[#1b201e]"
+                        className="h-16 w-16 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-[#35261E]"
                       />
                     ) : (
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-[#1b201e]">
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-[#35261E]">
                         <User className="h-8 w-8 text-slate-500 dark:text-slate-400" />
                       </div>
                     )}
-                    <div 
-                      className={`absolute bottom-1 right-0 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#0d0f0e] ${u?.isSuspended ? 'bg-red-500' : 'bg-emerald-500'}`} 
+                    <div
+                      className={`absolute bottom-1 right-0 h-4 w-4 rounded-full border-[3px] border-white dark:border-[#211713] ${u?.isSuspended ? 'bg-red-500' : 'bg-brand-500'}`}
                       title={u?.isSuspended ? 'موقوف' : 'نشط'}
                     />
                   </div>
@@ -627,22 +627,22 @@ export default function StudentsManagementPage() {
                 <div className="mb-4 grid grid-cols-2 gap-x-4 gap-y-2 text-[11px] font-extrabold leading-5 text-slate-800 dark:text-white">
                   <div>رقم الهاتف : <span dir="ltr">{u.profile?.phone || u.profile?.studentPhone || '—'}</span></div>
                   <div>رقم ولي الامر : <span dir="ltr">{u.profile?.parentPhone || '—'}</span></div>
-                  
+
                   <div>الرقم القومي: <span dir="ltr">{u.profile?.nationalId || '—'}</span></div>
                   <div>الصف : <span>{formatGradeYear(u.profile?.gradeYear, isRtl)}</span></div>
-                  
+
                   <div>المدرسة: <span>{u.profile?.school || u.profile?.schoolName || '—'}</span></div>
                   <div>القسم: <span>{formatSection(u.profile?.section, isRtl)}</span></div>
                 </div>
 
                 {(auth?.role === 'teacher' || auth?.role === 'team') && u.enrolledCourses?.length > 0 && (
                   <div className="mb-4">
-                    <div className="mb-2 mr-auto flex w-fit items-center justify-center rounded-lg bg-brand/15 px-3 py-1.5 text-[11px] font-extrabold text-brand-700 dark:bg-[#004b40] dark:text-white">
+                    <div className="mb-2 mr-auto flex w-fit items-center justify-center rounded-lg bg-brand/15 px-3 py-1.5 text-[11px] font-extrabold text-brand-700 dark:bg-[#493328] dark:text-white">
                       الكورسات المفتوحة
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       {u.enrolledCourses.slice(0, 3).map((c, i) => (
-                        <span key={i} className="inline-flex min-h-8 max-w-[92px] items-center justify-center truncate rounded-lg bg-slate-100 px-3 py-1.5 text-[11px] font-extrabold text-slate-800 shadow-inner dark:bg-[#062e28] dark:text-white">
+                        <span key={i} className="inline-flex min-h-8 max-w-[92px] items-center justify-center truncate rounded-lg bg-slate-100 px-3 py-1.5 text-[11px] font-extrabold text-slate-800 shadow-inner dark:bg-[#35261E] dark:text-white">
                           {c.courseTitle || c.title || 'Course'}
                         </span>
                       ))}
@@ -660,21 +660,21 @@ export default function StudentsManagementPage() {
                 )}
 
                 <div className="grid grid-cols-3 gap-2 mt-auto pt-2">
-                  <button onClick={() => onDelete(u._id || u.id)} className="flex min-h-9 items-center justify-center rounded-xl bg-[#ff0000] px-3 py-2 text-[12px] font-extrabold text-white transition-colors hover:bg-[#cc0000]">
+                  <button onClick={() => onDelete(u._id || u.id)} className="flex min-h-9 items-center justify-center rounded-xl bg-[#8D493A] px-3 py-2 text-[12px] font-extrabold text-white transition-colors hover:bg-[#8D493A]">
                     حذف
                   </button>
-                  
+
                   {!isTeacherOrTeam ? (
                     <button onClick={() => onEdit(u)} className="flex min-h-9 items-center justify-center rounded-xl bg-[#ffb445] px-3 py-2 text-[12px] font-extrabold text-white transition-colors hover:bg-[#df9335]">
                       تعديل
                     </button>
                   ) : (
-                    <button onClick={() => onToggleSuspend(u)} className={`flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-[12px] font-extrabold text-white transition-colors ${u?.isSuspended ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#ffb445] hover:bg-[#df9335]'}`}>
+                    <button onClick={() => onToggleSuspend(u)} className={`flex min-h-9 items-center justify-center rounded-xl px-3 py-2 text-[12px] font-extrabold text-white transition-colors ${u?.isSuspended ? 'bg-brand-600 hover:bg-brand-700' : 'bg-[#ffb445] hover:bg-[#df9335]'}`}>
                       {u?.isSuspended ? 'تفعيل' : 'إيقاف'}
                     </button>
                   )}
 
-                  <button onClick={() => onViewProfile(u)} className="flex min-h-9 items-center justify-center rounded-xl bg-[#0b9b88] px-3 py-2 text-[12px] font-extrabold text-white transition-colors hover:bg-[#087f70]">
+                  <button onClick={() => onViewProfile(u)} className="flex min-h-9 items-center justify-center rounded-xl bg-[#563F32] px-3 py-2 text-[12px] font-extrabold text-white transition-colors hover:bg-[#563F32]">
                     ملف الطالب
                   </button>
                 </div>
@@ -870,8 +870,8 @@ function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }
           <div className="mt-3 p-4 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className={"font-extrabold text-lg mb-4 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'إحصائيات الطالب' : 'Student Statistics'}</div>
             <div className="gap-3 grid grid-cols-2">
-              <div className="bg-[#143B33] dark:bg-[rgba(20,184,166,0.15)] p-3 border border-[#1B4E44] dark:border-teal-900/50 rounded-xl">
-                <div className="mb-1 font-semibold text-[#a1b8b2] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
+              <div className="bg-[#493328] dark:bg-[rgba(138,130,115,0.15)] p-3 border border-[#563F32] dark:border-brand-900/50 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.courses?.watchedTotalHours) : 0}</div>
               </div>
               <div className="bg-brand/10 dark:bg-brand/20 p-3 border border-brand/20 dark:border-brand/30 rounded-xl">
@@ -882,8 +882,8 @@ function StudentProfileModal({ open, onOpenChange, userId, userEnrolledCourses }
                 <div className="mb-1 font-semibold text-brand-500 dark:text-brand-300 text-xs text-right">{isRtl ? 'أعلى درجة' : 'Highest Score'}</div>
                 <div className="font-bold text-slate-900 dark:text-white text-xl text-right">{stats ? formatNum(stats.assessments?.bestPercent) : 0}%</div>
               </div>
-              <div className="bg-[#142B28] dark:bg-[rgba(20,184,166,0.1)] p-3 border border-[#1A3834] dark:border-teal-900/30 rounded-xl">
-                <div className="mb-1 font-semibold text-[#9ab1ad] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
+              <div className="bg-[#35261E] dark:bg-[rgba(138,130,115,0.1)] p-3 border border-[#493328] dark:border-brand-900/30 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
               </div>
             </div>

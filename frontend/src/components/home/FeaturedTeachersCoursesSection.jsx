@@ -103,7 +103,7 @@ export default function FeaturedTeachersCoursesSection() {
       titleDecoration={
         <div className="flex justify-center">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
       }
@@ -126,7 +126,7 @@ export default function FeaturedTeachersCoursesSection() {
       ) : null}
 
       {!isLoading && error ? (
-        <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+        <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
           {error}
         </div>
       ) : null}
@@ -135,13 +135,13 @@ export default function FeaturedTeachersCoursesSection() {
         <div>
           {suggestedCourses.length === 0 ? (
             <div className="flex flex-col justify-center items-center py-10 text-center">
-              <div className="flex justify-center items-center bg-[#F43F5E]/10 border border-[#F43F5E]/25 rounded-3xl w-16 h-16">
-                <Inbox className="w-8 h-8 text-[#F43F5E]" />
+              <div className="flex justify-center items-center bg-[#A65F4B]/10 border border-[#A65F4B]/25 rounded-3xl w-16 h-16">
+                <Inbox className="w-8 h-8 text-[#A65F4B]" />
               </div>
-              <div className="mt-4 font-extrabold text-[#F43F5E] text-xl">
+              <div className="mt-4 font-extrabold text-[#A65F4B] text-xl">
                 {isRtl ? 'مفيش محتوى حالياً' : 'No content yet'}
               </div>
-              <div className="mt-2 text-[#F43F5E]/85 text-sm leading-7">
+              <div className="mt-2 text-[#A65F4B]/85 text-sm leading-7">
                 {isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}
               </div>
             </div>

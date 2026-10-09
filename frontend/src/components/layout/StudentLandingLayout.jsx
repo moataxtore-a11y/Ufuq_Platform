@@ -123,7 +123,7 @@ export default function StudentLandingLayout() {
     <div className="relative flex flex-col min-h-screen text-slate-900 dark:text-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
       <AnimatedBackdrop />
 
-      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
+      <header className="site-header top-0 z-[100] fixed backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="mx-auto px-3 sm:px-4 py-2.5 min-w-0 max-w-7xl">
           <div className="sm:hidden">
             <div className="px-1 py-1">
@@ -240,7 +240,7 @@ export default function StudentLandingLayout() {
           />
           <div
             className={cn(
-              'top-0 absolute bg-white/90 dark:bg-[#0a0a0a]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
+              'top-0 absolute bg-white/90 dark:bg-[#211713]/90 shadow-glass-lg backdrop-blur-glass-heavy p-4 border border-slate-200/50 dark:border-white/10 w-[88%] max-w-sm h-full overflow-y-auto',
               isRtl ? 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl' : 'left-0 rounded-r-[1.25rem] sm:rounded-r-3xl'
             )}
             dir={isRtl ? 'rtl' : 'ltr'}
@@ -314,7 +314,7 @@ export default function StudentLandingLayout() {
                 ))}
               </div>
               <div className="md:hidden mt-3 pt-4 border-black/10 dark:border-white/10 border-t text-center">
-                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-teal-300 text-xs font-medium" />
+                <CompanyCredit className="text-slate-600 hover:text-brand dark:text-slate-300 dark:hover:text-brand-300 text-xs font-medium" />
               </div>
             </div>
           </div>

@@ -14,7 +14,7 @@ export function Modal({ open, onOpenChange, title, description, children, conten
           aria-describedby={describedBy}
           className={cn(
             'top-1/2 left-1/2 z-[60] fixed flex flex-col',
-            'bg-white dark:bg-[#141414]',
+            'bg-panel',
             'border border-slate-200/60 dark:border-white/10',
             'rounded-2xl shadow-elevated',
             'w-[95vw] max-h-[90vh] overflow-hidden',

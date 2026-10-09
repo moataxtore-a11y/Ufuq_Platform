@@ -116,7 +116,7 @@ export default function StudentAssessmentsPage() {
       ? 'text-rose-600 dark:text-rose-300'
       : ratio < 0.75
         ? 'text-brand'
-        : 'text-emerald-600 dark:text-emerald-300'
+        : 'text-brand-600 dark:text-brand-300'
 
     return <span className={"font-extrabold tabular-nums " + cls}>{r.score}/{r.maxScore}</span>
   }
@@ -131,7 +131,7 @@ export default function StudentAssessmentsPage() {
                 <span className="text-slate-900 dark:text-white">{isRtl ? 'الاختبارات' : 'Assessments'}</span>
               </h1>
               <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
+                <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#3A2920" strokeWidth="6" strokeLinecap="round" />
               </svg>
             </div>
             <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">

@@ -60,8 +60,8 @@ export default function StudentCheckoutPage() {
         <div className="relative bg-white dark:bg-neutral-900 shadow-[0_18px_60px_rgba(0,0,0,0.35)] p-5 border border-black/10 dark:border-white/10 rounded-3xl w-full max-w-sm">
           <div className="flex flex-col items-center text-center">
             <div className="relative">
-              <div className="flex justify-center items-center bg-[rgba(20,184,166,0.16)] border border-[rgba(20,184,166,0.38)] rounded-full w-14 h-14">
-                <KeyRound className="text-[rgb(20,184,166)]" size={24} strokeWidth={2.6} />
+              <div className="flex justify-center items-center bg-[rgba(138,130,115,0.16)] border border-[rgba(138,130,115,0.38)] rounded-full w-14 h-14">
+                <KeyRound className="text-[rgb(138,130,115)]" size={24} strokeWidth={2.6} />
               </div>
               <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
                 <div className="bg-[rgb(234,179,8)] shadow rounded-full w-[3px] h-16 rotate-45" />
@@ -76,7 +76,7 @@ export default function StudentCheckoutPage() {
           </div>
 
           <div className={'mt-5 flex ' + (isRtl ? 'justify-start' : 'justify-end')}>
-            <Button type="button" onClick={() => setUsedPopupOpen(false)} className="bg-[#14B8A6] hover:bg-[#14B8A6]/90 px-6 rounded-full h-11 text-white">
+            <Button type="button" onClick={() => setUsedPopupOpen(false)} className="bg-[#8A8273] hover:bg-[#8A8273]/90 px-6 rounded-full h-11 text-white">
               {isRtl ? 'تمام' : 'OK'}
             </Button>
           </div>
@@ -358,9 +358,9 @@ export default function StudentCheckoutPage() {
       {state.status === 'error' ? <div className="text-slate-700 dark:text-slate-200 text-sm">{state.error}</div> : null}
 
       {state.status === 'success' ? (
-        <div className="bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-6 border border-black/5 dark:border-white/10 rounded-3xl">
+        <div className="bg-white dark:bg-[#35261E] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none p-6 border border-black/5 dark:border-white/10 rounded-3xl">
           <div className={'gap-5 grid md:grid-cols-[240px_1fr] items-start ' + (isRtl ? 'text-right' : 'text-left')}>
-            <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className="bg-[rgb(247,240,229)] dark:bg-[#3A2920] border border-black/5 dark:border-white/10 rounded-3xl">
               <div className="aspect-[16/10]">
                 {courseShape?.thumbnailUrl ? (
                   <img src={courseShape.thumbnailUrl} alt="thumbnail" className="w-full h-full object-cover" />
@@ -441,8 +441,8 @@ export default function StudentCheckoutPage() {
               </div>
 
               {subscribedByCode ? (
-                <div className="bg-emerald-500/10 mt-4 px-4 py-3 border border-emerald-500/30 rounded-2xl">
-                  <div className="font-extrabold text-emerald-700 dark:text-emerald-300">
+                <div className="bg-brand-500/10 mt-4 px-4 py-3 border border-brand-500/30 rounded-2xl">
+                  <div className="font-extrabold text-brand-700 dark:text-brand-300">
                     {isRtl ? 'تم الاشتراك في هذا الكورس' : 'You are subscribed to this course'}
                   </div>
                   <div className="mt-1 text-slate-700 dark:text-slate-200 text-sm">
@@ -469,12 +469,12 @@ export default function StudentCheckoutPage() {
                     {isRtl ? 'مجاني' : 'Free'}
                   </div>
                 ) : subscribedByCode ? (
-                  <div className="inline-flex items-center bg-emerald-500/10 px-5 py-2 border border-emerald-500/30 rounded-full font-extrabold text-emerald-700 dark:text-emerald-300 text-sm">
+                  <div className="inline-flex items-center bg-brand-500/10 px-5 py-2 border border-brand-500/30 rounded-full font-extrabold text-brand-700 dark:text-brand-300 text-sm">
                     {isRtl ? 'مشترك' : 'Subscribed'}
                   </div>
                 ) : (
-                  <div className="inline-flex items-center gap-2 bg-[rgba(20,184,166,0.14)] shadow-sm px-5 py-2 border border-[rgba(20,184,166,0.35)] rounded-full font-extrabold text-slate-900 dark:text-slate-100 text-sm">
-                    <span className="bg-[rgb(20,184,166)] px-4 py-1 rounded-full text-white">{finalPrice.toFixed(2)}</span>
+                  <div className="inline-flex items-center gap-2 bg-[rgba(138,130,115,0.14)] shadow-sm px-5 py-2 border border-[rgba(138,130,115,0.35)] rounded-full font-extrabold text-slate-900 dark:text-slate-100 text-sm">
+                    <span className="bg-[rgb(138,130,115)] px-4 py-1 rounded-full text-white">{finalPrice.toFixed(2)}</span>
                     <span className="text-slate-700 dark:text-slate-200">{isRtl ? 'جنيهًا' : 'EGP'}</span>
                   </div>
                 )}
@@ -574,7 +574,7 @@ export default function StudentCheckoutPage() {
                     </div>
                   </div>
 
-                  <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] px-4 py-4 border border-black/5 dark:border-white/10 rounded-3xl">
+                  <div className="bg-[rgb(247,240,229)] dark:bg-[#3A2920] px-4 py-4 border border-black/5 dark:border-white/10 rounded-3xl">
                     <div className="flex justify-between items-center gap-2">
                       <div className="font-semibold text-slate-800 dark:text-slate-100">
                         {isRtl ? 'كود فوري' : 'Fawry reference'}
@@ -600,7 +600,7 @@ export default function StudentCheckoutPage() {
 
                     <div className="flex justify-center mt-4">
                       <Button
-                        className="bg-[rgb(20,184,166)] hover:bg-[rgb(13,148,136)] shadow-[0_10px_22px_rgba(15,23,42,0.12)] px-8 rounded-full h-11 text-white"
+                        className="bg-[rgb(138,130,115)] hover:bg-[rgb(58,41,32)] shadow-[0_10px_22px_rgba(15,23,42,0.12)] px-8 rounded-full h-11 text-white"
                         onClick={() => {
                           Promise.resolve()
                             .then(async () => {

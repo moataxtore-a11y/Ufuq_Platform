@@ -33,7 +33,7 @@ function TabBtn({ active, onClick, children }) {
       className={
         'px-4 py-2 rounded-xl text-sm font-semibold transition-all ' +
         (active
-          ? 'bg-brand text-white shadow-lg shadow-[0_12px_24px_rgba(6,148,132,0.22)]'
+          ? 'bg-brand text-white shadow-lg shadow-[0_12px_24px_rgba(58,41,32,0.22)]'
           : 'text-slate-400 hover:text-slate-200 hover:bg-white/5')
       }
     >
@@ -123,7 +123,7 @@ export default function StudentGradesPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="420" height="24" viewBox="0 0 420 24" className="max-w-full" aria-hidden="true">
-            <path d="M20 18 C 130 0, 290 0, 400 18" stroke="rgba(6,148,132,0.75)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M20 18 C 130 0, 290 0, 400 18" stroke="rgba(58,41,32,0.75)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm">

@@ -140,7 +140,7 @@ export default function StudentLandingPage() {
       <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
         <div className={(isRtl ? 'text-right' : 'text-left') + ' flex flex-col items-center'}>
           <div className="inline-flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-            <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+            <span className="bg-brand-500 rounded-full w-1.5 h-1.5" />
             {isRtl ? 'مساحة الطالب' : 'Student workspace'}
           </div>
           <div className="mt-3 text-center">
@@ -164,7 +164,7 @@ export default function StudentLandingPage() {
             >
               <path
                 d="M10 20 C 130 6, 390 6, 510 20"
-                stroke="#069484"
+                stroke="#3A2920"
                 strokeWidth="6"
                 strokeLinecap="round"
               />
@@ -187,7 +187,7 @@ export default function StudentLandingPage() {
         {myCoursesState.status === 'loading' ? (
           <div className="items-start gap-4 grid md:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+              <div key={i} className="bg-white dark:bg-[#35261E] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
                 <Skeleton className="h-36 w-full rounded-2xl" />
                 <Skeleton className="h-5 w-3/4 rounded-lg" />
                 <Skeleton className="h-4 w-1/2 rounded-md" />
@@ -201,18 +201,18 @@ export default function StudentLandingPage() {
         ) : null}
 
         {myCoursesState.status === 'error' ? (
-          <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {myCoursesState.error}
           </div>
         ) : null}
 
         {myCoursesState.status === 'success' && myCourses.length === 0 ? (
           <div className="flex flex-col justify-center items-center px-6 py-10 min-h-[240px] text-center">
-            <div className="flex justify-center items-center bg-[#F43F5E]/10 rounded-2xl w-16 h-16 text-[#F43F5E]">
+            <div className="flex justify-center items-center bg-[#A65F4B]/10 rounded-2xl w-16 h-16 text-[#A65F4B]">
               <Inbox className="w-7 h-7" />
             </div>
-            <div className="mt-4 font-extrabold text-[#F43F5E] text-2xl">{isRtl ? 'لا توجد كورسات بعد..' : 'No courses yet'}</div>
-            <div className="mt-1 text-[#F43F5E]/80 text-base">{isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}</div>
+            <div className="mt-4 font-extrabold text-[#A65F4B] text-2xl">{isRtl ? 'لا توجد كورسات بعد..' : 'No courses yet'}</div>
+            <div className="mt-1 text-[#A65F4B]/80 text-base">{isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}</div>
           </div>
         ) : null}
 
@@ -241,7 +241,7 @@ export default function StudentLandingPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-7">
@@ -254,7 +254,7 @@ export default function StudentLandingPage() {
         {publicCoursesState.status === 'loading' ? (
           <div className="items-start gap-4 grid md:grid-cols-3 mt-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+              <div key={i} className="bg-white dark:bg-[#35261E] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
                 <Skeleton className="h-36 w-full rounded-2xl" />
                 <Skeleton className="h-5 w-3/4 rounded-lg" />
                 <Skeleton className="h-4 w-1/2 rounded-md" />
@@ -268,13 +268,13 @@ export default function StudentLandingPage() {
         ) : null}
 
         {publicCoursesState.status === 'error' ? (
-          <div className="bg-white dark:bg-[#1a1a1a] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {publicCoursesState.error}
           </div>
         ) : null}
 
         {publicCoursesState.status === 'success' && suggestedCourses.length === 0 ? (
-          <div className="bg-white dark:bg-[#1a1a1a] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {isRtl ? 'لا يوجد كورسات مقترحة حالياً.' : 'No suggested courses right now.'}
           </div>
         ) : null}
@@ -342,7 +342,7 @@ export default function StudentLandingPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#069484" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -369,13 +369,13 @@ export default function StudentLandingPage() {
         ) : null}
 
         {teachersState.status === 'error' ? (
-          <div className="bg-white dark:bg-[#1a1a1a] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {teachersState.error}
           </div>
         ) : null}
 
         {teachersState.status === 'success' && previewTeachers.length === 0 ? (
-          <div className="bg-white dark:bg-[#1a1a1a] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] mt-4 p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {isRtl ? 'لا يوجد مدرسين بعد.' : 'No teachers yet.'}
           </div>
         ) : null}

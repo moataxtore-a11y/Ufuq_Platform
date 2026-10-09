@@ -15,7 +15,7 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
   const offsetX = Math.max(-50, Math.min(50, Number(codeOffsetX) || 0))
   const offsetY = Math.max(-50, Math.min(50, Number(codeOffsetY) || 0))
   return (
-    <div className="relative bg-white dark:bg-[#0b0b0f] border border-black/10 dark:border-white/10 rounded-3xl overflow-hidden text-slate-900 dark:text-slate-100 [break-inside:avoid]">
+    <div className="relative bg-white dark:bg-[#211713] border border-black/10 dark:border-white/10 rounded-3xl overflow-hidden text-slate-900 dark:text-slate-100 [break-inside:avoid]">
       {customOn ? (
         <div className="relative">
           <img
@@ -42,7 +42,7 @@ function CodeCard({ code, allowedCourses, teacherName, isRtl, kind, discountPerc
         </div>
       ) : (
         <>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.18),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(58,41,32,0.18),transparent_55%)]" />
           <div className="relative p-4">
             <div
               className={"text-xs font-semibold text-slate-700 dark:text-slate-200 " + (isRtl ? 'text-right' : 'text-left')}
@@ -370,7 +370,7 @@ export default function TeacherAccessCodesPage() {
         // eslint-disable-next-line no-await-in-loop
         const canvas = await html2canvas(node, {
           scale,
-          backgroundColor: isDarkNow ? '#0b0b0f' : '#ffffff',
+          backgroundColor: isDarkNow ? '#211713' : '#ffffff',
           useCORS: true,
           allowTaint: true,
           windowWidth: node.scrollWidth,
@@ -648,14 +648,14 @@ export default function TeacherAccessCodesPage() {
                       {[
                         { color: '#ffffff', label: isRtl ? 'أبيض' : 'White' },
                         { color: '#000000', label: isRtl ? 'أسود' : 'Black' },
-                        { color: '#069484', label: isRtl ? 'الأساسي' : 'Brand' },
-                        { color: '#F43F5E', label: isRtl ? 'وردي' : 'Rose' },
-                        { color: '#14B8A6', label: isRtl ? 'تركواز' : 'Teal' },
-                        { color: '#60A5FA', label: isRtl ? 'أزرق' : 'Blue' },
-                        { color: '#A78BFA', label: isRtl ? 'بنفسجي' : 'Purple' },
+                        { color: '#3A2920', label: isRtl ? 'الأساسي' : 'Brand' },
+                        { color: '#A65F4B', label: isRtl ? 'طوبي' : 'Terracotta' },
+                        { color: '#8A8273', label: isRtl ? 'رمادي دافئ' : 'Warm gray' },
+                        { color: '#AD956B', label: isRtl ? 'ذهبي' : 'Gold' },
+                        { color: '#776B5C', label: isRtl ? 'بني فاتح' : 'Light brown' },
                       ].map(({ color: c, label }) => {
                         const isActive = codeColor.toLowerCase() === c.toLowerCase()
-                        const isLight = ['#ffffff', '#069484'].includes(c)
+                        const isLight = ['#ffffff', '#3A2920'].includes(c)
                         return (
                           <button
                             key={c}
@@ -848,7 +848,7 @@ export default function TeacherAccessCodesPage() {
                   left: '-99999px',
                   top: 0,
                   width: '210mm',
-                  background: isDarkNow ? '#0b0b0f' : '#fff',
+                  background: isDarkNow ? '#211713' : '#fff',
                   color: isDarkNow ? '#fff' : undefined,
                   overflow: 'hidden'
                 }

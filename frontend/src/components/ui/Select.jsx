@@ -78,7 +78,7 @@ export default function Select({
             role="listbox"
             className={cn(
               'z-50 absolute mt-1.5 w-full max-h-60 overflow-auto',
-              'bg-white dark:bg-[#1e1e1e]',
+              'bg-white dark:bg-[#35261E]',
               'border border-slate-200 dark:border-white/10',
               'rounded-xl shadow-elevated',
               'py-1 animate-slide-down'

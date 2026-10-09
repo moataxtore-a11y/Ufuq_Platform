@@ -81,13 +81,18 @@ function useTeacherCardData(teacher) {
   return { avatar, isRtl, name, subject, tags }
 }
 
-export function TeacherPortraitCard({ teacher, action, className = '' }) {
+export function TeacherPortraitCard({ teacher, action, className = '', compact = false }) {
   const { avatar, isRtl, name, subject, tags } = useTeacherCardData(teacher)
+
+  if (compact) return <article className={'home-teacher-card ' + className} dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="home-teacher-photo">{avatar ? <img src={avatar} alt={name} loading="lazy" /> : <TeacherFallbackArtwork />}</div>
+    <div className="home-teacher-caption"><h3>{name}</h3><p>{subject}</p></div>
+  </article>
 
   return (
     <div
       className={
-        'relative mx-auto aspect-[0.84] sm:aspect-[0.86] min-h-[320px] sm:min-h-[400px] w-full max-w-full sm:max-w-[420px] overflow-hidden rounded-[24px] sm:rounded-[34px] border border-brand/15 bg-brand shadow-[0_20px_50px_rgba(6,78,70,0.16)] dark:border-white/10 dark:shadow-none ' +
+        'relative mx-auto aspect-[0.84] sm:aspect-[0.86] min-h-[320px] sm:min-h-[400px] w-full max-w-full sm:max-w-[420px] overflow-hidden rounded-[24px] sm:rounded-[34px] border border-brand/15 bg-brand shadow-[0_20px_50px_rgba(58,41,32,0.16)] dark:border-white/10 dark:shadow-none ' +
         className
       }
       dir={isRtl ? 'rtl' : 'ltr'}
@@ -103,9 +108,9 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
         <TeacherFallbackArtwork />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/0 from-[34%] via-brand/10 via-[48%] to-[#DDF3ED]/35" />
-      <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#DDF3ED] via-[#C8EDEA]/88 via-[58%] to-transparent backdrop-blur-[10px] [mask-image:linear-gradient(to_bottom,transparent,#000_28%,#000_100%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[#E7F8F4] via-[#DDF3ED]/72 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/0 from-[34%] via-brand/10 via-[48%] to-[#EEE4D2]/35" />
+      <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#EEE4D2] via-[#E8D8C3]/88 via-[58%] to-transparent backdrop-blur-[10px] [mask-image:linear-gradient(to_bottom,transparent,#000_28%,#000_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[#F7F0E5] via-[#EEE4D2]/72 to-transparent" />
       <div className="absolute inset-x-0 bottom-[28%] h-16 bg-white/18 blur-2xl" />
 
       <div className="absolute inset-x-0 bottom-0 z-10 flex min-h-[40%] flex-col justify-end px-5 pb-6 pt-16 text-center sm:px-7 sm:pb-7">
@@ -121,7 +126,7 @@ export function TeacherPortraitCard({ teacher, action, className = '' }) {
             {tags.map((label) => (
               <span
                 key={label}
-                className="inline-flex min-h-9 min-w-[92px] items-center justify-center rounded-full bg-brand px-4 py-1.5 text-center text-xs font-extrabold leading-tight text-white shadow-[0_8px_18px_rgba(6,148,132,0.18)] sm:min-w-[104px] sm:text-sm"
+                className="inline-flex min-h-9 min-w-[92px] items-center justify-center rounded-full bg-brand px-4 py-1.5 text-center text-xs font-extrabold leading-tight text-white shadow-[0_8px_18px_rgba(58,41,32,0.18)] sm:min-w-[104px] sm:text-sm"
               >
                 {label}
               </span>

@@ -43,7 +43,7 @@ export default function MotivationalBanner() {
         className="relative overflow-hidden rounded-2xl border border-black/5 bg-white/80 px-4 py-4 shadow-[0_12px_34px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/[0.06] dark:shadow-none sm:px-6"
         dir={isRtl ? 'rtl' : 'ltr'}
       >
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(6,148,132,0.14),transparent_34%),radial-gradient(circle_at_85%_50%,rgba(6,148,132,0.12),transparent_34%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(58,41,32,0.14),transparent_34%),radial-gradient(circle_at_85%_50%,rgba(58,41,32,0.12),transparent_34%)]" />
 
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className={"min-w-0 flex-1 " + (isRtl ? 'text-right' : 'text-left')}>

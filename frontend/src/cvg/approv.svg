@@ -8,12 +8,12 @@
       }
 
       .cls-1, .cls-2 {
-        stroke: #69cc40;
+        stroke: #AD956B;
         stroke-miterlimit: 10;
       }
 
       .cls-2 {
-        fill: #69cc40;
+        fill: #AD956B;
         stroke-width: 80px;
       }
     </style>

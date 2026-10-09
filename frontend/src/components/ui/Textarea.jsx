@@ -17,7 +17,7 @@ export default function Textarea({ className, label, hint, error, ...props }) {
           'focus-visible:border-brand/50 focus-visible:ring-2 focus-visible:ring-brand/20 focus-visible:ring-offset-1 focus-visible:ring-offset-white',
           'disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-slate-50',
           'dark:bg-white/[0.06] dark:border-white/10 dark:text-white dark:placeholder:text-slate-500',
-          'dark:focus-visible:border-brand/40 dark:focus-visible:ring-brand/15 dark:focus-visible:ring-offset-[#121212]',
+          'dark:focus-visible:border-brand/40 dark:focus-visible:ring-brand/15 dark:focus-visible:ring-offset-[#291C16]',
           'dark:disabled:bg-white/[0.03]',
           error && 'border-red-400 focus-visible:border-red-500 focus-visible:ring-red-200 dark:border-red-500/50 dark:focus-visible:ring-red-500/20',
           className

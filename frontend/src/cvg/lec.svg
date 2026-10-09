@@ -4,13 +4,13 @@
     <style>
       .cls-1 {
         fill: none;
-        stroke: #f43f5e;
+        stroke: #A65F4B;
         stroke-miterlimit: 10;
         stroke-width: 7.82px;
       }
 
       .cls-2 {
-        fill: #f43f5e;
+        fill: #A65F4B;
       }
     </style>
   </defs>

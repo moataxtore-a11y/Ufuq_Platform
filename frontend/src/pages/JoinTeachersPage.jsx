@@ -365,14 +365,14 @@ export default function JoinTeachersPage() {
             className="absolute opacity-40 blur-3xl rounded-full pointer-events-none"
             style={{
               width: '380px', height: '380px',
-              background: 'radial-gradient(circle, rgba(6,148,132,0.30) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(58,41,32,0.30) 0%, transparent 70%)',
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             }}
           />
           <motion.img
             src={joinus}
             alt="Join Us"
-            className="z-10 relative drop-shadow-2xl object-contain"
+            className="auth-art z-10 relative drop-shadow-2xl object-contain"
             style={{ maxHeight: '100vh', maxWidth: '100%' }}
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}

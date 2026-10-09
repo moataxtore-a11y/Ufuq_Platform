@@ -181,7 +181,7 @@ export default function ManualGradingPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('manualGrading.subtitle')}</div>
@@ -212,7 +212,7 @@ export default function ManualGradingPage() {
                 <div key={a._id} className={
                   'p-3 border rounded-xl ' +
                   (a.status === 'graded'
-                    ? 'border-green-200/50 dark:border-green-400/20 bg-green-50/30 dark:bg-green-400/5'
+                    ? 'border-brand-200/50 dark:border-brand-400/20 bg-brand-50/30 dark:bg-brand-400/5'
                     : 'border-black/5 dark:border-white/[0.06]')
                 }>
                   <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
@@ -220,7 +220,7 @@ export default function ManualGradingPage() {
                       <div className="flex items-center gap-2">
                         <div className="font-medium text-slate-900 dark:text-slate-100">{a?.assessment?.title || t('manualGrading.assessmentFallback')}</div>
                         {a.status === 'graded' ? (
-                          <span className="bg-green-100 dark:bg-green-400/15 px-2 py-0.5 rounded-full font-semibold text-green-700 dark:text-green-400 text-xs">
+                          <span className="bg-brand-100 dark:bg-brand-400/15 px-2 py-0.5 rounded-full font-semibold text-brand-700 dark:text-brand-400 text-xs">
                             {isRtl ? '✓ مصحح' : '✓ Graded'}
                           </span>
                         ) : (
@@ -284,7 +284,7 @@ export default function ManualGradingPage() {
                   className={
                     'p-3 border rounded-xl ' +
                     (s.graded
-                      ? 'border-green-200/50 dark:border-green-400/20 bg-green-50/30 dark:bg-green-400/5'
+                      ? 'border-brand-200/50 dark:border-brand-400/20 bg-brand-50/30 dark:bg-brand-400/5'
                       : 'border-black/5 dark:border-white/[0.06]')
                   }
                 >
@@ -295,7 +295,7 @@ export default function ManualGradingPage() {
                           {s.assignment?.title || (isRtl ? 'واجب' : 'Assignment')}
                         </div>
                         {s.graded ? (
-                          <span className="bg-green-100 dark:bg-green-400/15 px-2 py-0.5 rounded-full font-semibold text-green-700 dark:text-green-400 text-xs">
+                          <span className="bg-brand-100 dark:bg-brand-400/15 px-2 py-0.5 rounded-full font-semibold text-brand-700 dark:text-brand-400 text-xs">
                             {isRtl ? '✓ مصحح' : '✓ Graded'}
                           </span>
                         ) : (

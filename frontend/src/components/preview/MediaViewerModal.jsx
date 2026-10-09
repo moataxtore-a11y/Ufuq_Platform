@@ -92,7 +92,7 @@ export default function MediaViewerModal({ open, onOpenChange, kind, url, title,
           ) : null}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white dark:border-white/10 dark:bg-[#1a1a1a] overflow-hidden">
+        <div className="rounded-2xl border border-black/5 bg-white dark:border-white/10 dark:bg-[#35261E] overflow-hidden">
           {kind === 'video' ? (
             <div className="bg-black">
               <video src={url || ''} controls className="w-full max-h-[70vh]" />

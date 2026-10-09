@@ -32,7 +32,7 @@ export default function Spinner({ className, size = 'md' }) {
   return (
     <div className="w-full space-y-3 py-2" role="status" aria-label="Loading">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+        <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
           <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-2/3 rounded-md" />

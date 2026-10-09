@@ -16,12 +16,12 @@ function ActionCard({ title, desc, Icon, to }) {
     <Link
       to={to}
       className={
-        'group bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200 ' +
+        'group bg-white dark:bg-[#35261E] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] dark:shadow-none p-5 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200 ' +
         (isRtl ? 'text-right' : 'text-left')
       }
     >
       <div className={'flex items-start gap-3 ' + (isRtl ? 'flex-row-reverse' : 'flex-row')}>
-        <div className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] border border-black/5 dark:border-white/10 rounded-2xl w-11 h-11 text-slate-700 dark:text-slate-200">
+        <div className="flex justify-center items-center bg-[rgb(247,240,229)] dark:bg-[#3A2920] border border-black/5 dark:border-white/10 rounded-2xl w-11 h-11 text-slate-700 dark:text-slate-200">
           <Icon className="w-5 h-5" />
         </div>
         <div className="min-w-0">
@@ -72,7 +72,7 @@ export default function TeamLandingPage() {
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-            <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+            <span className="bg-brand-500 rounded-full w-1.5 h-1.5" />
             {isRtl ? 'مساحة الفريق' : 'Team workspace'}
             <span className="text-slate-500 dark:text-slate-400">{auth?.teamId || '-'}</span>
           </div>
@@ -81,7 +81,7 @@ export default function TeamLandingPage() {
               <span>{isRtl ? 'الرئيسية' : 'Home'}</span>
             </h1>
             <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
+              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#3A2920" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -103,7 +103,7 @@ export default function TeamLandingPage() {
         {coursesState.status === 'loading' ? (
           <div className="app-grid-cards">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+              <div key={i} className="bg-white dark:bg-[#35261E] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
                 <Skeleton className="h-36 w-full rounded-2xl" />
                 <Skeleton className="h-5 w-3/4 rounded-lg" />
                 <Skeleton className="h-4 w-1/2 rounded-md" />
@@ -117,18 +117,18 @@ export default function TeamLandingPage() {
         ) : null}
 
         {coursesState.status === 'error' ? (
-          <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {coursesState.error}
           </div>
         ) : null}
 
         {coursesState.status === 'success' && previewCourses.length === 0 ? (
           <div className="flex flex-col justify-center items-center px-6 py-10 min-h-[240px] text-center">
-            <div className="flex justify-center items-center bg-[#F43F5E]/10 rounded-2xl w-16 h-16 text-[#F43F5E]">
+            <div className="flex justify-center items-center bg-[#A65F4B]/10 rounded-2xl w-16 h-16 text-[#A65F4B]">
               <Inbox className="w-7 h-7" />
             </div>
-            <div className="mt-4 font-extrabold text-[#F43F5E] text-2xl">{isRtl ? 'لا توجد كورسات بعد..' : 'No courses yet'}</div>
-            <div className="mt-1 text-[#F43F5E]/80 text-base">{isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}</div>
+            <div className="mt-4 font-extrabold text-[#A65F4B] text-2xl">{isRtl ? 'لا توجد كورسات بعد..' : 'No courses yet'}</div>
+            <div className="mt-1 text-[#A65F4B]/80 text-base">{isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}</div>
           </div>
         ) : null}
 

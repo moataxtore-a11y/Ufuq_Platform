@@ -33,7 +33,7 @@ export default function AccountRejectedPage() {
   }, [reason])
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col bg-[#DDF8F5] dark:bg-[#121212] min-h-screen text-slate-800 dark:text-slate-100">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col bg-[#EEE4D2] dark:bg-[#291C16] min-h-screen text-slate-800 dark:text-slate-100">
       <SiteHeader />
 
       <main className="flex flex-1 justify-center items-center px-4 py-6">

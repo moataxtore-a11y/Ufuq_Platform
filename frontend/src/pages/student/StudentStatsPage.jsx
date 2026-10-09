@@ -133,7 +133,7 @@ export default function StudentStatsPage() {
               <span className="text-slate-900 dark:text-white">{isRtl ? 'إحصائياتي' : 'My Stats'}</span>
             </h1>
             <svg className="mx-auto mt-2 w-full max-w-[520px] h-4" viewBox="0 0 520 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#069484" strokeWidth="6" strokeLinecap="round" />
+              <path d="M10 20 C 130 6, 390 6, 510 20" stroke="#3A2920" strokeWidth="6" strokeLinecap="round" />
             </svg>
           </div>
           <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm text-center">
@@ -285,7 +285,7 @@ export default function StudentStatsPage() {
                   {recentResults.map((r) => {
                     const pct = Number(r.percent || 0)
                     const pctCls = pct >= 75
-                      ? 'text-emerald-600 dark:text-emerald-400'
+                      ? 'text-brand-600 dark:text-brand-400'
                       : pct >= 50
                         ? 'text-brand'
                         : 'text-rose-600 dark:text-rose-400'
@@ -312,7 +312,7 @@ export default function StudentStatsPage() {
               {recentResults.map((r) => {
                 const pct = Number(r.percent || 0)
                 const pctCls = pct >= 75
-                  ? 'text-emerald-600 dark:text-emerald-400'
+                  ? 'text-brand-600 dark:text-brand-400'
                   : pct >= 50
                     ? 'text-brand'
                     : 'text-rose-600 dark:text-rose-400'

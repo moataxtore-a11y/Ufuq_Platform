@@ -12,7 +12,7 @@ export default function ScorePill({ score, maxScore, className }) {
       : tone === 'mid'
         ? 'border-brand/20 bg-brand/10 text-brand-700'
         : tone === 'good'
-          ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+          ? 'border-brand-200 bg-brand-50 text-brand-700'
           : 'border-black/5 bg-slate-50 text-slate-700'
 
   return (

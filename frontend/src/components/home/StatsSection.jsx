@@ -12,7 +12,7 @@ export default function StatsSection() {
 
   return (
     <section id="stats" className="mt-8 py-2 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]">
-      <div className="bg-[rgb(243,246,244)] dark:bg-[#1d1d1d] rounded-3xl overflow-hidden">
+      <div className="bg-[rgb(243,246,244)] dark:bg-[#35261E] rounded-3xl overflow-hidden">
         <div className="px-5 sm:px-6 py-6 sm:py-7">
           <div className="gap-2 grid text-center">
             <h2 className="font-semibold text-slate-800 dark:text-slate-100 text-lg">{t('landing.stats.title')}</h2>
@@ -25,7 +25,7 @@ export default function StatsSection() {
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="bg-white/85 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-center"
+                className="bg-white/85 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-center"
               >
                 <div className="font-semibold text-slate-800 dark:text-slate-100 text-2xl tracking-tight">{s.value}</div>
                 <div className="mt-1 text-slate-600 dark:text-slate-300 text-sm">{s.label}</div>

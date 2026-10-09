@@ -45,7 +45,7 @@ export default function CoursePageHeader({
   return (
     <div dir={dir} className="relative bg-white/80 dark:bg-black/30 shadow-glass-md backdrop-blur-glass border border-slate-200/50 dark:border-white/10 rounded-[1.25rem] sm:rounded-3xl w-full min-h-[260px] sm:min-h-[300px] overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(164, 168, 167, 0.2),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(6,148,132,0.12),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(58,41,32,0.12),transparent_55%)]" />
 
       <div className="relative px-3 sm:px-4 lg:px-6 py-5 sm:py-6">
         <div className={'grid gap-4 sm:gap-6 items-start ' + (isRtl ? 'text-right' : 'text-left') + ' lg:grid-cols-[460px_1fr]'}>
@@ -62,7 +62,7 @@ export default function CoursePageHeader({
 
             <div className="p-4 sm:p-5">
               <div className="flex justify-center">
-                <div className="bg-emerald-500/70 w-24 h-px" />
+                <div className="bg-brand-500/70 w-24 h-px" />
               </div>
 
               <div className="flex flex-col gap-2 mt-3">
@@ -104,7 +104,7 @@ export default function CoursePageHeader({
                           <DateIcon kind="created" />
                         </span>
                         <div className="leading-tight">
-                          <div className="inline-flex bg-[rgba(20,184,166,0.16)] dark:bg-[rgba(20,184,166,0.22)] px-3 py-1 border border-[rgba(20,184,166,0.28)] dark:border-[rgba(20,184,166,0.35)] rounded-full font-semibold text-[13px] text-slate-900 dark:text-slate-100">
+                          <div className="inline-flex bg-[rgba(138,130,115,0.16)] dark:bg-[rgba(138,130,115,0.22)] px-3 py-1 border border-[rgba(138,130,115,0.28)] dark:border-[rgba(138,130,115,0.35)] rounded-full font-semibold text-[13px] text-slate-900 dark:text-slate-100">
                             {createdLabel}
                           </div>
                           <div className="font-semibold text-[12px] text-slate-600 dark:text-slate-300">{isRtl ? 'تاريخ الإنشاء' : 'Created'}</div>
@@ -118,7 +118,7 @@ export default function CoursePageHeader({
                           <DateIcon kind="updated" />
                         </span>
                         <div className="leading-tight">
-                          <div className="inline-flex bg-[rgba(20,184,166,0.16)] dark:bg-[rgba(20,184,166,0.22)] px-3 py-1 border border-[rgba(20,184,166,0.28)] dark:border-[rgba(20,184,166,0.35)] rounded-full font-semibold text-[13px] text-slate-900 dark:text-slate-100">
+                          <div className="inline-flex bg-[rgba(138,130,115,0.16)] dark:bg-[rgba(138,130,115,0.22)] px-3 py-1 border border-[rgba(138,130,115,0.28)] dark:border-[rgba(138,130,115,0.35)] rounded-full font-semibold text-[13px] text-slate-900 dark:text-slate-100">
                             {updatedLabel}
                           </div>
                           <div className="font-semibold text-[12px] text-slate-600 dark:text-slate-300">{isRtl ? 'آخر تحديث' : 'Updated'}</div>

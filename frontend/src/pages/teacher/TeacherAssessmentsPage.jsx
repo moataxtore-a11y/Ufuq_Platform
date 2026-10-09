@@ -268,7 +268,7 @@ function AssessmentCourseCard({ active, title, subtitle, thumbnailUrl, fallbackI
       type="button"
       onClick={onClick}
       className={cnAssessmentCard(
-        'group overflow-hidden rounded-[28px] border bg-[#001d18] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
+        'group overflow-hidden rounded-[28px] border bg-[#291C16] transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
         active ? 'border-brand ring-2 ring-brand/20 shadow-glow-brand' : 'border-slate-200 dark:border-white/10'
       )}
       aria-pressed={active}
@@ -278,11 +278,11 @@ function AssessmentCourseCard({ active, title, subtitle, thumbnailUrl, fallbackI
         {thumbnailUrl ? (
           <img src={thumbnailUrl} alt={title || 'Course'} className="h-full w-full object-cover object-center" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-[#18211f] text-slate-400 dark:text-slate-500">
+          <div className="flex h-full w-full items-center justify-center bg-[#35261E] text-slate-400 dark:text-slate-500">
             {fallbackIcon || <ImageIcon className="h-12 w-12" />}
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#001d18]/45 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#291C16]/45 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
         <span
           className={cnAssessmentCard(
             'absolute top-3 flex h-10 w-10 items-center justify-center rounded-full border transition-colors',
@@ -294,7 +294,7 @@ function AssessmentCourseCard({ active, title, subtitle, thumbnailUrl, fallbackI
         </span>
       </div>
 
-      <div className="flex min-h-20 flex-col items-center justify-center bg-[#001d18] px-4 py-4">
+      <div className="flex min-h-20 flex-col items-center justify-center bg-[#291C16] px-4 py-4">
         <div className="line-clamp-2 text-center text-2xl font-extrabold leading-tight text-white">
           {title || '—'}
         </div>

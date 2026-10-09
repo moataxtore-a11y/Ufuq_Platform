@@ -118,13 +118,13 @@ export default function AppShell({ title, titleKey }) {
   }
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="relative bg-[#E0F3E9] dark:bg-[#0a0a0a] min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="site-surface relative min-h-screen overflow-x-hidden text-slate-900 dark:text-slate-100">
       <div className="z-0 fixed inset-0 overflow-hidden pointer-events-none">
         <div className="top-[-10%] left-[-10%] absolute bg-brand/10 dark:bg-brand/[0.15] blur-[120px] rounded-full w-[50%] h-[50%] animate-blob-float" />
         <div className="right-[-10%] bottom-[-10%] absolute bg-brand/10 dark:bg-brand/[0.12] opacity-70 blur-[100px] rounded-full w-[40%] h-[40%] animate-blob-float" style={{ animationDelay: '2s' }} />
       </div>
 
-      <header className="top-0 z-[100] fixed bg-white/30 dark:bg-[#0a0a0a]/30 shadow-glass-md backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
+      <header className="site-header top-0 z-[100] fixed backdrop-blur-glass-heavy border-white/20 dark:border-white/10 border-b w-full">
         <div className="flex items-center justify-between gap-3 mx-auto px-4 sm:px-6 py-2.5 w-full max-w-7xl">
           <div className={cn('flex items-center gap-3', isRtl ? 'flex-row-reverse' : 'flex-row')}>
             <button
@@ -195,7 +195,7 @@ export default function AppShell({ title, titleKey }) {
           <button type="button" className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setOpen(false)} aria-label="Close menu" />
           <div
             className={cn(
-              'top-0 bottom-0 absolute bg-white dark:bg-[#141414] shadow-elevated p-4 w-[85%] max-w-xs overflow-y-auto transition-transform duration-300',
+              'top-0 bottom-0 absolute bg-white dark:bg-[#30221B] shadow-elevated p-4 w-[85%] max-w-xs overflow-y-auto transition-transform duration-300',
               isRtl ? 'right-0 rounded-l-2xl' : 'left-0 rounded-r-2xl'
             )}
           >

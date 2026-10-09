@@ -26,7 +26,7 @@ export default function QuickPreviewModal({ open, onOpenChange, kind, data, isRT
   return (
     <Modal open={open} onOpenChange={onOpenChange} title={title}>
       <div className="grid gap-4">
-        <div className="rounded-2xl border border-black/5 bg-[rgb(247,244,236)] p-4 dark:border-white/10 dark:bg-[#202020]">
+        <div className="rounded-2xl border border-black/5 bg-[rgb(247,240,229)] p-4 dark:border-white/10 dark:bg-[#3A2920]">
           <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{primaryName || '—'}</div>
           {kind === 'course' && data?.teacherName ? (
             <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">{data.teacherName}</div>
@@ -52,7 +52,7 @@ export default function QuickPreviewModal({ open, onOpenChange, kind, data, isRT
           )}
         </div>
 
-        <div className="rounded-2xl border border-black/5 bg-white p-4 text-sm text-slate-700 dark:border-white/10 dark:bg-[#1a1a1a] dark:text-slate-200">
+        <div className="rounded-2xl border border-black/5 bg-white p-4 text-sm text-slate-700 dark:border-white/10 dark:bg-[#35261E] dark:text-slate-200">
           {isRTL
             ? 'دي معاينة سريعة فقط. محتوى الكورس، الدروس، والوحدات بيظهروا بعد تسجيل الدخول.'
             : 'This is a quick preview only. Lessons and full course content are available after login.'}

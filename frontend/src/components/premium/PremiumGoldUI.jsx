@@ -212,7 +212,7 @@ function AppSurface({ lang, children }) {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="-top-24 -left-24 absolute bg-brand/10 dark:bg-brand/5 blur-3xl rounded-full w-80 h-80" />
         <div className="-right-24 -bottom-24 absolute bg-brand/10 dark:bg-brand/5 blur-3xl rounded-full w-80 h-80" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.05),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.03),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(58,41,32,0.05),transparent_55%)] dark:bg-[radial-gradient(circle_at_top,rgba(58,41,32,0.03),transparent_55%)]" />
       </div>
 
       <div className="relative">{children}</div>
@@ -295,7 +295,7 @@ function PlaceholderImage({ alt, className }) {
         className
       )}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(6,148,132,0.05),transparent_35%,rgba(6,148,132,0.05))] dark:bg-[linear-gradient(120deg,rgba(6,148,132,0.08),transparent_35%,rgba(6,148,132,0.08))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(58,41,32,0.05),transparent_35%,rgba(58,41,32,0.05))] dark:bg-[linear-gradient(120deg,rgba(58,41,32,0.08),transparent_35%,rgba(58,41,32,0.08))]" />
       <div className="flex justify-center items-center h-full">
         <div className="bg-white dark:bg-white/[0.04] shadow-sm px-3 py-2 border border-black/5 dark:border-white/10 rounded-xl font-semibold text-slate-600 dark:text-slate-300 text-xs">
           {alt}
@@ -311,7 +311,7 @@ function CourseCard({ lang, course, ctaLabelKey }) {
     <SoftCard className="group overflow-hidden">
       <div className={cx('flex gap-4 p-4', isRtl ? 'flex-row-reverse' : 'flex-row')}>
         <div className="relative bg-slate-50 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 rounded-xl w-28 h-20 overflow-hidden shrink-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,148,132,0.12),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(58,41,32,0.12),transparent_55%)]" />
           <div className="bottom-0 absolute inset-x-0 bg-gradient-to-t from-black/10 dark:from-black/20 to-transparent h-8" />
           <div className="absolute inset-0 flex justify-center items-center font-semibold text-slate-600 dark:text-slate-300 text-xs">
             {t(lang, 'placeholderImageAlt')}

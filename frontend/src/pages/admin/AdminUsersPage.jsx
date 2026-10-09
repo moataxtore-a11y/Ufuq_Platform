@@ -169,7 +169,7 @@ export default function AdminUsersPage() {
       />
       <div className="text-center">
         <div className="inline-flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-          <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+          <span className="bg-brand-500 rounded-full w-1.5 h-1.5" />
           {isRtl ? 'مساحة الأدمن' : 'Admin workspace'}
         </div>
         <div className="mt-2">
@@ -178,7 +178,7 @@ export default function AdminUsersPage() {
           </h1>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
         </div>
@@ -240,7 +240,7 @@ export default function AdminUsersPage() {
                         {isRtl ? 'موقوف' : 'Suspended'}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center bg-emerald-50 px-2 py-1 border border-emerald-200 rounded-full text-emerald-700 text-xs">
+                      <span className="inline-flex items-center bg-brand-50 px-2 py-1 border border-brand-200 rounded-full text-brand-700 text-xs">
                         {isRtl ? 'نشط' : 'Active'}
                       </span>
                     )}
@@ -425,8 +425,8 @@ function UserProfileModal({ open, onOpenChange, userId }) {
           <div className="mt-3 p-4 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className={"font-extrabold text-lg mb-4 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'إحصائيات الطالب' : 'Student Statistics'}</div>
             <div className="gap-3 grid grid-cols-2">
-              <div className="bg-[#143B33] dark:bg-[rgba(20,184,166,0.15)] p-3 border border-[#1B4E44] dark:border-teal-900/50 rounded-xl">
-                <div className="mb-1 font-semibold text-[#a1b8b2] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
+              <div className="bg-[#493328] dark:bg-[rgba(138,130,115,0.15)] p-3 border border-[#563F32] dark:border-brand-900/50 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.courses?.watchedTotalHours) : 0}</div>
               </div>
               <div className="bg-brand/10 dark:bg-brand/20 p-3 border border-brand/20 dark:border-brand/30 rounded-xl">
@@ -437,8 +437,8 @@ function UserProfileModal({ open, onOpenChange, userId }) {
                 <div className="mb-1 font-semibold text-brand-500 dark:text-brand-300 text-xs text-right">{isRtl ? 'أعلى درجة' : 'Highest Score'}</div>
                 <div className="font-bold text-slate-900 dark:text-white text-xl text-right">{stats ? formatNum(stats.assessments?.bestPercent) : 0}%</div>
               </div>
-              <div className="bg-[#142B28] dark:bg-[rgba(20,184,166,0.1)] p-3 border border-[#1A3834] dark:border-teal-900/30 rounded-xl">
-                <div className="mb-1 font-semibold text-[#9ab1ad] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
+              <div className="bg-[#35261E] dark:bg-[rgba(138,130,115,0.1)] p-3 border border-[#493328] dark:border-brand-900/30 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
               </div>
             </div>
@@ -758,17 +758,17 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.form.teachingSection')}</label>
-              <div className="bg-slate-50 dark:bg-[#071d1b] p-3 border border-black/5 dark:border-[#093530] rounded-2xl">
+              <div className="bg-slate-50 dark:bg-[#291C16] p-3 border border-black/5 dark:border-[#493328] rounded-2xl">
                 <div className="gap-2 grid">
                   {TEACHING_SECTION_OPTIONS.filter((o) => o.value).map((o) => (
                     <label
                       key={o.value}
-                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#0b2825] hover:bg-slate-50 dark:hover:bg-[#0e332f] px-3 py-2 border border-slate-200 dark:border-[#13443f] rounded-xl text-slate-800 dark:text-teal-100 text-sm cursor-pointer transition-colors"
+                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#35261E] hover:bg-slate-50 dark:hover:bg-[#493328] px-3 py-2 border border-slate-200 dark:border-[#493328] rounded-xl text-slate-800 dark:text-brand-100 text-sm cursor-pointer transition-colors"
                     >
                       <span className="font-medium">{o.label}</span>
                       <input
                         type="checkbox"
-                        className="w-4 h-4 accent-[#049989] cursor-pointer"
+                        className="w-4 h-4 accent-[#563F32] cursor-pointer"
                         checked={teachingSections.includes(String(o.value))}
                         onChange={() => toggleTeachingSection(o.value)}
                       />
@@ -779,17 +779,17 @@ function UserModal({ open, onOpenChange, editing, onSaved }) {
             </div>
             <div className="gap-1 grid">
               <label className="text-slate-600 dark:text-slate-300 text-sm">{t('adminUsersPage.form.teachingGradeYear')}</label>
-              <div className="bg-slate-50 dark:bg-[#071d1b] p-3 border border-black/5 dark:border-[#093530] rounded-2xl">
+              <div className="bg-slate-50 dark:bg-[#291C16] p-3 border border-black/5 dark:border-[#493328] rounded-2xl">
                 <div className="gap-2 grid">
                   {TEACHING_GRADE_YEAR_OPTIONS.filter((o) => o.value).map((o) => (
                     <label
                       key={o.value}
-                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#0b2825] hover:bg-slate-50 dark:hover:bg-[#0e332f] px-3 py-2 border border-slate-200 dark:border-[#13443f] rounded-xl text-slate-800 dark:text-teal-100 text-sm cursor-pointer transition-colors"
+                      className="flex justify-between items-center gap-3 bg-white dark:bg-[#35261E] hover:bg-slate-50 dark:hover:bg-[#493328] px-3 py-2 border border-slate-200 dark:border-[#493328] rounded-xl text-slate-800 dark:text-brand-100 text-sm cursor-pointer transition-colors"
                     >
                       <span className="font-medium">{o.label}</span>
                       <input
                         type="checkbox"
-                        className="w-4 h-4 accent-[#049989] cursor-pointer"
+                        className="w-4 h-4 accent-[#563F32] cursor-pointer"
                         checked={teachingGradeYears.includes(String(o.value))}
                         onChange={() => toggleTeachingGradeYear(o.value)}
                       />

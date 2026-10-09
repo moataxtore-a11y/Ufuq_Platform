@@ -39,7 +39,7 @@ export default function CoursePicker({
                 onClick={() => onChange?.(id)}
                 className={cn(
                   'group overflow-hidden rounded-[28px] border transition-all duration-200',
-                  'bg-[#001d18] hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
+                  'bg-[#291C16] hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-glass-sm',
                   isSelected
                     ? 'border-brand ring-2 ring-brand/20 shadow-glow-brand'
                     : 'border-slate-200 dark:border-white/10'
@@ -55,7 +55,7 @@ export default function CoursePicker({
                       <ImageIcon className="h-6 w-6" />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#001d18]/40 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#291C16]/40 to-transparent opacity-70 transition-opacity group-hover:opacity-90" />
                   <span
                     className={cn(
                       'absolute top-3 flex h-10 w-10 items-center justify-center rounded-full border transition-colors',
@@ -69,7 +69,7 @@ export default function CoursePicker({
                   </span>
                 </div>
 
-                <div className="flex min-h-20 items-center justify-center bg-[#001d18] px-4 py-4">
+                <div className="flex min-h-20 items-center justify-center bg-[#291C16] px-4 py-4">
                   <div className="line-clamp-2 text-center text-2xl font-extrabold leading-tight text-white">
                     {title}
                   </div>

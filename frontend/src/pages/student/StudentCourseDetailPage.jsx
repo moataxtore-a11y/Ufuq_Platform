@@ -188,7 +188,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
                 <Button
                   type="button"
                   variant="secondary"
-                  className="bg-[#60A5FA] hover:bg-[#60A5FA]/90 dark:bg-[#60A5FA] dark:hover:bg-[#60A5FA]/90 px-4 sm:px-5 py-1.5 w-full sm:w-auto h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base text-center leading-tight whitespace-normal"
+                  className="bg-[#AD956B] hover:bg-[#AD956B]/90 dark:bg-[#AD956B] dark:hover:bg-[#AD956B]/90 px-4 sm:px-5 py-1.5 w-full sm:w-auto h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base text-center leading-tight whitespace-normal"
                   onClick={() => {
                     openSigned?.(p.url, itemTitle(p, 'PDF'))
                   }}
@@ -234,7 +234,7 @@ function LessonAttachmentsList({ isRtl, lesson, openSigned, openMedia, assessmen
                 <Button
                   type="button"
                   variant="secondary"
-                  className={(assessment?.type === 'homework' ? 'bg-[#2DD4BF] dark:bg-[#2DD4BF] hover:bg-[#2DD4BF]/90 dark:hover:bg-[#2DD4BF]/90 ' : 'bg-[#F43F5E] dark:bg-[#F43F5E] hover:bg-[#F43F5E]/90 dark:hover:bg-[#F43F5E]/90 ') + 'px-4 sm:px-5 py-1.5 h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base w-full sm:w-auto whitespace-normal text-center leading-tight'}
+                  className={(assessment?.type === 'homework' ? 'bg-[#D0BFA6] dark:bg-[#D0BFA6] hover:bg-[#D0BFA6]/90 dark:hover:bg-[#D0BFA6]/90 ' : 'bg-[#A65F4B] dark:bg-[#A65F4B] hover:bg-[#A65F4B]/90 dark:hover:bg-[#A65F4B]/90 ') + 'px-4 sm:px-5 py-1.5 h-auto min-h-[36px] sm:min-h-[40px] text-white text-sm sm:text-base w-full sm:w-auto whitespace-normal text-center leading-tight'}
                   onClick={() => onOpenAssessment?.(assessment)}
                 >
                   {isRtl ? 'ابدأ الامتحان' : 'Open'}
@@ -574,13 +574,13 @@ export default function StudentCourseDetailPage() {
 
           {!lockedHasContent ? (
             <div className="flex flex-col justify-center items-center py-10 text-center">
-              <div className="flex justify-center items-center bg-[#F43F5E]/10 border border-[#F43F5E]/25 rounded-3xl w-16 h-16">
-                <Inbox className="w-8 h-8 text-[#F43F5E]" />
+              <div className="flex justify-center items-center bg-[#A65F4B]/10 border border-[#A65F4B]/25 rounded-3xl w-16 h-16">
+                <Inbox className="w-8 h-8 text-[#A65F4B]" />
               </div>
-              <div className="mt-4 font-extrabold text-[#F43F5E] text-xl">
+              <div className="mt-4 font-extrabold text-[#A65F4B] text-xl">
                 {isRtl ? 'مفيش محتوى حالياً' : 'No content yet'}
               </div>
-              <div className="mt-2 text-[#F43F5E]/85 text-sm leading-7">
+              <div className="mt-2 text-[#A65F4B]/85 text-sm leading-7">
                 {isRtl ? 'سيتم اضافه كورسات قريباََ' : 'Courses will be added soon'}
               </div>
             </div>
@@ -609,12 +609,12 @@ export default function StudentCourseDetailPage() {
                     </button>
 
                     {isUnitOpen ? (
-                      <div className="bg-[#D2EBE1] dark:bg-neutral-800 p-3">
+                      <div className="bg-[#EEE4D2] dark:bg-neutral-800 p-3">
                         {(u?.lessons || []).length === 0 ? (
                           <div className="py-8">
                             <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                               <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                              <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
+                              <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>سيتم اضافة المحتوى قريبًا</div>
                             </div>
                           </div>
                         ) : (
@@ -653,7 +653,7 @@ export default function StudentCourseDetailPage() {
                 <div className="py-8">
                   <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                     <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                    <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
+                    <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>سيتم اضافة المحتوى قريبًا</div>
                   </div>
                 </div>
               ) : (
@@ -702,7 +702,7 @@ export default function StudentCourseDetailPage() {
                                   className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isLocked
                                     ? 'bg-slate-100 dark:bg-neutral-800 text-slate-500 dark:text-slate-300 cursor-not-allowed'
                                     : isActive
-                                      ? 'bg-[#0AB6C6] text-white'
+                                      ? 'bg-[#AD956B] text-white'
                                       : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                                     } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                                   onClick={() => {
@@ -746,7 +746,7 @@ export default function StudentCourseDetailPage() {
                                       <Button
                                         type="button"
                                         variant="secondary"
-                                        className="bg-[#F43F5E] hover:bg-[#F43F5E]/90 px-3 h-8 text-white text-xs"
+                                        className="bg-[#A65F4B] hover:bg-[#A65F4B]/90 px-3 h-8 text-white text-xs"
                                         onClick={(e) => {
                                           e.stopPropagation()
                                           if (isLocked && l.lockedByAssessmentId) {
@@ -802,7 +802,7 @@ export default function StudentCourseDetailPage() {
                       <div key={u._id} className="border border-black/5 dark:border-white/[0.06] rounded-2xl overflow-hidden">
                         <button
                           type="button"
-                          className={`w-full flex items-center justify-between gap-3 px-4 py-3 transition-colors ${isUnitOpen ? 'bg-[#14B8A6] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
+                          className={`w-full flex items-center justify-between gap-3 px-4 py-3 transition-colors ${isUnitOpen ? 'bg-[#8A8273] text-white' : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                             } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                           onClick={() => {
                             toggleUnitExpanded(unitId)
@@ -820,12 +820,12 @@ export default function StudentCourseDetailPage() {
                         </button>
 
                         {isUnitOpen ? (
-                          <div className="bg-[#D2EBE1] dark:bg-neutral-800 p-3">
+                          <div className="bg-[#EEE4D2] dark:bg-neutral-800 p-3">
                             {unitLessons.length === 0 ? (
                               <div className="py-8">
                                 <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                                   <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                                  <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>سيتم اضافة المحتوى قريبًا</div>
+                                  <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>سيتم اضافة المحتوى قريبًا</div>
                                 </div>
                               </div>
                             ) : (
@@ -863,7 +863,7 @@ export default function StudentCourseDetailPage() {
                                         className={`w-full flex items-center justify-between gap-3 px-3 py-3 transition-colors ${isLocked
                                           ? 'bg-slate-100 dark:bg-neutral-800 text-slate-500 dark:text-slate-300 cursor-not-allowed'
                                           : isActive
-                                            ? 'bg-[#0AB6C6] text-white'
+                                            ? 'bg-[#AD956B] text-white'
                                             : 'bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800'
                                           } ${isRtl ? 'flex-row' : 'flex-row-reverse'}`}
                                         onClick={() => {
@@ -908,7 +908,7 @@ export default function StudentCourseDetailPage() {
                                             <Button
                                               type="button"
                                               variant="secondary"
-                                              className="bg-[#F43F5E] hover:bg-[#F43F5E]/90 px-3 h-8 text-white text-xs"
+                                              className="bg-[#A65F4B] hover:bg-[#A65F4B]/90 px-3 h-8 text-white text-xs"
                                               onClick={(e) => {
                                                 e.stopPropagation()
                                                 if (isLocked && l.lockedByAssessmentId) {
@@ -925,7 +925,7 @@ export default function StudentCourseDetailPage() {
                                             <Button
                                               type="button"
                                               variant="secondary"
-                                              className="bg-[#F43F5E] hover:bg-[#F43F5E]/90 px-3 h-8 text-white text-xs"
+                                              className="bg-[#A65F4B] hover:bg-[#A65F4B]/90 px-3 h-8 text-white text-xs"
                                               onClick={(e) => {
                                                 e.stopPropagation()
                                                 navigate(`/student/assessments/${l.lockedByAssessmentId}/attempt`)

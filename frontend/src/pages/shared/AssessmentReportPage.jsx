@@ -13,7 +13,7 @@ function StatusPill({ status, isRtl }) {
     status === 'graded'
       ? {
         label: isRtl ? 'مصحَّح' : 'Graded',
-        cls: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30'
+        cls: 'bg-brand-50 dark:bg-brand-500/10 text-brand-700 dark:text-brand-300 border-brand-200 dark:border-brand-500/30'
       }
       : status === 'submitted'
         ? {
@@ -23,7 +23,7 @@ function StatusPill({ status, isRtl }) {
         : status === 'in_progress'
           ? {
             label: isRtl ? 'جاري الحل' : 'In progress',
-            cls: 'bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/30'
+            cls: 'bg-brand-50 dark:bg-brand-500/10 text-brand-700 dark:text-brand-300 border-brand-200 dark:border-brand-500/30'
           }
           : {
             label: isRtl ? 'لم يبدأ' : 'Not attempted',
@@ -130,8 +130,8 @@ export default function AssessmentReportPage() {
       {/* Stats */}
       <div className="gap-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
-          icon={<Users className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
-          iconCls="bg-violet-50 dark:bg-violet-500/10"
+          icon={<Users className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
+          iconCls="bg-brand-50 dark:bg-brand-500/10"
           label={isRtl ? 'الإجمالي' : 'Total'}
           value={summary?.total}
         />
@@ -142,8 +142,8 @@ export default function AssessmentReportPage() {
           value={summary?.not_attempted}
         />
         <StatCard
-          icon={<Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
-          iconCls="bg-blue-50 dark:bg-blue-500/10"
+          icon={<Clock className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
+          iconCls="bg-brand-50 dark:bg-brand-500/10"
           label={isRtl ? 'جاري الحل' : 'In progress'}
           value={summary?.in_progress}
         />
@@ -154,8 +154,8 @@ export default function AssessmentReportPage() {
           value={summary?.submitted}
         />
         <StatCard
-          icon={<FileCheck2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
-          iconCls="bg-emerald-50 dark:bg-emerald-500/10"
+          icon={<FileCheck2 className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
+          iconCls="bg-brand-50 dark:bg-brand-500/10"
           label={isRtl ? 'مصحَّح' : 'Graded'}
           value={summary?.graded}
         />

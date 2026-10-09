@@ -15,7 +15,7 @@ export default function WhatsAppButton() {
             href={`https://wa.me/${phoneNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed right-4 sm:right-6 bottom-4 sm:bottom-6 z-[9999] flex justify-center items-center bg-[#25D366] shadow-xl rounded-full w-12 sm:w-14 h-12 sm:h-14 text-white hover:bg-[#20ba59] transition-colors"
+            className="fixed right-4 sm:right-6 bottom-4 sm:bottom-6 z-[9999] flex justify-center items-center bg-[#3A2920] shadow-xl rounded-full w-12 sm:w-14 h-12 sm:h-14 text-white hover:bg-[#563F32] transition-colors"
             title={isRtl ? 'تواصل معنا عبر واتساب' : 'Contact us on WhatsApp'}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

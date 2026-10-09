@@ -84,7 +84,7 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
               <Skeleton className="w-12 h-12 rounded-full shrink-0" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-1/3 rounded-md" />
@@ -177,8 +177,8 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
           <div className="mt-3 p-4 border border-black/5 dark:border-white/10 rounded-2xl">
             <div className={"font-extrabold text-lg mb-4 " + (isRtl ? 'text-right' : 'text-left')}>{isRtl ? 'إحصائيات الطالب' : 'Student Statistics'}</div>
             <div className="gap-3 grid grid-cols-2">
-              <div className="bg-[#143B33] dark:bg-[rgba(20,184,166,0.15)] p-3 border border-[#1B4E44] dark:border-teal-900/50 rounded-xl">
-                <div className="mb-1 font-semibold text-[#a1b8b2] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
+              <div className="bg-[#493328] dark:bg-[rgba(138,130,115,0.15)] p-3 border border-[#563F32] dark:border-brand-900/50 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'ساعات المشاهدة' : 'Watched Hours'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.courses?.watchedTotalHours) : 0}</div>
               </div>
               <div className="bg-brand/10 dark:bg-brand/20 p-3 border border-brand/20 dark:border-brand/30 rounded-xl">
@@ -189,8 +189,8 @@ function AdminStudentProfileModal({ open, onOpenChange, userId }) {
                 <div className="mb-1 font-semibold text-brand-500 dark:text-brand-300 text-xs text-right">{isRtl ? 'أعلى درجة' : 'Highest Score'}</div>
                 <div className="font-bold text-slate-900 dark:text-white text-xl text-right">{stats ? formatNum(stats.assessments?.bestPercent) : 0}%</div>
               </div>
-              <div className="bg-[#142B28] dark:bg-[rgba(20,184,166,0.1)] p-3 border border-[#1A3834] dark:border-teal-900/30 rounded-xl">
-                <div className="mb-1 font-semibold text-[#9ab1ad] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
+              <div className="bg-[#35261E] dark:bg-[rgba(138,130,115,0.1)] p-3 border border-[#493328] dark:border-brand-900/30 rounded-xl">
+                <div className="mb-1 font-semibold text-[#C1B39F] text-xs text-right">{isRtl ? 'متوسط الدرجات' : 'Average Score'}</div>
                 <div className="font-bold text-white text-xl text-right">{stats ? formatNum(stats.assessments?.avgPercent) : 0}%</div>
               </div>
             </div>
@@ -312,7 +312,7 @@ export default function ApprovalsPage() {
         </h2>
         <div className="flex justify-center mt-2">
           <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
           </svg>
         </div>
         <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">{t('approvalsPage.subtitle')}</div>
@@ -321,7 +321,7 @@ export default function ApprovalsPage() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
               <Skeleton className="w-10 h-10 rounded-full shrink-0" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-1/4 rounded-md" />
@@ -333,7 +333,7 @@ export default function ApprovalsPage() {
           ))}
         </div>
       ) : rows.length === 0 ? (
-        <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+        <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
           <div className="flex flex-col justify-center items-center gap-3 text-center">
             <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
             <div className="font-semibold text-rose-600 dark:text-rose-400 text-base">

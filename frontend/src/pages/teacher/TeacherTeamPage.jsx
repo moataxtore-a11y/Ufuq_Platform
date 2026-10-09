@@ -130,7 +130,7 @@ export default function TeacherTeamPage() {
             : (isRtl ? 'لا يوجد أعضاء تيم حتى الآن.' : 'No team members yet.')}
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-2xl overflow-x-auto">
+        <div className="bg-white dark:bg-[#35261E] border border-black/5 dark:border-white/10 rounded-2xl overflow-x-auto">
           <Table>
             <THead>
               <TR>

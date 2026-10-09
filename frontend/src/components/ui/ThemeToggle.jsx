@@ -32,13 +32,13 @@ export default function ThemeToggle({ className = '' }) {
     return (
       'relative inline-flex h-9 w-[76px] items-center rounded-full border transition-all duration-200 ease-out select-none ' +
       'shadow-[0_4px_14px_rgba(15,23,42,0.06)] ' +
-      (isDark ? 'border-white/10 bg-[#1a1a1a]' : 'border-black/10 bg-white/80')
+      (isDark ? 'border-white/10 bg-[#35261E]' : 'border-black/10 bg-white/80')
     )
   }, [isDark])
 
   const knobCls = useMemo(() => {
     return (
-      'absolute top-1/2 left-0 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-[#DDF8F5] dark:bg-slate-800 shadow-md transition-transform duration-200 ease-out ' +
+      'absolute top-1/2 left-0 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-[#EEE4D2] dark:bg-slate-800 shadow-md transition-transform duration-200 ease-out ' +
       (isDark ? 'translate-x-[44px]' : 'translate-x-[4px]')
     )
   }, [isDark])

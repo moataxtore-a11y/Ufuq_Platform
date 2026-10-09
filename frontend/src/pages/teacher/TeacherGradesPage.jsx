@@ -77,7 +77,7 @@ export default function TeacherGradesPage() {
         </div>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
+            <div key={i} className="flex items-center gap-4 bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-2xl p-4 transition-colors">
               <Skeleton className="w-24 h-4 rounded-md" />
               <Skeleton className="w-32 h-4 rounded-md flex-1" />
               <Skeleton className="w-16 h-6 rounded-full" />

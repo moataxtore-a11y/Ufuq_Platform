@@ -31,10 +31,10 @@ export default function AboutSection() {
           {points.map(({ title, desc, Icon }) => (
             <div
               key={title}
-              className="bg-white dark:bg-[#171717] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-7 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200"
+              className="bg-white dark:bg-[#30221B] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] p-7 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200"
             >
               <div className="flex flex-col items-center text-center">
-                <div className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] rounded-2xl w-14 h-14 text-slate-700 dark:text-slate-200">
+                <div className="flex justify-center items-center bg-[rgb(247,240,229)] dark:bg-[#3A2920] rounded-2xl w-14 h-14 text-slate-700 dark:text-slate-200">
                   <Icon className="w-7 h-7" />
                 </div>
 

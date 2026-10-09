@@ -8,7 +8,7 @@
 
       .cls-1, .cls-2 {
         fill: none;
-        stroke: #f41700;
+        stroke: #A65F4B;
         stroke-miterlimit: 10;
       }
 

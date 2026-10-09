@@ -24,9 +24,9 @@ const variantStyles = {
     iconClass: 'text-brand',
   },
   success: {
-    border: 'border-emerald-200 dark:border-emerald-500/30',
+    border: 'border-brand-200 dark:border-brand-500/30',
     icon: CheckCircle2,
-    iconClass: 'text-emerald-500',
+    iconClass: 'text-brand-500',
   },
   destructive: {
     border: 'border-red-200 dark:border-red-500/30',
@@ -39,9 +39,9 @@ const variantStyles = {
     iconClass: 'text-amber-500',
   },
   info: {
-    border: 'border-blue-200 dark:border-blue-500/30',
+    border: 'border-brand-200 dark:border-brand-500/30',
     icon: Info,
-    iconClass: 'text-blue-500',
+    iconClass: 'text-brand-500',
   },
 }
 
@@ -83,7 +83,7 @@ export function ToastProvider({ children }) {
               }}
               className={cn(
                 'shadow-elevated p-4 rounded-xl toast-animate',
-                'bg-white dark:bg-[#1a1a1a]',
+                'bg-white dark:bg-[#35261E]',
                 'border',
                 v.border,
                 'backdrop-blur-sm'

@@ -111,7 +111,7 @@ export default function StudentAssignmentsPage() {
           </h2>
           <div className="flex justify-center mt-2">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+              <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
             </svg>
           </div>
           <div className="mt-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -146,7 +146,7 @@ export default function StudentAssignmentsPage() {
                     <div className="flex items-center gap-2">
                       <span>{a.title}</span>
                       {submittedAssignmentIds.has(String(a._id)) ? (
-                        <span className="bg-green-100 dark:bg-green-400/15 px-2 py-0.5 rounded-full font-semibold text-green-700 dark:text-green-400 text-xs">
+                        <span className="bg-brand-100 dark:bg-brand-400/15 px-2 py-0.5 rounded-full font-semibold text-brand-700 dark:text-brand-400 text-xs">
                           {isRtl ? 'تم التسليم' : 'Submitted'}
                         </span>
                       ) : null}

@@ -228,7 +228,7 @@ export default function SearchResultsPage() {
               ) : null}
             </div>
 
-            <div className="bg-white/60 dark:bg-[#121212]/70 backdrop-blur px-4 sm:px-5 py-5 border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className="bg-white/60 dark:bg-[#291C16]/70 backdrop-blur px-4 sm:px-5 py-5 border border-black/5 dark:border-white/10 rounded-3xl">
               <div className="gap-8 grid">
                 <div>
                   <div className="font-extrabold text-slate-900 dark:text-white text-lg">
@@ -379,7 +379,7 @@ export default function SearchResultsPage() {
                             key={it.key}
                             type="button"
                             onClick={() => navigate(it.href)}
-                            className="bg-brand/10 hover:bg-brand/20 dark:bg-[#202020] dark:hover:bg-white/[0.08] px-4 py-4 border border-brand/20 dark:border-white/10 rounded-2xl font-semibold text-slate-900 dark:text-slate-100 transition"
+                            className="bg-brand/10 hover:bg-brand/20 dark:bg-[#3A2920] dark:hover:bg-white/[0.08] px-4 py-4 border border-brand/20 dark:border-white/10 rounded-2xl font-semibold text-slate-900 dark:text-slate-100 transition"
                           >
                             {isRtl ? it.labelAr : it.labelEn}
                           </button>

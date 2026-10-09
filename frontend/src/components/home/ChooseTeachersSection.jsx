@@ -146,12 +146,12 @@ export default function ChooseTeachersSection() {
 
             <div className="flex justify-center mt-3">
               <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(6,148,132,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M20 20 C 160 0, 360 0, 500 20" stroke="rgba(58,41,32,0.75)" strokeWidth="3" fill="none" strokeLinecap="round" />
               </svg>
             </div>
 
             <div className="flex justify-center mt-6">
-              <div className="z-30 relative bg-white/75 dark:bg-white/[0.06] backdrop-blur p-4 border border-black/5 dark:border-white/10 rounded-2xl w-full max-w-xl">
+              <div className="home-teacher-filters">
                 <div className="gap-3 grid grid-cols-1 sm:grid-cols-2">
                   <div className="gap-1 grid">
                     <label className="text-slate-600 dark:text-slate-300 text-sm">{t('landing.chooseTeachers.filters.sectionLabel')}</label>
@@ -168,9 +168,9 @@ export default function ChooseTeachersSection() {
 
           <div className="z-0 relative mt-8">
             {state.status === 'loading' ? (
-              <div className="justify-items-center gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="home-teacher-strip">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-full bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+                  <div key={i} className="w-full bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
                     <div className="flex justify-center">
                       <Skeleton className="w-24 h-24 rounded-full" />
                     </div>
@@ -186,13 +186,13 @@ export default function ChooseTeachersSection() {
             ) : null}
 
             {state.status === 'error' ? (
-              <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+              <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
                 {state.error}
               </div>
             ) : null}
 
             {state.status === 'success' && filteredTeachers.length === 0 ? (
-              <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+              <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
                 <div className="flex flex-col justify-center items-center gap-3 text-center">
                   <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
                   <div className="font-semibold text-rose-600 dark:text-rose-400 text-base">
@@ -203,17 +203,17 @@ export default function ChooseTeachersSection() {
             ) : null}
 
             {state.status === 'success' && filteredTeachers.length > 0 ? (
-              <div className="justify-items-center gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="home-teacher-strip">
                 {filteredTeachers.map((tt) => (
                   <button
                     key={tt?.id || tt?.name}
                     type="button"
-                    className="w-full"
+                    className="home-teacher-item"
                     onClick={() => {
                       if (tt?.id) navigate(`/teachers/${tt.id}`)
                     }}
                   >
-                    <TeacherCard teacher={tt} />
+                    <TeacherCard teacher={tt} compact />
                   </button>
                 ))}
               </div>

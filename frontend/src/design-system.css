@@ -1,0 +1,91 @@
+/* Shared visual foundations for public pages, authentication, dashboards and portals. */
+:root {
+  --color-paper: 232 216 195;
+  --color-panel: 247 240 229;
+  --color-ink: 58 41 32;
+  --color-line: 193 179 159;
+  --color-muted: 119 107 92;
+  --color-accent: 173 149 107;
+  --radius-control: 0.75rem;
+  --radius-card: 1.5rem;
+  --shadow-card: 0 2px 12px rgb(58 41 32 / .06);
+  --shadow-card-hover: 0 8px 24px rgb(58 41 32 / .12);
+}
+html.dark {
+  --color-paper: 33 23 19;
+  --color-panel: 53 38 30;
+  --color-ink: 238 228 210;
+  --color-line: 102 80 68;
+  --color-muted: 193 179 159;
+}
+html, body { height:auto; min-height:100%; overflow-x:clip; }
+#root { height:auto; min-height:100vh; }
+body { background:rgb(var(--color-paper)); color:rgb(var(--color-ink)); }
+@layer base {
+  h1, h2, .page-title, .section-title {
+    font-family:'Milan Display Black Swashes', Cairo, sans-serif;
+    line-height:1.5;
+  }
+  input, textarea, select { accent-color:#8A8273; }
+  :focus-visible { outline:2px solid rgb(var(--color-accent)); outline-offset:3px; }
+}
+@layer components {
+  .site-surface {
+    background:rgb(var(--color-paper)) url('./assets/home/texture.webp') repeat center top / 1440px auto;
+  }
+  .site-header {
+    background:rgb(var(--color-paper) / .94);
+    border-bottom:1px solid rgb(var(--color-line) / .5);
+    box-shadow:0 3px 15px rgb(58 41 32 / .04);
+  }
+  .card-surface, .stat-card {
+    background:rgb(var(--color-panel) / .95);
+    border:1px solid rgb(var(--color-line) / .65);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-card);
+  }
+  .design-backdrop { background:rgb(var(--color-paper)); }
+  .design-backdrop::after {
+    content:''; position:absolute; inset:0;
+    background:url('./assets/home/texture.webp') repeat center top / 1440px auto;
+    pointer-events:none;
+  }
+  html.dark .design-backdrop::after, html.dark .site-surface { background-blend-mode:soft-light; }
+  html.dark .design-backdrop::after { opacity:.28; }
+  .auth-art { filter:sepia(.45) saturate(.65); }
+}
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+.site-header img[src*="logo"], footer img[src*="logo"] {
+  filter:brightness(0) saturate(100%) invert(16%) sepia(20%) saturate(1100%) hue-rotate(340deg) brightness(96%) contrast(90%);
+}
+html.dark .site-header img[src*="logo"], html.dark footer img[src*="logo"] { filter:brightness(0) invert(91%) sepia(13%) saturate(415%) hue-rotate(348deg); }
+
+.site-footer { background:linear-gradient(#c9beac,#ede6d6 80%); color:#3a2920; padding:110px 7% 130px; }
+.site-footer-inner { display:grid; grid-template-columns:2fr 1fr 1fr; gap:70px; align-items:start; max-width:1220px; margin-inline:auto; }
+.site-footer-brand { text-align:right; }
+.site-footer-brand img { width:170px; height:190px; object-fit:contain; margin-right:0; margin-left:auto; }
+.site-footer-brand p { font-size:13px; line-height:1.9; margin-top:15px; }
+.site-footer h3 { font-family:Cairo,sans-serif; font-size:16px; font-weight:700; color:#3a2920; margin-bottom:15px; }
+.site-footer-links { display:flex; flex-direction:column; align-items:center; gap:7px; padding-top:65px; font-size:13px; text-align:center; }
+.site-footer-links h3 { margin-bottom:4px; }
+.site-footer-links a:hover { text-decoration:underline; text-underline-offset:4px; }
+.site-footer-links > a:last-child { font-size:10px; margin-top:8px; }
+.site-footer-social { padding-top:65px; text-align:center; }
+.site-footer-social > div { display:flex; justify-content:center; gap:10px; }
+.site-footer-social a { display:grid; place-items:center; width:35px; height:35px; border-radius:50%; background:#665044; color:#ede6d6; }
+.site-footer-social svg { width:20px; height:20px; }
+html.dark .site-footer { background:linear-gradient(#35261e,#291c16); color:#eee4d2; }
+html.dark .site-footer h3 { color:#eee4d2; }
+@media(max-width:767px) {
+ .site-footer { padding:45px 7% 70px; }
+ .site-footer-inner { grid-template-columns:1.6fr 1fr 1fr; gap:20px; }
+ .site-footer-brand img { width:90px; height:100px; }
+ .site-footer-brand p { font-size:10px; }
+ .site-footer-links,.site-footer-social { padding-top:30px; font-size:10px; }
+ .site-footer h3 { font-size:12px; }
+ .site-footer-social > div { gap:5px; }
+ .site-footer-social a { width:23px; height:23px; }
+ .site-footer-social svg { width:13px; height:13px; }
+ .site-footer-links > a:last-child { font-size:8px; }
+}

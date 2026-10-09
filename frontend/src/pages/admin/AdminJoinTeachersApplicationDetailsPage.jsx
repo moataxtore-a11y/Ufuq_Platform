@@ -118,10 +118,10 @@ export default function AdminJoinTeachersApplicationDetailsPage() {
           {t('joinTeachersApplicationsPage.loading')}
         </div>
       ) : !row ? (
-        <div className="bg-white/75 dark:bg-[#171717] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+        <div className="bg-white/75 dark:bg-[#30221B] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
           <div className="flex flex-col justify-center items-center gap-3 text-center">
             <img src={noSvg} alt="" aria-hidden="true" className="w-12 h-12 object-contain" />
-            <div className="font-semibold text-base" style={{ color: '#F74343' }}>
+            <div className="font-semibold text-base" style={{ color: '#A65F4B' }}>
               {t('joinTeachersApplicationsPage.empty')}
             </div>
           </div>

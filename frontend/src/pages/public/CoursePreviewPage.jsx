@@ -381,10 +381,10 @@ export default function CoursePreviewPage() {
 
         {stats ? (
           <div className="flex flex-wrap items-center gap-3 text-slate-700 dark:text-slate-200 text-sm">
-            <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full">
+            <div className="bg-[rgb(247,240,229)] dark:bg-[#3A2920] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full">
               {isRtl ? 'عدد المحاضرات:' : 'Lessons:'} {stats.lessonsCount || 0}
             </div>
-            <div className="bg-[rgb(247,244,236)] dark:bg-[#202020] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full">
+            <div className="bg-[rgb(247,240,229)] dark:bg-[#3A2920] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full">
               {isRtl ? 'عدد الفيديوهات:' : 'Videos:'} {stats.videoLessonsCount || 0}
             </div>
           </div>
@@ -400,7 +400,7 @@ export default function CoursePreviewPage() {
 
         {state.status === 'success' ? (
           <>
-            <div className="bg-white dark:bg-[#1a1a1a] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
+            <div className="bg-white dark:bg-[#35261E] p-5 border border-black/5 dark:border-white/10 rounded-3xl">
               <div className="font-semibold text-slate-900 dark:text-white">
                 {isRtl ? 'المحاضرات' : 'Lectures'}
               </div>
@@ -410,17 +410,17 @@ export default function CoursePreviewPage() {
                 <div className="py-10">
                   <div className={'flex items-center justify-center gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>
                     <img src={xIcon} alt="" className="w-9 h-9 shrink-0" />
-                    <div className="font-medium text-[18px] text-center" style={{ color: '#E11D48' }}>
+                    <div className="font-medium text-[18px] text-center" style={{ color: '#8D493A' }}>
                       {isRtl ? 'سيتم اضافة المحتوى قريبًا' : 'Content will be added soon'}
                     </div>
                   </div>
                 </div>
               ) : (
                 visibleUnits.map((u) => (
-                  <div key={u.id} className="bg-white dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden">
+                  <div key={u.id} className="bg-white dark:bg-[#35261E] border border-black/5 dark:border-white/10 rounded-3xl overflow-hidden">
                     <button
                       type="button"
-                      className="relative bg-[#14B8A6] px-5 py-4 w-full text-white"
+                      className="relative bg-[#8A8273] px-5 py-4 w-full text-white"
                       onClick={() => {
                         setExpandedUnitId((cur) => (cur === u.id ? '' : u.id))
                         setExpandedLessonId('')
@@ -457,7 +457,7 @@ export default function CoursePreviewPage() {
                               <div key={l.id} className="bg-black/10 dark:bg-white/[0.06] border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden">
                                 <button
                                   type="button"
-                                  className="bg-[#14B8A6] px-4 py-3 w-full text-white"
+                                  className="bg-[#8A8273] px-4 py-3 w-full text-white"
                                   onClick={() => setExpandedLessonId((cur) => (cur === l.id ? '' : l.id))}
                                 >
                                   <div className={'flex items-center justify-between gap-3 ' + (isRtl ? 'flex-row' : 'flex-row-reverse')}>

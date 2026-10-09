@@ -15,12 +15,12 @@ function ActionCard({ title, desc, Icon, to }) {
     <Link
       to={to}
       className={
-        'group block w-full bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] dark:shadow-none p-4 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200 ' +
+        'group block w-full bg-white dark:bg-[#35261E] shadow-[0_10px_26px_rgba(15,23,42,0.06)] hover:shadow-[0_14px_34px_rgba(15,23,42,0.08)] dark:shadow-none p-4 border border-black/5 dark:border-white/10 rounded-3xl transition-all hover:-translate-y-0.5 duration-200 ' +
         (isRtl ? 'text-right' : 'text-left')
       }
     >
       <div className={'flex items-center gap-3 w-full ' + (isRtl ? 'flex-row' : 'flex-row')}>
-        <div className="flex justify-center items-center bg-[rgb(247,244,236)] dark:bg-[#202020] border border-black/5 dark:border-white/10 rounded-2xl w-11 h-11 text-slate-700 dark:text-slate-200 shrink-0">
+        <div className="flex justify-center items-center bg-[rgb(247,240,229)] dark:bg-[#3A2920] border border-black/5 dark:border-white/10 rounded-2xl w-11 h-11 text-slate-700 dark:text-slate-200 shrink-0">
           <Icon className="w-5 h-5" />
         </div>
         <div className="flex-1 min-w-0">
@@ -35,7 +35,7 @@ function ActionCard({ title, desc, Icon, to }) {
 function StatCard({ label, value, Icon }) {
   const { isRtl } = useLanguage()
   return (
-    <div className={"flex items-center gap-3 bg-white dark:bg-[#1a1a1a] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none px-5 py-4 border border-black/5 dark:border-white/10 rounded-2xl " + (isRtl ? 'flex-row' : 'flex-row')}>
+    <div className={"flex items-center gap-3 bg-white dark:bg-[#35261E] shadow-[0_10px_26px_rgba(15,23,42,0.06)] dark:shadow-none px-5 py-4 border border-black/5 dark:border-white/10 rounded-2xl " + (isRtl ? 'flex-row' : 'flex-row')}>
       <div className="flex justify-center items-center bg-brand/10 rounded-xl w-10 h-10 text-brand shrink-0">
         <Icon className="w-5 h-5" />
       </div>
@@ -105,7 +105,7 @@ export default function TeacherLandingPage() {
     <div>
       <div className="flex flex-col items-center gap-4">
         <div className="inline-flex items-center gap-2 bg-white/70 dark:bg-white/[0.06] px-3 py-1 border border-black/5 dark:border-white/10 rounded-full font-semibold text-slate-700 dark:text-slate-200 text-xs">
-          <span className="bg-emerald-500 rounded-full w-1.5 h-1.5" />
+          <span className="bg-brand-500 rounded-full w-1.5 h-1.5" />
           {isRtl ? 'مساحة المدرس' : 'Teacher workspace'}
         </div>
 
@@ -167,7 +167,7 @@ export default function TeacherLandingPage() {
         {coursesState.status === 'loading' ? (
           <div className="app-grid-cards mt-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-white dark:bg-[#1a1a1a] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+              <div key={i} className="bg-white dark:bg-[#35261E] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
                 <Skeleton className="h-36 w-full rounded-2xl" />
                 <Skeleton className="h-5 w-3/4 rounded-lg" />
                 <Skeleton className="h-4 w-1/2 rounded-md" />
@@ -181,13 +181,13 @@ export default function TeacherLandingPage() {
         ) : null}
 
         {coursesState.status === 'error' ? (
-          <div className="bg-white dark:bg-[#1a1a1a] p-5 mt-4 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
+          <div className="bg-white dark:bg-[#35261E] p-5 mt-4 border border-black/5 dark:border-white/10 rounded-3xl text-slate-700 dark:text-slate-200 text-sm">
             {coursesState.error}
           </div>
         ) : null}
 
         {coursesState.status === 'success' && previewCourses.length === 0 ? (
-          <div className="flex flex-col justify-center items-center px-6 py-10 mt-4 min-h-[200px] text-center bg-white dark:bg-[#1a1a1a] border border-black/5 dark:border-white/10 rounded-3xl">
+          <div className="flex flex-col justify-center items-center px-6 py-10 mt-4 min-h-[200px] text-center bg-white dark:bg-[#35261E] border border-black/5 dark:border-white/10 rounded-3xl">
             <div className="flex justify-center items-center bg-brand/10 rounded-2xl w-16 h-16 text-brand">
               <Inbox className="w-7 h-7" />
             </div>

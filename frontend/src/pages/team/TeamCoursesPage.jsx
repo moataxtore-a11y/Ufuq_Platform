@@ -73,7 +73,7 @@ export default function TeamCoursesPage() {
       {loading ? (
         <div className="app-grid-cards">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white dark:bg-[#171717] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
+            <div key={i} className="bg-white dark:bg-[#30221B] border border-slate-200/80 dark:border-white/10 rounded-3xl p-5 space-y-4 transition-colors">
               <Skeleton className="h-36 w-full rounded-2xl" />
               <Skeleton className="h-5 w-3/4 rounded-lg" />
               <Skeleton className="h-4 w-1/2 rounded-md" />
