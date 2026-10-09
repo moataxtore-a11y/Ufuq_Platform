@@ -58,10 +58,7 @@ export default function SubjectsSection() {
     <section id="subjects" className="mt-8 scroll-mt-[68px] sm:scroll-mt-[72px] md:scroll-mt-[76px]" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="relative px-3 sm:px-5 lg:px-6 py-10">
         <div className="text-center">
-          <h2 className="font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight">
-            {isRtl ? 'المواد' : 'Available'}{' '}
-            <span className="text-slate-900 dark:text-white">{isRtl ? 'المتاحة' : 'Subjects'}</span>
-          </h2>
+          <h2 className="home-reference-heading">المواد المتاحة على أُفُق</h2>
 
           <div className="flex justify-center mt-3">
             <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">

@@ -139,10 +139,7 @@ export default function ChooseTeachersSection() {
 
         <div className="relative px-3 sm:px-5 lg:px-6 py-10">
           <div className="text-center">
-            <h2 className="font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight">
-              {t('landing.chooseTeachers.titlePrefix')}{' '}
-              <span className="text-brand">{t('landing.chooseTeachers.titleBrand')}</span>
-            </h2>
+            <h2 className="home-reference-heading">اختار مدرسينك</h2>
 
             <div className="flex justify-center mt-3">
               <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">

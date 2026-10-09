@@ -21,14 +21,7 @@ export default function FeaturedTeachersCoursesSection() {
   const isAdmin = userRole === 'admin'
   const shouldFetchMine = Boolean(auth?.token) && !isAdmin && ['teacher', 'team', 'student'].includes(userRole)
 
-  const titleNode = useMemo(() => {
-    return (
-      <>
-        {t('landing.featured.titlePrefix')}{' '}
-        <span className="text-brand">{t('landing.featured.titleBrand')}</span>
-      </>
-    )
-  }, [t])
+  const titleNode = <span className="home-reference-heading">كورسات تهمك</span>
 
   useEffect(() => {
     let alive = true
@@ -100,16 +93,9 @@ export default function FeaturedTeachersCoursesSection() {
       title={titleNode}
       centerHeader
       titleClassName="text-center font-extrabold text-slate-900 dark:text-white text-4xl sm:text-5xl md:text-6xl tracking-tight"
-      titleDecoration={
-        <div className="flex justify-center">
-          <svg width="520" height="28" viewBox="0 0 520 28" className="max-w-full" aria-hidden="true">
-            <path d="M20 20 C 160 0, 360 0, 500 20" stroke="#3A2920" strokeWidth="3" fill="none" strokeLinecap="round" />
-          </svg>
-        </div>
-      }
       subtitle={
         isRtl
-          ? 'ريحنا دماغك وجمعنا لك كورسات على مزاجك، مختارة بحب وعناية كأننا بنعمل شوبينج لأحسن شوية كورسات تساعدك وتنميك! 🌟'
+          ? 'اختار الكورس اللي يناسبك وابدأ تتعلم بطريقتك.'
           : "We've picked some courses for you, carefully chosen to help you grow."
       }
       subtitleClassName="mt-2 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-7"
